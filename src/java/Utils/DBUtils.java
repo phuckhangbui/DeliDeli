@@ -31,7 +31,7 @@ public class DBUtils {
         return null;
     }
     private final static String serverName = "localhost";
-    private final static String dbName = "Assignment_PRJ301";
+    private final static String dbName = ""; //ADD YOUR DATABASE NAME HERE.
     private final static String portNumber = "1433";
     private final static String instance = "";
     private final static String userID = "sa";
