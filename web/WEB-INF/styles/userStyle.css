@@ -1,0 +1,284 @@
+/* 
+
+
+
+                    This css file will be used for styling for guest and user pages 
+
+
+
+*/
+
+
+
+body {
+    font-family: 'Fira Sans Extra Condensed', sans-serif;
+    margin: 0;
+    font-weight: 500;
+    font-size: 16px;
+}
+a {
+    text-decoration: none;
+    color: black;
+}
+ul {
+    list-style: none;
+}
+
+
+
+
+/* The nav bar */
+button {
+    border: none;
+    padding: 0;
+}
+
+button img {
+    width: auto;
+    height: auto;
+}
+
+.search-bar {
+    display: grid;
+}
+.search-bar form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.search-bar form input {
+    width: 100%;
+    height: 47px;
+    background: rgba(0, 0, 0, 0.10);
+    border: 1px solid #000000;
+    padding: 10px;
+}
+
+.account {
+    text-align: center;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0;
+    padding-left: 12px;
+}
+span {
+    padding-right: 5px;
+}
+
+.logo img {
+    max-width: 200px;
+    max-height: 200px;
+}
+
+.navigation-bar-first {
+    height: 100px;
+}
+
+.navigation-bar-last ul {
+    display: flex;
+    align-items: center;
+    gap: 100px;
+    margin-bottom: 0;
+    font-size: 18px;
+}
+.navigator-bar{
+    border-bottom: 1px solid #79C141;   
+    padding-bottom: 10px;
+}
+.navigation-bar-content li a:hover {
+    text-decoration: underline;
+    text-decoration-color: #EC9131;
+}
+
+
+
+/*    banner   */
+.banner{
+    background-image: url('../pictures/banner.svg');
+    background-size: cover;
+    width: 100%;
+    background-repeat: no-repeat;
+}
+.banner-content{
+    background-color: white;
+    border: 1px solid #000000;
+    margin: 90px 0;
+    padding: 20px;
+    width: 20%;
+}
+.banner-content p:nth-child(2){
+    font-size: 32px;
+}
+.banner-content p:first-child{
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.5);
+    margin-bottom: 0px;
+}
+.banner-content p:last-child{
+    font-weight: 400;
+}
+.banner-content p:nth-child(2):hover{
+    text-decoration: underline;
+    text-decoration-color: #EC9131;
+}
+
+
+/*    News      */
+.first-new img{
+    width: 100%;
+    height: auto;
+}
+.first-new p{
+    padding: 20px;
+    width: 100%;
+    font-size: 45px;
+    margin: 0;
+}
+.first-new{
+    padding: 0;
+}
+.other-news a img{
+    width: 100%;
+    
+}
+.other-news{
+    display: flex;
+    flex-direction: column;
+}
+.other-news a p{
+    font-size: 30px;
+    padding: 5px;
+}
+.new{
+    padding: 40px;
+}
+.first-new:hover{
+    transform: translateX(-10px) translateY(-10px);
+    transition: all 0.1s;
+    box-shadow: 10px 10px 3px #EC9131;
+    border: 1px solid #000000 ;
+}
+.second-new:hover{
+    transform: translateX(20px) translateY(-20px);
+    transition: all 0.1s;
+    box-shadow: -10px 10px 3px #EC9131;
+    border: 1px solid #000000 ;
+}
+.third-new:hover{
+    transform: translateX(20px) translateY(-20px);
+    transition: all 0.1s;
+    box-shadow: -10px 10px 3px #EC9131;
+    border: 1px solid #000000 ;
+}
+
+
+
+
+
+/*  Recommedation  */
+.header:hover{
+    text-decoration: underline;
+    text-decoration-color: #EC9131;
+}
+.recommendation-content-picture img{
+    width: 100%;
+    height: auto;
+}
+.recommendation-content a div p:nth-child(1){
+    margin-top: 10px;
+    color: rgba(0, 0, 0, 0.5);
+    margin-bottom: 0px;
+}
+.recommendation-content a div p:nth-child(2){
+    font-size: 30px;
+    margin-bottom: 0;
+}
+.recommendation-content-reciew img{
+    width: 20px;
+    height: 20px;
+}
+.recommendation-content-reciew{
+    display: flex;
+}
+.recommendation-content-reciew p{
+    margin-bottom: 0px;
+    margin-left: 10px;
+    color: rgba(0, 0, 0, 0.5);
+}
+.recommendation-1{
+    padding: 40px;
+    background-color: rgba(236, 146, 49, 0.20);
+}
+.recommendation-2{
+    padding: 40px;
+    background-color: rgb(121, 193, 65, 0.2);
+}
+.recommendation-3{
+    padding: 40px;
+}
+.header {
+    display: flex;
+    justify-content: center;
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+.recommendation-content a{
+    margin-bottom: 20px;
+}
+.header p {
+    text-align: center;
+    margin-bottom: 0;
+}
+.recommendation-content-post{
+    padding: 20px;
+}
+.recommendation-content-post div:not(:first-child){
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.recommendation-content-post:hover{
+    transform: translateX(-20px) translateY(-20px);
+    transition: all 0.1s;
+    box-shadow: 10px 10px 3px #EC9131;
+    border: 1px solid #000000 ;
+    background-color: white;
+}
+
+
+
+
+
+/*  Footer   */
+.footer{
+    border-top: 1px solid #79C141;
+    padding: 20px;
+}
+
+.website-social-media-logo img{
+    max-width: 200px;
+    max-height: 200px;
+}
+.website-social-media{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.website-infomation-bar-content li a{
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.navigation-bar-footer-content li a:hover {
+    text-decoration: underline;
+    text-decoration-color: #EC9131;
+}
+.website-infomation-bar-content li a:hover {
+    text-decoration: underline;
+    text-decoration-color: #EC9131;
+}
