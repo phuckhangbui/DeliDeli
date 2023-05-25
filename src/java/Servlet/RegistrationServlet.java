@@ -12,6 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import Token.tokenGenerator;
 
 /**
  *
@@ -26,6 +27,7 @@ public class RegistrationServlet extends HttpServlet {
     private final static int STATUS = 1;
     private final static int ROLE = 1;
     private final static int SETTING = 1;
+    private static final String CONFIRM_EMAIL = "RegisterConfirmServlet";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -65,10 +67,12 @@ public class RegistrationServlet extends HttpServlet {
                 //Insert account
                 java.util.Date date = new java.util.Date();
                 java.sql.Date sqlDate = new java.sql.Date(date.getTime());
-                boolean check = UserDAO.insertAccount(userName, email, password, sqlDate, STATUS, ROLE, SETTING);
+                UserDAO emailDAO = new UserDAO();
+                boolean check = UserDAO.insertAccount(userName, email, password, sqlDate, STATUS, ROLE, SETTING);                
                 if (check) {
+                    request.setAttribute("newMail", email);
                     request.setAttribute("MSG_SUCCESS", "You have successfully registered an account!");
-                    request.getRequestDispatcher(LOGIN_PAGE).forward(request, response);
+                    request.getRequestDispatcher(CONFIRM_EMAIL).forward(request, response);
                 }
             }
         } catch (Exception e) {

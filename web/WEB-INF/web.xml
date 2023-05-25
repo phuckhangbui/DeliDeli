@@ -1,5 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    
+    <context-param>
+        <description>STMP host choosing</description>
+        <param-name>host</param-name>
+        <param-value>smtp.gmail.com</param-value>
+    </context-param>
+    <context-param>
+        <description>Port is the SMTP protocol code required to send mails. 587 sends encrypted mails.</description>
+        <param-name>port</param-name>
+        <param-value>587</param-value>
+    </context-param>
+    <context-param>
+        <description>Your email</description>
+        <param-name>user</param-name>
+        <param-value>Delideliswp@gmail.com</param-value>
+    </context-param>
+    <context-param>
+        <description>your mail pass, for google SMTP you must create a app pass</description>
+        <param-name>pass</param-name>
+        <param-value>kdrqzqffvjjmddat</param-value>
+    </context-param>
+   
+   
+   
     <servlet>
         <servlet-name>Example</servlet-name>
         <servlet-class>Servlet.Example</servlet-class>
@@ -45,4 +69,7 @@
             30
         </session-timeout>
     </session-config>
+    <welcome-file-list>
+        <welcome-file>home.jsp</welcome-file>
+    </welcome-file-list>
 </web-app>

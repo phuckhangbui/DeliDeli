@@ -44,12 +44,12 @@
                                 <p>Password</p>
                                 <input type="password" name="txtPass" placeholder="Your password" required="">
                             </div>
-                            <div>
+                            <div class='error-popup'>
                                 <p>${requestScope.MSG_INCORRECT}</p>
                                 <p>${requestScope.MSG_BLOCK}</p>
                             </div>
                             <button type="submit" value="login" name="action">SIGN IN</button>
-                            <a>
+                            <a href="forgotPassword.jsp">
                                 <p>Forgot password?</p>
                             </a>
                         </form>

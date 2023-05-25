@@ -113,7 +113,7 @@
                             <%
                                 }
                             %>
-                            <p class="recommendation-content-reciew-rating"><%= RecipeDAO.getRatingByRecipeId(r.getId())%></p>
+                            <p class="recommendation-content-reciew-rating"></p>
                         </div>
                     </a>
                     <%

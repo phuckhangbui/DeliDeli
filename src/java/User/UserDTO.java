@@ -22,6 +22,7 @@ public class UserDTO {
     private String password;
     private String avatar;
     private String createAt;
+    private String token; //added
     private int status;
     private int role;
     private int setting;
@@ -29,6 +30,21 @@ public class UserDTO {
     public UserDTO() {
     }
 
+    //NOTE: Security reasons, token shouldn't be in here. Need to add a table soon.
+    //With Token
+    public UserDTO(String userName, String email, String password, String avatar, String createAt, String token, int status, int role, int setting) {
+        this.userName = userName;
+        this.email = email;
+        this.password = password;
+        this.avatar = avatar;
+        this.createAt = createAt;
+        this.token = token;
+        this.status = status;
+        this.role = role;
+        this.setting = setting;
+    }
+
+    //Without Token (temporary)
     public UserDTO(String userName, String email, String password, String avatar, String createAt, int status, int role, int setting) {
         this.userName = userName;
         this.email = email;
@@ -38,6 +54,14 @@ public class UserDTO {
         this.status = status;
         this.role = role;
         this.setting = setting;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public String getUserName() {
@@ -106,8 +130,6 @@ public class UserDTO {
 
     @Override
     public String toString() {
-        return "UserDTO{" + "userName=" + userName + ", email=" + email + ", password=" + password + ", avatar=" + avatar + ", createAt=" + createAt + ", status=" + status + ", role=" + role + ", setting=" + setting + '}';
-    }
-    
-    
+        return "UserDTO{" + "userName=" + userName + ", email=" + email + ", password=" + password + ", avatar=" + avatar + ", createAt=" + createAt + ", token=" + token + ", status=" + status + ", role=" + role + ", setting=" + setting + '}';
+    }    
 }

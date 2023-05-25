@@ -133,4 +133,177 @@ public class UserDAO {
         }
         return check;
     }
+
+    public boolean updatePass(String tokenReceived, String password) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+
+        String sql = "UPDATE [User] "
+                + "SET password = ? "
+                + "WHERE token = ?";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+
+                stm.setString(1, password);
+                stm.setString(2, tokenReceived);
+
+                int effectRows = stm.executeUpdate();
+                if (effectRows > 0) {
+                    return true;
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return false;
+    }
+
+    //==================== TOKEN ==============================
+//    public boolean createToken(String email, String tokenReceived) {
+//        Connection con = null;
+//        PreparedStatement stm = null;
+//        ResultSet rs = null;
+//
+//        String sql = "INSERT INTO UserTbl(id,token) "
+//                + "VALUES (?,?)";
+//
+//        try {
+//            con = DBUtils.getConnection();
+//            if (con != null) {
+//                stm = con.prepareStatement(sql);
+//
+//                stm.setInt(1, id);
+//                stm.setString(2, tokenReceived);
+//
+//                int effectRows = stm.executeUpdate();
+//                if (effectRows > 0) {
+//                    return true;
+//                }
+//            }
+//        } catch (SQLException ex) {
+//            System.out.println("Query error: " + ex.getMessage());
+//        } finally {
+//            try {
+//                if (rs != null) {
+//                    rs.close();
+//                }
+//                if (stm != null) {
+//                    stm.close();
+//                }
+//                if (con != null) {
+//                    con.close();
+//                }
+//            } catch (SQLException ex) {
+//                System.out.println("Error closing database resources: " + ex.getMessage());
+//            }
+//        }
+//        return false;
+//    }
+
+    public boolean updateTokenByEmail(String email, String tokenReceived) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+
+        String sql = "UPDATE [User] "
+                + "SET token = ? "
+                + "WHERE email = ?";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+
+                stm.setString(1, tokenReceived);
+                stm.setString(2, email);
+
+                int effectRows = stm.executeUpdate();
+                if (effectRows > 0) {
+                    return true;
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return false;
+    }
+
+    public Boolean verifyToken(String token) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+
+        String sql = "SELECT id "
+                + "FROM [User] "
+                + "WHERE token = ?";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setString(1, token);
+                rs = stm.executeQuery();
+
+                System.out.println("[DAO - verifyToken]: Reached to this part.");
+                if (rs.next()) {
+//                    String tokenString = rs.getString("token");
+                    int isUserIdExist = rs.getInt("id");
+                    System.out.println("[DAO - verifyToken]: User ID searched: " + isUserIdExist);
+                    if (isUserIdExist > 0) {
+                        return true;
+                    }
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return false;
+    }
+
 }
