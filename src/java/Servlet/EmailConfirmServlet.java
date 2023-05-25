@@ -44,6 +44,7 @@ public class EmailConfirmServlet extends HttpServlet {
         tokenGenerator token = new tokenGenerator();
         UserDAO userDAO = new UserDAO();
         
+        //TODO: Create another getParam for new register email
         String generatedToken = token.tokenGenerate();
         String userEmail = request.getParameter("txtEmail");
         
@@ -56,6 +57,8 @@ public class EmailConfirmServlet extends HttpServlet {
 //        tokenDTO token = tokenDAO.getToken(3); //Search by SQL query.
 //        String submitToken = token.getToken(); //Get token from tokenDTO object
         String recipient = userEmail; // After that add the user email.
+        
+        //TODO: Create new subject/content when register email param isn't null.
         String subject = "[NOTICE] DeliDeli ID Password Reset Confirmation"; // Title of the email
         String content = "Click the following link to reset your account: \n\n"
                 + "http://localhost:8084/ProjectSWP/MainController?action=verify&token=" + generatedToken;
