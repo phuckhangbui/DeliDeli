@@ -11,7 +11,14 @@ import java.sql.Date;
  *
  * @author Daiisuke
  */
+//@NoArgsConstructor
+//@AllArgsConstructor
+//@Getter
+//@Setter
+//@ToString
 public class RecipeDTO {
+
+    private int id;
     private String title;
     private String description;
     private int prep_time;
@@ -27,6 +34,21 @@ public class RecipeDTO {
     public RecipeDTO() {
     }
 
+    public RecipeDTO(int id, String title, String description, int prep_time, int cook_time, int servings, Date create_at, Date update_at, int cuisine_id, int category_id, int user_id, int level_id) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.prep_time = prep_time;
+        this.cook_time = cook_time;
+        this.servings = servings;
+        this.create_at = create_at;
+        this.update_at = update_at;
+        this.cuisine_id = cuisine_id;
+        this.category_id = category_id;
+        this.user_id = user_id;
+        this.level_id = level_id;
+    }
+
     public RecipeDTO(String title, String description, int prep_time, int cook_time, int servings, Date create_at, Date update_at, int cuisine_id, int category_id, int user_id, int level_id) {
         this.title = title;
         this.description = description;
@@ -39,6 +61,14 @@ public class RecipeDTO {
         this.category_id = category_id;
         this.user_id = user_id;
         this.level_id = level_id;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -128,6 +158,10 @@ public class RecipeDTO {
     public void setLevel_id(int level_id) {
         this.level_id = level_id;
     }
-    
-    
+
+    @Override
+    public String toString() {
+        return "RecipeDTO{" + "id=" + id + ", title=" + title + ", description=" + description + ", prep_time=" + prep_time + ", cook_time=" + cook_time + ", servings=" + servings + ", create_at=" + create_at + ", update_at=" + update_at + ", cuisine_id=" + cuisine_id + ", category_id=" + category_id + ", user_id=" + user_id + ", level_id=" + level_id + '}';
+    }
+
 }

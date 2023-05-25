@@ -5,6 +5,14 @@
         <servlet-class>Servlet.Example</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>Servlet.LoginServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RegistrationServlet</servlet-name>
+        <servlet-class>Servlet.RegistrationServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>MainController</servlet-name>
         <servlet-class>Servlet.MainController</servlet-class>
     </servlet>
@@ -15,6 +23,14 @@
     <servlet-mapping>
         <servlet-name>Example</servlet-name>
         <url-pattern>/Example</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/LoginServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RegistrationServlet</servlet-name>
+        <url-pattern>/RegistrationServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>MainController</servlet-name>
