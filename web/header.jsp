@@ -28,7 +28,7 @@
     <div class="navigator-bar">
         <div class="container ">
             <div class="row navigation-bar-first">
-                <a href="homePage.html" class="logo col-md-3">
+                <a href="home.jsp" class="logo col-md-3">
                     <img src="./assets/Logo2.png" alt="">
                 </a>
                 <div class="search-bar col-md-6">
@@ -44,9 +44,9 @@
                     </form>
                 </div>
                 <div class="account col-md-3">
-                    <span><a href="logIn.html">Sign in</a></span>
+                    <span><a href="login.jsp">Sign in</a></span>
                     <span>|</span>
-                    <span><a href="register.html">Register</a></span>
+                    <span><a href="registration.jsp">Register</a></span>
                 </div>
 
             </div>

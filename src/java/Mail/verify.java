@@ -2,63 +2,48 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package Servlet;
+package Mail;
 
+import User.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author khang
+ * @author Daiisuke
  */
-public class MainController extends HttpServlet {
-
-    private String url = "errorpage.html";
+@WebServlet(name = "verify", urlPatterns = {"/verify"})
+public class verify extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            String action = request.getParameter("action");
-            if (action == null || action.equals("")) {
-                url = "error.jsp";
-            } else {
-                switch (action.trim()) {
-                    case "search":
-                        url = "SearchServlet";
-                        break;
-                    case "signup":
-                        url = "RegistrationServlet";
-                        break;
-                    case "login":
-                        url = "LoginServlet";
-                        break;
-                    case "forgotPass":
-                        url = "EmailConfirmServlet";
-                        break;
-                    case "registerConfirm":
-                        url = "EmailConfirmServlet";
-                        break;
-                    case "verify":
-                        url = "verify";
-                        break;
-                    case "updatePassByToken":
-                        url = "ResetPassServlet";
-                        break;
-                }
-            }
-            RequestDispatcher rd = request.getRequestDispatcher(url);
+        
+        String receivedToken = (String) request.getParameter("token"); //url param emailConfirmServlet
+        System.out.println("Token received: " + receivedToken);
+        UserDAO userDAO = new UserDAO();
+//        tokenDTO token = tokenDAO.getToken(3);
+        Boolean verificationResult = userDAO.verifyToken(receivedToken);
+        
+        if (verificationResult){
+            System.out.println("[SERVLET - verify]: Token logged: " + receivedToken);
+            HttpSession session = request.getSession(); 
+            session.setAttribute("TOKENDB", receivedToken); //Send to ResetPassServlet as req
+            RequestDispatcher rd = request.getRequestDispatcher("resetPassword.jsp"); 
             rd.forward(request, response);
+        } else {
+            response.sendRedirect("expiredToken.html");
         }
     }
 
-// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

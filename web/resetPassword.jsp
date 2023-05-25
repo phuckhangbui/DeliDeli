@@ -1,13 +1,13 @@
 <%-- 
-    Document   : registration
-    Created on : May 23, 2023, 5:07:08 PM
-    Author     : Admin
+    Document   : resetPassword
+    Created on : May 25, 2023, 4:14:20 PM
+    Author     : Daiisuke
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
     <head>
         <title>Delideli</title>
         <meta charset="utf-8" />
@@ -35,61 +35,93 @@
             href="https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed:wght@300;400;500&display=swap"
             rel="stylesheet" />
     </head>
+
     <body>
-        <!--         The navigation bar       -->
-        <%@include file="header.jsp" %>
+        <div class="navigator-bar">
+            <div class="container">
+                <div class="row navigation-bar-first">
+                    <a
+                        href="homePage.html"
+                        class="logo col-md-3">
+                        <img
+                            src="./assets/Logo2.png"
+                            alt="" />
+                    </a>
+                    <div class="search-bar col-md-6">
+                        <form
+                            action=""
+                            method="post"
+                            class="search-bar-content">
+                            <input
+                                type="text"
+                                placeholder="What are you searching for ?" />
+                            <select
+                                name=""
+                                id="">
+                                <option value="">TITLE</option>
+                                <option value="">CATEGORY</option>
+                                <option value="">INGREDIENT</option>
+                                <option value="">CUISINES</option>
+                            </select>
+                            <button type="submit">
+                                <img
+                                    src="./assets/search-button.svg"
+                                    alt="Search Icon" />
+                            </button>
+                        </form>
+                    </div>
+                    <div class="account col-md-3">
+                        <span><a href="logIn.html">Sign in</a></span>
+                        <span>|</span>
+                        <span><a href="register.html">Register</a></span>
+                    </div>
+                </div>
+                <div class="row navigation-bar-last">
+                    <ul class="navigation-bar-content">
+                        <li><a href="searchResultPage.html">CATEGORIES</a></li>
+                        <li><a href="">INGREDIENTS</a></li>
+                        <li><a href="">CUISINES</a></li>
+                        <li><a href="">DIFFICULTIES</a></li>
+                        <li><a href="">NEWS</a></li>
+                        <li><a href="">ABOUT US</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
 
         <!--        Log in Form         -->
         <div class="blank-background">
             <div class="container">
                 <div class="row form">
-                    <header class="form-header col-md-12">REGISTRATION</header>
+                    <header class="form-header col-md-12">
+                        RESET PASSWORD
+                    </header>
                     <div>
                         <form
                             action="MainController"
-                            method="post"
-                            class="register-form">
-                            <div class="row  register-form-content">
-                                <div class="register-form-content-input">
-                                    <p>
-                                        <span>Username</span>
-                                        <span>*</span>
-                                    </p>
-                                    <input type="text" name="txtName" placeholder="Enter your username" />
-                                    <p class="error-popup">${requestScope.MSG_INCORRECT_USERNAME}${requestScope.MSG_USERNAME_EXIST}</p>
-                                </div>
-                                <div class=" register-form-content-input">
-                                    <p>
-                                        <span>Email</span>
-                                        <span>*</span>
-                                    </p>
-                                    <input type="text" name="txtEmail" placeholder="Enter your email" />
-                                    <p class="error-popup">${requestScope.MSG_EMAIL_EXIST}${requestScope.MSG_INCORRECT_EMAIL}</p>
-                                </div>
-                                <div class="register-form-content-input">
-                                    <p>
-                                        <span>Password</span>
-                                        <span>*</span>
-                                    </p>
-                                    <input type="password" name="txtPassword" placeholder="Must have 1 uppercase and 1 number (Max letters: 18)" />
-                                    <p class="error-popup">${requestScope.MSG_INCORRECT_PASSWORD}</p>
-                                </div>
-                                <div class="register-form-content-input">
-                                    <p>
-                                        <span>Re-enter password</span>
-                                        <span>*</span>
-                                    </p>
-                                    <input type="password" name="txtPasswordRe" placeholder="Re-enter your password" />
-                                    <p class="error-popup">${requestScope.MSG_INCORRECT_CONFIRM_PASSWORD}</p>
-                                </div>
+                            method="POST"
+                            class="sign-in-form">
+                            <div>
+                                <p>
+                                    <span>Enter Password</span> <span>*</span>
+                                </p>
+                                <input
+                                    type="password"
+                                    name="txtPassword"
+                                    placeholder="Your password" />
                             </div>
-                            <button>SIGN UP</button>
-                            <div class="register-already-have-account">
-                                <span> Already have an account? </span>
-                                <span>
-                                    <a href="logIn.html">Sign In</a>
-                                </span>
+                            <div>
+                                <p>
+                                    <span>Re-Enter Password</span>
+                                    <span>*</span>
+                                </p>
+                                <input
+                                    type="password"
+                                    name="txtRePassword"
+                                    placeholder="Your password" />
+                                <p class="error-popup">${requestScope.PASS_INCORRECT}</p>
                             </div>
+                            <button type='submit' value='updatePassByToken' name='action'>SAVE</button>
                         </form>
                     </div>
                 </div>
@@ -149,3 +181,4 @@
         crossorigin="anonymous"></script>
     </body>
 </html>
+

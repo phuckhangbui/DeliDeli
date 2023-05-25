@@ -4,61 +4,55 @@
  */
 package Servlet;
 
+import User.UserDAO;
+import User.UserDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author khang
+ * @author Daiisuke
  */
-public class MainController extends HttpServlet {
-
-    private String url = "errorpage.html";
+@WebServlet(name = "ResetPassServlet", urlPatterns = {"/ResetPassServlet"})
+public class ResetPassServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            String action = request.getParameter("action");
-            if (action == null || action.equals("")) {
-                url = "error.jsp";
-            } else {
-                switch (action.trim()) {
-                    case "search":
-                        url = "SearchServlet";
-                        break;
-                    case "signup":
-                        url = "RegistrationServlet";
-                        break;
-                    case "login":
-                        url = "LoginServlet";
-                        break;
-                    case "forgotPass":
-                        url = "EmailConfirmServlet";
-                        break;
-                    case "registerConfirm":
-                        url = "EmailConfirmServlet";
-                        break;
-                    case "verify":
-                        url = "verify";
-                        break;
-                    case "updatePassByToken":
-                        url = "ResetPassServlet";
-                        break;
-                }
-            }
-            RequestDispatcher rd = request.getRequestDispatcher(url);
+
+        UserDTO user = null;
+        UserDAO userDAO = new UserDAO();
+        HttpSession session = request.getSession();
+
+        String tokenDB = (String) session.getAttribute("TOKENDB"); //get req attr from verify
+        String password = request.getParameter("txtPassword");
+        String rePassword = request.getParameter("txtRePassword");
+
+        System.out.println("[SERVLET - Reset]: Token received: " + tokenDB);
+        System.out.println("[SERVLET - Reset]: pass received: " + password);
+        System.out.println("[SERVLET - Reset]: rePass received: " + rePassword);
+
+        if (!password.equals(rePassword)) {
+            request.setAttribute("PASS_INCORRECT", "Password are not matched!");
+            RequestDispatcher rd = request.getRequestDispatcher("resetPassword.jsp");
+            rd.forward(request, response);
+        } else {
+            System.out.println("Password equal");
+            userDAO.updatePass(tokenDB, password);
+            RequestDispatcher rd = request.getRequestDispatcher("home.jsp");
             rd.forward(request, response);
         }
+
     }
 
-// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

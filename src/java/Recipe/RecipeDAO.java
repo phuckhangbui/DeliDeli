@@ -61,7 +61,7 @@ public class RecipeDAO {
                 String sql = "SELECT image FROM RecipeImage ri\n"
                         + "INNER JOIN Recipe r\n"
                         + "ON ri.recipe_id = r.id\n"
-                        + "WHERE r.id = 1 AND ri.thumbnail = ?";
+                        + "WHERE r.id = ? AND ri.thumbnail = 1";
 
                 PreparedStatement pst = cn.prepareStatement(sql);
                 pst.setInt(1, recipeId);
