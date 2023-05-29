@@ -47,7 +47,7 @@
                     <div>
                         <form
                             action="MainController"
-                            method="post"
+                            method="POST"
                             class="register-form">
                             <div class="row  register-form-content">
                                 <div class="register-form-content-input">
@@ -55,7 +55,7 @@
                                         <span>Username</span>
                                         <span>*</span>
                                     </p>
-                                    <input type="text" name="txtName" placeholder="Enter your username" />
+                                    <input type="text" name="txtUserName" placeholder="Enter your username" />
                                     <p class="error-popup">${requestScope.MSG_INCORRECT_USERNAME}${requestScope.MSG_USERNAME_EXIST}</p>
                                 </div>
                                 <div class=" register-form-content-input">
@@ -71,7 +71,7 @@
                                         <span>Password</span>
                                         <span>*</span>
                                     </p>
-                                    <input type="password" name="txtPassword" placeholder="Must have 1 uppercase and 1 number (Max letters: 18)" />
+                                    <input type="password" name="txtPass" placeholder="Must have 1 uppercase and 1 number (Max letters: 18)" />
                                     <p class="error-popup">${requestScope.MSG_INCORRECT_PASSWORD}</p>
                                 </div>
                                 <div class="register-form-content-input">
@@ -79,15 +79,15 @@
                                         <span>Re-enter password</span>
                                         <span>*</span>
                                     </p>
-                                    <input type="password" name="txtPasswordRe" placeholder="Re-enter your password" />
+                                    <input type="password" name="txtConfirmPass" placeholder="Re-enter your password" />
                                     <p class="error-popup">${requestScope.MSG_INCORRECT_CONFIRM_PASSWORD}</p>
                                 </div>
                             </div>
-                            <button>SIGN UP</button>
+                                <button type="submit" value="signup" name="action">SIGN UP</button>
                             <div class="register-already-have-account">
                                 <span> Already have an account? </span>
                                 <span>
-                                    <a href="logIn.html">Sign In</a>
+                                    <a href="login.jsp">Sign In</a>
                                 </span>
                             </div>
                         </form>
