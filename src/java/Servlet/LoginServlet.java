@@ -8,6 +8,8 @@ import User.UserDAO;
 import User.UserDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +32,8 @@ public class LoginServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
+            List<String> errorList = new ArrayList<>();
+
             String email = request.getParameter("txtEmail");
             String password = request.getParameter("txtPass");
             UserDTO user = UserDAO.getAccount(email, password);
@@ -37,7 +41,8 @@ public class LoginServlet extends HttpServlet {
             if (user != null) {
                 if (!UserDAO.checkUserStatus(email, password)) {
                     //Block
-                    request.setAttribute("MSG_BLOCK", "Your account is blocked");
+                    errorList.add("Your account is blocked");
+                    request.setAttribute("errorList", errorList);
                     request.getRequestDispatcher(LOGIN_PAGE).forward(request, response);
                 } else if (user.getRole() == 1) {
                     session.setAttribute("user", user);
@@ -51,7 +56,8 @@ public class LoginServlet extends HttpServlet {
                 }
             } else {
                 //Incorrect email or pass
-                request.setAttribute("MSG_INCORRECT", "Incorrect email or password!");
+                errorList.add("Incorrect email or password!");
+                request.setAttribute("errorList", errorList);
                 request.getRequestDispatcher(LOGIN_PAGE).forward(request, response);
             }
         } catch (Exception e) {

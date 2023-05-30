@@ -45,8 +45,7 @@
                                 <input type="password" name="txtPass" placeholder="Your password" required="">
                             </div>
                             <div class='error-popup'>
-                                <p>${requestScope.MSG_INCORRECT}</p>
-                                <p>${requestScope.MSG_BLOCK}</p>
+                                <p>${requestScope.errorList}</p>
                             </div>
                             <button type="submit" value="login" name="action">SIGN IN</button>
                             <a href="forgotPassword.jsp">
