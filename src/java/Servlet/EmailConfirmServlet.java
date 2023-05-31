@@ -43,28 +43,37 @@ public class EmailConfirmServlet extends HttpServlet {
         HttpSession session = request.getSession();
         tokenGenerator token = new tokenGenerator();
         UserDAO userDAO = new UserDAO();
-        
-        //TODO: Create another getParam for new register email
+
         String generatedToken = token.tokenGenerate();
-        String userEmail = request.getParameter("txtEmail");
-        
-        userDAO.updateTokenByEmail(userEmail, generatedToken);
-        
+        String userEmail = (String) request.getParameter("txtEmail");
+        String userType = (String) request.getAttribute("USER_TYPE");
+
         System.out.println("[EMAIL - CONF]: User email: " + userEmail);
+        System.out.println("[EMAIL - CONF]: User type: " + userType);
         System.out.println("[EMAIL - CONF]: User generated token: " + generatedToken);
 
-//        tokenDAO tokenDAO = new tokenDAO();
-//        tokenDTO token = tokenDAO.getToken(3); //Search by SQL query.
-//        String submitToken = token.getToken(); //Get token from tokenDTO object
+        userDAO.updateTokenByEmail(userEmail, generatedToken);
+
         String recipient = userEmail; // After that add the user email.
-        
-        //TODO: Create new subject/content when register email param isn't null.
-        String subject = "[NOTICE] DeliDeli ID Password Reset Confirmation"; // Title of the email
-        String content = "Click the following link to reset your account: \n\n"
-                + "http://localhost:8084/ProjectSWP/MainController?action=verify&token=" + generatedToken;
-        //verify = servlet; token = param.
-        System.out.println("[EMAIL - CONF]: The token system generated: " + generatedToken);
+
+        String subject = "";
+        String content = "";
         String result = "There's nothing here .3.";
+
+        if (!userType.isEmpty() && userType.equals("ForgotPassUser")) {
+            subject = "[NOTICE] DeliDeli ID Password Reset Confirmation"; // Title of the email
+            content = "Click the following link to reset your account: \n\n"
+                    + "http://localhost:8084/ProjectSWP/MainController?action=verify&token=" + generatedToken + "&type=" + userType;
+            //verify = servlet; token = param.
+        } else if (!userType.isEmpty() && userType.equals("RegisterUser")) {
+            subject = "[NOTICE] DeliDeli ID Confirmation"; // Title of the email
+            content = "Click the following link to access your account: \n\n"
+                    + "http://localhost:8084/ProjectSWP/MainController?action=verify&token=" + generatedToken + "&type=" + userType;
+            //verify = servlet; token = param.
+        }
+
+        System.out.println("[EMAIL - CONF]: The token system generated: " + generatedToken);
+
         try {
             email.sendVerificationEmail(host, port, user, pass, recipient, subject, content);
             result = "The message has sent successfully, please check your email.";

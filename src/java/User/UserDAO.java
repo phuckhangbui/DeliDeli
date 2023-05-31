@@ -114,13 +114,13 @@ public class UserDAO {
         return user != null;
     }
 
-    public static boolean insertAccount(String username, String email, String password, Date createAt, int status, int role, int setting) throws Exception {
+    public static boolean insertAccount(String username, String email, String password, Date createAt, int status, int role, int setting, String token) throws Exception {
         boolean check = false;
         Connection cn = DBUtils.getConnection();
         if (cn != null) {
-            String sql = "INSERT INTO [User](user_name, email, password, create_at, role_id, status, user_setting_id) \n"
+            String sql = "INSERT INTO [User](user_name, email, password, create_at, role_id, status, user_setting_id, token) \n"
                     + "VALUES \n"
-                    + "(?, ?, ?, ?, ?, ?, ?)";
+                    + "(?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement pst = cn.prepareStatement(sql);
             pst.setString(1, username);
             pst.setString(2, email);
@@ -129,9 +129,57 @@ public class UserDAO {
             pst.setInt(5, status);
             pst.setInt(6, role);
             pst.setInt(7, setting);
+            pst.setString(8, token);
             check = pst.executeUpdate() > 0 ? true : false;
         }
         return check;
+    }
+
+    //Dumb patching idk.
+    public Boolean updateStatusFalse(String username) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+
+        String sql = "UPDATE [User] "
+                + "SET status = 0 "
+                + "WHERE user_name like ?";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setString(1, username);
+                rs = stm.executeQuery();
+
+                System.out.println("[DAO - updateStatusFalse]: Reached to this part.");
+                if (rs.next()) {
+//                    String tokenString = rs.getString("token");
+                    int isUserIdExist = rs.getInt("id");
+                    System.out.println("[DAO - updateStatusFalse]: User ID searched: " + isUserIdExist);
+                    if (isUserIdExist > 0) {
+                        return true;
+                    }
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return false;
     }
 
     public boolean updatePass(String tokenReceived, String password) {
@@ -154,6 +202,52 @@ public class UserDAO {
                 int effectRows = stm.executeUpdate();
                 if (effectRows > 0) {
                     return true;
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return false;
+    }
+
+    public Boolean updateStatus(String token) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+
+        String sql = "UPDATE [User] "
+                + "SET status = 1 "
+                + "WHERE token = ?";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setString(1, token);
+                rs = stm.executeQuery();
+
+                System.out.println("[DAO - updateStatus]: Reached to this part.");
+                if (rs.next()) {
+//                    String tokenString = rs.getString("token");
+                    int isUserIdExist = rs.getInt("id");
+                    System.out.println("[DAO - updateStatus]: User ID searched: " + isUserIdExist);
+                    if (isUserIdExist > 0) {
+                        return true;
+                    }
                 }
             }
         } catch (SQLException ex) {
@@ -217,7 +311,6 @@ public class UserDAO {
 //        }
 //        return false;
 //    }
-
     public boolean updateTokenByEmail(String email, String tokenReceived) {
         Connection con = null;
         PreparedStatement stm = null;

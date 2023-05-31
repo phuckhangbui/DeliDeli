@@ -42,9 +42,6 @@ public class MainController extends HttpServlet {
                     case "forgotPass":
                         url = "EmailConfirmServlet";
                         break;
-                    case "registerConfirm":
-                        url = "EmailConfirmServlet";
-                        break;
                     case "verify":
                         url = "verify";
                         break;

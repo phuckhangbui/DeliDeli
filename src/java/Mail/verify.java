@@ -25,18 +25,25 @@ public class verify extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
+
         String receivedToken = (String) request.getParameter("token"); //url param emailConfirmServlet
-        System.out.println("Token received: " + receivedToken);
+        String userType = (String) request.getParameter("type");
+        System.out.println("[SERVLET - verify]: Token received: " + receivedToken);
+        System.out.println("[SERVLET - verify]: User received: " + userType);
         UserDAO userDAO = new UserDAO();
-//        tokenDTO token = tokenDAO.getToken(3);
+
         Boolean verificationResult = userDAO.verifyToken(receivedToken);
-        
-        if (verificationResult){
+
+        if (verificationResult && userType.equals("ForgotPassUser")) {
             System.out.println("[SERVLET - verify]: Token logged: " + receivedToken);
-            HttpSession session = request.getSession(); 
+            HttpSession session = request.getSession();
             session.setAttribute("TOKENDB", receivedToken); //Send to ResetPassServlet as req
-            RequestDispatcher rd = request.getRequestDispatcher("resetPassword.jsp"); 
+            RequestDispatcher rd = request.getRequestDispatcher("resetPassword.jsp");
+            rd.forward(request, response);
+        } else if (verificationResult && userType.equals("RegisterUser")) {
+            System.out.println("[SERVLET - verify]: Token logged: " + receivedToken);
+            userDAO.updateStatus(receivedToken);
+            RequestDispatcher rd = request.getRequestDispatcher("home.jsp");
             rd.forward(request, response);
         } else {
             response.sendRedirect("expiredToken.html");

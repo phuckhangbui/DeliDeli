@@ -71,7 +71,7 @@
                                         <span>Password</span>
                                         <span>*</span>
                                     </p>
-                                    <input type="password" name="txtPass" placeholder="Must have 1 uppercase and 1 number (Max letters: 18)" />
+                                    <input type="password" name="txtPass" value="Herocon@n123" placeholder="Must have 1 uppercase and 1 number (Max letters: 18)" />
                                     <p class="error-popup">${requestScope.MSG_INCORRECT_PASSWORD}</p>
                                 </div>
                                 <div class="register-form-content-input">
@@ -79,7 +79,7 @@
                                         <span>Re-enter password</span>
                                         <span>*</span>
                                     </p>
-                                    <input type="password" name="txtConfirmPass" placeholder="Re-enter your password" />
+                                    <input type="password" name="txtConfirmPass" value="Herocon@n123" placeholder="Re-enter your password" />
                                     <p class="error-popup">${requestScope.MSG_INCORRECT_CONFIRM_PASSWORD}</p>
                                 </div>
                             </div>
