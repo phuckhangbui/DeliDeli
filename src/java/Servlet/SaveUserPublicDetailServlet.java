@@ -4,9 +4,11 @@
  */
 package Servlet;
 
+import User.UserDetailDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -14,58 +16,32 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author khang
+ * @author Admin
  */
-public class MainController extends HttpServlet {
+public class SaveUserPublicDetailServlet extends HttpServlet {
 
-    private String url = "errorpage.html";
+    private static final String USER_PUBLIC_DETAIL_PAGE = "userPublicDetail.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            String action = request.getParameter("action");
-            if (action == null || action.equals("")) {
-                url = "error.jsp";
-            } else {
-                switch (action.trim()) {
-                    case "search":
-                        url = "SearchServlet";
-                        break;
-                    case "signup":
-                        url = "RegistrationServlet";
-                        break;
-                    case "login":
-                        url = "LoginServlet";
-                        break;
-                    case "forgotPass":
-                        url = "EmailConfirmServlet";
-                        break;
-                    case "verify":
-                        url = "verify";
-                        break;
-                    case "updatePassByToken":
-                        url = "ResetPassServlet";
-                        break;
-                    case "saveUserPublicDetail":
-                        url = "SaveUserPublicDetailServlet";
-                        break;
-                    case "changeUserEmail":
-                        url = "ChangeUserEmailServlet";
-                        break;
-                    case "changeUserPassword":
-                        url = "ChangeUserPasswordServlet";
-                    case "getRecipeDetailById":
-                        url = "RecipeDetailServlet";
-                        break;
-                    case "getFeedback":
-                        url = "FeedbackServlet";
-                        break;
-                }
+            List<String> errorList = new ArrayList<>();
+
+            String userId = request.getParameter("userId");
+            String firstName = request.getParameter("txtFirstName");
+            String lastName = request.getParameter("txtLastName");
+            String specialty = request.getParameter("txtSpecialty");
+            String bio = request.getParameter("txtBio");
+            String birthdate = request.getParameter("txtBirthDate");
+
+            int result = UserDetailDAO.updateUserPublicDetail(new Integer(userId), firstName, lastName, specialty, bio, birthdate);
+            if (result > 0) {
+                request.setAttribute("userId", userId);
+                request.getRequestDispatcher(USER_PUBLIC_DETAIL_PAGE).forward(request, response);
             }
-            RequestDispatcher rd = request.getRequestDispatcher(url);
-            rd.forward(request, response);
+            System.out.println(birthdate);
         }
     }
 

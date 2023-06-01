@@ -84,6 +84,26 @@ public class UserDAO {
         }
         return user;
     }
+    
+    public static boolean checkOldPassword(int userId, String oldPassword) throws Exception {
+        Connection cn = DBUtils.getConnection();
+        String password = "";
+        
+        if (cn != null) {
+            String sql = "SELECT password FROM [User] WHERE id = ?";
+            PreparedStatement pst = cn.prepareStatement(sql);
+            pst.setInt(1, userId);
+            ResultSet rs = pst.executeQuery();
+            if (rs != null && rs.next()) {
+                password = rs.getString("password");
+            }
+            cn.close();
+            if(oldPassword.equalsIgnoreCase(password)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public static boolean checkUserStatus(String email, String password) throws Exception {
         Connection cn = DBUtils.getConnection();
@@ -439,7 +459,7 @@ public class UserDAO {
     }
     
     public static void main(String[] args) throws Exception {
-        System.out.println(UserDAO.getUserByUserId(4));
+        System.out.println(UserDAO.checkOldPassword(3, "1234"));
     }
 
 }

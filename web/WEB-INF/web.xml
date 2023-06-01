@@ -41,6 +41,18 @@
         <servlet-class>Servlet.SearchServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>SaveUserPublicDetailServlet</servlet-name>
+        <servlet-class>Servlet.SaveUserPublicDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ChangeUserEmailServlet</servlet-name>
+        <servlet-class>Servlet.ChangeUserEmailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ChangeUserPasswordServlet</servlet-name>
+        <servlet-class>Servlet.ChangeUserPasswordServlet</servlet-class>
+        </servlet>
+        <servlet>
         <servlet-name>RecipeDetailServlet</servlet-name>
         <servlet-class>Servlet.RecipeDetailServlet</servlet-class>
     </servlet>
@@ -69,6 +81,18 @@
         <url-pattern>/SearchServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>SaveUserPublicDetailServlet</servlet-name>
+        <url-pattern>/SaveUserPublicDetailServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChangeUserEmailServlet</servlet-name>
+        <url-pattern>/ChangeUserEmailServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChangeUserPasswordServlet</servlet-name>
+        <url-pattern>/ChangeUserPasswordServlet</url-pattern>
+        </servlet-mapping>
+        <servlet-mapping>
         <servlet-name>RecipeDetailServlet</servlet-name>
         <url-pattern>/RecipeDetailServlet</url-pattern>
     </servlet-mapping>

@@ -4,9 +4,12 @@
  */
 package Servlet;
 
+import User.UserDAO;
+import User.UserDetailDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -14,62 +17,44 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author khang
+ * @author Admin
  */
-public class MainController extends HttpServlet {
+public class ChangeUserEmailServlet extends HttpServlet {
 
-    private String url = "errorpage.html";
-
+    private final static String EMAIL_PATTERN = "\\b[\\w.%-]+@[-.\\w]+\\.[A-Za-z]{2,4}\\b";
+    private static final String USER_EMAIL_SETTING_PAGE = "userEmailSetting.jsp";
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            String action = request.getParameter("action");
-            if (action == null || action.equals("")) {
-                url = "error.jsp";
+            List<String> errorList = new ArrayList<>();
+            
+            String userId = request.getParameter("userId");
+            String email = request.getParameter("txtEmail");
+            
+            if (!email.matches(EMAIL_PATTERN)) {
+                errorList.add("Invalid email format. Please enter a valid email address.");
+                request.setAttribute("errorList", errorList);
+                request.getRequestDispatcher(USER_EMAIL_SETTING_PAGE).forward(request, response);
+            } else if (UserDAO.checkEmailExist(email)) {
+                errorList.add("Email already exists.");
+                request.setAttribute("errorList", errorList);
+                request.getRequestDispatcher(USER_EMAIL_SETTING_PAGE).forward(request, response);
             } else {
-                switch (action.trim()) {
-                    case "search":
-                        url = "SearchServlet";
-                        break;
-                    case "signup":
-                        url = "RegistrationServlet";
-                        break;
-                    case "login":
-                        url = "LoginServlet";
-                        break;
-                    case "forgotPass":
-                        url = "EmailConfirmServlet";
-                        break;
-                    case "verify":
-                        url = "verify";
-                        break;
-                    case "updatePassByToken":
-                        url = "ResetPassServlet";
-                        break;
-                    case "saveUserPublicDetail":
-                        url = "SaveUserPublicDetailServlet";
-                        break;
-                    case "changeUserEmail":
-                        url = "ChangeUserEmailServlet";
-                        break;
-                    case "changeUserPassword":
-                        url = "ChangeUserPasswordServlet";
-                    case "getRecipeDetailById":
-                        url = "RecipeDetailServlet";
-                        break;
-                    case "getFeedback":
-                        url = "FeedbackServlet";
-                        break;
+                int result = UserDetailDAO.updateUserEmail(new Integer(userId), email);
+                if (result > 0) {
+                    request.setAttribute("userId", userId);
+                    request.getRequestDispatcher(USER_EMAIL_SETTING_PAGE).forward(request, response);
                 }
             }
-            RequestDispatcher rd = request.getRequestDispatcher(url);
-            rd.forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
-// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
