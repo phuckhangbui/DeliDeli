@@ -56,6 +56,7 @@ public class MainController extends HttpServlet {
                         break;
                     case "changeUserPassword":
                         url = "ChangeUserPasswordServlet";
+                        break;
                     case "getRecipeDetailById":
                         url = "RecipeDetailServlet";
                         break;
@@ -64,6 +65,9 @@ public class MainController extends HttpServlet {
                         break;
                     case "getNewsDetail":
                         url = "NewsDetailServlet";
+                        break;
+                    case "logout":
+                        url = "LogOutServlet";
                         break;
                 }
             }

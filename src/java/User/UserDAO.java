@@ -5,7 +5,9 @@
  */
 package User;
 
+import PasswordEncode.EncodePass;
 import Utils.DBUtils;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -84,11 +86,11 @@ public class UserDAO {
         }
         return user;
     }
-    
+
     public static boolean checkOldPassword(int userId, String oldPassword) throws Exception {
         Connection cn = DBUtils.getConnection();
         String password = "";
-        
+
         if (cn != null) {
             String sql = "SELECT password FROM [User] WHERE id = ?";
             PreparedStatement pst = cn.prepareStatement(sql);
@@ -98,7 +100,7 @@ public class UserDAO {
                 password = rs.getString("password");
             }
             cn.close();
-            if(oldPassword.equalsIgnoreCase(password)) {
+            if (oldPassword.equalsIgnoreCase(password)) {
                 return true;
             }
         }
@@ -176,6 +178,9 @@ public class UserDAO {
     public static boolean insertAccount(String username, String email, String password, Date createAt, int status, int role, int setting, String token) throws Exception {
         boolean check = false;
         Connection cn = DBUtils.getConnection();
+        EncodePass encode = new EncodePass();
+        password = encode.toHexString(encode.getSHA(password));
+        System.out.println("[DAO - InsertAccount]: Hash generated: " + password);
         if (cn != null) {
             String sql = "INSERT INTO [User](user_name, email, password, create_at, role_id, status, user_setting_id, token) \n"
                     + "VALUES \n"
@@ -241,10 +246,14 @@ public class UserDAO {
         return false;
     }
 
-    public boolean updatePass(String tokenReceived, String password) {
+    public boolean updatePass(String tokenReceived, String password) throws Exception {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
+
+        EncodePass encode = new EncodePass();
+        password = encode.toHexString(encode.getSHA(password));
+        System.out.println("[DAO - UpdatePass]: Hash generated: " + password);
 
         String sql = "UPDATE [User] "
                 + "SET password = ? "
@@ -457,7 +466,7 @@ public class UserDAO {
         }
         return false;
     }
-    
+
     public static void main(String[] args) throws Exception {
         System.out.println(UserDAO.getUserByUserId(4));
     }

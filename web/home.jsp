@@ -29,13 +29,6 @@
         <!--         The navigation bar       -->
         <%@include file="header.jsp" %>
 
-        <%
-            UserDTO user = (UserDTO) session.getAttribute("user");
-            int userId = 0;
-            if (user != null) {
-                userId = user.getId();
-            }
-        %>
         <!--         The banner       -->
         <div class="container-fluid banner">
             <div class="container">
@@ -47,11 +40,7 @@
                     </div>
                 </a>
             </div>
-
         </div>
-
-
-
 
         <!--         The news section      -->
         <div class="new">

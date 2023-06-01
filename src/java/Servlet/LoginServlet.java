@@ -4,6 +4,7 @@
  */
 package Servlet;
 
+import PasswordEncode.EncodePass;
 import User.UserDAO;
 import User.UserDTO;
 import java.io.IOException;
@@ -26,18 +27,23 @@ public class LoginServlet extends HttpServlet {
     private static final String HOME_PAGE = "home.jsp";
     private static final String ADMIN_PAGE = "admin.jsp";
     private static final String MOD_PAGE = "mod.jsp";
-    private static String RECIPE_PAGE = "MainController?action=getRecipeDetailById&id=";
+    private static final String RECIPE_PAGE = "MainController?action=getRecipeDetailById&id=";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
-            
+
             List<String> errorList = new ArrayList<>();
-            
+
             String recipeID = request.getParameter("recipeID"); //Redirect back to page.
             String email = request.getParameter("txtEmail");
             String password = request.getParameter("txtPass");
+            
+            EncodePass encode = new EncodePass();
+            password = encode.toHexString(encode.getSHA(password));
+            System.out.println("[DAO - InsertAccount]: Hash generated: " + password);
+            
             UserDTO user = UserDAO.getAccount(email, password);
             HttpSession session = request.getSession();
 

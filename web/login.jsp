@@ -45,9 +45,8 @@
                                 <p>Password</p>
                                 <input type="password" name="txtPass" placeholder="Your password" required="">
                             </div>
-                            <div>
-                                <p>${requestScope.MSG_INCORRECT}</p>
-                                <p>${requestScope.MSG_BLOCK}</p>
+                            <div class="error-popup">
+                                <p>${requestScope.errorList}</p>
                             </div>
                             <%
                                 String recipeID = request.getParameter("recipeID");
@@ -59,7 +58,7 @@
                                 }
                             %>
                             <button type="submit" value="login" name="action">SIGN IN</button>
-                            <a>
+                            <a href="forgotPassword.jsp">
                                 <p>Forgot password?</p>
                             </a>
                         </form>

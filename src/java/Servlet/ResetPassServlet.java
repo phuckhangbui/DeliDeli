@@ -23,36 +23,48 @@ import javax.servlet.http.HttpSession;
 @WebServlet(name = "ResetPassServlet", urlPatterns = {"/ResetPassServlet"})
 public class ResetPassServlet extends HttpServlet {
 
+    private final static String PASS_PATTERN = "^(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,16}$";
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        try ( PrintWriter out = response.getWriter()) {
 
-        UserDTO user = null;
-        UserDAO userDAO = new UserDAO();
-        HttpSession session = request.getSession();
+            UserDTO user = null;
+            UserDAO userDAO = new UserDAO();
+            HttpSession session = request.getSession();
 
-        String tokenDB = (String) session.getAttribute("TOKENDB"); //get req attr from verify
-        String password = request.getParameter("txtPassword");
-        String rePassword = request.getParameter("txtRePassword");
+            String tokenDB = (String) session.getAttribute("TOKENDB"); //get req attr from verify
+            String password = request.getParameter("txtPassword");
+            String rePassword = request.getParameter("txtRePassword");
 
-        System.out.println("[SERVLET - Reset]: Token received: " + tokenDB);
-        System.out.println("[SERVLET - Reset]: pass received: " + password);
-        System.out.println("[SERVLET - Reset]: rePass received: " + rePassword);
+            System.out.println("[SERVLET - Reset]: Token received: " + tokenDB);
+            System.out.println("[SERVLET - Reset]: pass received: " + password);
+            System.out.println("[SERVLET - Reset]: rePass received: " + rePassword);
 
-        if (!password.equals(rePassword)) {
-            request.setAttribute("PASS_INCORRECT", "Password are not matched!");
-            RequestDispatcher rd = request.getRequestDispatcher("resetPassword.jsp");
-            rd.forward(request, response);
-        } else {
-            System.out.println("Password equal");
-            userDAO.updatePass(tokenDB, password);
-            RequestDispatcher rd = request.getRequestDispatcher("home.jsp");
-            rd.forward(request, response);
+            if (!password.equals(rePassword)) {
+                request.setAttribute("PASS_INCORRECT", "Password are not matched!");
+                RequestDispatcher rd = request.getRequestDispatcher("resetPassword.jsp");
+                rd.forward(request, response);
+            } else if (!password.matches(PASS_PATTERN)) {
+                request.setAttribute("PASS_INCORRECT", "Invalid password. Password must have a length of 8-16 "
+                        + "characters and contain at least one special symbol and one uppercase letter.");
+                RequestDispatcher rd = request.getRequestDispatcher("resetPassword.jsp");
+                rd.forward(request, response);
+            } else {
+                System.out.println("Password equal");
+                userDAO.updatePass(tokenDB, password);
+                RequestDispatcher rd = request.getRequestDispatcher("home.jsp");
+                rd.forward(request, response);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

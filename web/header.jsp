@@ -63,7 +63,7 @@
                                 <div class="dropdown-content">
                                     <a>Your profile</a>
                                     <a>Management</a>
-                                    <a href="">Logout</a>
+                                    <a href="MainController?action=logout" >Logout</a>
                                 </div>
                             </div>
                         </span>

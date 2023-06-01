@@ -48,6 +48,8 @@ public class EmailConfirmServlet extends HttpServlet {
         String userEmail = (String) request.getParameter("txtEmail");
         String userType = (String) request.getAttribute("USER_TYPE");
 
+        userType = (userType == null) ? "ForgotPassUser" : userType;
+
         System.out.println("[EMAIL - CONF]: User email: " + userEmail);
         System.out.println("[EMAIL - CONF]: User type: " + userType);
         System.out.println("[EMAIL - CONF]: User generated token: " + generatedToken);
@@ -60,12 +62,12 @@ public class EmailConfirmServlet extends HttpServlet {
         String content = "";
         String result = "There's nothing here .3.";
 
-        if (!userType.isEmpty() && userType.equals("ForgotPassUser")) {
+        if (userType != null && userType.equals("ForgotPassUser")) {
             subject = "[NOTICE] DeliDeli ID Password Reset Confirmation"; // Title of the email
             content = "Click the following link to reset your account: \n\n"
                     + "http://localhost:8084/ProjectSWP/MainController?action=verify&token=" + generatedToken + "&type=" + userType;
             //verify = servlet; token = param.
-        } else if (!userType.isEmpty() && userType.equals("RegisterUser")) {
+        } else if (userType != null && userType.equals("RegisterUser")) {
             subject = "[NOTICE] DeliDeli ID Confirmation"; // Title of the email
             content = "Click the following link to access your account: \n\n"
                     + "http://localhost:8084/ProjectSWP/MainController?action=verify&token=" + generatedToken + "&type=" + userType;
