@@ -62,6 +62,9 @@ public class MainController extends HttpServlet {
                     case "getFeedback":
                         url = "FeedbackServlet";
                         break;
+                    case "getNewsDetail":
+                        url = "NewsDetailServlet";
+                        break;
                 }
             }
             RequestDispatcher rd = request.getRequestDispatcher(url);

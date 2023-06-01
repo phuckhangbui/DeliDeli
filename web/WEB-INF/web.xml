@@ -60,6 +60,10 @@
         <servlet-name>FeedbackServlet</servlet-name>
         <servlet-class>Servlet.FeedbackServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>NewsDetailServlet</servlet-name>
+        <servlet-class>Servlet.NewsDetailServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Example</servlet-name>
         <url-pattern>/Example</url-pattern>
@@ -99,6 +103,10 @@
     <servlet-mapping>
         <servlet-name>FeedbackServlet</servlet-name>
         <url-pattern>/FeedbackServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>NewsDetailServlet</servlet-name>
+        <url-pattern>/NewsDetailServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

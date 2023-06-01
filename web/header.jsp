@@ -32,6 +32,9 @@
             HashMap<Integer, String> cuisineMap = Utils.NavigationBarUtils.getMap("Cuisine");
             HashMap<Integer, String> levelMap = Utils.NavigationBarUtils.getMap("Level");
             HashMap<Integer, String> ingredientMap = Utils.NavigationBarUtils.getMap("Ingredient");
+            
+            HashMap<Integer, String> newsMap = Utils.NavigationBarUtils.getMap("NewsCategory");
+            
             UserDTO user = (UserDTO) session.getAttribute("user");
         %>
         <div class="navigator-bar">
@@ -134,9 +137,12 @@
                             <div class="dropdown">
                                 <button class="dropbtn">NEWS</button>
                                 <div class="dropdown-content">
-                                    <a href="#">Link 1</a>
-                                    <a href="#">Link 2</a>
-                                    <a href="#">Link 3</a>
+                                    <% for (Map.Entry<Integer, String> entry : newsMap.entrySet()) {
+                                            Integer key = entry.getKey();
+                                            String value = entry.getValue();
+                                    %>
+                                    <a href="searchResultPage.jsp?type=NewsCategory&id=<%=key%>"><%=value%></a>
+                                    <%}%>
                                 </div>
                             </div>
                         </li>
