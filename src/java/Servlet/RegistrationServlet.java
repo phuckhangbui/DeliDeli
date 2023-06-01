@@ -27,17 +27,21 @@ public class RegistrationServlet extends HttpServlet {
     private final static int STATUS = 1;
     private final static int ROLE = 1;
     private final static int SETTING = 1;
-    private static final String CONFIRM_EMAIL = "RegisterConfirmServlet";
+    private final static String DEFAULT_TOKEN = "";
+    private static final String CONFIRM_EMAIL = "EmailConfirmServlet";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            String email = request.getParameter("txtEmail");
+            String email = request.getParameter("txtEmail"); //Get user email
             String userName = request.getParameter("txtUserName");
             String password = request.getParameter("txtPass");
             String confirmPassword = request.getParameter("txtConfirmPass");
+            
+            UserDAO userDAO = new UserDAO();
+            
             Pattern regex = Pattern.compile(EMAIL_PATTERN);
             if (!password.matches(PASS_PATTERN)) {
                 //Incorrect pass pattern
@@ -67,10 +71,10 @@ public class RegistrationServlet extends HttpServlet {
                 //Insert account
                 java.util.Date date = new java.util.Date();
                 java.sql.Date sqlDate = new java.sql.Date(date.getTime());
-                UserDAO emailDAO = new UserDAO();
-                boolean check = UserDAO.insertAccount(userName, email, password, sqlDate, STATUS, ROLE, SETTING);                
+                boolean check = UserDAO.insertAccount(userName, email, password, sqlDate, STATUS, ROLE, SETTING,DEFAULT_TOKEN);
+                userDAO.updateStatusFalse(userName); //Patched this shit up.
                 if (check) {
-                    request.setAttribute("newMail", email);
+                    request.setAttribute("USER_TYPE", "RegisterUser");
                     request.setAttribute("MSG_SUCCESS", "You have successfully registered an account!");
                     request.getRequestDispatcher(CONFIRM_EMAIL).forward(request, response);
                 }
