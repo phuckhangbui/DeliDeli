@@ -47,16 +47,28 @@
                     <div>
                         <form
                             action="MainController"
-                            method="POST"
+                            method="post"
                             class="register-form">
-                            <div class="row  register-form-content">
-                                <div class="register-form-content-input">
-                                    <p>
-                                        <span>Username</span>
-                                        <span>*</span>
-                                    </p>
-                                    <input type="text" name="txtUserName" placeholder="Enter your username" />
-                                    <p class="error-popup">${requestScope.MSG_INCORRECT_USERNAME}${requestScope.MSG_USERNAME_EXIST}</p>
+                            <div class="row register-form-container">
+                                <div class="col-md-6 register-form-content">
+                                    <div class="">
+                                        <p>Account Name</p>
+                                        <input
+                                            type="text"
+                                            name="txtUserName"
+                                            placeholder="Your Account" required=""/>
+                                    </div>
+                                    <p>${requestScope.MSG_INCORRECT_USERNAME}</p>
+                                    <p>${requestScope.MSG_USERNAME_EXIST}</p>
+                                    <div class="">
+                                        <p>Email</p>
+                                        <input
+                                            type="text"
+                                            name="txtEmail"
+                                            placeholder="Your Email" required=""/>
+                                    </div>
+                                    <p>${requestScope.MSG_EMAIL_EXIST}</p>
+                                    <p>${requestScope.MSG_INCORRECT_EMAIL}</p>
                                 </div>
                                 <div class=" register-form-content-input">
                                     <p>
