@@ -459,7 +459,7 @@ public class UserDAO {
     }
     
     public static void main(String[] args) throws Exception {
-        System.out.println(UserDAO.checkOldPassword(3, "1234"));
+        System.out.println(UserDAO.getUserByUserId(4));
     }
 
 }

@@ -113,6 +113,9 @@ public class RecipeDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        
+        int decimalPlaces = 2;
+        result = Math.round(result * Math.pow(10, decimalPlaces)) / Math.pow(10, decimalPlaces);
         return result;
     }
 

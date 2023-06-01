@@ -59,7 +59,6 @@
                                 }
                             %>
                             <button type="submit" value="login" name="action">SIGN IN</button>
-
                             <a>
                                 <p>Forgot password?</p>
                             </a>

@@ -67,7 +67,7 @@
                             %>
                             <p><%= request.getAttribute("avgRating")%></p>
                             <p>|</p>
-                            <p class="">2 ratings</p>
+                            <p class=""><%= request.getAttribute("totalReview")%> ratings</p>
                         </div>
                         <form action="" class="recipe-detail-info-button-add">
                             <input type="text" hidden="">
