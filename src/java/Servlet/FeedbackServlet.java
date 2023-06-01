@@ -4,64 +4,73 @@
  */
 package Servlet;
 
+import Recipe.RecipeDTO;
+import Review.ReviewDAO;
+import Review.ReviewDTO;
+import User.UserDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author khang
  */
-public class MainController extends HttpServlet {
+public class FeedbackServlet extends HttpServlet {
 
-    private String url = "errorpage.html";
-
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            String action = request.getParameter("action");
-            if (action == null || action.equals("")) {
-                url = "error.jsp";
-            } else {
-                switch (action.trim()) {
-                    case "search":
-                        url = "SearchServlet";
-                        break;
-                    case "signup":
-                        url = "RegistrationServlet";
-                        break;
-                    case "login":
-                        url = "LoginServlet";
-                        break;
-                    case "forgotPass":
-                        url = "EmailConfirmServlet";
-                        break;
-                    case "verify":
-                        url = "verify";
-                        break;
-                    case "updatePassByToken":
-                        url = "ResetPassServlet";
-                        break;
-                    case "getRecipeDetailById":
-                        url = "RecipeDetailServlet";
-                        break;
-                    case "getFeedback":
-                        url = "FeedbackServlet";
-                        break;
+            HttpSession session = request.getSession();
+            UserDTO user =(UserDTO) session.getAttribute("user");
+            int rating = Integer.parseInt(request.getParameter("rating"));
+            String review = request.getParameter("txtReview");
+            if(review == null){
+                review="";
+            }
+            int recipeId = Integer.parseInt(request.getParameter("recipeId"));
+            ArrayList<ReviewDTO> reviewList = ReviewDAO.getReviewByRecipeId(recipeId);
+            boolean alreadyReview = false;
+            if(user != null && reviewList.size() > 0){
+                for (ReviewDTO r: reviewList){
+                    
+                    //User already review this, cannot review more
+                    if(r.getUser_id() == user.getId()){
+                        alreadyReview = true;
+                    }
+                }
+                
+                if(!alreadyReview){
+                    //Do the review
+                    int result = ReviewDAO.makeFeedback(user.getId(), recipeId, rating, review);
+                    response.sendRedirect("MainController?action=getRecipeDetailById&id="+recipeId);
+                }else{
+                    // forward user to edit review?
+                    out.print("Already review, could only edit the review");
                 }
             }
-            RequestDispatcher rd = request.getRequestDispatcher(url);
-            rd.forward(request, response);
+            
+            
         }
     }
 
-// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

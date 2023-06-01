@@ -6,12 +6,15 @@
 package Recipe;
 
 import Utils.DBUtils;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import static org.omg.IOP.TAG_JAVA_CODEBASE.value;
 
 /**
  *
@@ -19,25 +22,26 @@ import java.util.List;
  */
 public class RecipeDAO {
 
-    public static int getRatingByRecipeId(int recipeId) {
-        int rating = 0;
+    public static String getRecipeOwnerByRecipeId(int recipeId) {
+        String owner = "";
         Connection cn = null;
 
         try {
             cn = DBUtils.getConnection();
 
             if (cn != null) {
-                String sql = "SELECT rating FROM Review rev\n"
-                        + "INNER JOIN Recipe rec\n"
-                        + "ON rev.recipe_id = rec.id\n"
-                        + "WHERE rec.id = ?";
+                String sql = "SELECT first_name + ' ' + last_name AS full_name FROM Recipe r \n"
+                        + "INNER JOIN\n"
+                        + "UserDetail ud\n"
+                        + "ON r.user_id = ud.user_id\n"
+                        + "WHERE r.id = ?";
 
                 PreparedStatement pst = cn.prepareStatement(sql);
                 pst.setInt(1, recipeId);
                 ResultSet rs = pst.executeQuery();
                 if (rs != null) {
                     while (rs.next()) {
-                        rating = rs.getInt("rating");
+                        owner = rs.getString("full_name");
                     }
                 }
                 rs.close();
@@ -47,7 +51,100 @@ public class RecipeDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return rating;
+        return owner;
+    }
+
+    public static int getTotalReviewByRecipeId(int recipeId) {
+        int total = 0;
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                String sql = "SELECT COUNT(id) AS total FROM Review WHERE recipe_id = ?";
+
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setInt(1, recipeId);
+                ResultSet rs = pst.executeQuery();
+                if (rs != null) {
+                    while (rs.next()) {
+                        total = rs.getInt("total");
+                    }
+                }
+                rs.close();
+                pst.close();
+                cn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return total;
+    }
+
+    public static double getRatingByRecipeId(int recipeId) {
+        double result = 0;
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                String sql = "SELECT CAST(SUM(rev.rating) AS decimal) / COUNT (rev.rating) AS avg\n"
+                        + "FROM Review rev\n"
+                        + "INNER JOIN Recipe rec \n"
+                        + "ON rev.recipe_id = rec.id \n"
+                        + "WHERE rec.id = ?\n";
+
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setInt(1, recipeId);
+                ResultSet rs = pst.executeQuery();
+                if (rs != null) {
+                    while (rs.next()) {
+                        result = rs.getDouble("avg");
+
+
+                    }
+                }
+                rs.close();
+                pst.close();
+                cn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public static String getImageByRecipeId(int recipeId) {
+        String image = "";
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                String sql = "SELECT TOP 1 image FROM RecipeImage ri\n"
+                        + "INNER JOIN Recipe r\n"
+                        + "ON ri.recipe_id = r.id\n"
+                        + "WHERE r.id = ? AND ri.thumbnail = 0";
+
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setInt(1, recipeId);
+                ResultSet rs = pst.executeQuery();
+                if (rs != null) {
+                    while (rs.next()) {
+                        image = rs.getString("image");
+                    }
+                }
+                rs.close();
+                pst.close();
+                cn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return image;
     }
 
     public static String getThumbnailByRecipeId(int recipeId) {
@@ -112,6 +209,50 @@ public class RecipeDAO {
         return category;
     }
 
+    public static RecipeDTO getRecipeByRecipeId(int id) {
+        RecipeDTO recipe = null;
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                String sql = "SELECT * FROM Recipe WHERE id = ?";
+
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setInt(1, id);
+                ResultSet rs = pst.executeQuery();
+                if (rs != null) {
+                    while (rs.next()) {
+                        id = rs.getInt("id");
+                        String title = rs.getString("title");
+                        String description = rs.getString("description");
+                        int prep_time = rs.getInt("prep_time");
+                        int cook_time = rs.getInt("cook_time");
+                        int servings = rs.getInt("servings");
+                        Date create_at = rs.getDate("create_at");
+                        Date update_at = rs.getDate("update_at");
+                        int cuisin_id = rs.getInt("cuisine_id");
+                        int category_id = rs.getInt("category_id");
+                        int user_id = rs.getInt("user_id");
+                        int level_id = rs.getInt("level_id");
+
+                        recipe = new RecipeDTO(id, title, description, prep_time,
+                                cook_time, servings, create_at, update_at, cuisin_id,
+                                category_id, user_id, level_id);
+                    }
+                }
+                rs.close();
+                pst.close();
+                cn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return recipe;
+    }
+
     public static ArrayList<RecipeDTO> getAllRecipes() {
         ArrayList<RecipeDTO> result = new ArrayList<RecipeDTO>();
         Connection cn = null;
@@ -163,22 +304,27 @@ public class RecipeDAO {
             cn = DBUtils.getConnection();
 
             if (cn != null) {
-                String sql = "SELECT r.[id],r.[title],r.[description],[prep_time],[cook_time],\n"
-                        + "[servings],[create_at],[update_at],[cuisine_id],[category_id],[user_id],[level_id]\n";
+                String sql = "SELECT r.[id],r.[title],[prep_time],[cook_time],\n"
+                        + "[servings],r.[create_at],r.[update_at],[cuisine_id],[category_id],r.[user_id],[level_id]\n"
+                        + "FROM [dbo].[Recipe] r LEFT JOIN [dbo].[Review] re ON r.[id] = re.recipe_id\n";
                 if (searchBy.equalsIgnoreCase("Title")) {
-                    sql += "FROM [dbo].[Recipe] AS r\n"
-                            + "WHERE title LIKE ?";
+                    sql += "WHERE r.title LIKE ?\n";
                 }
                 if (searchBy.equalsIgnoreCase("Cuisine")) {
-                    sql += "FROM [dbo].[Recipe] AS r JOIN [dbo].[Cuisine] AS c \n"
+                    sql += "JOIN [dbo].[Cuisine] AS c \n"
                             + "ON r.cuisine_id =c.id\n"
-                            + "WHERE c.title LIKE ?";
+                            + "WHERE c.title LIKE ?\n";
                 }
                 if (searchBy.equalsIgnoreCase("Category")) {
-                    sql += "FROM [dbo].[Recipe] AS r JOIN [dbo].[Category] AS c \n"
+                    sql += "JOIN [dbo].[Category] AS c \n"
                             + "ON r.category_id =c.id\n"
-                            + "WHERE c.title LIKE ?";
+                            + "WHERE c.title LIKE ?\n";
                 }
+
+                    sql += "GROUP BY r.[id],r.[title],r.[prep_time],r.[cook_time],[servings],\n"
+                            + "r.[create_at],r.[update_at],[cuisine_id],[category_id],r.[user_id],[level_id]\n"
+                            + "ORDER BY CAST(SUM(re.rating) AS decimal) / COUNT(re.rating) DESC";
+                
 
                 PreparedStatement pst = cn.prepareStatement(sql);
                 pst.setString(1, "%" + keyword + "%");
@@ -187,7 +333,6 @@ public class RecipeDAO {
                     while (rs.next()) {
                         int id = rs.getInt("id");
                         String title = rs.getString("title");
-                        String description = rs.getString("description");
                         int prep_time = rs.getInt("prep_time");
                         int cook_time = rs.getInt("cook_time");
                         int servings = rs.getInt("servings");
@@ -198,7 +343,7 @@ public class RecipeDAO {
                         int user_id = rs.getInt("user_id");
                         int level_id = rs.getInt("level_id");
 
-                        RecipeDTO recipe = new RecipeDTO(id, title, description, prep_time,
+                        RecipeDTO recipe = new RecipeDTO(id, title, "", prep_time,
                                 cook_time, servings, create_at, update_at, cuisin_id,
                                 category_id, user_id, level_id);
                         result.add(recipe);
@@ -215,10 +360,10 @@ public class RecipeDAO {
     }
 
     public static void main(String[] args) {
-        System.out.println("Rating: " + RecipeDAO.getRatingByRecipeId(1));
-        List<RecipeDTO> list = RecipeDAO.getAllRecipes();
-        for (RecipeDTO o : list) {
-            System.out.println(o);
-        }
+        System.out.println("rating: " + RecipeDAO.getRatingByRecipeId(2));
+//        List<RecipeDTO> list = RecipeDAO.getAllRecipes();
+//        for (RecipeDTO o : list) {
+//            System.out.println(o);
+//        }
     }
 }

@@ -18,6 +18,43 @@ import java.sql.SQLException;
  */
 public class UserDAO {
 
+    public static UserDTO getUserByUserId(int userId) {
+        UserDTO user = null;
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                String sql = "SELECT * FROM [User] WHERE id = ?";
+
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setInt(1, userId);
+                ResultSet rs = pst.executeQuery();
+                if (rs != null) {
+                    while (rs.next()) {
+                        String userName = rs.getString("user_name");
+                        String email = rs.getString("email");
+                        String password = rs.getString("password");
+                        String avatar = rs.getString("avatar");
+                        String createAt = rs.getString("create_at");
+                        String token = rs.getString("token");
+                        int status = rs.getInt("status");
+                        int role = rs.getInt("role_id");
+                        int setting = rs.getInt("user_setting_id");
+                        user = new UserDTO(userName, email, password, avatar, createAt, token, status, role, setting);
+                    }
+                }
+                rs.close();
+                pst.close();
+                cn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
     public static UserDTO getAccount(String email, String password) throws Exception {
         UserDTO user = null;
         Connection cn = DBUtils.getConnection();
@@ -31,15 +68,17 @@ public class UserDAO {
             pst.setString(2, password);
             ResultSet rs = pst.executeQuery();
             if (rs != null && rs.next()) {
+                int id = rs.getInt("id");
                 String userName = rs.getString("user_name");
                 email = rs.getString("email");
                 password = rs.getString("password");
                 String avatar = rs.getString("avatar");
                 String createAt = rs.getString("create_at");
+                String token = rs.getString("token");
                 int status = rs.getInt("status");
                 int role = rs.getInt("role_id");
                 int setting = rs.getInt("user_setting_id");
-                user = new UserDTO(userName, email, password, avatar, createAt, status, role, setting);
+                user = new UserDTO(id, userName, email, password, avatar, createAt, token, status, role, setting);
             }
             cn.close();
         }
@@ -397,6 +436,10 @@ public class UserDAO {
             }
         }
         return false;
+    }
+    
+    public static void main(String[] args) throws Exception {
+        System.out.println(UserDAO.getUserByUserId(4));
     }
 
 }

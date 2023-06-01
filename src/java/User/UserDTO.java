@@ -17,6 +17,8 @@ package User;
 //@Setter
 //@ToString
 public class UserDTO {
+    
+    private int id;
     private String userName;
     private String email;
     private String password;
@@ -55,6 +57,22 @@ public class UserDTO {
         this.role = role;
         this.setting = setting;
     }
+    
+    //Constructor with id
+
+    public UserDTO(int id, String userName, String email, String password, String avatar, String createAt, String token, int status, int role, int setting) {
+        this.id = id;
+        this.userName = userName;
+        this.email = email;
+        this.password = password;
+        this.avatar = avatar;
+        this.createAt = createAt;
+        this.token = token;
+        this.status = status;
+        this.role = role;
+        this.setting = setting;
+    }
+    
 
     public String getToken() {
         return token;
@@ -63,6 +81,16 @@ public class UserDTO {
     public void setToken(String token) {
         this.token = token;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    
 
     public String getUserName() {
         return userName;

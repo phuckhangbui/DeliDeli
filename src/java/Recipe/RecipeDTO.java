@@ -5,7 +5,10 @@
  */
 package Recipe;
 
+import Direction.DirectionDTO;
+import IngredientDetail.IngredientDetailDTO;
 import java.sql.Date;
+import java.util.List;
 
 /**
  *
@@ -30,7 +33,7 @@ public class RecipeDTO {
     private int category_id;
     private int user_id;
     private int level_id;
-
+    
     public RecipeDTO() {
     }
 

@@ -44,10 +44,63 @@
 
         </div>
 
-        <% ArrayList<RecipeDTO> list = (ArrayList<RecipeDTO>) session.getAttribute("searchRecipesList");
+        <%  ArrayList<RecipeDTO> list = (ArrayList<RecipeDTO>) session.getAttribute("searchRecipesList");
+            session.setAttribute("searchRecipesList", null);
+            String type = "";
+            int id = 0;
+            
+            if (list == null) {
+                try {
+                    id = Integer.parseInt(request.getParameter("id"));
+                    type = request.getParameter("type");
+                    list = Utils.NavigationBarUtils.getRecipeByType(type, id);
+                } catch (Exception e) {
+
+                }
+            }
+
             String ERROR_MSG = (String) session.getAttribute("ERROR_MSG");
             String SUCCESS_MSG = (String) session.getAttribute("SUCCESS_MSG");
-            if (list == null) {
+            session.setAttribute("ERROR_MSG", null);
+            session.setAttribute("SUCCESS_MSG", null);
+            String typeName= "";
+            
+            if(SUCCESS_MSG == null){
+            switch(type.trim()){
+                case "Ingredient":
+                    typeName = ingredientMap.get(id);
+                    break;
+                case "Category":
+                    typeName = cateMap.get(id);
+                    break;
+                case "Level":
+                    typeName = levelMap.get(id);
+                    break;
+                case "Cuisine":
+                    typeName = cuisineMap.get(id);
+                    break;
+            }
+                SUCCESS_MSG = "Result of " + type + ": " + typeName;
+            }
+            
+            if(ERROR_MSG == null){
+            switch(type.trim()){
+                case "Ingredient":
+                    typeName = ingredientMap.get(id);
+                    break;
+                case "Category":
+                    typeName = cateMap.get(id);
+                    break;
+                case "Level":
+                    typeName = levelMap.get(id);
+                    break;
+                case "Cuisine":
+                    typeName = cuisineMap.get(id);
+                    break;
+            }
+                ERROR_MSG = typeName+" "+type+" is not available";
+            }
+            if (list == null || list.size() == 0) {
 
         %>
         <!--         Search Result      -->
@@ -62,7 +115,7 @@
                 </div>
             </div>
         </div>
-        <% } else {%>
+        <% } if(list != null && list.size() > 0) {%>
         <div class="search-result">
             <div class="container ">
                 <div class="row">
@@ -78,7 +131,7 @@
 
 
                     %>
-                    <a href="" class="col-md-3 search-result-content-post">
+                    <a href="MainController?action=getRecipeDetailById&id=<%= r.getId()%>" class="col-md-3 search-result-content-post">
                         <div class="search-result-content-picture">
                             <img src="<%= RecipeDAO.getThumbnailByRecipeId(r.getId())%>" alt="">
                         </div>
@@ -98,8 +151,8 @@
                         </div>
                     </a>
                     <%
-                            }
-                        
+                        }
+
                     %>
                 </div>
 
