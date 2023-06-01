@@ -4,6 +4,7 @@
     Author     : Admin
 --%>
 
+<%@page import="User.UserDAO"%>
 <%@page import="User.UserDTO"%>
 <%@page import="Review.ReviewDAO"%>
 <%@page import="Review.ReviewDTO"%>
@@ -37,6 +38,9 @@
             ArrayList<DirectionDTO> directionList = (ArrayList) request.getAttribute("directionList");
             ArrayList<ReviewDTO> reviewList = (ArrayList) request.getAttribute("reviewList");
             RecipeDTO recipe = (RecipeDTO) request.getAttribute("recipe");
+            int ownerId = recipe.getUser_id();
+            UserDTO owner = UserDAO.getUserByUserId(ownerId);
+            String link = "userCommunityProfile.jsp?accountName=" + owner.getUserName();
         %>
 
         <%@include file="header.jsp" %>
@@ -51,7 +55,7 @@
                         <a href=""><img src="./assets/profile-pic.svg" alt=""></a>
                         <div>
                             <span>By</span>
-                            <span><a href=""><%= request.getAttribute("owner")%></a></span>
+                            <span><a href="<%=link%>"><%= request.getAttribute("owner")%></a></span>
                             <p>Published on <%= recipe.getCreate_at()%></p>
                         </div>
                     </div>

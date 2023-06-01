@@ -103,7 +103,6 @@ public class RecipeDAO {
                     while (rs.next()) {
                         result = rs.getDouble("avg");
 
-
                     }
                 }
                 rs.close();
@@ -113,7 +112,7 @@ public class RecipeDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         int decimalPlaces = 2;
         result = Math.round(result * Math.pow(10, decimalPlaces)) / Math.pow(10, decimalPlaces);
         return result;
@@ -324,10 +323,9 @@ public class RecipeDAO {
                             + "WHERE c.title LIKE ?\n";
                 }
 
-                    sql += "GROUP BY r.[id],r.[title],r.[prep_time],r.[cook_time],[servings],\n"
-                            + "r.[create_at],r.[update_at],[cuisine_id],[category_id],r.[user_id],[level_id]\n"
-                            + "ORDER BY CAST(SUM(re.rating) AS decimal) / COUNT(re.rating) DESC";
-                
+                sql += "GROUP BY r.[id],r.[title],r.[prep_time],r.[cook_time],[servings],\n"
+                        + "r.[create_at],r.[update_at],[cuisine_id],[category_id],r.[user_id],[level_id]\n"
+                        + "ORDER BY CAST(SUM(re.rating) AS decimal) / COUNT(re.rating) DESC";
 
                 PreparedStatement pst = cn.prepareStatement(sql);
                 pst.setString(1, "%" + keyword + "%");
@@ -362,8 +360,54 @@ public class RecipeDAO {
         return result;
     }
 
+    public static ArrayList<RecipeDTO> getRecipeByUserId(int userId) {
+        ArrayList<RecipeDTO> result = new ArrayList<RecipeDTO>();
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                String sql = "SELECT * FROM Recipe\n"
+                        + "WHERE user_id = ?";
+
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setInt(1, userId);
+                ResultSet rs = pst.executeQuery();
+                if (rs != null) {
+                    while (rs.next()) {
+                        int id = rs.getInt("id");
+                        String title = rs.getString("title");
+                        String description = rs.getString("description");
+                        int prep_time = rs.getInt("prep_time");
+                        int cook_time = rs.getInt("cook_time");
+                        int servings = rs.getInt("servings");
+                        Date create_at = rs.getDate("create_at");
+                        Date update_at = rs.getDate("update_at");
+                        int cuisin_id = rs.getInt("cuisine_id");
+                        int category_id = rs.getInt("category_id");
+                        int user_id = rs.getInt("user_id");
+                        int level_id = rs.getInt("level_id");
+
+                        RecipeDTO recipe = new RecipeDTO(id, title, description, prep_time,
+                                cook_time, servings, create_at, update_at, cuisin_id,
+                                category_id, user_id, level_id);
+                        result.add(recipe);
+                    }
+                }
+                rs.close();
+                pst.close();
+                cn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
     public static void main(String[] args) {
-        System.out.println("rating: " + RecipeDAO.getRatingByRecipeId(2));
+        System.out.println("rating: " + RecipeDAO.getRecipeByUserId(1));
 //        List<RecipeDTO> list = RecipeDAO.getAllRecipes();
 //        for (RecipeDTO o : list) {
 //            System.out.println(o);
