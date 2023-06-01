@@ -24,43 +24,7 @@
     </head>
 
     <body>
-        <div class="navigator-bar">
-            <div class="container ">
-                <div class="row navigation-bar-first">
-                    <a href="homePage.html" class="logo col-md-3">
-                        <img src="./assets/Logo2.png" alt="">
-                    </a>
-                    <div class="search-bar col-md-6">
-                        <form action="" method="post" class="search-bar-content">
-                            <input type="text" placeholder="What are you searching for ?">
-                            <select name="" id="">
-                                <option value="">TITLE</option>
-                                <option value="">CATEGORY</option>
-                                <option value="">INGREDIENT</option>
-                                <option value="">CUISINES</option>
-                            </select>
-                            <button type="submit"><img src="./assets/search-button.svg" alt="Search Icon"></button>
-                        </form>
-                    </div>
-                    <div class="account col-md-3">
-                        <span><a href="logIn.html">Sign in</a></span>
-                        <span>|</span>
-                        <span><a href="register.html">Register</a></span>
-                    </div>
-
-                </div>
-                <div class="row navigation-bar-last">
-                    <ul class="navigation-bar-content">
-                        <li><a href="searchResultPage.html">CATEGORIES</a></li>
-                        <li><a href="">INGREDIENTS</a></li>
-                        <li><a href="">CUISINES</a></li>
-                        <li><a href="">DIFFICULTIES</a></li>
-                        <li><a href="">NEWS</a></li>
-                        <li><a href="">ABOUT US</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+        <%@include file="header.jsp" %>
 
         <!--        Forgot Password         -->
         <div class="blank-background">

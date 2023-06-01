@@ -26,24 +26,30 @@ public class LoginServlet extends HttpServlet {
     private static final String HOME_PAGE = "home.jsp";
     private static final String ADMIN_PAGE = "admin.jsp";
     private static final String MOD_PAGE = "mod.jsp";
+    private static String RECIPE_PAGE = "MainController?action=getRecipeDetailById&id=";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
+            
             List<String> errorList = new ArrayList<>();
-
+            
+            String recipeID = request.getParameter("recipeID"); //Redirect back to page.
             String email = request.getParameter("txtEmail");
             String password = request.getParameter("txtPass");
             UserDTO user = UserDAO.getAccount(email, password);
             HttpSession session = request.getSession();
+
             if (user != null) {
                 if (!UserDAO.checkUserStatus(email, password)) {
                     //Block
                     errorList.add("Your account is blocked");
                     request.setAttribute("errorList", errorList);
                     request.getRequestDispatcher(LOGIN_PAGE).forward(request, response);
+                } else if (user.getRole() == 1 && recipeID != null) {
+                    session.setAttribute("user", user);
+                    request.getRequestDispatcher(RECIPE_PAGE + recipeID + "&activeScroll=true").forward(request, response);
                 } else if (user.getRole() == 1) {
                     session.setAttribute("user", user);
                     request.getRequestDispatcher(HOME_PAGE).forward(request, response);

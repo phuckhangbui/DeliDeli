@@ -27,6 +27,7 @@
         <%@include file="header.jsp" %>
 
 
+
         <!--        Log in Form         -->
         <div class="blank-background">
             <div class="container ">
@@ -44,11 +45,22 @@
                                 <p>Password</p>
                                 <input type="password" name="txtPass" placeholder="Your password" required="">
                             </div>
-                            <div class='error-popup'>
-                                <p>${requestScope.errorList}</p>
+                            <div>
+                                <p>${requestScope.MSG_INCORRECT}</p>
+                                <p>${requestScope.MSG_BLOCK}</p>
                             </div>
+                            <%
+                                String recipeID = request.getParameter("recipeID");
+                                //Prevent from nulling.
+                                if (recipeID != null) {
+                            %>
+                            <input type="hidden" name="recipeID" value="<%= recipeID%>" />
+                            <%
+                                }
+                            %>
                             <button type="submit" value="login" name="action">SIGN IN</button>
-                            <a href="forgotPassword.jsp">
+
+                            <a>
                                 <p>Forgot password?</p>
                             </a>
                         </form>

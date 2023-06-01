@@ -29,6 +29,7 @@
         <%@include file="header.jsp" %>
 
 
+
         <!--         The banner       -->
         <div class="container-fluid banner">
             <div class="container">
@@ -97,9 +98,9 @@
                         if (listRecipe != null && listRecipe.size() != 0) {
                             for (RecipeDTO r : listRecipe) {
                     %>
-                    <a href="" class="col-md-4 recommendation-content-post">
+                    <a href="MainController?action=getRecipeDetailById&id=<%= r.getId()%>" class="col-md-4 recommendation-content-post">
                         <div class="recommendation-content-picture">
-                                <img src="<%= RecipeDAO.getThumbnailByRecipeId(r.getId())%>" alt="">
+                            <img src="<%= RecipeDAO.getThumbnailByRecipeId(r.getId())%>" alt="">
                         </div>
                         <div>
                             <p><%= RecipeDAO.getCategoryByRecipeId(r.getId())%></p>
@@ -113,7 +114,7 @@
                             <%
                                 }
                             %>
-                            <p class="recommendation-content-reciew-rating"></p>
+                            <p class="recommendation-content-reciew-rating"><%= RecipeDAO.getRatingByRecipeId(r.getId())%></p>
                         </div>
                     </a>
                     <%
