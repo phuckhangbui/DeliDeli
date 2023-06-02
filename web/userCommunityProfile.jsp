@@ -117,7 +117,7 @@
 
                         <div class="user-community-recipe-button">
                             <button class="col-md-12">
-                                <a href="">VIEW MORE</a>
+                                <a href="">VIEW ALL</a>
                             </button>
                         </div>
 
@@ -137,7 +137,7 @@
                                 count++;
                                 if (count < 4) {
                         %>
-                        <a href=""MainController?action=getRecipeDetailById&id=<%= r.getId()%>"" class="col-md-4 recommendation-content-post">
+                        <a href="MainController?action=getRecipeDetailById&id=<%= r.getId()%>" class="col-md-4 recommendation-content-post">
                             <div class="search-result-content-picture">
                                 <img src="<%= RecipeDAO.getThumbnailByRecipeId(r.getId())%>" alt="">
                             </div>
@@ -161,7 +161,7 @@
 
                         <div class="user-community-recipe-button">
                             <button class="col-md-12">
-                                <a href="">VIEW MORE</a>
+                                <a href="">VIEW ALL</a>
                             </button>
                         </div>
 
@@ -183,7 +183,7 @@
                                 RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(review.getRecipe_id());
                                 
                         %>
-                        <a href="recipeDetail.html" class="col-md-3 user-community-recipe-review-card">
+                        <a href="MainController?action=getRecipeDetailById&id=<%= recipe.getId()%>&activeScroll=true" class="col-md-3 user-community-recipe-review-card">
                             <div class="user-community-recipe-review-card-picture">
                                 <img src="<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId())%>" alt="">
                             </div>

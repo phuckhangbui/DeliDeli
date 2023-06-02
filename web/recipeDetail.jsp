@@ -52,7 +52,7 @@
                         <%= recipe.getTitle()%>
                     </header>
                     <div class="recipe-detail-info-user">
-                        <a href=""><img src="./assets/profile-pic.svg" alt=""></a>
+                        <a href="<%=link%>"><img src="./assets/profile-pic.svg" alt=""></a>
                         <div>
                             <span>By</span>
                             <span><a href="<%=link%>"><%= request.getAttribute("owner")%></a></span>
