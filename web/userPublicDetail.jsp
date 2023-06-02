@@ -26,73 +26,7 @@
     </head>
     <body>
 
-        <div class="navigator-bar">
-            <div class="container ">
-                <div class="row navigation-bar-first">
-                    <a href="homePage.html" class="logo col-md-3">
-                        <img src="./assets/Logo2.png" alt="">
-                    </a>
-                    <div class="search-bar col-md-6">
-                        <form action="" method="post" class="search-bar-content">
-                            <input type="text" placeholder="What are you searching for ?">
-                            <select name="" id="">
-                                <option value="">TITLE</option>
-                                <option value="">CATEGORY</option>
-                                <option value="">INGREDIENT</option>
-                                <option value="">CUISINES</option>
-                            </select>
-                            <button type="submit"><img src="./assets/search-button.svg" alt="Search Icon"></button>
-                        </form>
-                    </div>
-                    <div class="account col-md-3">
-                        <a href="">
-                            <img src="assets/profile-pic.svg" alt="">
-                            <span>My Account</span>
-                        </a>
-                    </div>
-
-                </div>
-                <div class="row navigation-bar-last">
-                    <ul class="navigation-bar-content">
-                        <li>
-                            <div class="dropdown">
-                                <button class="dropbtn">CATEGORIES</button>
-                                <div class="dropdown-content">
-                                    <a href="">1</a>
-                                    <a href="">2</a>
-                                    <a href="">3</a>
-                                    <a href="searchResultPage.html">View More</a>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="dropdown">
-                                <button class="dropbtn">CUISINES</button>
-                                <div class="dropdown-content">
-                                    <a href="">1</a>
-                                    <a href="">2</a>
-                                    <a href="">3</a>
-                                    <a href="searchResultPage.html">View More</a>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="dropdown">
-                                <button class="dropbtn">DIFFICULTIES</button>
-                                <div class="dropdown-content">
-                                    <a href="">1</a>
-                                    <a href="">2</a>
-                                    <a href="">3</a>
-                                    <a href="searchResultPage.html">View More</a>
-                                </div>
-                            </div>
-                        </li>
-                        <li><a href="newsPage.html">NEWS</a></li>
-                        <li><a href="">ABOUT US</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+        <%@include file="header.jsp" %>
 
         <%
             String userId = request.getParameter("userId");
