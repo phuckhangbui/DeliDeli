@@ -26,7 +26,7 @@
         
         <hr>
         <p><a href="MainController?action=manageAccount">Manage Account</a></p>
-        <p><a href="manageRecipe.jsp">Manage Recipe</a></p>
+        <p><a href="MainController?action=manageRecipe">Manage Recipe</a></p>
         
         
         <%

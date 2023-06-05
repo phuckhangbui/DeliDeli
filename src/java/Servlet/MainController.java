@@ -81,6 +81,12 @@ public class MainController extends HttpServlet {
                     case "deleteAcc":
                         url = "DeleteAccountServlet";
                         break;
+                    case "manageRecipe":
+                        url = "ManageRecipeServlet";
+                        break;
+                    case "confirmRecipe":
+                        url = "ConfirmRecipeServlet";
+                        break;
                 }
             }
             RequestDispatcher rd = request.getRequestDispatcher(url);

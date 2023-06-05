@@ -80,6 +80,14 @@
         <servlet-name>ActivateAccountServlet</servlet-name>
         <servlet-class>Servlet.ActivateAccountServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ManageRecipeServlet</servlet-name>
+        <servlet-class>Servlet.ManageRecipeServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ConfirmRecipeServlet</servlet-name>
+        <servlet-class>Servlet.ConfirmRecipeServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Example</servlet-name>
         <url-pattern>/Example</url-pattern>
@@ -139,6 +147,14 @@
     <servlet-mapping>
         <servlet-name>ActivateAccountServlet</servlet-name>
         <url-pattern>/ActivateAccountServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageRecipeServlet</servlet-name>
+        <url-pattern>/ManageRecipeServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ConfirmRecipeServlet</servlet-name>
+        <url-pattern>/ConfirmRecipeServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

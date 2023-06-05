@@ -1,0 +1,91 @@
+<%-- 
+    Document   : manageRecipe
+    Created on : Jun 5, 2023, 4:14:27 PM
+    Author     : Admin
+--%>
+
+<%@page import="Recipe.RecipeDAO"%>
+<%@page import="Recipe.RecipeDTO"%>
+<%@page import="java.util.ArrayList"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>JSP Page</title>
+    </head>
+    <body>
+        <%
+            ArrayList<RecipeDTO> listRecipeConfirmed = (ArrayList) request.getAttribute("listRecipeConfirmed");
+            ArrayList<RecipeDTO> listRecipeUnConfirmed = (ArrayList) request.getAttribute("listRecipeUnConfirmed");
+        %>
+
+        <div style="display: flex; justify-content: center; align-items: center; gap: 0 50px">
+            <!-- Confirmed Recipe List -->
+            <div>
+                <h3>Confirmed Recipe List</h3>
+                <table border="1">
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Create at</th>
+                        <th>Owner</th>
+                        <th>Action</th>
+                    </tr>
+                    <%                if (listRecipeConfirmed != null && listRecipeConfirmed.size() > 0) {
+                            for (RecipeDTO r : listRecipeConfirmed) {
+                    %>
+                    <tr>
+                        <td><%= r.getId()%></td>
+                        <td><%= r.getTitle()%></td>
+                        <td><%= r.getCreate_at()%></td>
+                        <td><a href="<%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%>"><%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%></a></td>
+                        <td>
+                            <form action="" method="post">
+                                <input type="hidden" value="<%= r.getId()%>" name="id">
+                                <button type="submit" value="showRecipe" name="action">Show</button>
+                                <button type="submit" value="deleteRecipe" name="action">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <% }
+                        }
+                    %>
+                </table>
+            </div>
+
+            <div>
+                <!-- Unconfirmed Recipe List -->
+                <h3>Unconfirmed Recipe List</h3>
+                <table border="1">
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Create at</th>
+                        <th>Owner</th>
+                        <th>Action</th>
+                    </tr>
+                    <%                if (listRecipeUnConfirmed != null && listRecipeUnConfirmed.size() > 0) {
+                            for (RecipeDTO r : listRecipeUnConfirmed) {
+                    %>
+                    <tr>
+                        <td><%= r.getId()%></td>
+                        <td><%= r.getTitle()%></td>
+                        <td><%= r.getCreate_at()%></td>
+                        <td><a href="<%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%>"><%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%></a></td>
+                        <td>
+                            <form action="MainController" method="post">
+                                <input type="hidden" value="<%= r.getId()%>" name="id">
+                                <button type="submit" value="showRecipe" name="action">Show</button>
+                                <button type="submit" value="confirmRecipe" name="action">Confirm</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <% }
+                        }
+                    %>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>
