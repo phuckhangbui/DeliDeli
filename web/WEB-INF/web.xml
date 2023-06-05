@@ -69,8 +69,16 @@
         <servlet-class>Servlet.LogOutServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>AddRecipeServlet</servlet-name>
-        <servlet-class>Servlet.AddRecipeServlet</servlet-class>
+        <servlet-name>ManageAccountServlet</servlet-name>
+        <servlet-class>Servlet.ManageAccountServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeactivateAccountServlet</servlet-name>
+        <servlet-class>Servlet.DeactivateAccountServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ActivateAccountServlet</servlet-name>
+        <servlet-class>Servlet.ActivateAccountServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Example</servlet-name>
@@ -121,8 +129,16 @@
         <url-pattern>/LogOutServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>AddRecipeServlet</servlet-name>
-        <url-pattern>/AddRecipeServlet</url-pattern>
+        <servlet-name>ManageAccountServlet</servlet-name>
+        <url-pattern>/ManageAccountServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeactivateAccountServlet</servlet-name>
+        <url-pattern>/DeactivateAccountServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ActivateAccountServlet</servlet-name>
+        <url-pattern>/ActivateAccountServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

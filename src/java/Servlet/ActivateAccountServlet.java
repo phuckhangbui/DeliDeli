@@ -4,21 +4,19 @@
  */
 package Servlet;
 
+import Admin.AdminDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Enumeration;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
  *
- * @author khang
+ * @author Admin
  */
-public class AddRecipeServlet extends HttpServlet {
+public class ActivateAccountServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,37 +32,14 @@ public class AddRecipeServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            
+            String userName = request.getParameter("username");
+            String currentRole = request.getParameter("currentRole");
+            String tag = request.getParameter("tag");
 
-            // Access the valuesMap and process the parameter values
-            Enumeration<String> parameterNames = request.getParameterNames();
-    List<Step> stepsList = new ArrayList<>();
-
-    while (parameterNames.hasMoreElements()) {
-        String paramName = parameterNames.nextElement();
-        String[] paramValues = request.getParameterValues(paramName);
-
-        if (paramValues != null) {
-            boolean isHeader = !paramName.equals("direction");
-            int order = 1; // Starting order
-
-            for (String value : paramValues) {
-                Step step = new Step();
-                step.setIsHeader(isHeader);
-                step.setValue(value);
-                step.setOrder(order++);
-                stepsList.add(step);
+            int result = AdminDAO.activateAccount(userName);
+            if (result > 0) {                
+                request.getRequestDispatcher("ManageAccountServlet?index="+ tag + "&role="+ currentRole + "").forward(request, response);
             }
-        }
-    }
-
-    // Access the stepsList and process the Step objects
-    for (Step step : stepsList) {
-        boolean isHeader = step.isHeader();
-        String value = step.getValue();
-        int order = step.getOrder();
-        // Process the Step object here
-    }
         }
     }
 

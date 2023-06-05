@@ -69,6 +69,18 @@ public class MainController extends HttpServlet {
                     case "logout":
                         url = "LogOutServlet";
                         break;
+                    case "manageAccount":
+                        url = "ManageAccountServlet";
+                        break;
+                    case "deactivateAcc":
+                        url = "DeactivateAccountServlet";
+                        break;
+                    case "activateAcc":
+                        url = "ActivateAccountServlet";
+                        break;
+                    case "deleteAcc":
+                        url = "DeleteAccountServlet";
+                        break;
                 }
             }
             RequestDispatcher rd = request.getRequestDispatcher(url);

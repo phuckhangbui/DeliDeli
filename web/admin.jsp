@@ -4,6 +4,9 @@
     Author     : Admin
 --%>
 
+<%@page import="User.UserDAO"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="User.UserDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -12,6 +15,22 @@
         <title>Admin Page</title>
     </head>
     <body>
-        <h1>Welcome ${sessionScope.user.userName}</h1>
+        <%
+            UserDTO user = (UserDTO) session.getAttribute("user");
+            if (user == null || user.getRole() != 2) {  
+                response.sendRedirect("error.jsp");
+        } else {
+        %>
+        <h1>Welcome ${user.getUserName()}</h1>
+        <a href="MainController?action=logout" >Logout</a>
+        
+        <hr>
+        <p><a href="MainController?action=manageAccount">Manage Account</a></p>
+        <p><a href="manageRecipe.jsp">Manage Recipe</a></p>
+        
+        
+        <%
+            }
+        %>
     </body>
 </html>

@@ -13,12 +13,87 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  *
  * @author Daiisuke
  */
 public class UserDAO {
+    
+    //New
+    public static int getTotalAccountsBasedOnRole(String roleTag) {
+        int result = 0;
+        String sql = "";
+        Connection cn = null;
+        PreparedStatement pst = null;
+
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                if (roleTag.equals("")) {
+                    sql = "SELECT COUNT(id) as total FROM [User]";
+                    pst = cn.prepareStatement(sql);
+                } else {
+                    sql = "SELECT COUNT(id) as total FROM [User] WHERE role_id = (SELECT id FROM Role WHERE title = ?)";
+                    pst = cn.prepareStatement(sql);
+                    pst.setString(1, roleTag);
+                }
+                ResultSet rs = pst.executeQuery();
+                if (rs != null) {
+                    while (rs.next()) {
+                        result = rs.getInt("total");
+                    }
+                }
+                rs.close();
+                pst.close();
+                cn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    //New
+    public static ArrayList<UserDTO> getAllUser() {
+        ArrayList<UserDTO> result = new ArrayList<>();
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                String sql = "SELECT * FROM [User]";
+
+                PreparedStatement pst = cn.prepareStatement(sql);
+                ResultSet rs = pst.executeQuery();
+                if (rs != null) {
+                    while (rs.next()) {
+                        int id = rs.getInt("id");
+                        String userName = rs.getString("user_name");
+                        String email = rs.getString("email");
+                        String password = rs.getString("password");
+                        String avatar = rs.getString("avatar");
+                        String createAt = rs.getString("create_at");
+                        int status = rs.getInt("status");
+                        int role = rs.getInt("role_id");
+                        int setting = rs.getInt("user_setting_id");
+                        UserDTO user = new UserDTO(id, userName, email, password, avatar, createAt, status, role, setting);
+                        result.add(user);
+                    }
+                }
+                rs.close();
+                pst.close();
+                cn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
 
     public static UserDTO getUserByUserId(int userId) {
         UserDTO user = null;
