@@ -67,6 +67,19 @@ public class UserDTO {
         this.password = password;
         this.avatar = avatar;
         this.createAt = createAt;
+        
+        this.status = status;
+        this.role = role;
+        this.setting = setting;
+    }
+    
+    public UserDTO(int id, String userName, String email, String password, String avatar, String createAt, int status, int role, int setting) {
+        this.id = id;
+        this.userName = userName;
+        this.email = email;
+        this.password = password;
+        this.avatar = avatar;
+        this.createAt = createAt;
         this.token = token;
         this.status = status;
         this.role = role;

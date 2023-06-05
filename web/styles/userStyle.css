@@ -226,7 +226,7 @@ span {
 
 .recommendation-content-picture img {
 	width: 100%;
-	height: auto;
+	height: 250px;
 }
 
 .recommendation-content a div p:nth-child(1) {
@@ -548,7 +548,7 @@ span {
 }
 .search-result-content-picture img {
 	width: 100%;
-	height: auto;
+	height: 220px;
 }
 
 .search-result-content a div p:nth-child(1) {
@@ -1052,11 +1052,16 @@ span {
 	flex-direction: column;
 	padding: 0px;
 	font-size: 24px;
+        
 }
 .user-profile-option a{
 	padding: 10px 20px;
 	display: flex;
 	align-items: center;
+        font-weight: 400;
+}
+.user-profile-option a:hover{
+    background-color: #f2f2f2;
 }
 .user-profile-option img{
 	width: 20px;
