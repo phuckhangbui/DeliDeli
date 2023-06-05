@@ -36,11 +36,11 @@ public class DirectionDAO {
                 if (rs != null) {
                     while (rs.next()) {
                         id = rs.getInt("id");
+                        int isHeader = rs.getInt("is_header");
                         int step = rs.getInt("step");
                         String desc = rs.getString("description");
-                        String header = rs.getString("header");
                         int recipe_id = rs.getInt("recipe_id");
-                        DirectionDTO direction = new DirectionDTO(id, step, desc, header, recipe_id);
+                        DirectionDTO direction = new DirectionDTO(id, isHeader, step, desc, recipe_id);
                         
                         result.add(direction);
                     }

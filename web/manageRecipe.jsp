@@ -20,6 +20,11 @@
             ArrayList<RecipeDTO> listRecipeUnConfirmed = (ArrayList) request.getAttribute("listRecipeUnConfirmed");
         %>
 
+        <form action="MainController" method="post" style="display: flex; justify-content: center; align-items: center">
+            <input type="text" name="txtSearch">
+            <button type="submit" value="searchRecipe" name="action">Search</button>
+        </form>
+        
         <div style="display: flex; justify-content: center; align-items: center; gap: 0 50px">
             <!-- Confirmed Recipe List -->
             <div>
@@ -39,11 +44,11 @@
                         <td><%= r.getId()%></td>
                         <td><%= r.getTitle()%></td>
                         <td><%= r.getCreate_at()%></td>
-                        <td><a href="<%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%>"><%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%></a></td>
+                        <td><a href="MainController?action=showUserDetail&username=<%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%>"><%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%></a></td>
                         <td>
-                            <form action="" method="post">
+                            <form action="MainController" method="post">
                                 <input type="hidden" value="<%= r.getId()%>" name="id">
-                                <button type="submit" value="showRecipe" name="action">Show</button>
+                                <button type="submit" value="showRecipeDetail" name="action">Show</button>
                                 <button type="submit" value="deleteRecipe" name="action">Delete</button>
                             </form>
                         </td>
@@ -52,6 +57,8 @@
                         }
                     %>
                 </table>
+                <p></p>
+                <button onclick="loadMore()" class="btn btn-primary">Load more</button>
             </div>
 
             <div>
@@ -72,11 +79,11 @@
                         <td><%= r.getId()%></td>
                         <td><%= r.getTitle()%></td>
                         <td><%= r.getCreate_at()%></td>
-                        <td><a href="<%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%>"><%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%></a></td>
+                        <td><a href="MainController?action=showUserDetail&username=<%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%>"><%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%></a></td>
                         <td>
                             <form action="MainController" method="post">
                                 <input type="hidden" value="<%= r.getId()%>" name="id">
-                                <button type="submit" value="showRecipe" name="action">Show</button>
+                                <button type="submit" value="showRecipeDetail" name="action">Show</button>
                                 <button type="submit" value="confirmRecipe" name="action">Confirm</button>
                             </form>
                         </td>
@@ -87,5 +94,7 @@
                 </table>
             </div>
         </div>
+
+        <a href="admin.jsp">Back to daskboard</a>
     </body>
 </html>

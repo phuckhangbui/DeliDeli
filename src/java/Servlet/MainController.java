@@ -87,6 +87,15 @@ public class MainController extends HttpServlet {
                     case "confirmRecipe":
                         url = "ConfirmRecipeServlet";
                         break;
+                    case "searchAccount":
+                        url = "SearchAccountServlet";
+                        break;
+                    case "showUserDetail":
+                        url = "ShowUserDetailServlet";
+                        break;
+                    case "showRecipeDetail":
+                        url = "ShowRecipeDetailServlet";
+                        break;
                 }
             }
             RequestDispatcher rd = request.getRequestDispatcher(url);

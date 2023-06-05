@@ -88,6 +88,18 @@
         <servlet-name>ConfirmRecipeServlet</servlet-name>
         <servlet-class>Servlet.ConfirmRecipeServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SearchAccountServlet</servlet-name>
+        <servlet-class>Servlet.SearchAccountServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ShowUserDetailServlet</servlet-name>
+        <servlet-class>Servlet.ShowUserDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ShowRecipeDetailServlet</servlet-name>
+        <servlet-class>Servlet.ShowRecipeDetailServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Example</servlet-name>
         <url-pattern>/Example</url-pattern>
@@ -155,6 +167,18 @@
     <servlet-mapping>
         <servlet-name>ConfirmRecipeServlet</servlet-name>
         <url-pattern>/ConfirmRecipeServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchAccountServlet</servlet-name>
+        <url-pattern>/SearchAccountServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ShowUserDetailServlet</servlet-name>
+        <url-pattern>/ShowUserDetailServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ShowRecipeDetailServlet</servlet-name>
+        <url-pattern>/ShowRecipeDetailServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -18,14 +18,23 @@
         <!-- Account list table -->
         <%
             ArrayList<UserDTO> listAcc = (ArrayList) request.getAttribute("listAcc");
+            ArrayList<UserDTO> listAccSearched = (ArrayList) request.getAttribute("listAccSearched");
             int endPage = (Integer) request.getAttribute("endPage");
             String tag = (String) request.getAttribute("tag");
+            if (tag.equals("")) {
+                tag = "0";
+            }
             String currentRole = request.getParameter("role");
-            if(currentRole == null) {
+            if (currentRole == null) {
                 currentRole = "all";
             }
             String[] tmp = {"Deactivated", "Active"};
         %>
+
+        <form action="MainController" method="post" style="display: flex; justify-content: center; align-items: center">
+            <input type="text" name="txtSearch">
+            <button type="submit" value="searchAccount" name="action">Search</button>
+        </form>
 
         <form action="MainController?action=manageAccount" method="post">
             <select name="role">
@@ -37,6 +46,9 @@
         </form>
         <hr>
 
+        <%
+            if (listAccSearched != null && !listAccSearched.isEmpty()) {
+        %>
         <table border="1">
             <tr>
                 <th>ID</th>
@@ -47,12 +59,11 @@
                 <th>Action</th>
             </tr>
             <%
-                if (listAcc != null && listAcc.size() > 0) {
-                    for (UserDTO u : listAcc) {
+                for (UserDTO u : listAccSearched) {
             %>
             <tr>
                 <td><%= u.getId()%></td>
-                <td><%= u.getUserName()%></td>
+                <td><a href="MainController?action=showUserDetail&username=<%= u.getUserName()%>"><%= u.getUserName()%></a></td>
                 <td><%= u.getEmail()%></td>
                 <td><%= u.getCreateAt()%></td>
                 <td><%= tmp[u.getStatus()]%></td>
@@ -66,15 +77,55 @@
                     </form>
                 </td>
             </tr>
-            <% }
+            <%
                 }
             %>
         </table>
+        <%
+        } else if (listAcc != null && listAcc.size() > 0) {
+        %>
+        <table border="1">
+            <tr>
+                <th>ID</th>
+                <th>User name</th>
+                <th>Email</th>
+                <th>Create at</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            <%
+                for (UserDTO u : listAcc) {
+                    // Display all accounts
+            %>
+            <tr>
+                <td><%= u.getId()%></td>
+                <td><a href="MainController?action=showUserDetail&username=<%= u.getUserName()%>"><%= u.getUserName()%></a></td>
+                <td><%= u.getEmail()%></td>
+                <td><%= u.getCreateAt()%></td>
+                <td><%= tmp[u.getStatus()]%></td>
+                <td>
+                    <form action="MainController?username=<%= u.getUserName()%>" method="post">
+                        <input type="hidden" value="<%= currentRole%>" name="currentRole">
+                        <input type="hidden" value="<%= tag%>" name="tag">
+                        <button type="submit" value="deactivateAcc" name="action">Deactivate</button>
+                        <button type="submit" value="activateAcc" name="action">Activate</button>
+                        <button type="submit" value="deleteAcc" name="action">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            <%
+                }
+            %>
+        </table>
+        <%
+            }
+        %>
 
-        <%          
+
+        <%
             for (int i = 1; i <= endPage; i++) {
         %>
-        <a class="<%= (new Integer(tag) == i) ? "active" : ""%>" href="MainController?action=manageAccount&index=<%= i%>&role=<%= currentRole %>"><%= i%></a>
+        <a class="<%= (new Integer(tag) == i) ? "active" : ""%>" href="MainController?action=manageAccount&index=<%= i%>&role=<%= currentRole%>"><%= i%></a>
         <%
             }
         %>
