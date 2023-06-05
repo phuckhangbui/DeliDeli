@@ -14,6 +14,17 @@ let inputsIngredient = containerIngredient.querySelectorAll('.input');
 let dragIngredient = false; // Flag to track drag mode
 let btnDeleteIngredient = document.querySelectorAll('.btnDeleteIngredient');
 
+// Ingredient select field
+const hashMap = {
+	1: 'Option 1',
+	2: 'Option 2',
+	3: 'Option 3',
+	4: 'Option 4',
+};
+
+// Get the select element
+const ingredientList = document.querySelectorAll('.ingredientList');
+
 // Function to toggle drag mode
 function toggleDragModeIngredient(enableDragMode) {
 	dragIngredient = enableDragMode;
@@ -77,6 +88,10 @@ btnAddIngredient.addEventListener('click', () => {
 		newInput.name = 'ingredient';
 		newInput.required = true;
 
+		//create the option field
+		const option = document.createElement('select');
+		option.classList.add('ingredientList');
+		createOptions(option);
 		// Create delete button
 		const deleteButton = document.createElement('button');
 		deleteButton.textContent = 'Delete';
@@ -94,6 +109,7 @@ btnAddIngredient.addEventListener('click', () => {
 
 		// Append input element and delete button to draggable element
 		newDraggable.appendChild(newInput);
+		newDraggable.appendChild(option);
 		newDraggable.appendChild(deleteButton);
 
 		// Append draggable element to containerIngredient
@@ -150,3 +166,37 @@ document.querySelectorAll('.btnDeleteIngredient').forEach((button) => {
 		}
 	});
 });
+
+// Add options to the select element
+// Add options to the select elements
+ingredientList.forEach((element) => {
+	for (const key in hashMap) {
+		if (hashMap.hasOwnProperty(key)) {
+			const option = document.createElement('option');
+			option.value = key;
+			option.text = hashMap[key];
+			element.appendChild(option);
+		}
+	}
+
+	// Set the first option as selected
+	element.firstChild.selected = true;
+	// Add the "required" attribute to the select element
+	element.setAttribute('required', true);
+});
+
+function createOptions(selectElement) {
+	for (const key in hashMap) {
+		if (hashMap.hasOwnProperty(key)) {
+			const option = document.createElement('option');
+			option.value = key;
+			option.text = hashMap[key];
+			selectElement.appendChild(option);
+		}
+	}
+
+	// Set the first option as selected
+	selectElement.firstChild.selected = true;
+	// Add the "required" attribute to the select element
+	selectElement.setAttribute('required', true);
+}
