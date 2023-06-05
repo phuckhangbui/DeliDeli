@@ -1,0 +1,40 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Jun 4, 2023, 3:31:19 PM
+    Author     : khang
+*/
+.body {
+	margin: 0;
+}
+
+.container {
+	background-color: #333;
+	padding: 1rem;
+	margin-top: 1rem;
+}
+
+.draggable {
+	padding: 1rem;
+	background-color: white;
+	border: 1px solid black;
+}
+
+.draggable.draggable.dragging {
+	opacity: 0.5;
+}
+
+[name='header'] {
+	background-color: blue;
+	/* Add more styles here */
+}
+
+.disable-selection {
+	-webkit-user-select: none; /* Safari */
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* IE/Edge */
+	user-select: none; /* Standard */
+}
+

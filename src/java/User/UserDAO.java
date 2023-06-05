@@ -175,6 +175,36 @@ public class UserDAO {
         return user != null;
     }
 
+    public static UserDTO getAccountByName(String userName) throws Exception {
+        UserDTO user = null;
+        Connection cn;
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                String sql = "SELECT * FROM [User] WHERE user_name = ?";
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setString(1, userName);
+                ResultSet rs = pst.executeQuery();
+                if (rs != null && rs.next()) {
+                    int id = rs.getInt("id");
+                    userName = rs.getString("user_name");
+                    String email = rs.getString("email");
+                    String password = rs.getString("password");
+                    String avatar = rs.getString("avatar");
+                    String createAt = rs.getString("create_at");
+                    int status = rs.getInt("status");
+                    int role = rs.getInt("role_id");
+                    int setting = rs.getInt("user_setting_id");
+                    user = new UserDTO(id,userName, email, password, avatar, createAt, status, role, setting);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
     public static boolean insertAccount(String username, String email, String password, Date createAt, int status, int role, int setting, String token) throws Exception {
         boolean check = false;
         Connection cn = DBUtils.getConnection();
@@ -468,7 +498,7 @@ public class UserDAO {
     }
 
     public static void main(String[] args) throws Exception {
-        System.out.println(UserDAO.getUserByUserId(4));
+        System.out.println(UserDAO.getAccountByName("khangbui").getId());
     }
 
 }

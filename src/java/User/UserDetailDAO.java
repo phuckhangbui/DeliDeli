@@ -142,9 +142,9 @@ public class UserDetailDAO {
     }
 
     public static void main(String[] args) {
-        //System.out.println(UserDetailDAO.getUserDetailByUserId(2));
+        System.out.println(UserDetailDAO.getUserDetailByUserId(3));
         //System.out.println(UserDetailDAO.updateUserPublicDetail(4, "ahihi", "ahihi", "ahihi", "ahihi", "2022-01-01"));
         //System.out.println(UserDetailDAO.updateUserPrivateDetail(4, "khoa@gmail.com", "1234"));
-        System.out.println(UserDetailDAO.updateUserPassword(4, "123"));
+        //System.out.println(UserDetailDAO.updateUserPassword(4, "123"));
     }
 }

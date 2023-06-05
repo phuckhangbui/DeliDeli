@@ -58,11 +58,11 @@
                     <%if (user != null) {%>
                     <div class="account col-md-3">
                         <span>
-                            <div class="dropdown">
-                                <button class="dropbtn"><%=user.getUserName()%></button>
-                                <div class="dropdown-content">
-                                    <a>Your profile</a>
-                                    <a>Management</a>
+                            <div class="user-dropdown">
+                                <button class="user-dropbtn"><%=user.getUserName()%></button>
+                                <div class="user-dropdown-content">
+                                    <a href="userCommunityProfile.jsp?accountName=<%= user.getUserName() %>">Your profile</a>
+                                    <a href="userPublicDetail.jsp?userId=<%=user.getId() %>">Management</a>
                                     <a href="MainController?action=logout" >Logout</a>
                                 </div>
                             </div>
