@@ -4,6 +4,7 @@
     Author     : Admin
 --%>
 
+<%@page import="java.time.LocalDateTime"%>
 <%@page import="User.UserDAO"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="User.UserDTO"%>
@@ -22,6 +23,7 @@
         } else {
         %>
         <h1>Welcome ${user.getUserName()}</h1>
+        <p>Today is: <%= LocalDateTime.now()%></p>
         <a href="MainController?action=logout" >Logout</a>
         
         <hr>

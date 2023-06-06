@@ -32,6 +32,8 @@
         %>
 
         <form action="MainController" method="post" style="display: flex; justify-content: center; align-items: center">
+            <input type="hidden" value="<%= currentRole%>" name="currentRole">
+            <input type="hidden" value="<%= tag%>" name="tag">
             <input type="text" name="txtSearch">
             <button type="submit" value="searchAccount" name="action">Search</button>
         </form>
@@ -47,6 +49,15 @@
         <hr>
 
         <%
+            int currentPage = 1; 
+            
+            String currentPageParam = request.getParameter("page");
+            if (currentPageParam != null && !currentPageParam.isEmpty()) {
+                currentPage = Integer.parseInt(currentPageParam);
+            }
+        %>
+
+        <%
             if (listAccSearched != null && !listAccSearched.isEmpty()) {
         %>
         <table border="1">
@@ -60,6 +71,7 @@
             </tr>
             <%
                 for (UserDTO u : listAccSearched) {
+                        
             %>
             <tr>
                 <td><%= u.getId()%></td>
@@ -81,8 +93,19 @@
                 }
             %>
         </table>
+
         <%
-        } else if (listAcc != null && listAcc.size() > 0) {
+            for (int i = 1; i <= endPage; i++) {
+                String pageUrl = "MainController?action=manageAccount&page=" + i + "&role=" + currentRole;
+        %>
+        <a class="<%= (currentPage == i) ? "active" : ""%>" href="<%= pageUrl%>"><%= i%></a>
+        <%
+            }
+        %>
+
+
+
+        <% }else if (listAcc != null && listAcc.size() > 0) {
         %>
         <table border="1">
             <tr>
@@ -95,7 +118,6 @@
             </tr>
             <%
                 for (UserDTO u : listAcc) {
-                    // Display all accounts
             %>
             <tr>
                 <td><%= u.getId()%></td>
@@ -118,14 +140,12 @@
             %>
         </table>
         <%
-            }
-        %>
-
-
-        <%
             for (int i = 1; i <= endPage; i++) {
         %>
         <a class="<%= (new Integer(tag) == i) ? "active" : ""%>" href="MainController?action=manageAccount&index=<%= i%>&role=<%= currentRole%>"><%= i%></a>
+        <%
+            }
+        %>
         <%
             }
         %>

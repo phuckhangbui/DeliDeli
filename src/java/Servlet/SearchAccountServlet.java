@@ -35,13 +35,44 @@ public class SearchAccountServlet extends HttpServlet {
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             String keyword = request.getParameter("txtSearch");
+            String currentRole = request.getParameter("role");
+
             ArrayList<UserDTO> listAccSearched = AdminDAO.searchAccount(keyword);
-            int endPage = listAccSearched.size() / 2;
-            request.setAttribute("listAccSearched", listAccSearched);
-            request.setAttribute("endPage", endPage);
-            request.setAttribute("tag", ""); // Reset tag to empty string
+            int totalResults = listAccSearched.size();
+            int resultsPerPage = 5;
+            int totalPage = (int) Math.ceil((double) totalResults / resultsPerPage);
+            int currentPage = 1;
+
+            ArrayList<UserDTO> paginatedList = new ArrayList<>();
+            if (totalResults > 0) {
+                paginatedList = new ArrayList<>(listAccSearched.subList(0, Math.min(resultsPerPage, totalResults)));
+            }
+            
+            System.out.println(paginatedList);
+
+            request.setAttribute("listAccSearched", paginatedList);
+            request.setAttribute("endPage", totalPage);
+            request.setAttribute("tag", String.valueOf(currentPage));
+            request.setAttribute("role", currentRole);
             request.getRequestDispatcher("manageAccount.jsp").forward(request, response);
 
+//            String keyword = request.getParameter("txtSearch");
+//            String currentRole = request.getParameter("currentRole");
+//            String tag = request.getParameter("tag");
+//
+//            ArrayList<UserDTO> listAccSearched = AdminDAO.searchAccount(keyword);
+//            int totalResults = listAccSearched.size();
+//            int resultsPerPage = 5;
+//            int endPage = totalResults / resultsPerPage;
+//            if (totalResults % resultsPerPage != 0) {
+//                endPage++;
+//            }
+//            request.setAttribute("listAccSearched", listAccSearched);
+//            request.setAttribute("endPage", endPage);
+//            //request.setAttribute("tag", "");
+//            request.setAttribute("tag", tag);
+//            request.setAttribute("role", currentRole);
+//            request.getRequestDispatcher("manageAccount.jsp").forward(request, response);
         }
     }
 

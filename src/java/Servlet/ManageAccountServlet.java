@@ -49,24 +49,24 @@ public class ManageAccountServlet extends HttpServlet {
             if (role == null || role.equals("all")) {
                 listAcc = AdminDAO.pagingAccount(new Integer(index), "");
                 total = UserDAO.getTotalAccountsBasedOnRole("");
-                endPage = total / 2;
-                if (endPage % 2 != 0) {
+                endPage = total / 5;
+                if (total % 5 != 0) {
                     endPage++;
                 }
 
             } else if (role.equals("user")) {
                 listAcc = AdminDAO.pagingAccount(new Integer(index), "user");
                 total = UserDAO.getTotalAccountsBasedOnRole("user");
-                endPage = total / 2;
-                if (endPage % 2 != 0) {
+                endPage = total / 5;
+                if (total % 5 != 0) {
                     endPage++;
                 }
                 
             } else if (role.equals("admin")) {
                 listAcc = AdminDAO.pagingAccount(new Integer(index), "administrator");
                 total = UserDAO.getTotalAccountsBasedOnRole("administrator");
-                endPage = total / 2;
-                if (endPage % 2 != 0) {
+                endPage = total / 5;
+                if (total % 5 != 0) {
                     endPage++;
                 }
             }

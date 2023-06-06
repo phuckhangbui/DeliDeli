@@ -211,17 +211,17 @@ public class AdminDAO {
                 if (roleTag.equals("")) {
                     sql = "SELECT * FROM [User]\n"
                             + "ORDER BY id \n"
-                            + "OFFSET ? ROWS FETCH NEXT 2 ROWS ONLY";
+                            + "OFFSET ? ROWS FETCH NEXT 5 ROWS ONLY";
                     pst = cn.prepareStatement(sql);
-                    pst.setInt(1, (index - 1) * 2);
+                    pst.setInt(1, (index - 1) * 5);
                 } else {
                     sql = "SELECT * FROM [User]\n"
                             + "WHERE role_id = (SELECT id FROM Role WHERE title = ?)\n"
                             + "ORDER BY id \n"
-                            + "OFFSET ? ROWS FETCH NEXT 2 ROWS ONLY";
+                            + "OFFSET ? ROWS FETCH NEXT 5 ROWS ONLY";
                     pst = cn.prepareStatement(sql);
                     pst.setString(1, roleTag);
-                    pst.setInt(2, (index - 1) * 2);
+                    pst.setInt(2, (index - 1) * 5);
                 }
                 ResultSet rs = pst.executeQuery();
                 if (rs != null) {

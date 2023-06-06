@@ -99,15 +99,39 @@
                             <div class="row recipe-detail-info-overview-content-info">
                                 <div class="col-md-3">
                                     <p>Prep time:</p>
+                                    <% if (recipe.getPrep_time() > 60) {
+                                    %>
+                                    <p><%= recipe.getPrep_time() / 60%> hr(s) <%= recipe.getPrep_time() % 60%> minute(s)</p>
+                                    <%
+                                    } else {
+                                    %>
                                     <p><%= recipe.getPrep_time()%></p>
+                                    <%
+                                        }%>
                                 </div>
                                 <div class="col-md-3">
                                     <p>Cook time:</p>
+                                    <% if (recipe.getCook_time() > 60) {
+                                    %>
+                                    <p><%= recipe.getCook_time() / 60%> hr(s) <%= recipe.getCook_time() % 60%> minute(s)</p>
+                                    <%
+                                    } else {
+                                    %>
                                     <p><%= recipe.getCook_time()%></p>
+                                    <%
+                                        }%>
                                 </div>
                                 <div class="col-md-3">
                                     <p>Total time:</p>
-                                    <p><%= recipe.getPrep_time() + recipe.getCook_time()%></p>
+                                    <% if ((recipe.getPrep_time() + recipe.getCook_time()) > 60) {
+                                    %>
+                                    <p><%= (recipe.getPrep_time() + recipe.getCook_time()) / 60%> hr(s) <%= (recipe.getPrep_time() + recipe.getCook_time()) % 60%> minute(s)</p>
+                                    <%
+                                    } else {
+                                    %>
+                                    <p><%= (recipe.getPrep_time() + recipe.getCook_time())%></p>
+                                    <%
+                                        }%>
                                 </div>
                                 <div class="col-md-3">
                                     <p>Serving:</p>
@@ -157,20 +181,20 @@
 
 
 
-                
+
 
                 <!--        Reviews         -->
                 <div class="row recipe-detail-review" id="scrollTarget">
                     <header class="recipe-detail-review-main-header">
                         REVIEWS
                     </header>
-                    <%if(user != null) {%>
+                    <%if (user != null) {%>
                     <form class="recipe-detail-review-self" id="ratingForm" action="MainController" method="post">
                         <div class="row">
                             <div class="col-md-6">
                                 <p class="recipe-detail-review-self-header">Your Rating</p>
                                 <div class="recipe-detail-review-self-rating rate">
-                                    <input type="text" name="recipeId" value="<%= recipe.getId() %>" hidden="">
+                                    <input type="text" name="recipeId" value="<%= recipe.getId()%>" hidden="">
 
                                     <input type="radio" id="star5" name="rating" value="5" />
                                     <label for="star5" title="text">5 stars</label>
@@ -210,26 +234,26 @@
                             }
                             submitButton.disabled = !starChecked;
                         });
-                       
+
                     </script>
-                    
+
                     <%
                         //Only active scroll whenever needed.
                         String activeScroll = request.getParameter("activeScroll");
-                        if (activeScroll != null){
+                        if (activeScroll != null) {
                     %>
                     <script>
-                        window.onload = function(){
+                        window.onload = function () {
                             const scrollTarget = document.getElementById("scrollTarget");
-                            scrollTarget.scrollIntoView({ behavior: 'smooth' });
+                            scrollTarget.scrollIntoView({behavior: 'smooth'});
                         }
                     </script>
                     <%
                         }
                     %>
-                    
-                    
-                    <%}else{%>
+
+
+                    <%} else {%>
                     <p>You must <a href="login.jsp?recipeID=1">login</a> to review</p>
                     <% }%>
                     <div class="recipe-detail-review-others">
@@ -263,9 +287,9 @@
                         %>
                     </div>
                 </div>
-                        
-                        
-                        
+
+
+
             </div>
         </div>
 
