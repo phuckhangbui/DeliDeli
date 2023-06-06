@@ -101,11 +101,11 @@
                                     <p>Prep time:</p>
                                     <% if (recipe.getPrep_time() > 60) {
                                     %>
-                                    <p><%= recipe.getPrep_time() / 60%> hr(s) <%= recipe.getPrep_time() % 60%> minute(s)</p>
+                                    <p><%= recipe.getPrep_time() / 60%> hr(s) <%= recipe.getPrep_time() % 60%> min(s)</p>
                                     <%
                                     } else {
                                     %>
-                                    <p><%= recipe.getPrep_time()%></p>
+                                    <p><%= recipe.getPrep_time()%> min(s)</p>
                                     <%
                                         }%>
                                 </div>
@@ -113,11 +113,11 @@
                                     <p>Cook time:</p>
                                     <% if (recipe.getCook_time() > 60) {
                                     %>
-                                    <p><%= recipe.getCook_time() / 60%> hr(s) <%= recipe.getCook_time() % 60%> minute(s)</p>
+                                    <p><%= recipe.getCook_time() / 60%> hr(s) <%= recipe.getCook_time() % 60%> min(s)</p>
                                     <%
                                     } else {
                                     %>
-                                    <p><%= recipe.getCook_time()%></p>
+                                    <p><%= recipe.getCook_time()%> min(s)</p>
                                     <%
                                         }%>
                                 </div>
@@ -125,11 +125,11 @@
                                     <p>Total time:</p>
                                     <% if ((recipe.getPrep_time() + recipe.getCook_time()) > 60) {
                                     %>
-                                    <p><%= (recipe.getPrep_time() + recipe.getCook_time()) / 60%> hr(s) <%= (recipe.getPrep_time() + recipe.getCook_time()) % 60%> minute(s)</p>
+                                    <p><%= (recipe.getPrep_time() + recipe.getCook_time()) / 60%> hr(s) <%= (recipe.getPrep_time() + recipe.getCook_time()) % 60%> min(s)</p>
                                     <%
                                     } else {
                                     %>
-                                    <p><%= (recipe.getPrep_time() + recipe.getCook_time())%></p>
+                                    <p><%= (recipe.getPrep_time() + recipe.getCook_time())%> min(s)</p>
                                     <%
                                         }%>
                                 </div>
