@@ -94,9 +94,17 @@ btnAddIngredient.addEventListener('click', () => {
 		createOptions(option);
 		// Create delete button
 		const deleteButton = document.createElement('button');
-		deleteButton.textContent = 'Delete';
 		deleteButton.type = 'button';
 		deleteButton.classList.add('btnDeleteIngredient');
+
+		// Create an <img> element
+		const deleteImage = document.createElement('img');
+		deleteImage.src = './assets/close.svg';
+		deleteImage.alt = 'Delete';
+
+		// Append the <img> element to the button
+		deleteButton.appendChild(deleteImage);
+		
 		deleteButton.addEventListener('click', () => {
 			newDraggable.remove();
 			if (

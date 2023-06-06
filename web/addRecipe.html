@@ -25,148 +25,388 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
 </head>
 
 <body>
-
-    <body>
+    <!--         The navigation bar       -->
+    <div class="navigator-bar">
         <div class="container">
-            <div></div>
-            <div class="row add-recipe-container">
+            <div class="row navigation-bar-first">
+                <a href="homePage.html" class="logo col-md-3">
+                    <img src="./assets/Logo2.png" alt="" />
+                </a>
+                <div class="search-bar col-md-6">
+                    <form action="" method="post" class="search-bar-content">
+                        <input type="text" placeholder="What are you searching for ?" />
+                        <select name="" id="">
+                            <option value="">TITLE</option>
+                            <option value="">CATEGORY</option>
+                            <option value="">INGREDIENT</option>
+                            <option value="">CUISINES</option>
+                        </select>
+                        <button type="submit">
+                            <img src="./assets/search-button.svg" alt="Search Icon" />
+                        </button>
+                    </form>
+                </div>
+                <div class="account col-md-3">
+                    <span>
+                        <div class="user-dropdown">
+                            <button class="user-dropbtn">
+                                ( hinh ) KhangBui
+                            </button>
+                            <div class="user-dropdown-content">
+                                <a>Your profile</a>
+                                <a>Management</a>
+                                <a href="">Logout</a>
+                            </div>
+                        </div>
+                    </span>
+                </div>
+            </div>
+            <div class="row navigation-bar-last">
+                <ul class="navigation-bar-content">
+                    <li>
+                        <div class="dropdown">
+                            <button class="dropbtn">INGREDIENTS</button>
+                            <div class="dropdown-content">
+                                <a href="#">Link 1</a>
+                                <a href="#">Link 2</a>
+                                <a href="#">Link 3</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="dropdown">
+                            <button class="dropbtn">INGREDIENTS</button>
+                            <div class="dropdown-content">
+                                <a href="#">Link 1</a>
+                                <a href="#">Link 2</a>
+                                <a href="#">Link 3</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="dropdown">
+                            <button class="dropbtn">INGREDIENTS</button>
+                            <div class="dropdown-content">
+                                <a href="#">Link 1</a>
+                                <a href="#">Link 2</a>
+                                <a href="#">Link 3</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="dropdown">
+                            <button class="dropbtn">INGREDIENTS</button>
+                            <div class="dropdown-content">
+                                <a href="#">Link 1</a>
+                                <a href="#">Link 2</a>
+                                <a href="#">Link 3</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="dropdown">
+                            <button class="dropbtn">INGREDIENTS</button>
+                            <div class="dropdown-content">
+                                <a href="#">Link 1</a>
+                                <a href="#">Link 2</a>
+                                <a href="#">Link 3</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="dropdown">
+                            <button class="dropbtn">INGREDIENTS</button>
+                            <div class="dropdown-content">
+                                <a href="#">Link 1</a>
+                                <a href="#">Link 2</a>
+                                <a href="#">Link 3</a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div class="blank-background">
+        <div class="container">
+            <div class="row add-recipe-info">
                 <form action="test" method="get">
-                    <h2>
-                        Add a recipe
-
-                    </h2>
-                    <p>
-                        Create a new recipe has never been easier. Public to Deli-Deli community or add to your private
-                        collections.
-                    </p>
-                    <div class="row">
-                        <div class="col-md-8">
-                            <h6>Recipe Title</h6>
-                            <input class="input-full" type="text" name="title" required>
-                            <h6>Description</h6>
-                            <textarea class="input-full" rows="3" name="description" required></textarea>
+                    <div class="add-recipe-header">
+                        <p>Add a New Recipe</p>
+                        <p>
+                            Create and customize your very own recipe to share with the world your own unique flavor
+                        </p>
+                    </div>
+                    <div class="add-recipe-info-overview">
+                        <div class="add-recipe-info-header">
+                            Recipe Title
+                            <div>
+                                <input class="input-full" type="text" name="title" required
+                                    placeholder="What's your recipe called ?" maxlength="100">
+                            </div>
                         </div>
-                        <div class="col-md-4">
-                            <h6>Add thumbnail <span>(required)</span></h6> <!-- Lam cai hinh giong all recipe lun hem-->
-                            <input type="file" id="image" name="thumbnail" required>
-                            <h6>Add other pictures <span>(optional)</span></h6>
-                            <input type="file" id="image" name="pictures">
+                        <div class="add-recipe-info-header">
+                            Description
+                            <textarea class="input-full" rows="5" name="description" required
+                                placeholder="Give us a summary of your recipe" maxlength="500"></textarea>
+                        </div>
+
+
+                        <div class="row add-recipe-info-overview-picture">
+                            <div class="col-md-6 add-recipe-info-overview-picture-main">
+                                <div class="add-recipe-info-header-secondary">
+                                    Thumbnail Picture
+                                    <p>*</p>
+                                </div> <!-- Lam cai hinh giong all recipe lun hem-->
+                                <input type="file" id="image" name="thumbnail" required>
+                            </div>
+                            <div class="col-md-6 add-recipe-info-overview-picture-optional">
+                                <div class="add-recipe-info-header-secondary">
+                                    Additional Picture <p>(optional)</p>
+                                </div>
+                                <input type="file" id="image" name="pictures">
+                            </div>
+
                         </div>
                     </div>
+                    <div class="row add-recipe-info-number">
+                        <div class="add-recipe-info-header">Overview</div>
+                        <div class="col-md-3 add-recipe-info-number-content">
+                            <div>Prep Time:</div>
+                            <input type="text" name="prepTime" id="prepTime" value
+                                oninput="this.value=this.value.slice(0,this.maxLength),this.value = this.value.replace(/[^0-9]/g, '')"
+                                maxlength="2">
+                            <select name="" id="">
+                                <option value="">days</option>
+                            </select>
+                            <input type="text" name="prepTime" id="prepTime" value
+                                oninput="this.value=this.value.slice(0,this.maxLength),this.value = this.value.replace(/[^0-9]/g, '')"
+                                maxlength="2">
+                            <select name="" id="">
+                                <option value="">hours</option>
+                            </select>
+                            <input type="text" name="prepTime" id="prepTime" value
+                                oninput="this.value=this.value.slice(0,this.maxLength),this.value = this.value.replace(/[^0-9]/g, '')"
+                                maxlength="2">
+                            <select name="" id="">
+                                <option value="">minutes</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 add-recipe-info-number-content">
+                            <div>Cook Time:</div>
+                            <input type="text" name="cookTime" id="cookTime" required max="100" min="1"
+                                oninput="this.value=this.value.slice(0,this.maxLength),this.value = this.value.replace(/[^0-9]/g, '')"
+                                maxlength="2">
+                            <select name="" id="">
+                                <option value="">days</option>
+                            </select>
+                            <input type="text" name="cookTime" id="cookTime" required max="100" min="1"
+                                oninput="this.value=this.value.slice(0,this.maxLength),this.value = this.value.replace(/[^0-9]/g, '')"
+                                maxlength="2">
+                            <select name="" id="">
+                                <option value="">hours</option>
+                            </select>
+                            <input type="text" name="cookTime" id="cookTime" required max="100" min="1"
+                                oninput="this.value=this.value.slice(0,this.maxLength),this.value = this.value.replace(/[^0-9]/g, '')"
+                                maxlength="2">
+                            <select name="" id="">
+                                <option value="">minutes</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 add-recipe-info-number-content">
+                            <div>Total Time:
+                                <p id="totalTime"></p>
+                                <script>
+                                    function calculateTotalTime() {
+                                        var prepTime = parseInt(document.getElementById("prepTime").value);
+                                        var cookTime = parseInt(document.getElementById("cookTime").value);
 
-                    <div class="row">
-                        Diet
-                        <select name="diet">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                        </select>
+                                        // Check if the input values are valid numbers
+                                        if (isNaN(prepTime)) {
+                                            prepTime = 0;
+                                        }
+                                        if (isNaN(cookTime)) {
+                                            cookTime = 0;
+                                        }
 
-                        Category
-                        <select name="category">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                        </select>
+                                        var totalTime = prepTime + cookTime;
+                                        document.getElementById("totalTime").textContent = totalTime;
+                                    }
 
-                        Cuisine
-                        <select name="cuisine">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                        </select>
+                                    // Attach event listeners to input fields
+                                    document.getElementById("prepTime").addEventListener("input", calculateTotalTime);
+                                    document.getElementById("cookTime").addEventListener("input", calculateTotalTime);
+
+                                </script>
+                            </div>
+                        </div>
+                        <div class="col-md-3 add-recipe-info-number-content">
+                            <div>Serving:</div>
+                            <input type="text" name="servings" required
+                                oninput="this.value=this.value.slice(0,this.maxLength),this.value = this.value.replace(/[^0-9]/g, '')"
+                                maxlength="3">
+                        </div>
                     </div>
-                    <div class="row">
-                        <div class="draggable-container-ingredient">
-                            <h6>Ingredient</h6>
-
+                    <div class="row add-recipe-info-type">
+                        <div class="col-md-3 add-recipe-info-type-content">
+                            <div>Diet:</div>
+                            <select name="diet">
+                                <option value="1">sadasdasda</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 add-recipe-info-type-content">
+                            <div>Category:</div>
+                            <select name="category">
+                                <option value="1">asdasdsdsda</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 add-recipe-info-type-content">
+                            <div>Cuisine:</div>
+                            <select name="cuisine">
+                                <option value="1">asdsadasd</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row add-recipe-info-ingredient">
+                        <div class="draggable-container-ingredient col-md-8 add-recipe-info-ingredient-content">
+                            <div class="add-recipe-info-header">Ingredient</div>
                             <p class="draggable-ingredient draggable" draggable="false">
                                 <input type="text" class="input" name="ingredient" required="">
                                 <select class="ingredientList"></select>
-                                <button type="button" class="btnDeleteIngredient">Delete</button>
+                                <button type="button" class="btnDeleteIngredient">
+                                    <img src="assets/close.svg" alt="">
+                                </button>
                             </p>
                             <p class="draggable-ingredient draggable" draggable="false">
                                 <input type="text" class="input" name="ingredient" required="">
                                 <select class="ingredientList"></select>
-                                <button type="button" class="btnDeleteIngredient">Delete</button>
+                                <button type="button" class="btnDeleteIngredient">
+                                    <img src="assets/close.svg" alt="">
+                                </button>
+                            </p>
+                        </div>
+                        <div class="col-md-4 add-recipe-info-ingredient-button">
+                            <button type="button" id="btnToggleIngredient">
+                                <img src="assets/drag.svg" alt="">
+                            </button>
+                            <button type="button" id="btnAddIngredient">
+                                Add Paragraph
+                            </button>
+                        </div>
+
+                    </div>
+                    <div class="row add-recipe-info-direction">
+                        <div class="draggable-container-direction col-md-8 add-recipe-info-direction-content">
+                            <div class="add-recipe-info-header">Direction</div>
+                            <p class="draggable draggable-direction" draggable="false">
+                                <input type="text" name="header" class="input" placeholder="Your header here">
+                                <button type="button" class="btnDeleteDirection">
+                                    <img src="assets/close.svg" alt="">
+                                </button>
+                            </p>
+                            <p class="draggable draggable-direction" draggable="false">
+                                <textarea name="" id="" rows="5" class="input" name="direction" required
+                                    placeholder="Your direction here"></textarea>
+                                <button type="button" class="btnDeleteDirection">
+                                    <img src="assets/close.svg" alt="">
+                                </button>
+                            </p>
+                            <p class="draggable draggable-direction" draggable="false">
+                                <textarea name="" id="" rows="5" class="input" name="direction" required
+                                    placeholder="Your direction here"></textarea>
+                                <button type="button" class="btnDeleteDirection">
+                                    <img src="assets/close.svg" alt="">
+                                </button>
                             </p>
 
                         </div>
-                        <button type="button" id="btnToggleIngredient">Toggle Drag Mode</button>
-                        <button type="button" id="btnAddIngredient">Add content</button>
-                    </div>
-
-                    <div class="row">
-                        <div class="draggable-container-direction row">
-                            <h6>Direction</h6>
-
-                            <p class="draggable draggable-direction" draggable="false"><input type="text" class="input"
-                                    name="direction" required><button type="button"
-                                    class="btnDeleteDirection">Delete</button>
-                            </p>
-                            <p class="draggable draggable-direction" draggable="false"><input type="text" class="input"
-                                    name="direction" required><button type="button"
-                                    class="btnDeleteDirection">Delete</button>
-                            </p>
+                        <div class="col-md-4 add-recipe-info-direction-button">
+                            <button type="button" id="btnToggleDirection">
+                                <img src="assets/drag.svg" alt="">
+                            </button>
+                            <button type="button" id="btnAddDirection">
+                                Add Paragraph
+                            </button>
+                            <button type="button" id="btnAddHeader">
+                                Add Header
+                            </button>
                         </div>
-
-                        <button type="button" id="btnToggleDirection">Toggle Drag Mode</button>
-                        <button type="button" id="btnAddDirection">Add content</button>
-                        <button type="button" id="btnAddHeader">Add header</button>
                     </div>
 
-                    <div class="row">
-                        <h6>Servings</h6>
-                        <input type="number" name="servings" required max="100" min="1"
-                            oninput="this.value=this.value.slice(0,this.maxLength)" maxlength="4">
-                        <h6>Prep Time</h6>
-                        <input type="number" name="prepTime" id="prepTime" required max="1000" min="1"
-                            oninput="this.value=this.value.slice(0,this.maxLength)" maxlength="4">
-                        <h6>Cook Time</h6>
-                        <input type="number" name="cookTime" id="cookTime" required max="1000" min="1"
-                            oninput="this.value=this.value.slice(0,this.maxLength)" maxlength="4">
-                        <h6>Total Time: <p id="totalTime"></p>
-                            <script>
-                                function calculateTotalTime() {
-                                    var prepTime = parseInt(document.getElementById("prepTime").value);
-                                    var cookTime = parseInt(document.getElementById("cookTime").value);
 
-                                    // Check if the input values are valid numbers
-                                    if (isNaN(prepTime)) {
-                                        prepTime = 0;
-                                    }
-                                    if (isNaN(cookTime)) {
-                                        cookTime = 0;
-                                    }
 
-                                    var totalTime = prepTime + cookTime;
-
-                                    document.getElementById("totalTime").textContent = totalTime;
-                                }
-
-                                // Attach event listeners to input fields
-                                document.getElementById("prepTime").addEventListener("input", calculateTotalTime);
-                                document.getElementById("cookTime").addEventListener("input", calculateTotalTime);
-
-                            </script>
-                        </h6>
+                    <div class=" add-recipe-info-status">
+                        <div class="add-recipe-info-header">
+                            Do you want to make this recipe public?
+                        </div>
+                        <div class="add-recipe-info-status-content">
+                            <div>
+                                <input type="radio" name="status" value="2" checked>Yes, make it public
+                                <span>(Your recipe will be submitted and will be checked by our moderator. This may take
+                                    some time)</span>
+                                
+                            </div>
+                            <div>
+                                <input type="radio" name="status" value="1">No, make it private
+                                <span>(Your recipe won't need to go through our moderator team, but the recipe can
+                                    only be view by you only)</span>
+                                
+                            </div>
+                        </div>
                     </div>
-
-                    <div class="">
-                        <h6>
-                            Make this recipe public?
-                        </h6>
-                        Public<input type="radio" name="status" value="2" checked>
-                        Private<input type="radio" name="status" value="1">
+                    <div class=" add-recipe-info-submit">
+                        <button type="submit" name="action" value="submit">
+                            SUBMIT
+                        </button>
                     </div>
-                    <button type="submit" name="action" value="submit">
-                        Submit Recipe
-                    </button>
                 </form>
             </div>
-            <div></div>
         </div>
-    </body>
+    </div>
+
+    <!--         Footer       -->
+    <div class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="website-social-media col-md-6">
+                    <a href="homePage.html" class="website-social-media-logo">
+                        <img src="./assets/Logo2.png" alt="">
+                    </a>
+                    <div class="website-social-media-icons">
+                        <span>Follow us:</span>
+                        <a href="#"><img src="./assets/facebook-icon.svg" alt="Facebook Logo"></a>
+                        <a href="#"><img src="./assets/twitter-icon.svg" alt="Twitter Logo"></a>
+                    </div>
+                </div>
+                <nav class="navigation-bar-footer col-md-3">
+                    <ul class="navigation-bar-footer-content">
+                        <li><a href="">CATEGORIES</a></li>
+                        <li><a href="">INGREDIENTS</a></li>
+                        <li><a href="">CUISINES</a></li>
+                        <li><a href="">DIFFICULTIES</a></li>
+                        <li><a href="">NEWS</a></li>
+                    </ul>
+                </nav>
+                <nav class="website-infomation-bar col-md-3">
+                    <ul class="website-infomation-bar-content">
+                        <li><a href="">About us</a></li>
+                        <li><a href="">Privacy Policies</a></li>
+                        <li><a href="">Term of Services</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

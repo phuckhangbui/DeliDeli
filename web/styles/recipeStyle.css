@@ -28,11 +28,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
 	opacity: 0.5;
 }
 
-[name='header'] {
-	background-color: blue;
-	/* Add more styles here */
-}
-
 .disable-selection {
 	-webkit-user-select: none; /* Safari */
 	-moz-user-select: none; /* Firefox */

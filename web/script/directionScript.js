@@ -13,6 +13,8 @@ const btnAddHeader = document.getElementById('btnAddHeader');
 let inputsDirection = containerDirection.querySelectorAll('.input');
 let dragDirection = false; // Flag to track drag mode
 let btnDeleteDirection = document.querySelectorAll('.btnDeleteDirection');
+// Create an <img> element
+
 
 // Function to toggle drag mode
 function toggleDragMode(enableDragMode) {
@@ -71,17 +73,27 @@ btnAddDirection.addEventListener('click', () => {
 		newDraggable.draggable = dragDirection;
 
 		// Create new input element
-		const newInput = document.createElement('input');
+		const newInput = document.createElement('textarea');
 		newInput.type = 'text';
 		newInput.classList.add('input');
 		newInput.name = 'direction';
+		newInput.rows = '5';
+		newInput.placeholder = 'Your direction here';
 		newInput.required = true;
 
 		// Create delete button
 		const deleteButton = document.createElement('button');
-		deleteButton.textContent = 'Delete';
 		deleteButton.type = 'button';
 		deleteButton.classList.add('btnDeleteDirection');
+
+		// Create an <img> element
+		const deleteImage = document.createElement('img');
+		deleteImage.src = './assets/close.svg';
+		deleteImage.alt = 'Delete';
+
+		// Append the <img> element to the button
+		deleteButton.appendChild(deleteImage);
+
 		deleteButton.addEventListener('click', () => {
 			newDraggable.remove();
 			if (
@@ -118,12 +130,21 @@ btnAddHeader.addEventListener('click', () => {
 		newInput.type = 'text';
 		newInput.classList.add('input');
 		newInput.name = 'header';
+		newInput.placeholder = 'Your header here';
 
 		// Create delete button
 		const deleteButton = document.createElement('button');
-		deleteButton.textContent = 'Delete';
 		deleteButton.type = 'button';
 		deleteButton.classList.add('btnDeleteDirection');
+
+		// Create an <img> element
+		const deleteImage = document.createElement('img');
+		deleteImage.src = './assets/close.svg';
+		deleteImage.alt = 'Delete';
+
+		// Append the <img> element to the button
+		deleteButton.appendChild(deleteImage);
+
 		deleteButton.addEventListener('click', () => {
 			newDraggable.remove();
 			if (
