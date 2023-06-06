@@ -36,12 +36,10 @@ public class IngredientDetailDAO {
                     while (rs.next()) {
                         id = rs.getInt("id");
                         String desc = rs.getString("description");
-                        String unit = rs.getString("unit");
-                        String quantity = rs.getString("quantity");
                         int ingredient_id = rs.getInt("ingredient_id");
                         int recipe_id = rs.getInt("recipe_id");
 
-                        IngredientDetailDTO ingredientDetail = new IngredientDetailDTO(id, desc, unit, quantity, ingredient_id, recipe_id);
+                        IngredientDetailDTO ingredientDetail = new IngredientDetailDTO(id, desc, ingredient_id, recipe_id);
                         result.add(ingredientDetail);
                     }
                 }

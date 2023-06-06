@@ -72,6 +72,14 @@
         <servlet-name>AddRecipeServlet</servlet-name>
         <servlet-class>Servlet.AddRecipeServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>EditFeedbackServlet</servlet-name>
+        <servlet-class>Servlet.EditFeedbackServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteFeedbackServlet</servlet-name>
+        <servlet-class>Servlet.DeleteFeedbackServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Example</servlet-name>
         <url-pattern>/Example</url-pattern>
@@ -123,6 +131,14 @@
     <servlet-mapping>
         <servlet-name>AddRecipeServlet</servlet-name>
         <url-pattern>/AddRecipeServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditFeedbackServlet</servlet-name>
+        <url-pattern>/EditFeedbackServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteFeedbackServlet</servlet-name>
+        <url-pattern>/DeleteFeedbackServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

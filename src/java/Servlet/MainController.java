@@ -63,6 +63,12 @@ public class MainController extends HttpServlet {
                     case "getFeedback":
                         url = "FeedbackServlet";
                         break;
+                    case "editFeedback":
+                        url = "EditFeedbackServlet";
+                        break;
+                    case "deleteFeedBack":
+                        url = "DeleteFeedbackServlet";
+                        break;
                     case "getNewsDetail":
                         url = "NewsDetailServlet";
                         break;

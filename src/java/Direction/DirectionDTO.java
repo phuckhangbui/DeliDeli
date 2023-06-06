@@ -19,8 +19,8 @@ import lombok.*;
 public class DirectionDTO {
     
     private int id;
+    private int is_header;
     private int step;
     private String desc;
-    private String header;
     private int recipe_id;    
 }

@@ -20,8 +20,6 @@ public class IngredientDetailDTO {
     
     private int id;
     private String desc;
-    private String unit;
-    private String quantity;
     private int ingredient_id;
     private int recipe_id;
     
