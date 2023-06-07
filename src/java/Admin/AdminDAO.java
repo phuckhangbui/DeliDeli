@@ -20,6 +20,40 @@ import java.util.TreeMap;
  */
 public class AdminDAO {
 
+    public static TreeMap<Integer, Integer> getRatingAllRecipesOfOwnerMap(int userId) {
+        TreeMap<Integer, Integer> map = new TreeMap<Integer, Integer>();
+        Connection cn = null;
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                String sql = "SELECT rating, COUNT(*) AS total FROM Recipe rec\n"
+                        + "JOIN Review rev\n"
+                        + "ON rec.id = rev.recipe_id\n"
+                        + "WHERE rec.user_id = ?\n"
+                        + "GROUP BY rating";
+
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setInt(1, userId);
+                ResultSet rs = pst.executeQuery();
+                if (rs != null) {
+                    while (rs.next()) {
+                        int rating = rs.getInt("rating");
+                        int total = rs.getInt("total");
+
+                        map.put(rating, total);
+                    }
+                }
+                rs.close();
+                pst.close();
+                cn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return map;
+    }
+
     public static TreeMap<Date, Integer> getAccountMap() {
         TreeMap<Date, Integer> map = new TreeMap<Date, Integer>();
         Connection cn = null;
@@ -522,7 +556,7 @@ public class AdminDAO {
 //        for (UserDTO o : list) {
 //            System.out.println(o);
 //        }
-        System.out.println(AdminDAO.getAccountMap());
+        System.out.println(AdminDAO.getRatingAllRecipesOfOwnerMap(2));
     }
 
 }

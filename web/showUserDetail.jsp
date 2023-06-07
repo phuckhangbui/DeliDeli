@@ -4,6 +4,10 @@
     Author     : Admin
 --%>
 
+<%@page import="java.util.Map"%>
+<%@page import="java.util.TreeMap"%>
+<%@page import="Admin.AdminDAO"%>
+<%@page import="java.sql.Date"%>
 <%@page import="Recipe.RecipeDTO"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="User.UserDetailDTO"%>
@@ -63,5 +67,55 @@
         <%
             }
         %>
+
+        <%
+            TreeMap<Integer, Integer> mapRating = (TreeMap) AdminDAO.getRatingAllRecipesOfOwnerMap(user.getId());
+            if (mapRating.size() == 0) {
+        %>
+        <h3>User does not have any recipe yet.</h3>
+        <%
+        } else {
+        %>
+        <div style="width: 500px;"><canvas id="myChart"></canvas></div>
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            const myChart = document.getElementById('myChart');
+
+            (async function () {
+                const data = [
+            <% for (Map.Entry<Integer, Integer> entry : mapRating.entrySet()) {
+                    Integer key = entry.getKey();
+                    Integer value = entry.getValue();
+            %>
+                    {rating: '<%= key%>', count: <%= value%>},
+            <% }%>
+                ];
+
+                const labels = data.map(row => row.rating);
+                const counts = data.map(row => row.count);
+
+                new Chart(
+                        document.getElementById('myChart'),
+                        {
+                            type: 'bar',
+                            data: {
+                                labels: labels,
+                                datasets: [
+                                    {
+                                        label: 'All ratings of recipes',
+                                        data: counts,
+                                        backgroundColor: '#ec9131'
+                                    }
+                                ]
+                            },
+                        }
+                );
+            })();
+        </script>
+        <%
+            }
+        %>
+
     </body>
 </html>
