@@ -100,6 +100,18 @@
         <servlet-name>ShowRecipeDetailServlet</servlet-name>
         <servlet-class>Servlet.ShowRecipeDetailServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ManageNewsServlet</servlet-name>
+        <servlet-class>Servlet.ManageNewsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ShowNewsDetailServlet</servlet-name>
+        <servlet-class>Servlet.ShowNewsDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateNewsServlet</servlet-name>
+        <servlet-class>Servlet.CreateNewsServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Example</servlet-name>
         <url-pattern>/Example</url-pattern>
@@ -179,6 +191,18 @@
     <servlet-mapping>
         <servlet-name>ShowRecipeDetailServlet</servlet-name>
         <url-pattern>/ShowRecipeDetailServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageNewsServlet</servlet-name>
+        <url-pattern>/ManageNewsServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ShowNewsDetailServlet</servlet-name>
+        <url-pattern>/ShowNewsDetailServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateNewsServlet</servlet-name>
+        <url-pattern>/CreateNewsServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
