@@ -1,3 +1,11 @@
+<%-- 
+    Document   : addRecipe
+    Created on : Jun 7, 2023, 7:45:19 AM
+    Author     : khang
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="com.google.gson.Gson" %>
 <!DOCTYPE html>
 <!--
 Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -26,115 +34,23 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
 
     <body>
         <!--         The navigation bar       -->
-        <div class="navigator-bar">
-            <div class="container">
-                <div class="row navigation-bar-first">
-                    <a href="homePage.html" class="logo col-md-3">
-                        <img src="./assets/Logo2.png" alt="" />
-                    </a>
-                    <div class="search-bar col-md-6">
-                        <form action="" method="post" class="search-bar-content">
-                            <input type="text" placeholder="What are you searching for ?" />
-                            <select name="" id="">
-                                <option value="">TITLE</option>
-                                <option value="">CATEGORY</option>
-                                <option value="">INGREDIENT</option>
-                                <option value="">CUISINES</option>
-                            </select>
-                            <button type="submit">
-                                <img src="./assets/search-button.svg" alt="Search Icon" />
-                            </button>
-                        </form>
-                    </div>
-                    <div class="account col-md-3">
-                        <span>
-                            <div class="user-dropdown">
-                                <button class="user-dropbtn">
-                                    ( hinh ) KhangBui
-                                </button>
-                                <div class="user-dropdown-content">
-                                    <a>Your profile</a>
-                                    <a>Management</a>
-                                    <a href="">Logout</a>
-                                </div>
-                            </div>
-                        </span>
-                    </div>
-                </div>
-                <div class="row navigation-bar-last">
-                    <ul class="navigation-bar-content">
-                        <li>
-                            <div class="dropdown">
-                                <button class="dropbtn">INGREDIENTS</button>
-                                <div class="dropdown-content">
-                                    <a href="#">Link 1</a>
-                                    <a href="#">Link 2</a>
-                                    <a href="#">Link 3</a>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="dropdown">
-                                <button class="dropbtn">INGREDIENTS</button>
-                                <div class="dropdown-content">
-                                    <a href="#">Link 1</a>
-                                    <a href="#">Link 2</a>
-                                    <a href="#">Link 3</a>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="dropdown">
-                                <button class="dropbtn">INGREDIENTS</button>
-                                <div class="dropdown-content">
-                                    <a href="#">Link 1</a>
-                                    <a href="#">Link 2</a>
-                                    <a href="#">Link 3</a>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="dropdown">
-                                <button class="dropbtn">INGREDIENTS</button>
-                                <div class="dropdown-content">
-                                    <a href="#">Link 1</a>
-                                    <a href="#">Link 2</a>
-                                    <a href="#">Link 3</a>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="dropdown">
-                                <button class="dropbtn">INGREDIENTS</button>
-                                <div class="dropdown-content">
-                                    <a href="#">Link 1</a>
-                                    <a href="#">Link 2</a>
-                                    <a href="#">Link 3</a>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="dropdown">
-                                <button class="dropbtn">INGREDIENTS</button>
-                                <div class="dropdown-content">
-                                    <a href="#">Link 1</a>
-                                    <a href="#">Link 2</a>
-                                    <a href="#">Link 3</a>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+        <%@include file="header.jsp" %>
 
-
-
+        <%
+            Gson gson = new Gson();
+            String ingredientJson = gson.toJson(ingredientMap);
+        %>
+        <script>
+            // Access the JSON string in JavaScript
+            var hashMap = JSON.parse('<%= ingredientJson%>');
+            // Now, you can work with the hashMap object in JavaScript
+            // ...
+        </script>
 
         <div class="blank-background">
             <div class="container">
                 <div class="row add-recipe-info">
-                    <form action="test" method="get" id="addRecipe">
+                    <form id="addRecipe" action="MainController" method="get">
                         <div class="add-recipe-header">
                             <p>Add a New Recipe</p>
                             <p>
@@ -161,8 +77,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                     <div class="add-recipe-info-header-secondary">
                                         Thumbnail Picture
                                         <p>*</p>
-                                    </div> <!-- Lam cai hinh giong all recipe lun hem-->
-                                    <input type="file" id="image" name="thumbnail" required>
+                                    </div> <!-- ti chinh lại thành required-->
+                                    <input type="file" id="image" name="thumbnail">
                                 </div>
                                 <div class="col-md-6 add-recipe-info-overview-picture-optional">
                                     <div class="add-recipe-info-header-secondary">
@@ -177,10 +93,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                             <div class="add-recipe-info-header">Overview</div>
                             <div class="col-md-3 add-recipe-info-number-content">
                                 <div>Prep Time:</div>
-                                <input type="text" name="prepTime" id="prepTime" required max="100" min="1"
+                                <input type="text" id="prepTime" required max="100" min="1"
                                        oninput="this.value=this.value.slice(0,this.maxLength),this.value = this.value.replace(/[^0-9]/g, '')"
                                        maxlength="5">
-                                <select name="prepTimeUnit" id="prepTimeUnit">
+                                <select id="prepTimeUnit">
                                     <option value="minutes">minutes</option>
                                     <option value="hours">hours</option>
                                     <option value="days">days</option>
@@ -189,10 +105,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
 
                             <div class="col-md-3 add-recipe-info-number-content">
                                 <div>Cook Time:</div>
-                                <input type="text" name="cookTime" id="cookTime" required max="100" min="1"
+                                <input type="text" id="cookTime" required max="100" min="1"
                                        oninput="this.value=this.value.slice(0,this.maxLength),this.value = this.value.replace(/[^0-9]/g, '')"
                                        maxlength="5">
-                                <select name="cookTimeUnit" id="cookTimeUnit">
+                                <select id="cookTimeUnit">
                                     <option value="minutes">minutes</option>
                                     <option value="hours">hours</option>
                                     <option value="days">days</option>
@@ -239,22 +155,38 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                             }
 
                                             var totalMinutes = prepTimeMinute + cookTimeMinute;
-
+                                            var form = document.getElementById("addRecipe");
                                             // Create hidden input field for prep time in minutes
-                                            var prepTimeMinutesInput = document.createElement("input");
-                                            prepTimeMinutesInput.type = "hidden";
-                                            prepTimeMinutesInput.name = "prepTimeMinutes";
-                                            prepTimeMinutesInput.value = prepTimeMinute;
+                                            // Check if the prepTimeMinutes input field exists
+                                            var prepTimeMinutesInput = document.querySelector('input[name="prepTimeMinutes"]');
+                                            if (prepTimeMinutesInput !== null) {
+                                                // Update the value of the existing input field
+                                                prepTimeMinutesInput.value = prepTimeMinute;
+                                            } else {
+                                                // Create a new hidden input field
+                                                prepTimeMinutesInput = document.createElement("input");
+                                                prepTimeMinutesInput.type = "hidden";
+                                                prepTimeMinutesInput.name = "prepTimeMinutes";
+                                                prepTimeMinutesInput.value = prepTimeMinute;
 
-                                            var cookTimeMinutesInput = document.createElement("input");
-                                            cookTimeMinutesInput.type = "hidden";
-                                            cookTimeMinutesInput.name = "cookTimeMinutes";
-                                            cookTimeMinutesInput.value = cookTimeMinute;
+                                                // Append the new input field to the form
+                                                
+                                                form.appendChild(prepTimeMinutesInput);
+                                            }
 
-                                            // Append hidden input field to the form
-                                            var form = document.getElementById("addRecipe"); // Replace "yourFormId" with the actual ID of your form
-                                            form.appendChild(prepTimeMinutesInput);
-                                            form.appendChild(cookTimeMinutesInput);
+// Repeat the same process for cookTimeMinutes input field
+                                            var cookTimeMinutesInput = document.querySelector('input[name="cookTimeMinutes"]');
+                                            if (cookTimeMinutesInput !== null) {
+                                                cookTimeMinutesInput.value = cookTimeMinute;
+                                            } else {
+                                                cookTimeMinutesInput = document.createElement("input");
+                                                cookTimeMinutesInput.type = "hidden";
+                                                cookTimeMinutesInput.name = "cookTimeMinutes";
+                                                cookTimeMinutesInput.value = cookTimeMinute;
+
+                                                form.appendChild(cookTimeMinutesInput);
+                                            }
+
 
 
                                             // Convert minutes to days, hours, and minutes
@@ -281,6 +213,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
 
                                         document.getElementById("prepTime").addEventListener("input", calculateTotalTime);
                                         document.getElementById("prepTimeUnit").addEventListener("change", calculateTotalTime);
+
                                     </script>
                                 </div>
                             </div>
@@ -295,25 +228,50 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                             <div class="col-md-3 add-recipe-info-type-content">
                                 <div>Diet:</div>
                                 <select name="diet">
-                                    <option value="1">sadasdasda</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
+                                    <%for (Map.Entry<Integer, String> entry : dietMap.entrySet()) {
+                                            Integer key = entry.getKey();
+                                            String value = entry.getValue();
+
+                                    %>
+                                    <option value="<%=key%>"><%=value%></option>
+                                    <% }%>
                                 </select>
                             </div>
                             <div class="col-md-3 add-recipe-info-type-content">
                                 <div>Category:</div>
                                 <select name="category">
-                                    <option value="1">asdasdsdsda</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
+                                    <%for (Map.Entry<Integer, String> entry : cateMap.entrySet()) {
+                                            Integer key = entry.getKey();
+                                            String value = entry.getValue();
+
+                                    %>
+                                    <option value="<%=key%>"><%=value%></option>
+                                    <% }%>
                                 </select>
                             </div>
                             <div class="col-md-3 add-recipe-info-type-content">
                                 <div>Cuisine:</div>
                                 <select name="cuisine">
-                                    <option value="1">asdsadasd</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
+                                    <%for (Map.Entry<Integer, String> entry : cuisineMap.entrySet()) {
+                                            Integer key = entry.getKey();
+                                            String value = entry.getValue();
+
+                                    %>
+                                    <option value="<%=key%>"><%=value%></option>
+                                    <% }%>
+                                </select>
+                            </div>
+
+                            <div class="col-md-3 add-recipe-info-type-content">
+                                <div>Difficulties</div>
+                                <select name="level">
+                                    <%for (Map.Entry<Integer, String> entry : levelMap.entrySet()) {
+                                            Integer key = entry.getKey();
+                                            String value = entry.getValue();
+
+                                    %>
+                                    <option value="<%=key%>"><%=value%></option>
+                                    <% }%>
                                 </select>
                             </div>
                         </div>
@@ -321,15 +279,15 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                             <div class="draggable-container-ingredient col-md-8 add-recipe-info-ingredient-content">
                                 <div class="add-recipe-info-header">Ingredient</div>
                                 <p class="draggable-ingredient draggable" draggable="false">
-                                    <input type="text" class="input" name="ingredient" required="">
-                                    <select class="ingredientList"></select>
+                                    <input type="text" class="input" name="ingredientDesc" required="">
+                                    <select class="ingredientList" name="ingredientId"></select>
                                     <button type="button" class="btnDeleteIngredient">
                                         <img src="assets/close.svg" alt="">
                                     </button>
                                 </p>
                                 <p class="draggable-ingredient draggable" draggable="false">
-                                    <input type="text" class="input" name="ingredient" required="">
-                                    <select class="ingredientList"></select>
+                                    <input type="text" class="input" name="ingredientDesc" required="">
+                                    <select class="ingredientList" name="ingredientId"></select>
                                     <button type="button" class="btnDeleteIngredient">
                                         <img src="assets/close.svg" alt="">
                                     </button>
@@ -355,14 +313,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                     </button>
                                 </p>
                                 <p class="draggable draggable-direction" draggable="false">
-                                    <textarea name="" id="" rows="5" class="input" name="direction" required
+                                    <textarea id="" rows="5" class="input" name="direction" required
                                               placeholder="Your direction here"></textarea>
                                     <button type="button" class="btnDeleteDirection">
                                         <img src="assets/close.svg" alt="">
                                     </button>
                                 </p>
                                 <p class="draggable draggable-direction" draggable="false">
-                                    <textarea name="" id="" rows="5" class="input" name="direction" required
+                                    <textarea id="" rows="5" class="input" name="direction" required
                                               placeholder="Your direction here"></textarea>
                                     <button type="button" class="btnDeleteDirection">
                                         <img src="assets/close.svg" alt="">
@@ -399,13 +357,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                 <div>
                                     <input type="radio" name="status" value="1">No, make it private
                                     <span>(Your recipe won't need to go through our moderator team, but the recipe can
-                                        only be view by you only)</span>
+                                        only be view by you)</span>
 
                                 </div>
                             </div>
                         </div>
+                        <input type="text" name="userId" value="<%=user.getId()%>" hidden/>
                         <div class=" add-recipe-info-submit">
-                            <button type="submit" name="action" value="submit">
+                            <button type="submit" name="action" value="addRecipe">
                                 SUBMIT
                             </button>
                         </div>

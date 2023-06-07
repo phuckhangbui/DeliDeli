@@ -46,7 +46,6 @@
                 if (user != null) {
                     ReviewDTO userReview = ReviewDAO.getReviewByRecipeAndUser(user.getId(), recipe.getId());
                     if (userReview != null) {
-                        request.setAttribute("review", "1");
             %>
             <header class="recipe-detail-review-main-header">
                 EDIT YOUR REVIEWS
@@ -58,6 +57,8 @@
                         <div class="recipe-detail-review-self-rating rate">
                             <input type="text" name="reviewId" value="<%= userReview.getId()%>" hidden="">
                             <input type="text" name="recipeId" value="<%= recipe.getId()%>" hidden="">
+                            <input type="text" name="userId" value="<%= user.getId()%>" hidden="">
+
 
                             <% for (int i = 5; i > 0; i--) {
 
@@ -193,11 +194,11 @@
                             <%
                                 }
                             %>
-                            <div><%if(o.getUpdate_at() != null){
+                            <div><%if (o.getUpdate_at() != null) {
                                 %>Update at <%=o.getUpdate_at()%>
-                            <% }else{%>
-                            <%=o.getCreate_at() %>
-                                <% } %>
+                                <% } else {%>
+                                <%=o.getCreate_at()%>
+                                <% }%>
                             </div>
                         </div>
                         <p>

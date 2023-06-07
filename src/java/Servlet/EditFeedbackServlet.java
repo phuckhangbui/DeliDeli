@@ -4,8 +4,11 @@
  */
 package Servlet;
 
+import Review.ReviewDAO;
+import Review.ReviewDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -33,6 +36,19 @@ public class EditFeedbackServlet extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             int reviewId = Integer.parseInt(request.getParameter("reviewId"));
             int recipeId = Integer.parseInt(request.getParameter("recipeId"));
+            int userId = Integer.parseInt(request.getParameter("userId"));
+
+            int rating = Integer.parseInt(request.getParameter("rating"));
+            String content = request.getParameter("txtReview");
+
+            ReviewDTO oldReview = ReviewDAO.getReviewById(reviewId);
+
+            ReviewDTO newReview = new ReviewDTO(reviewId,rating, content, oldReview.getCreate_at(),
+                    new Date(System.currentTimeMillis()), recipeId, userId);
+            ReviewDAO.updateReview(newReview);
+
+            response.sendRedirect("MainController?action=getRecipeDetailById&id=" + recipeId + "&activeScroll=true");
+
         }
     }
 

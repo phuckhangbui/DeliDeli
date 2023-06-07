@@ -163,14 +163,21 @@
                         </div>
                         <div>
                             <%
+                                int step = 1;
                                 if (directionList.size() > 0 && directionList != null) {
                                     for (DirectionDTO o : directionList) {
+                                    if(!o.getIs_header()){
                             %>
-                            <p class="recipe-detail-info-direction-header">Step <%= o.getStep()%></p>
+                            <p class="recipe-detail-info-direction-header">Step <%= step++%></p>
                             <p><%= o.getDesc()%></p>
                             <%
-                                    }
+                                }else{ 
+                            step = 1;%>
+                                <p class="recipe-detail-info-direction-header"><%=o.getDesc() %></p>
+
+                            <%        }
                                 }
+                            }
                             %>
                         </div>
                     </div>

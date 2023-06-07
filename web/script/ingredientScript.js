@@ -1,4 +1,4 @@
-/*
+    /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/JavaScript.js to edit this template
  */
@@ -15,12 +15,6 @@ let dragIngredient = false; // Flag to track drag mode
 let btnDeleteIngredient = document.querySelectorAll('.btnDeleteIngredient');
 
 // Ingredient select field
-const hashMap = {
-	1: 'Option 1',
-	2: 'Option 2',
-	3: 'Option 3',
-	4: 'Option 4',
-};
 
 // Get the select element
 const ingredientList = document.querySelectorAll('.ingredientList');
@@ -85,12 +79,13 @@ btnAddIngredient.addEventListener('click', () => {
 		const newInput = document.createElement('input');
 		newInput.type = 'text';
 		newInput.classList.add('input');
-		newInput.name = 'ingredient';
+		newInput.name = 'ingredientDesc';
 		newInput.required = true;
 
 		//create the option field
 		const option = document.createElement('select');
 		option.classList.add('ingredientList');
+                option.name = 'ingredientId';
 		createOptions(option);
 		// Create delete button
 		const deleteButton = document.createElement('button');

@@ -248,10 +248,43 @@ public class ReviewDAO {
 
         return result;
     }
+    
+    public static boolean updateReview(ReviewDTO review) {
+    boolean success = false;
+    Connection cn = null;
+
+    try {
+        cn = DBUtils.getConnection();
+
+        if (cn != null) {
+            String sql = "UPDATE Review SET rating = ?, content = ?, update_at = ? WHERE id = ?";
+
+            PreparedStatement pst = cn.prepareStatement(sql);
+            pst.setInt(1, review.getRating());
+            pst.setString(2, review.getContent());
+            pst.setDate(3, review.getUpdate_at()); 
+            pst.setInt(4, review.getId());
+
+            int rowsAffected = pst.executeUpdate();
+            if (rowsAffected > 0) {
+                success = true;
+            }
+
+            pst.close();
+            cn.close();
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+
+    return success;
+}
+
 
     public static void main(String[] args) {
-        ReviewDTO o = ReviewDAO.getReviewById(3);
+        ReviewDTO o = ReviewDAO.getReviewById(6);
 //        System.out.println("Owner: " + getReviewByUserId(1));
+        updateReview(o);
         System.out.println(o);
 
     }
