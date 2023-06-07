@@ -25,7 +25,7 @@
             <button type="submit" value="searchRecipe" name="action">Search</button>
         </form>
         
-        <div style="display: flex; justify-content: center; align-items: center; gap: 0 50px">
+        <div>
             <!-- Confirmed Recipe List -->
             <div>
                 <h3>Confirmed Recipe List</h3>

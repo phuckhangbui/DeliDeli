@@ -49,8 +49,8 @@
         <hr>
 
         <%
-            int currentPage = 1; 
-            
+            int currentPage = 1;
+
             String currentPageParam = request.getParameter("page");
             if (currentPageParam != null && !currentPageParam.isEmpty()) {
                 currentPage = Integer.parseInt(currentPageParam);
@@ -71,7 +71,7 @@
             </tr>
             <%
                 for (UserDTO u : listAccSearched) {
-                        
+
             %>
             <tr>
                 <td><%= u.getId()%></td>
@@ -105,7 +105,7 @@
 
 
 
-        <% }else if (listAcc != null && listAcc.size() > 0) {
+        <% } else if (listAcc != null && listAcc.size() > 0) {
         %>
         <table border="1">
             <tr>
@@ -115,6 +115,7 @@
                 <th>Create at</th>
                 <th>Status</th>
                 <th>Action</th>
+                <th>Delete</th>
             </tr>
             <%
                 for (UserDTO u : listAcc) {
@@ -129,8 +130,23 @@
                     <form action="MainController?username=<%= u.getUserName()%>" method="post">
                         <input type="hidden" value="<%= currentRole%>" name="currentRole">
                         <input type="hidden" value="<%= tag%>" name="tag">
-                        <button type="submit" value="deactivateAcc" name="action">Deactivate</button>
+                        <%
+                            if (tmp[u.getStatus()].equals("Deactivated")) {
+                        %>
                         <button type="submit" value="activateAcc" name="action">Activate</button>
+                        <%
+                        } else {
+                        %>
+                        <button type="submit" value="deactivateAcc" name="action">Deactivate</button>
+                        <%
+                            }
+                        %>
+                    </form>
+                </td>
+                <td>
+                    <form action="MainController?username=<%= u.getUserName()%>" method="post">
+                        <input type="hidden" value="<%= currentRole%>" name="currentRole">
+                        <input type="hidden" value="<%= tag%>" name="tag">
                         <button type="submit" value="deleteAcc" name="action">Delete</button>
                     </form>
                 </td>
