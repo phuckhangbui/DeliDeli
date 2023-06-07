@@ -80,6 +80,10 @@
         <servlet-name>DeleteFeedbackServlet</servlet-name>
         <servlet-class>Servlet.DeleteFeedbackServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UploadImageServlet</servlet-name>
+        <servlet-class>Servlet.UploadImageServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Example</servlet-name>
         <url-pattern>/Example</url-pattern>
@@ -139,6 +143,10 @@
     <servlet-mapping>
         <servlet-name>DeleteFeedbackServlet</servlet-name>
         <url-pattern>/DeleteFeedbackServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UploadImageServlet</servlet-name>
+        <url-pattern>/UploadImageServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

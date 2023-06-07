@@ -10,7 +10,9 @@ import IngredientDetail.IngredientDetailDAO;
 import IngredientDetail.IngredientDetailDTO;
 import Recipe.RecipeDAO;
 import Recipe.RecipeDTO;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.sql.Date;
 import java.util.ArrayList;
@@ -22,11 +24,16 @@ import java.util.Enumeration;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.servlet.annotation.MultipartConfig;
 
 /**
  *
  * @author khang
  */
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB - exceed 2MB => disk, else memory => caching.
+        maxFileSize = 1024 * 1024 * 10, // 10MB => maximum upload to server.
+        maxRequestSize = 1024 * 1024 * 50) // 50MB => maximum request from server.
+
 public class AddRecipeServlet extends HttpServlet {
 
     /**
@@ -43,6 +50,8 @@ public class AddRecipeServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
+
+            
             Date currentDate = new Date(System.currentTimeMillis());
             String title = request.getParameter("title");
             String description = request.getParameter("description");
@@ -61,7 +70,7 @@ public class AddRecipeServlet extends HttpServlet {
             RecipeDTO newRecipe = new RecipeDTO(title, description, prepTime, cookTime, servings,
                     currentDate, null, cuisine, category, userId, level, diet, status); // Process other parameters as needed...
             int recipeId = RecipeDAO.addRecipe(newRecipe);
-            
+            request.setAttribute("recipeId", recipeId);
             out.print(newRecipe.toString());
             String[] ingredientDesc = request.getParameterValues("ingredientDesc");
             String[] ingredientId = request.getParameterValues("ingredientId");
@@ -74,30 +83,18 @@ public class AddRecipeServlet extends HttpServlet {
                     int id = Integer.parseInt(ingredientId[i]);
                     IngredientDetailDTO detail = new IngredientDetailDTO(desc, id, recipeId);
                     detailList.add(detail);
-                    out.print(desc + " " + id + "\n");
                 }
             }
-            
+
             IngredientDetailDAO.addIngredientDetails(detailList);
             // ...
 
-            // Create a list to store DirectionDTO objects
-            String query = request.getQueryString();
-            List<DirectionDTO> directionsList = DirectionDAO.extractDirectionsFromQueryString(query, recipeId);
-
-            DirectionDAO.addDirections(directionsList);
-            // Example: Print the list of directions
-            for (DirectionDTO direction : directionsList) {
-                out.print("Is Header: " + direction.getIs_header());
-                out.print("Step: " + direction.getStep());
-                out.print("Description: " + direction.getDesc());
-                out.print("Recipe ID: " + direction.getRecipe_id());
-                out.println();
-            }
-
-            // Access the valuesMap and process the parameter values
-//            Enumeration<String> parameterNames = request.getParameterNames();
-//    ArrayList<IngredientDetailDTO> IngredientList = new ArrayList<>();
+            // Create a list to store DirectionDTO objects;
+            
+            String direction = request.getParameter("direction");
+            out.print(direction);
+            
+            request.getRequestDispatcher("UploadImageServlet").forward(request, response);
         }
     }
 

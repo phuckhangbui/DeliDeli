@@ -27,6 +27,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
         <link
             href="https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed:wght@300;400;500;600;700&display=swap"
             rel="stylesheet">
+        <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
         <script src="./script/ingredientScript.js" defer></script>
         <script src="./script/directionScript.js" defer></script>
 
@@ -50,7 +51,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
         <div class="blank-background">
             <div class="container">
                 <div class="row add-recipe-info">
-                    <form id="addRecipe" action="MainController" method="get">
+                    <form id="addRecipe" action="AddRecipeServlet" enctype="multipart/form-data" method="post">
                         <div class="add-recipe-header">
                             <p>Add a New Recipe</p>
                             <p>
@@ -78,7 +79,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                         Thumbnail Picture
                                         <p>*</p>
                                     </div> <!-- ti chinh lại thành required-->
-                                    <input type="file" id="image" name="thumbnail">
+                                    <input type="file" id="image" name="thumbnail" required>
                                 </div>
                                 <div class="col-md-6 add-recipe-info-overview-picture-optional">
                                     <div class="add-recipe-info-header-secondary">
@@ -170,7 +171,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                                 prepTimeMinutesInput.value = prepTimeMinute;
 
                                                 // Append the new input field to the form
-                                                
+
                                                 form.appendChild(prepTimeMinutesInput);
                                             }
 
@@ -301,45 +302,17 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                     Add Paragraph
                                 </button>
                             </div>
-
                         </div>
-                        <div class="row add-recipe-info-direction">
-                            <div class="draggable-container-direction col-md-8 add-recipe-info-direction-content">
-                                <div class="add-recipe-info-header">Direction</div>
-                                <p class="draggable draggable-direction" draggable="false">
-                                    <input type="text" name="header" class="input" placeholder="Your header here">
-                                    <button type="button" class="btnDeleteDirection">
-                                        <img src="assets/close.svg" alt="">
-                                    </button>
-                                </p>
-                                <p class="draggable draggable-direction" draggable="false">
-                                    <textarea id="" rows="5" class="input" name="direction" required
-                                              placeholder="Your direction here"></textarea>
-                                    <button type="button" class="btnDeleteDirection">
-                                        <img src="assets/close.svg" alt="">
-                                    </button>
-                                </p>
-                                <p class="draggable draggable-direction" draggable="false">
-                                    <textarea id="" rows="5" class="input" name="direction" required
-                                              placeholder="Your direction here"></textarea>
-                                    <button type="button" class="btnDeleteDirection">
-                                        <img src="assets/close.svg" alt="">
-                                    </button>
-                                </p>
+                        
+                                
+                                
+                        <div class="add-recipe-info-header">Direction:</div>
+                        <p><textarea name="direction" rows="10" cols="10" id="editor" value="<%=user.getId()%>"></textarea></p>
+                        <script>
+                            CKEDITOR.replace('editor');
+                        </script>
 
-                            </div>
-                            <div class="col-md-4 add-recipe-info-direction-button">
-                                <button type="button" id="btnToggleDirection">
-                                    <img src="assets/drag.svg" alt="">
-                                </button>
-                                <button type="button" id="btnAddDirection">
-                                    Add Paragraph
-                                </button>
-                                <button type="button" id="btnAddHeader">
-                                    Add Header
-                                </button>
-                            </div>
-                        </div>
+                        
 
 
 
