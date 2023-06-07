@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Admin
  */
-public class CreateNewsServlet extends HttpServlet {
+public class UpdateNewsServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,24 +32,23 @@ public class CreateNewsServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
+            String newsId = request.getParameter("newsId");
             String title = request.getParameter("txtTitle");
             String content = request.getParameter("editorContent");
-            String userId = request.getParameter("userId");
             String category = request.getParameter("category");
             java.util.Date date = new java.util.Date();
-            java.sql.Date createAt = new java.sql.Date(date.getTime());
-            java.sql.Date updateAt = createAt;
+            java.sql.Date updateAt = new java.sql.Date(date.getTime());
                         
-            int result = NewsDAO.insertNews(title, content, "", createAt, updateAt, new Integer(userId), new Integer(category));
+            int result = NewsDAO.updateNews(new Integer(newsId), title, content, "", updateAt, new Integer(category));
             if(result > 0) {
                 request.getRequestDispatcher("ManageNewsServlet").forward(request, response);
             }
-            
+
 //            out.println(category);
 //            out.println(content);
-//            out.println(userId);
+//            out.println(newsId);
 //            out.println(title);
-
+//            out.println(updateAt);
         }
     }
 

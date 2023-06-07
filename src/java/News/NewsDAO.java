@@ -16,8 +16,8 @@ import java.util.ArrayList;
  * @author Admin
  */
 public class NewsDAO {
-
-    public static int insertNews(String title, String desc, String image, Date createAt, int userId, int categoryId) {
+    
+    public static int deleteNews(int newsId) {
         int result = 0;
         Connection cn = null;
 
@@ -25,16 +25,72 @@ public class NewsDAO {
             cn = DBUtils.getConnection();
 
             if (cn != null) {
-                String sql = "INSERT INTO News(title, description, image, create_at, user_id, news_category_id) \n"
-                        + "VALUES (?, ?, ?, ?, ?, ?)";
+                String sql = "DELETE News WHERE id = ?";
+
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setInt(1, newsId);
+                result = pst.executeUpdate();
+                pst.close();
+                cn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public static int updateNews(int newsId, String title, String desc, String image, Date updateAt, int categoryId) {
+        int result = 0;
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                String sql = "UPDATE News SET \n"
+                        + "title = ?,\n"
+                        + "description = ?, \n"
+                        + "image = ?, \n"
+                        + "update_at = ?, \n"
+                        + "news_category_id = ?\n"
+                        + "WHERE id = ?";
+
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setString(1, title);
+                pst.setString(2, desc);
+                pst.setString(3, image);
+                pst.setDate(4, updateAt);
+                pst.setInt(5, categoryId);
+                pst.setInt(6, newsId);
+                result = pst.executeUpdate();
+                pst.close();
+                cn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public static int insertNews(String title, String desc, String image, Date createAt, Date updateAt, int userId, int categoryId) {
+        int result = 0;
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                String sql = "INSERT INTO News(title, description, image, create_at, update_at, user_id, news_category_id) \n"
+                        + "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
                 PreparedStatement pst = cn.prepareStatement(sql);
                 pst.setString(1, title);
                 pst.setString(2, desc);
                 pst.setString(3, image);
                 pst.setDate(4, createAt);
-                pst.setInt(5, userId);
-                pst.setInt(6, categoryId);
+                pst.setDate(5, createAt);
+                pst.setInt(6, userId);
+                pst.setInt(7, categoryId);
                 result = pst.executeUpdate();
                 pst.close();
                 cn.close();
@@ -222,7 +278,8 @@ public class NewsDAO {
 //        }
         java.util.Date date = new java.util.Date();
         java.sql.Date createAt = new java.sql.Date(date.getTime());
+        java.sql.Date updateAt = createAt;
 
-        System.out.println(NewsDAO.insertNews("Title", "Desc", "", createAt, 4, 6));
+        System.out.println(NewsDAO.deleteNews(5));
     }
 }

@@ -105,6 +105,12 @@ public class MainController extends HttpServlet {
                     case "createNews":
                         url = "CreateNewsServlet";
                         break;
+                    case "updateNews":
+                        url = "UpdateNewsServlet";
+                        break;
+                    case "deleteNews":
+                        url = "DeleteNewsServlet";
+                        break;
                 }
             }
             RequestDispatcher rd = request.getRequestDispatcher(url);

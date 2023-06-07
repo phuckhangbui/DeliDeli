@@ -21,8 +21,12 @@
     <body>
         <%
             UserDTO user = (UserDTO) session.getAttribute("user");
+            String id = request.getParameter("id");
         %>
 
+        <%
+            if (id == null) {
+        %>
         <form action="MainController" method="post">
             <p>Title: <input type="text" name="txtTitle"></p>
             <p>Category:
@@ -43,6 +47,34 @@
             <input type="hidden" name="userId" value="<%= user.getId()%>">
             <button type="submit" value="createNews" name="action">Submit</button>
         </form>
+        <%
+        } else {
+                NewsDTO news = NewsDAO.getNewsByNewsId(new Integer(id));
+        %>
+        <form action="MainController" method="post">
+            <p>Title: <input type="text" name="txtTitle" value="<%= news.getTitle()%>"></p>
+            <p>Category:
+                <select name="category">
+                    <%
+                        HashMap<Integer, String> newsMap = Utils.NavigationBarUtils.getMap("NewsCategory");
+                        for (Map.Entry<Integer, String> entry : newsMap.entrySet()) {
+                    %>
+                    <option value="<%= entry.getKey()%>"><%= entry.getValue()%></option>
+                    <%
+                        }
+                    %>
+                </select>
+            </p>
+            <p>Image: <input type="file" name="file"></p>
+            <p>Description: <textarea rows="10" cols="10" id="editor" value="<%= news.getDesc()%>"></textarea></p>
+            <input type="hidden" name="editorContent" id="editorContent" value="">
+            <input type="hidden" name="newsId" value="<%= id%>">
+            <button type="submit" value="updateNews" name="action">Update</button>
+        </form>
+        <%
+            }
+        %>
+
 
         <script>
             CKEDITOR.replace('editor');

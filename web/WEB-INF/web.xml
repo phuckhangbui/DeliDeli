@@ -112,6 +112,14 @@
         <servlet-name>CreateNewsServlet</servlet-name>
         <servlet-class>Servlet.CreateNewsServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UpdateNewsServlet</servlet-name>
+        <servlet-class>Servlet.UpdateNewsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteNewsServlet</servlet-name>
+        <servlet-class>Servlet.DeleteNewsServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Example</servlet-name>
         <url-pattern>/Example</url-pattern>
@@ -203,6 +211,14 @@
     <servlet-mapping>
         <servlet-name>CreateNewsServlet</servlet-name>
         <url-pattern>/CreateNewsServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateNewsServlet</servlet-name>
+        <url-pattern>/UpdateNewsServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteNewsServlet</servlet-name>
+        <url-pattern>/DeleteNewsServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
