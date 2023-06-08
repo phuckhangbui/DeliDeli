@@ -144,6 +144,10 @@
         <servlet-name>DeleteRecipeServlet</servlet-name>
         <servlet-class>Servlet.DeleteRecipeServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddRecipeServlet</servlet-name>
+        <servlet-class>Servlet.AddRecipeServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Example</servlet-name>
         <url-pattern>/Example</url-pattern>
@@ -267,6 +271,10 @@
     <servlet-mapping>
         <servlet-name>DeleteRecipeServlet</servlet-name>
         <url-pattern>/DeleteRecipeServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddRecipeServlet</servlet-name>
+        <url-pattern>/AddRecipeServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

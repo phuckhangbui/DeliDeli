@@ -37,7 +37,6 @@
 
         <%
             ArrayList<IngredientDetailDTO> ingredientDetailList = (ArrayList) request.getAttribute("ingredientDetailList");
-            ArrayList<DirectionDTO> directionList = (ArrayList) request.getAttribute("directionList");
             ArrayList<ReviewDTO> reviewList = (ArrayList) request.getAttribute("reviewList");
             RecipeDTO recipe = (RecipeDTO) request.getAttribute("recipe");
             int ownerId = recipe.getUser_id();

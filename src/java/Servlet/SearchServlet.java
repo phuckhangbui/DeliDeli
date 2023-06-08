@@ -42,7 +42,7 @@ public class SearchServlet extends HttpServlet {
 
             //Search recipe for admin
             if (admin != null) {
-                ArrayList<RecipeDTO> list = RecipeDAO.searchRecipes(txtsearch, searchBy);
+                ArrayList<RecipeDTO> list = NavigationBarUtils.searchRecipes(txtsearch, searchBy);
                 request.setAttribute("searchRecipesList", list);
                 request.getRequestDispatcher("manageRecipe.jsp").forward(request, response);
             } else {
@@ -54,7 +54,7 @@ public class SearchServlet extends HttpServlet {
                 if (txtsearch == null || txtsearch.equals("")) {
                     session.setAttribute("ERROR_MSG", "What do you want to eat? Please search");
                 } else {
-                    ArrayList<RecipeDTO> list = RecipeDAO.searchRecipes(txtsearch, searchBy);
+                    ArrayList<RecipeDTO> list = NavigationBarUtils.searchRecipes(txtsearch, searchBy);
                     if (list.size() != 0) {
                         session.setAttribute("searchRecipesList", list);
                         session.setAttribute("SUCCESS_MSG", "Result of '" + txtsearch + "' in recipe's " + searchBy);
