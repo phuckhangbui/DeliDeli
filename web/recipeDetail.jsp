@@ -4,6 +4,8 @@
     Author     : Admin
 --%>
 
+<%@page import="Recipe.RecipeDAO"%>
+<%@page import="Direction.DirectionDAO"%>
 <%@page import="User.UserDAO"%>
 <%@page import="User.UserDTO"%>
 <%@page import="Review.ReviewDAO"%>
@@ -89,7 +91,7 @@
                         </button>
                     </div>
                     <div class="recipe-detail-main-pic">
-                        <img src="<%= request.getAttribute("thumbnail")%>" alt="">
+                        <img src="<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
                     </div>
                     <div class="recipe-detail-info-overview">
                         <div class="recipe-detail-info-overview-content">
@@ -163,30 +165,20 @@
                         </div>
                         <div>
                             <%
-                                int step = 1;
-                                if (directionList.size() > 0 && directionList != null) {
-                                    for (DirectionDTO o : directionList) {
-                                    if(!o.getIs_header()){
+                                DirectionDTO direction = DirectionDAO.getDirectionByRecipeId(recipe.getId());
                             %>
-                            <p class="recipe-detail-info-direction-header">Step <%= step++%></p>
-                            <p><%= o.getDesc()%></p>
-                            <%
-                                }else{ 
-                            step = 1;%>
-                                <p class="recipe-detail-info-direction-header"><%=o.getDesc() %></p>
 
-                            <%        }
-                                }
-                            }
-                            %>
+                            <p class="recipe-detail-info-direction-header"><%= direction.getDesc()%></p>
+
+
                         </div>
                     </div>
                     <div class="recipe-detail-secondary-pic">
-                        <img src="<%= request.getAttribute("image")%>" alt="">
+                        <img src="<%= RecipeDAO.getImageByRecipeId(recipe.getId()).getImgPath() %>" alt="">
                     </div>
                 </div>
 
-                 <%@include file="reviewSection.jsp" %>
+                <%@include file="reviewSection.jsp" %>
             </div>
         </div>
 

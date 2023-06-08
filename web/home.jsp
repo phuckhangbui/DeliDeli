@@ -3,6 +3,7 @@
     Created on : May 23, 2023, 8:09:36 AM
     Author     : Admin
 --%>
+<%@page import="RecipeImage.RecipeImageDAO"%>
 <%@page import="User.UserDTO"%>
 <%@page import="Recipe.RecipeDAO"%>
 <%@page import="java.util.ArrayList"%>
@@ -95,7 +96,7 @@
                     %>
                     <a href="MainController?action=getRecipeDetailById&id=<%= r.getId()%>" class="col-md-4 recommendation-content-post">
                         <div class="recommendation-content-picture">
-                            <img src="<%= RecipeDAO.getThumbnailByRecipeId(r.getId())%>" alt="">
+                            <img src="<%= RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath() %>" alt="">
                         </div>
                         <div>
                             <p><%= RecipeDAO.getCategoryByRecipeId(r.getId())%></p>

@@ -18,9 +18,6 @@ import lombok.*;
 @ToString
 public class DirectionDTO {
     
-    private int id;
-    private Boolean is_header;
-    private int step;
     private String desc;
     private int recipe_id;    
 }

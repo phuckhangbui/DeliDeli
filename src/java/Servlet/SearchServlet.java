@@ -6,6 +6,7 @@ package Servlet;
 
 import Recipe.RecipeDAO;
 import Recipe.RecipeDTO;
+import Utils.NavigationBarUtils;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -45,7 +46,7 @@ public class SearchServlet extends HttpServlet {
             if (txtsearch == null || txtsearch.equals("")) {
                 session.setAttribute("ERROR_MSG", "What do you want to eat? Please search");
             } else {
-                ArrayList<RecipeDTO> list = RecipeDAO.searchRecipes(txtsearch, searchBy);
+                ArrayList<RecipeDTO> list = NavigationBarUtils.searchRecipes(txtsearch, searchBy);
                 if (list.size() != 0) {
                     session.setAttribute("searchRecipesList", list);
                     session.setAttribute("SUCCESS_MSG", "Result of '" + txtsearch + "' in recipe's " + searchBy);

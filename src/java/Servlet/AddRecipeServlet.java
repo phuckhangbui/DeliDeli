@@ -91,8 +91,9 @@ public class AddRecipeServlet extends HttpServlet {
 
             // Create a list to store DirectionDTO objects;
             
-            String direction = request.getParameter("direction");
-            out.print(direction);
+            String directionDesc = request.getParameter("direction");
+            DirectionDAO.addDirections(new DirectionDTO (directionDesc, recipeId));
+            
             
             request.getRequestDispatcher("UploadImageServlet").forward(request, response);
         }

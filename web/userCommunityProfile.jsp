@@ -43,7 +43,7 @@
             if (account != null) {
                 UserDetailDTO accountDetail = UserDetailDAO.getUserDetailByUserId(account.getId());
                 fullName = accountDetail.getLastName() + " " + accountDetail.getFirstName();
-                accountRecipe = RecipeDAO.getRecipeByUserId(account.getId());
+                accountRecipe = RecipeDAO.getPublicRecipeByUserId(account.getId());
                 reviewList = ReviewDAO.getReviewByUserId(account.getId());
             }
         %>

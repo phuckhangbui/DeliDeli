@@ -52,6 +52,7 @@
                                 <option value="Category">CATEGORY</option>
                                 <!--<option value="">INGREDIENT</option>-->
                                 <option value="Cuisine">CUISINES</option>
+                                <option value="Diet">DIETS</option>
                             </select>
                             <button type="submit" name="action" value="search"><img src="./assets/search-button.svg" alt="Search Icon"></button>
                         </form>

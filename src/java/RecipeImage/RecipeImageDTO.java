@@ -4,6 +4,8 @@
  */
 package RecipeImage;
 
+import Recipe.RecipeDAO;
+
 /**
  *
  * @author Daiisuke
@@ -62,5 +64,13 @@ public class RecipeImageDTO {
         this.isThumbnail = isThumbnail;
     }
     
+    public String getThumbnailPath(){
+        String path = "pictures/Recipe/"+this.recipe_id+"/Thumbnail/"+this.image;
+        return path;
+    }
     
+    public String getImgPath(){
+        String path = "pictures/Recipe/"+this.recipe_id+"/Detail/"+this.image;
+        return path;
+    }
 }
