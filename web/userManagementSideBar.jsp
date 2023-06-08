@@ -24,40 +24,47 @@
     </head>
     <body>
         <div class="col-md-3 user-profile-column-1">
-                        <div class="user-profile-header">
-                            <div>
-                                Setting
-                            </div>
-                            <p>
-                                Customize your profile
-                            </p>
-                        </div>
-                        <div class="user-profile-option">
-                            <a href="userPublicDetail.jsp?userId=<%= userId%>">
-                                <img src="./assets/public.svg" alt="">
-                                Public Profile
-                            </a>
-                            <a href="userEmailSetting.jsp?userId=<%= userId%>">
-                                <img src="./assets/personal.png" alt="">
-                                Personal Setting
-                            </a>
-                            <a href="userPasswordSetting.jsp?userId=<%= userId%>">
-                                <img src="./assets/Password.svg" alt="">
-                                Change Password
-                            </a>
-                            <a href="userSavedRecipes.html">
-                                <img src="./assets/favorite.svg" alt="">
-                                Saved Recipes
-                            </a>
-                            <a href="userOwnRecipes.html">
-                                <img src="./assets/my-recipe.svg" alt="">
-                                My Own Recipes
-                            </a>
-                            <a href="userOwnReviews.html">
-                                <img src="./assets/full-star.png" alt="">
-                                My Reviews
-                            </a>
+            <div class="user-profile-header">
+                <div>
+                    Setting
+                </div>
+                <p>
+                    Customize your profile
+                </p>
+            </div>
+            <div class="user-profile-option">
+                <a href="userPublicDetail.jsp?userId=<%= user.getId()%>">
+                    <img src="./assets/public.svg" alt="">
+                    Public Profile
+                </a>
+                <a href="userEmailSetting.jsp?userId=<%= user.getId()%>">
+                    <img src="./assets/personal.png" alt="">
+                    Personal Setting
+                </a>
+                <a href="userPasswordSetting.jsp?userId=<%= user.getId()%>">
+                    <img src="./assets/Password.svg" alt="">
+                    Change Password
+                </a>
+                <a href="userSavedRecipes.html">
+                    <img src="./assets/favorite.svg" alt="">
+                    Saved Recipes
+                </a>
+                <div class="dropdown" id="dropdownUserRecipe">
+                        <a href="#" class="dropbtn">
+                            <img src="./assets/my-recipe.svg" alt="">
+                            My Own Recipes
+                        </a>
+                        <div class="dropdown-content-right">
+                            <a href="privateRecipeManagement.jsp">Private Recipes</a>
+                            <a href="pendingRecipeManagement.jsp">Pending Recipes</a>
+                            <a href="publicRecipeManagement.jsp">Public Recipes</a>
                         </div>
                     </div>
+                <a href="userReviewManagement.jsp">
+                    <img src="./assets/full-star.png" alt="">
+                    My Reviews
+                </a>
+            </div>
+        </div>
     </body>
 </html>

@@ -37,6 +37,7 @@
             HashMap<Integer, String> newsMap = Utils.NavigationBarUtils.getMap("NewsCategory");
 
             UserDTO user = (UserDTO) session.getAttribute("user");
+            
         %>
         <div class="navigator-bar">
             <div class="container ">
