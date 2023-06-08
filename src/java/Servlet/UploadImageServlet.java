@@ -63,6 +63,7 @@ public class UploadImageServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
+        try{
         //DAO/DTO
         RecipeImageDAO recipeImageDAO = new RecipeImageDAO();
         RecipeImageDTO recipeImage = null;
@@ -138,6 +139,9 @@ public class UploadImageServlet extends HttpServlet {
 //        request.setAttribute("THUMB_IMAGE", thumbnailName);
 //        request.setAttribute("DETAIL_IMAGE", detailName);
         response.sendRedirect("home.jsp");
+        }catch(Exception e){
+            response.sendRedirect("home.jsp");
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

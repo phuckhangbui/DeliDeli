@@ -405,6 +405,89 @@ public class RecipeDAO {
         return generatedId;
     }
 
+    public static int editRecipe(RecipeDTO recipe) {
+        int generatedId = -1; // Default value if ID generation fails
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+            // Step 2: Create a prepared statement to insert the recipe
+            String sql = "UPDATE [dbo].[Recipe] \n"
+                    + "SET title = ?, \n"
+                    + "    description = ?, \n"
+                    + "    prep_time = ?, \n"
+                    + "    cook_time = ?, \n"
+                    + "    servings = ?, \n"
+                    + "    create_at = ?, \n"
+                    + "    update_at = ?, \n"
+                    + "    cuisine_id = ?, \n"
+                    + "    category_id = ?, \n"
+                    + "    user_id = ?, \n"
+                    + "    level_id = ?, \n"
+                    + "    diet_id = ?, \n"
+                    + "    status = ? \n"
+                    + "WHERE id = ?";
+            PreparedStatement pst = cn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+            // Set the parameter values for the prepared statement
+            pst.setString(1, recipe.getTitle());
+            pst.setString(2, recipe.getDescription());
+            pst.setInt(3, recipe.getPrep_time());
+            pst.setInt(4, recipe.getCook_time());
+            pst.setInt(5, recipe.getServings());
+            pst.setDate(6, recipe.getCreate_at());
+            pst.setDate(7, recipe.getUpdate_at());
+            pst.setInt(8, recipe.getCuisine_id());
+            pst.setInt(9, recipe.getCategory_id());
+            pst.setInt(10, recipe.getUser_id());
+            pst.setInt(11, recipe.getLevel_id());
+            pst.setInt(12, recipe.getDiet_id());
+            pst.setInt(13, recipe.getStatus());
+            pst.setInt(14, recipe.getId());
+
+            // Step 3: Execute the prepared statement and retrieve the generated keys
+            pst.executeUpdate();
+            ResultSet generatedKeys = pst.getGeneratedKeys();
+
+            // Step 4: Retrieve the generated ID
+            if (generatedKeys.next()) {
+                generatedId = generatedKeys.getInt(1);
+            }
+
+            // Step 5: Close the database connection and resources
+            generatedKeys.close();
+            pst.close();
+            cn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return generatedId;
+    }
+
+    public static int deleteRecipe(int recipeId) {
+        int result = -1;
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                String sql = "DELETE FROM [dbo].[Recipe]\n"
+                        + "WHERE id = ?";
+
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setInt(1, recipeId);
+                result = pst.executeUpdate();
+                pst.close();
+                cn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     public static void main(String[] args) {
         System.out.println(getThumbnailByRecipeId(1));
 //        List<RecipeDTO> list = RecipeDAO.getAllRecipes();

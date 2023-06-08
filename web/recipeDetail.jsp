@@ -173,9 +173,16 @@
 
                         </div>
                     </div>
+                    <% try {
+                            String path = RecipeDAO.getImageByRecipeId(recipe.getId()).getImgPath();
+
+                    %>
                     <div class="recipe-detail-secondary-pic">
-                        <img src="<%= RecipeDAO.getImageByRecipeId(recipe.getId()).getImgPath() %>" alt="">
+                        <img src="<%= RecipeDAO.getImageByRecipeId(recipe.getId()).getImgPath()%>" alt="">
                     </div>
+                    <% } catch (Exception e) {
+
+                        }%>
                 </div>
 
                 <%@include file="reviewSection.jsp" %>

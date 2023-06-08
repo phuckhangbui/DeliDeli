@@ -84,6 +84,14 @@
         <servlet-name>UploadImageServlet</servlet-name>
         <servlet-class>Servlet.UploadImageServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>EditRecipeServlet</servlet-name>
+        <servlet-class>Servlet.EditRecipeServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteRecipeServlet</servlet-name>
+        <servlet-class>Servlet.DeleteRecipeServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Example</servlet-name>
         <url-pattern>/Example</url-pattern>
@@ -147,6 +155,14 @@
     <servlet-mapping>
         <servlet-name>UploadImageServlet</servlet-name>
         <url-pattern>/UploadImageServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditRecipeServlet</servlet-name>
+        <url-pattern>/EditRecipeServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteRecipeServlet</servlet-name>
+        <url-pattern>/DeleteRecipeServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

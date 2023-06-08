@@ -1,9 +1,16 @@
 <%-- 
-    Document   : addRecipe
-    Created on : Jun 7, 2023, 7:45:19 AM
+    Document   : editRecipe
+    Created on : Jun 8, 2023, 3:03:20 PM
     Author     : khang
 --%>
 
+<%@page import="Direction.DirectionDAO"%>
+<%@page import="IngredientDetail.IngredientDetailDAO"%>
+<%@page import="IngredientDetail.IngredientDetailDTO"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="Recipe.RecipeDTO"%>
+<%@page import="Recipe.RecipeDAO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="com.google.gson.Gson" %>
 <!DOCTYPE html>
@@ -48,28 +55,39 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
             // ...
         </script>
 
+        <%
+            int recipeId = Integer.parseInt(request.getParameter("recipeId"));
+            try {
+                RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(recipeId);
+                if (recipe.getUser_id() == user.getId()) {
+
+        %>
         <div class="blank-background">
             <div class="container">
                 <div class="row add-recipe-info">
                     <form id="addRecipe" action="MainController" enctype="multipart/form-data" method="post">
                         <div class="add-recipe-header">
-                            <p>Add a New Recipe</p>
+                            
+                            <p>Edit Recipe</p>
                             <p>
-                                Create and customize your very own recipe to share with the world your own unique flavor
+                                Customize your very own recipe to share with the world your own unique flavor
                             </p>
                         </div>
+                        <input name="recipeId" value="<%=recipe.getId()%>" type="text" hidden=""/>
                         <div class="add-recipe-info-overview">
                             <div class="add-recipe-info-header">
                                 Recipe Title
                                 <div>
                                     <input class="input-full" type="text" name="title" required
-                                           placeholder="What's your recipe called ?" maxlength="100">
+                                           placeholder="What's your recipe called ?" maxlength="100"
+                                           value="<%= recipe.getTitle()%>">
                                 </div>
                             </div>
                             <div class="add-recipe-info-header">
                                 Description
                                 <textarea class="input-full" rows="5" name="description" required
-                                          placeholder="Give us a summary of your recipe" maxlength="500"></textarea>
+                                          placeholder="Give us a summary of your recipe" maxlength="500"><%= recipe.getDescription()%>
+                                </textarea>
                             </div>
 
 
@@ -77,9 +95,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                 <div class="col-md-6 add-recipe-info-overview-picture-main">
                                     <div class="add-recipe-info-header-secondary">
                                         Thumbnail Picture
-                                        <p>*</p>
-                                    </div> <!-- ti chinh lại thành required-->
-                                    <input type="file" id="image" name="thumbnail" required>
+                                        
+                                    </div> 
+                                    <input type="file" id="image" name="thumbnail">
                                 </div>
                                 <div class="col-md-6 add-recipe-info-overview-picture-optional">
                                     <div class="add-recipe-info-header-secondary">
@@ -87,7 +105,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                     </div>
                                     <input type="file" id="image" name="pictures">
                                 </div>
-
+                                
+                                <p>(Will replace the previous picture, add nothing if you want to keep the old one)</p>
                             </div>
                         </div>
                         <div class="row add-recipe-info-number">
@@ -96,9 +115,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                 <div>Prep Time:</div>
                                 <input type="text" id="prepTime" required max="100" min="1"
                                        oninput="this.value=this.value.slice(0,this.maxLength),this.value = this.value.replace(/[^0-9]/g, '')"
-                                       maxlength="5">
+                                       maxlength="5" value="<%=recipe.getPrep_time()%>">
                                 <select id="prepTimeUnit">
-                                    <option value="minutes">minutes</option>
+                                    <option value="minutes" checked="">minutes</option>
                                     <option value="hours">hours</option>
                                     <option value="days">days</option>
                                 </select>
@@ -108,9 +127,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                 <div>Cook Time:</div>
                                 <input type="text" id="cookTime" required max="100" min="1"
                                        oninput="this.value=this.value.slice(0,this.maxLength),this.value = this.value.replace(/[^0-9]/g, '')"
-                                       maxlength="5">
+                                       maxlength="5" value="<%=recipe.getCook_time() %>">
                                 <select id="cookTimeUnit">
-                                    <option value="minutes">minutes</option>
+                                    <option value="minutes" selected="">minutes</option>
                                     <option value="hours">hours</option>
                                     <option value="days">days</option>
                                 </select>
@@ -119,6 +138,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                 <div>Total Time:
                                     <p id="totalTime"></p>
                                     <script>
+                                        calculateTotalTime();
                                         function calculateTotalTime() {
                                             var prepTime = parseInt(document.getElementById("prepTime").value);
                                             var cookTime = parseInt(document.getElementById("cookTime").value);
@@ -222,7 +242,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                 <div>Serving:</div>
                                 <input type="text" name="servings" required
                                        oninput="this.value=this.value.slice(0,this.maxLength),this.value = this.value.replace(/[^0-9]/g, '')"
-                                       maxlength="3">
+                                       maxlength="3" value="<%= recipe.getServings()%>">
                             </div>
                         </div>
                         <div class="row add-recipe-info-type">
@@ -232,10 +252,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                     <%for (Map.Entry<Integer, String> entry : dietMap.entrySet()) {
                                             Integer key = entry.getKey();
                                             String value = entry.getValue();
-
+                                            if (recipe.getDiet_id() == key) {
                                     %>
+
+                                    <option value="<%=key%>" selected=""><%=value%></option>
+                                    <% } else {%>
                                     <option value="<%=key%>"><%=value%></option>
-                                    <% }%>
+                                    <% }
+                                        }%>
                                 </select>
                             </div>
                             <div class="col-md-3 add-recipe-info-type-content">
@@ -244,10 +268,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                     <%for (Map.Entry<Integer, String> entry : cateMap.entrySet()) {
                                             Integer key = entry.getKey();
                                             String value = entry.getValue();
-
+                                            if (recipe.getCategory_id() == key) {
                                     %>
+
+                                    <option value="<%=key%>" selected=""><%=value%></option>
+                                    <% } else {%>
                                     <option value="<%=key%>"><%=value%></option>
-                                    <% }%>
+                                    <% }
+                                        }%>
                                 </select>
                             </div>
                             <div class="col-md-3 add-recipe-info-type-content">
@@ -256,10 +284,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                     <%for (Map.Entry<Integer, String> entry : cuisineMap.entrySet()) {
                                             Integer key = entry.getKey();
                                             String value = entry.getValue();
-
+                                            if (recipe.getCuisine_id() == key) {
                                     %>
+
+                                    <option value="<%=key%>" selected=""><%=value%></option>
+                                    <% } else {%>
                                     <option value="<%=key%>"><%=value%></option>
-                                    <% }%>
+                                    <% }
+                                        }%>
                                 </select>
                             </div>
 
@@ -269,30 +301,48 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                     <%for (Map.Entry<Integer, String> entry : levelMap.entrySet()) {
                                             Integer key = entry.getKey();
                                             String value = entry.getValue();
-
+                                            if (recipe.getLevel_id() == key) {
                                     %>
+
+                                    <option value="<%=key%>" selected=""><%=value%></option>
+                                    <% } else {%>
                                     <option value="<%=key%>"><%=value%></option>
-                                    <% }%>
+                                    <% }
+                                        }%>
                                 </select>
                             </div>
                         </div>
                         <div class="row add-recipe-info-ingredient">
                             <div class="draggable-container-ingredient col-md-8 add-recipe-info-ingredient-content">
                                 <div class="add-recipe-info-header">Ingredient</div>
+                                <%
+                                    ArrayList<IngredientDetailDTO> ingredientList = IngredientDetailDAO.getIngredientDetailByRecipeId(recipe.getId());
+                                    for (IngredientDetailDTO i : ingredientList) {
+                                %>
                                 <p class="draggable-ingredient draggable" draggable="false">
-                                    <input type="text" class="input" name="ingredientDesc" required="">
-                                    <select class="ingredientList" name="ingredientId"></select>
+                                    <input type="text" class="input" name="ingredientDesc" required="" value="<%= i.getDesc()%>">
+                                    <select class="ingredientList" name="ingredientId">
+                                        <%
+                                            for (Map.Entry<Integer, String> entry : ingredientMap.entrySet()) {
+                                                Integer key = entry.getKey();
+                                                String value = entry.getValue();
+
+                                                if (i.getIngredient_id() == key) {
+                                        %>
+                                        <option value="<%=key%>" selected=""><%=value%></option>   
+                                        <% } else {%>
+                                        <option value="<%=key%>"><%=value%></option>   
+
+                                        }
+                                        <%
+                                                            }
+                                                        }%>
+                                    </select>
                                     <button type="button" class="btnDeleteIngredient">
                                         <img src="assets/close.svg" alt="">
                                     </button>
                                 </p>
-                                <p class="draggable-ingredient draggable" draggable="false">
-                                    <input type="text" class="input" name="ingredientDesc" required="">
-                                    <select class="ingredientList" name="ingredientId"></select>
-                                    <button type="button" class="btnDeleteIngredient">
-                                        <img src="assets/close.svg" alt="">
-                                    </button>
-                                </p>
+                                <%}%>
                             </div>
                             <div class="col-md-4 add-recipe-info-ingredient-button">
                                 <button type="button" id="btnToggleIngredient">
@@ -303,24 +353,24 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                 </button>
                             </div>
                         </div>
-                        
-                                
-                                
+
+
+
                         <div class="add-recipe-info-header">Direction:</div>
-                        <p><textarea name="direction" rows="10" cols="10" id="editor" value="<%=user.getId()%>"></textarea></p>
+                        <p><textarea name="direction" rows="10" cols="10" id="editor" 
+                                     value="<%=user.getId()%>"><%= DirectionDAO.getDirectionByRecipeId(recipe.getId()).getDesc()%></textarea></p>
                         <script>
                             CKEDITOR.replace('editor');
                         </script>
-
-                        
-
-
 
                         <div class=" add-recipe-info-status">
                             <div class="add-recipe-info-header">
                                 Do you want to make this recipe public?
                             </div>
                             <div class="add-recipe-info-status-content">
+                                <%
+                                    if (recipe.getStatus() != 1) {
+                                %>
                                 <div>
                                     <input type="radio" name="status" value="2" checked>Yes, make it public
                                     <span>(Your recipe will be submitted and will be checked by our moderator. This may take
@@ -333,18 +383,41 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                         only be view by you)</span>
 
                                 </div>
+                                <% } else {%>
+                                <div>
+                                    <input type="radio" name="status" value="2" >Yes, make it public
+                                    <span>(Your recipe will be submitted and will be checked by our moderator. This may take
+                                        some time)</span>
+
+                                </div>
+                                <div>
+                                    <input type="radio" name="status" value="1" checked>No, make it private
+                                    <span>(Your recipe won't need to go through our moderator team, but the recipe can
+                                        only be view by you)</span>
+
+                                </div>
+                                <% }%>
                             </div>
                         </div>
                         <input type="text" name="userId" value="<%=user.getId()%>" hidden/>
                         <div class=" add-recipe-info-submit">
-                            <button type="submit" name="action" value="addRecipe">
-                                SUBMIT
+                            <button type="submit" name="action" value="editRecipe">
+                                EDIT
+                            </button>
+                            <span></span>
+                            <button type="submit" name="action" value="deleteRecipe">
+                                DELETE
                             </button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
+        <%}
+            } catch (Exception e) {
+
+            }
+        %>
 
         <!--         Footer       -->
         <div class="footer">

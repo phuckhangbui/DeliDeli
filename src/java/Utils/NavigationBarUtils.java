@@ -237,16 +237,16 @@ public class NavigationBarUtils {
                             + "WHERE id.ingredient_id = ? AND status = 3\n";
                 }
                 if (type.equals("Category")) {
-                    sql += "WHERE r.category_id = ?AND status = 3\n";
+                    sql += "WHERE r.category_id = ? AND status = 3\n";
                 }
                 if (type.equals("Cuisine")) {
                     sql += "WHERE [cuisine_id] = ? AND status = 3\n";
                 }
                 if (type.equals("Level")) {
-                    sql += "WHERE [level_id]= ?AND status = 3\n";
+                    sql += "WHERE [level_id]= ? AND status = 3\n";
                 }
                 if (type.equals("Diet")) {
-                    sql += "WHERE [diet_id]= ?AND status = 3\n";
+                    sql += "WHERE [diet_id]= ? AND status = 3\n";
                 }
 
                 PreparedStatement pst = cn.prepareStatement(sql);

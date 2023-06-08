@@ -55,6 +55,29 @@ public class IngredientDetailDAO {
         return result;
     }
 
+    public static int deleteIngredientDetails(int recipeId) {
+        int result = -1;
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                String sql = "DELETE FROM [dbo].[IngredientDetail]\n"
+                        + "WHERE recipe_id = ?";
+
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setInt(1, recipeId);
+                result = pst.executeUpdate();
+                pst.close();
+                cn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     public static int addIngredientDetails(List<IngredientDetailDTO> ingredientDetails) {
         int generatedId = -1; // Default value if ID generation fails
         Connection cn = null;
@@ -63,6 +86,48 @@ public class IngredientDetailDAO {
             cn = DBUtils.getConnection();
             // Step 2: Create a prepared statement to insert the ingredient details
             String sql = "INSERT INTO [dbo].[IngredientDetail] ([description], ingredient_id, recipe_id) VALUES (?,?,?)";
+            PreparedStatement pst = cn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+            // Step 3: Insert each ingredient detail object and retrieve the generated keys
+            for (IngredientDetailDTO ingredientDetail : ingredientDetails) {
+                pst.setString(1, ingredientDetail.getDesc());
+                pst.setInt(2, ingredientDetail.getIngredient_id());
+                pst.setInt(3, ingredientDetail.getRecipe_id());
+
+                // Execute the statement for each ingredient detail
+                pst.executeUpdate();
+
+                // Retrieve the generated keys
+                ResultSet generatedKeys = pst.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    generatedId = generatedKeys.getInt(1); // Assuming the ID column is the first column
+                    ingredientDetail.setId(generatedId); // Set the generated ID in the ingredient detail object
+                }
+            }
+
+            // Step 4: Close the database connection and statement
+            pst.close();
+            cn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return generatedId;
+    }
+
+    public static int editIngredientDetails(List<IngredientDetailDTO> ingredientDetails) {
+        int generatedId = -1; // Default value if ID generation fails
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+            // Step 2: Create a prepared statement to insert the ingredient details
+            String sql = "UPDATE [dbo].[IngredientDetail] "
+                    + "SET [description] = ?, "
+                    + "    ingredient_id = ?, "
+                    + "    recipe_id = ? "
+                    + "WHERE id = ?";
+
             PreparedStatement pst = cn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
             // Step 3: Insert each ingredient detail object and retrieve the generated keys
