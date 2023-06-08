@@ -120,6 +120,10 @@
         <servlet-name>DeleteNewsServlet</servlet-name>
         <servlet-class>Servlet.DeleteNewsServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeleteAccountServlet</servlet-name>
+        <servlet-class>Servlet.DeleteAccountServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Example</servlet-name>
         <url-pattern>/Example</url-pattern>
@@ -219,6 +223,10 @@
     <servlet-mapping>
         <servlet-name>DeleteNewsServlet</servlet-name>
         <url-pattern>/DeleteNewsServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteAccountServlet</servlet-name>
+        <url-pattern>/DeleteAccountServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
