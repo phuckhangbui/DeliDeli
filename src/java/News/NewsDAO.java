@@ -39,7 +39,7 @@ public class NewsDAO {
         return result;
     }
 
-    public static int updateNews(int newsId, String title, String desc, String image, Date updateAt, int categoryId) {
+    public static int updateNews(int newsId, String title, String desc, Date updateAt, int categoryId) {
         int result = 0;
         Connection cn = null;
 
@@ -49,8 +49,7 @@ public class NewsDAO {
             if (cn != null) {
                 String sql = "UPDATE News SET \n"
                         + "title = ?,\n"
-                        + "description = ?, \n"
-                        + "image = ?, \n"
+                        + "description = ?,\n"
                         + "update_at = ?, \n"
                         + "news_category_id = ?\n"
                         + "WHERE id = ?";
@@ -58,10 +57,9 @@ public class NewsDAO {
                 PreparedStatement pst = cn.prepareStatement(sql);
                 pst.setString(1, title);
                 pst.setString(2, desc);
-                pst.setString(3, image);
-                pst.setDate(4, updateAt);
-                pst.setInt(5, categoryId);
-                pst.setInt(6, newsId);
+                pst.setDate(3, updateAt);
+                pst.setInt(4, categoryId);
+                pst.setInt(5, newsId);
                 result = pst.executeUpdate();
                 pst.close();
                 cn.close();

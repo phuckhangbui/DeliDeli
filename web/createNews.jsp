@@ -49,7 +49,7 @@
         </form>
         <%
         } else {
-                NewsDTO news = NewsDAO.getNewsByNewsId(new Integer(id));
+            NewsDTO news = NewsDAO.getNewsByNewsId(new Integer(id));
         %>
         <form action="MainController" method="post">
             <p>Title: <input type="text" name="txtTitle" value="<%= news.getTitle()%>"></p>
@@ -65,11 +65,11 @@
                     %>
                 </select>
             </p>
-            <p>Image: <input type="file" name="file"></p>
             <p>Description: <textarea rows="10" cols="10" id="editor" value="<%= news.getDesc()%>"></textarea></p>
             <input type="hidden" name="editorContent" id="editorContent" value="">
             <input type="hidden" name="newsId" value="<%= id%>">
             <button type="submit" value="updateNews" name="action">Update</button>
+            <button type="submit" value="deleteNews" name="action">Delete</button>
         </form>
         <%
             }

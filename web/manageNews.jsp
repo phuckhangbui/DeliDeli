@@ -49,7 +49,6 @@
                     <form action="MainController" method="post">
                         <input type="hidden" value="<%= n.getId()%>" name="newsId">
                         <button type="submit" value="showNewsDetail" name="action">Show</button>
-                        <button type="submit" value="deleteNews" name="action">Delete</button>
                     </form>
                 </td>
                 <td><a href="createNews.jsp?id=<%= n.getId()%>">Edit</a></td>
