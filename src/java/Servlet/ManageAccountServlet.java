@@ -4,9 +4,9 @@
  */
 package Servlet;
 
-import Recipe.RecipeDAO;
-import Recipe.RecipeDTO;
-import Utils.NavigationBarUtils;
+import Admin.AdminDAO;
+import User.UserDAO;
+import User.UserDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -14,13 +14,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author khang
+ * @author Admin
  */
-public class SearchServlet extends HttpServlet {
+public class ManageAccountServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,35 +35,46 @@ public class SearchServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            String admin = request.getParameter("admin");
-            String txtsearch = request.getParameter("txtsearch").toLowerCase();
-            String searchBy = request.getParameter("searchBy").toLowerCase();
+            String index = request.getParameter("index");
+            String role = request.getParameter("role");
+            ArrayList<UserDTO> listAcc = new ArrayList<>();
 
-            //Search recipe for admin
-            if (admin != null) {
-                ArrayList<RecipeDTO> list = RecipeDAO.searchRecipes(txtsearch, searchBy);
-                request.setAttribute("searchRecipesList", list);
-                request.getRequestDispatcher("manageRecipe.jsp").forward(request, response);
-            } else {
-                HttpSession session = request.getSession();
-                session.setAttribute("searchRecipesList", null);
-                session.setAttribute("ERROR_MSG", null);
-                session.setAttribute("SUCCESS_MSG", null);
-                
-                if (txtsearch == null || txtsearch.equals("")) {
-                    session.setAttribute("ERROR_MSG", "What do you want to eat? Please search");
-                } else {
-                    ArrayList<RecipeDTO> list = RecipeDAO.searchRecipes(txtsearch, searchBy);
-                    if (list.size() != 0) {
-                        session.setAttribute("searchRecipesList", list);
-                        session.setAttribute("SUCCESS_MSG", "Result of '" + txtsearch + "' in recipe's " + searchBy);
-                    } else {
-                        session.setAttribute("ERROR_MSG", "There is no '" + txtsearch + "' in recipe's " + searchBy);
-                    }
-                    
-                }
-                request.getRequestDispatcher("searchResultPage.jsp").forward(request, response);
+            if (index == null) {
+                index = "1";
             }
+
+            int total = 0;
+            int endPage = 0;
+
+            if (role == null || role.equals("all")) {
+                listAcc = AdminDAO.pagingAccount(new Integer(index), "");
+                total = UserDAO.getTotalAccountsBasedOnRole("");
+                endPage = total / 5;
+                if (total % 5 != 0) {
+                    endPage++;
+                }
+
+            } else if (role.equals("user")) {
+                listAcc = AdminDAO.pagingAccount(new Integer(index), "user");
+                total = UserDAO.getTotalAccountsBasedOnRole("user");
+                endPage = total / 5;
+                if (total % 5 != 0) {
+                    endPage++;
+                }
+                
+            } else if (role.equals("admin")) {
+                listAcc = AdminDAO.pagingAccount(new Integer(index), "administrator");
+                total = UserDAO.getTotalAccountsBasedOnRole("administrator");
+                endPage = total / 5;
+                if (total % 5 != 0) {
+                    endPage++;
+                }
+            }
+            request.setAttribute("tag", index);
+            request.setAttribute("endPage", endPage);
+            request.setAttribute("listAcc", listAcc);
+            request.setAttribute("role", role);
+            request.getRequestDispatcher("manageAccount.jsp").forward(request, response);
         }
     }
 

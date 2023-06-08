@@ -57,7 +57,7 @@
                         <p class="new-result-content-post-title"><%= news.getTitle()%></p>
                     </div>
                     <p>By: <%= request.getAttribute("author")%></p>
-                    <p>Create at: <%= news.getCreate_at()%></p>
+                    <p>Create at: <%= news.getCreateAt()%></p>
                     <img src="<%= news.getImage()%>" alt="">
 
                     <p><%= news.getDesc()%></p>

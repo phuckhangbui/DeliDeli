@@ -89,6 +89,48 @@ public class MainController extends HttpServlet {
                     case "logout":
                         url = "LogOutServlet";
                         break;
+                    case "manageAccount":
+                        url = "ManageAccountServlet";
+                        break;
+                    case "deactivateAcc":
+                        url = "DeactivateAccountServlet";
+                        break;
+                    case "activateAcc":
+                        url = "ActivateAccountServlet";
+                        break;
+                    case "deleteAcc":
+                        url = "DeleteAccountServlet";
+                        break;
+                    case "manageRecipe":
+                        url = "ManageRecipeServlet";
+                        break;
+                    case "confirmRecipe":
+                        url = "ConfirmRecipeServlet";
+                        break;
+                    case "searchAccount":
+                        url = "SearchAccountServlet";
+                        break;
+                    case "showUserDetail":
+                        url = "ShowUserDetailServlet";
+                        break;
+                    case "showRecipeDetail":
+                        url = "ShowRecipeDetailServlet";
+                        break;
+                    case "manageNews":
+                        url = "ManageNewsServlet";
+                        break;
+                    case "showNewsDetail":
+                        url = "ShowNewsDetailServlet";
+                        break;
+                    case "createNews":
+                        url = "CreateNewsServlet";
+                        break;
+                    case "updateNews":
+                        url = "UpdateNewsServlet";
+                        break;
+                    case "deleteNews":
+                        url = "DeleteNewsServlet";
+                        break;
                 }
             }
             RequestDispatcher rd = request.getRequestDispatcher(url);

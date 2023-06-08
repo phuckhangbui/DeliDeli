@@ -32,10 +32,10 @@ public class RecipeDAO {
             cn = DBUtils.getConnection();
 
             if (cn != null) {
-                String sql = "SELECT first_name + ' ' + last_name AS full_name FROM Recipe r \n"
+                String sql = "SELECT user_name FROM Recipe r \n"
                         + "INNER JOIN\n"
-                        + "UserDetail ud\n"
-                        + "ON r.user_id = ud.user_id\n"
+                        + "[User] u\n"
+                        + "ON r.user_id = u.id\n"
                         + "WHERE r.id = ?";
 
                 PreparedStatement pst = cn.prepareStatement(sql);
@@ -43,7 +43,7 @@ public class RecipeDAO {
                 ResultSet rs = pst.executeQuery();
                 if (rs != null) {
                     while (rs.next()) {
-                        owner = rs.getString("full_name");
+                        owner = rs.getString("user_name");
                     }
                 }
                 rs.close();

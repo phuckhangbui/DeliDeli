@@ -4,9 +4,12 @@
  */
 package Servlet;
 
+import Admin.AdminDAO;
 import Recipe.RecipeDAO;
 import Recipe.RecipeDTO;
-import Utils.NavigationBarUtils;
+import User.UserDTO;
+import User.UserDetailDAO;
+import User.UserDetailDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -14,13 +17,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author khang
+ * @author Admin
  */
-public class SearchServlet extends HttpServlet {
+public class ShowUserDetailServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,35 +38,18 @@ public class SearchServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            String admin = request.getParameter("admin");
-            String txtsearch = request.getParameter("txtsearch").toLowerCase();
-            String searchBy = request.getParameter("searchBy").toLowerCase();
+            String userName = request.getParameter("username");
 
-            //Search recipe for admin
-            if (admin != null) {
-                ArrayList<RecipeDTO> list = RecipeDAO.searchRecipes(txtsearch, searchBy);
-                request.setAttribute("searchRecipesList", list);
-                request.getRequestDispatcher("manageRecipe.jsp").forward(request, response);
-            } else {
-                HttpSession session = request.getSession();
-                session.setAttribute("searchRecipesList", null);
-                session.setAttribute("ERROR_MSG", null);
-                session.setAttribute("SUCCESS_MSG", null);
-                
-                if (txtsearch == null || txtsearch.equals("")) {
-                    session.setAttribute("ERROR_MSG", "What do you want to eat? Please search");
-                } else {
-                    ArrayList<RecipeDTO> list = RecipeDAO.searchRecipes(txtsearch, searchBy);
-                    if (list.size() != 0) {
-                        session.setAttribute("searchRecipesList", list);
-                        session.setAttribute("SUCCESS_MSG", "Result of '" + txtsearch + "' in recipe's " + searchBy);
-                    } else {
-                        session.setAttribute("ERROR_MSG", "There is no '" + txtsearch + "' in recipe's " + searchBy);
-                    }
-                    
-                }
-                request.getRequestDispatcher("searchResultPage.jsp").forward(request, response);
-            }
+            UserDTO user = AdminDAO.getAccountByUserName(userName);
+            UserDetailDTO userDetail = UserDetailDAO.getUserDetailByUserId(user.getId());
+            
+            ArrayList<RecipeDTO> userRecipe = RecipeDAO.getRecipeByUserId(user.getId());
+            
+            request.setAttribute("user", user);
+            request.setAttribute("userDetail", userDetail);
+            request.setAttribute("userRecipe", userRecipe);
+            request.getRequestDispatcher("showUserDetail.jsp").forward(request, response);
+            
         }
     }
 

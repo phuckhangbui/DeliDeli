@@ -69,8 +69,60 @@
         <servlet-class>Servlet.LogOutServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>AddRecipeServlet</servlet-name>
-        <servlet-class>Servlet.AddRecipeServlet</servlet-class>
+        <servlet-name>ManageAccountServlet</servlet-name>
+        <servlet-class>Servlet.ManageAccountServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeactivateAccountServlet</servlet-name>
+        <servlet-class>Servlet.DeactivateAccountServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ActivateAccountServlet</servlet-name>
+        <servlet-class>Servlet.ActivateAccountServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ManageRecipeServlet</servlet-name>
+        <servlet-class>Servlet.ManageRecipeServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ConfirmRecipeServlet</servlet-name>
+        <servlet-class>Servlet.ConfirmRecipeServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SearchAccountServlet</servlet-name>
+        <servlet-class>Servlet.SearchAccountServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ShowUserDetailServlet</servlet-name>
+        <servlet-class>Servlet.ShowUserDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ShowRecipeDetailServlet</servlet-name>
+        <servlet-class>Servlet.ShowRecipeDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ManageNewsServlet</servlet-name>
+        <servlet-class>Servlet.ManageNewsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ShowNewsDetailServlet</servlet-name>
+        <servlet-class>Servlet.ShowNewsDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateNewsServlet</servlet-name>
+        <servlet-class>Servlet.CreateNewsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateNewsServlet</servlet-name>
+        <servlet-class>Servlet.UpdateNewsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteNewsServlet</servlet-name>
+        <servlet-class>Servlet.DeleteNewsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteAccountServlet</servlet-name>
+        <servlet-class>Servlet.DeleteAccountServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>EditFeedbackServlet</servlet-name>
@@ -141,8 +193,60 @@
         <url-pattern>/LogOutServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>AddRecipeServlet</servlet-name>
-        <url-pattern>/AddRecipeServlet</url-pattern>
+        <servlet-name>ManageAccountServlet</servlet-name>
+        <url-pattern>/ManageAccountServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeactivateAccountServlet</servlet-name>
+        <url-pattern>/DeactivateAccountServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ActivateAccountServlet</servlet-name>
+        <url-pattern>/ActivateAccountServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageRecipeServlet</servlet-name>
+        <url-pattern>/ManageRecipeServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ConfirmRecipeServlet</servlet-name>
+        <url-pattern>/ConfirmRecipeServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchAccountServlet</servlet-name>
+        <url-pattern>/SearchAccountServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ShowUserDetailServlet</servlet-name>
+        <url-pattern>/ShowUserDetailServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ShowRecipeDetailServlet</servlet-name>
+        <url-pattern>/ShowRecipeDetailServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageNewsServlet</servlet-name>
+        <url-pattern>/ManageNewsServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ShowNewsDetailServlet</servlet-name>
+        <url-pattern>/ShowNewsDetailServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateNewsServlet</servlet-name>
+        <url-pattern>/CreateNewsServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateNewsServlet</servlet-name>
+        <url-pattern>/UpdateNewsServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteNewsServlet</servlet-name>
+        <url-pattern>/DeleteNewsServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteAccountServlet</servlet-name>
+        <url-pattern>/DeleteAccountServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>EditFeedbackServlet</servlet-name>
