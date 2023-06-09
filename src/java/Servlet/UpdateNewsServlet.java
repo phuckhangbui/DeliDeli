@@ -39,16 +39,10 @@ public class UpdateNewsServlet extends HttpServlet {
             java.util.Date date = new java.util.Date();
             java.sql.Date updateAt = new java.sql.Date(date.getTime());
                         
-            int result = NewsDAO.updateNews(new Integer(newsId), title, content, "", updateAt, new Integer(category));
+            int result = NewsDAO.updateNews(new Integer(newsId), title, content, updateAt, new Integer(category));
             if(result > 0) {
                 request.getRequestDispatcher("ManageNewsServlet").forward(request, response);
             }
-
-//            out.println(category);
-//            out.println(content);
-//            out.println(newsId);
-//            out.println(title);
-//            out.println(updateAt);
         }
     }
 
