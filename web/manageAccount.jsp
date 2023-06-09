@@ -26,70 +26,70 @@
             rel="stylesheet">
     </head>
     <body>
-        <%@include file="navBarAdmin.jsp" %>
-
-        <%
-            ArrayList<UserDTO> listAcc = (ArrayList) request.getAttribute("listAcc");
-            ArrayList<UserDTO> listAccSearched = (ArrayList) request.getAttribute("listAccSearched");
-            int endPage = (Integer) request.getAttribute("endPage");
-            String tag = (String) request.getAttribute("tag");
-            if (tag.equals("")) {
-                tag = "0";
-            }
-            String currentRole = request.getParameter("role");
-            if (currentRole == null) {
-                currentRole = "all";
-            }
-            String[] tmp = {"Deactivated", "Active"};
-        %>
-
+        
         <div class="container-fluid">
+            <%@include file="navBarAdmin.jsp" %>
+
+            <%                ArrayList<UserDTO> listAcc = (ArrayList) request.getAttribute("listAcc");
+                ArrayList<UserDTO> listAccSearched = (ArrayList) request.getAttribute("listAccSearched");
+                int endPage = (Integer) request.getAttribute("endPage");
+                String tag = (String) request.getAttribute("tag");
+                if (tag.equals("")) {
+                    tag = "0";
+                }
+                String currentRole = request.getParameter("role");
+                if (currentRole == null) {
+                    currentRole = "all";
+                }
+                String[] tmp = {"Deactivated", "Active"};
+            %>
+
             <div class="row">
                 <nav class="nav-left-bar col-md-2">
                     <div>
-                        <a href="adminPage.html">
+                        <a href="admin.jsp">
                             <img src="./assets/public-unchose.svg" alt="">
                             Dashboard
                         </a>
                     </div>
                     <div>
-                        <a href="userList.html" class="active">
+                        <a href="MainController?action=manageAccount" class="active">
                             <img src="./assets/personal.png" alt="">
                             User
                         </a>
                     </div>
                     <div>
-                        <a href="">
+                        <a href="MainController?action=manageRecipe">
                             <img src="./assets/post-unchose.svg" alt="">
                             Posts
                         </a>
                     </div>
                     <div>
-                        <a href="">
+                        <a href="#">
                             <img src="./assets/content-unchose.svg" alt="">
                             Content
                         </a>
                     </div>
                     <div>
-                        <a href="">
+                        <a href="MainController?action=manageNews">
                             <img src="./assets/news-unchose.svg" alt="">
                             News
                         </a>
                     </div>
                     <div>
-                        <a href="">
+                        <a href="#">
                             <img src="./assets/policies-unchose.svg" alt="">
                             Policies
                         </a>
                     </div>
                     <div>
-                        <a href="">
+                        <a href="#">
                             <img src="./assets/broadcast-unchose.svg" alt="">
                             Broadcast
                         </a>
                     </div>
                     <div>
-                        <a href="">
+                        <a href="#">
                             <img src="./assets/bug-report-unchose.svg" alt="">
                             Report
                         </a>

@@ -31,7 +31,6 @@ ul {
     height: 50px;
     display: flex;
     justify-content: flex-end;
-    justify-content: space-between;
 }
 .dashboard{
     padding-left: 0px;
@@ -81,6 +80,7 @@ ul {
     display: flex;
     align-items: center;
     font-size: 18px;
+    margin-left: 30px;
 }
 .nav-top-bar-search form input{
     width: 300px;
@@ -96,6 +96,7 @@ ul {
     outline: none;
     border: none;
     color: #ec9131;
+    text-align: center;
 }
 
 .user-dropbtn {
@@ -167,15 +168,15 @@ ul {
 }
 
 .bg-gradient-success {
-    background-color: rgba(121, 193, 65, 0.8);
+    background-color: rgba(121, 193, 65);
 }
 
 .bg-gradient-info {
-    background-color: rgba(152, 211, 223, 0.8);
+    background-color: rgb(117, 193, 208);
 }
 
 .bg-gradient-danger {
-    background-color: hsla(31, 83%, 56%, 0.8);
+    background-color: hsla(31, 83%, 56%);
 }
 .card-title{
     font-size: 36px;
@@ -194,104 +195,28 @@ ul {
 .btn-table a{
     color: white;
 }
-/* Table */
-/* .table {
-    margin-bottom: 25px;
+.card-total-content{
+    display: flex;
+    justify-content: space-between;
+    padding: 30px;
+    align-items: center;
+    color: white;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+.card-total-content h4{
+    font-weight: normal;
+    margin: 0px;
+}
+.card-total-see-more{
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+.card-total-see-more p{
+    margin: 0px;
 }
 
-.table thead th {
-    border-top: 0;
-    border-bottom-width: 1px;
-    font-weight: initial;
-}
-
-.table thead th i {
-    margin-left: 0.325rem;
-}
-
-.table th, .table td {
-    vertical-align: middle;
-    font-size: 14px;
-    line-height: 1;
-    white-space: nowrap;
-    padding: 8px;
-}
-
-.table th img {
-    width: 36px;
-    height: 36px;
-    border-radius: 100%;
-}
-
-.table th .badge {
-    margin-bottom: 0;
-}
-
-.table a {
-    text-decoration: underline;
-    color: #047edf;
-}
-
-.table.table-borderless {
-    border: none;
-}
-
-.table.table-borderless tr,
-.table.table-borderless td,
-.table.table-borderless th {
-    border: none;
-}
-
-.badge {
-    border-radius: .125rem;
-    font-size: 11px;
-    font-weight: initial;
-    line-height: 1;
-    padding: 5px 10px;
-}
-
-.badge-danger {
-    border: 1px solid #fe7c96;
-    background: #fe7c96;
-    color: #ffffff;
-}
-
-.badge-warning {
-    border: 1px solid #fed713;
-    background: #fed713;
-    color: #ffffff;
-}
-
-.badge-info {
-    border: 1px solid #198ae3;
-    background: #198ae3;
-    color: #ffffff;
-}
-
-.badge-success {
-    border: 1px solid #1bcfb4;
-    background: #1bcfb4;
-    color: #ffffff;
-}
-
-.btn-table {
-    width: fit-content;
-    padding: 10px 20px;
-    background-color: transparent;
-    border: 2px solid;
-    border-color: #FF8F52;
-    border-radius: 5px;
-    color: #333;
-    font-size: 16px;
-    line-height: 1.2;
-}
-
-.btn-table:hover {
-    cursor: pointer;
-    background-color: #FF8F52;
-    color: #fff;
-    border-color: transparent;
-} */
 
 
 
@@ -401,4 +326,16 @@ thead{
 .table-redirect div {
     display: flex;
     align-self: center;
+}
+
+/* News */
+.news {
+    margin-left: auto;
+    padding: 0;
+}
+
+/* Recipe */
+.recipe {
+    margin-left: auto;
+    padding: 0;
 }
