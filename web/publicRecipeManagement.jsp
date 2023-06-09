@@ -42,7 +42,7 @@
 
                     <%
                         ArrayList<RecipeDTO> recipeList = RecipeDAO.getPublicRecipeByUserId(user.getId());
-                        %>
+                    %>
 
                     <div class="col-md-5 user-profile-column-2">
                         <div class="user-profile-header">
@@ -57,16 +57,18 @@
                             <%
                                 for (RecipeDTO r : recipeList) {
                             %>
-                            <a href="MainController?action=getRecipeDetailById&id=<%= r.getId()%>" class="col-md-6 user-profile-recipe-post">
-                                <div class="user-profile-recipe-post-picture" data-page="editRecipe.jsp?recipeId=<%=r.getId()%>">
-                                    <div class="delete-button">
-                                        <img src="./assets/delete-button.svg" alt="" class="editButton">
-                                    </div>
+                            <div href="MainController?action=getRecipeDetailById&id=<%= r.getId()%>" class="col-md-6 user-profile-recipe-post">
+                                <a class="user-profile-recipe-post-picture" data-page="editRecipe.jsp?recipeId=<%=r.getId()%>">
                                     <img src="<%= RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath()%>" alt="">
-                                </div>
+                                </a>
 
                                 <div>
-                                    <p><%= RecipeDAO.getCategoryByRecipeId(r.getId())%></p>
+                                    <div class="user-profile-recipe-post-description">
+                                        <p><%= RecipeDAO.getCategoryByRecipeId(r.getId())%></p>
+                                        <a href="editRecipe.jsp?recipeId=<%=r.getId()%>">
+                                            <img src="./assets/edit.svg"/>
+                                        </a>
+                                    </div>
                                     <p><%= r.getTitle()%></p>
                                 </div>
                                 <div class="recommendation-content-reciew">
@@ -79,8 +81,7 @@
                                     %>
                                     <p class="recommendation-content-reciew-rating"><%= RecipeDAO.getRatingByRecipeId(r.getId())%></p>
                                 </div>
-                                <a href="editRecipe.jsp?recipeId=<%=r.getId()%>">edit</a>
-                            </a>
+                            </div>
                             <% }%>
 
                             <script>
@@ -102,66 +103,66 @@
                                     });
                                 });
                             </script>
+                        </div>
                     </div>
-            </div>
-            <div class="col-md-3 user-profile-column-3 ">
-                <div class="user-profile-header">
-                    <div>
-                        Profile Picture
+                    <div class="col-md-3 user-profile-column-3 ">
+                        <div class="user-profile-header">
+                            <div>
+                                Profile Picture
+                            </div>
+                            <p>
+                                Click the image to change your profile picture
+                            </p>
+                        </div>
+                        <div class="user-profile-public-avatar">
+                            <div>
+                                <img id="preview-image" src="./assets/profile-pic.svg" alt="">
+                            </div>
+                            <input type="file" id="image-input" accept="image/*" onchange="previewImage(event)">
+                        </div>
                     </div>
-                    <p>
-                        Click the image to change your profile picture
-                    </p>
-                </div>
-                <div class="user-profile-public-avatar">
-                    <div>
-                        <img id="preview-image" src="./assets/profile-pic.svg" alt="">
-                    </div>
-                    <input type="file" id="image-input" accept="image/*" onchange="previewImage(event)">
-                </div>
+
+                </form>
             </div>
-
-        </form>
-    </div>
-</div>
-
-
-<!--         Footer       -->
-<div class="footer">
-    <div class="container">
-        <div class="row">
-            <div class="website-social-media col-md-6">
-                <a href="homePage.html" class="website-social-media-logo">
-                    <img src="./assets/Logo2.png" alt="">
-                </a>
-                <div class="website-social-media-icons">
-                    <span>Follow us:</span>
-                    <a href="#"><img src="./assets/facebook-icon.svg" alt="Facebook Logo"></a>
-                    <a href="#"><img src="./assets/twitter-icon.svg" alt="Twitter Logo"></a>
-                </div>
-            </div>
-            <nav class="navigation-bar-footer col-md-3">
-                <ul class="navigation-bar-footer-content">
-                    <li><a href="">CATEGORIES</a></li>
-                    <li><a href="">INGREDIENTS</a></li>
-                    <li><a href="">CUISINES</a></li>
-                    <li><a href="">DIFFICULTIES</a></li>
-                    <li><a href="">NEWS</a></li>
-                </ul>
-            </nav>
-            <nav class="website-infomation-bar col-md-3">
-                <ul class="website-infomation-bar-content">
-                    <li><a href="">About us</a></li>
-                    <li><a href="">Privacy Policies</a></li>
-                    <li><a href="">Term of Services</a></li>
-                </ul>
-            </nav>
         </div>
-    </div>
-</div>
 
-<!--      Bootstrap for JS         -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
-crossorigin="anonymous"></script>
-</body>
+
+        <!--         Footer       -->
+        <div class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="website-social-media col-md-6">
+                        <a href="homePage.html" class="website-social-media-logo">
+                            <img src="./assets/Logo2.png" alt="">
+                        </a>
+                        <div class="website-social-media-icons">
+                            <span>Follow us:</span>
+                            <a href="#"><img src="./assets/facebook-icon.svg" alt="Facebook Logo"></a>
+                            <a href="#"><img src="./assets/twitter-icon.svg" alt="Twitter Logo"></a>
+                        </div>
+                    </div>
+                    <nav class="navigation-bar-footer col-md-3">
+                        <ul class="navigation-bar-footer-content">
+                            <li><a href="">CATEGORIES</a></li>
+                            <li><a href="">INGREDIENTS</a></li>
+                            <li><a href="">CUISINES</a></li>
+                            <li><a href="">DIFFICULTIES</a></li>
+                            <li><a href="">NEWS</a></li>
+                        </ul>
+                    </nav>
+                    <nav class="website-infomation-bar col-md-3">
+                        <ul class="website-infomation-bar-content">
+                            <li><a href="">About us</a></li>
+                            <li><a href="">Privacy Policies</a></li>
+                            <li><a href="">Term of Services</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <!--      Bootstrap for JS         -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+        crossorigin="anonymous"></script>
+    </body>

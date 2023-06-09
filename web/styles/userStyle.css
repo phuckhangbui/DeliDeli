@@ -1171,12 +1171,16 @@ span {
 	display: flex;
 	justify-content: right;
 }
-.user-profile-recipe-post div p:nth-child(1) {
-	margin-top: 10px;
-	color: rgba(0, 0, 0, 0.5);
-	margin-bottom: 0px;
+.user-profile-recipe-post-description{
+    margin-top: 5px;
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
 }
-
+.user-profile-recipe-post-description p{
+    margin: 0px;
+    color: rgba(0, 0, 0, 0.5);
+}
 .user-profile-recipe-post div p:nth-child(2) {
 	font-size: 24px;
 	margin-bottom: 0;
