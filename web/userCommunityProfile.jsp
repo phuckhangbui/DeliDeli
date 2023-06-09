@@ -44,11 +44,7 @@
             if (account != null) {
                 UserDetailDTO accountDetail = UserDetailDAO.getUserDetailByUserId(account.getId());
                 fullName = accountDetail.getLastName() + " " + accountDetail.getFirstName();
-<<<<<<< HEAD
-                accountRecipe = RecipeDAO.getRecipeByUserId(account.getId());
-=======
                 accountRecipe = RecipeDAO.getPublicRecipeByUserId(account.getId());
->>>>>>> khang-crud
                 reviewList = ReviewDAO.getReviewByUserId(account.getId());
             }
         %>

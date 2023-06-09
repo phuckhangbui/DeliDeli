@@ -106,9 +106,11 @@
         <!--         Search Result      -->
         <div class="search-result">
             <div class="container ">
-                <div class="row" >
-                    <header class="search-result-header">
+                <div class="row">
+                    <header>
+                        <a href="" class="header">
                             <p><%= ERROR_MSG%></p>
+                        </a>
                     </header>
                 </div>
             </div>
@@ -118,8 +120,10 @@
         <div class="search-result">
             <div class="container ">
                 <div class="row">
-                    <header class="search-result-header">
+                    <header>
+                        <a href="" class="header">
                             <p><%= SUCCESS_MSG%></p>
+                        </a>
                     </header>
                 </div>
 

@@ -4,11 +4,6 @@
     Author     : Admin
 --%>
 
-<%@page import="Review.ReviewDAO"%>
-<%@page import="Recipe.RecipeDAO"%>
-<%@page import="Review.ReviewDTO"%>
-<%@page import="Recipe.RecipeDTO"%>
-<%@page import="java.util.ArrayList"%>
 <%@page import="User.UserDTO"%>
 <%@page import="User.UserDAO"%>
 <%@page import="User.UserDetailDTO"%>
@@ -33,24 +28,79 @@
     </head>
 
     <body>
-        <% String accountName = request.getParameter("accountName");
-            UserDTO account = UserDAO.getAccountByName(accountName);
-            String fullName = "";
-            ArrayList<RecipeDTO> accountRecipe = null;
-            ArrayList<ReviewDTO> reviewList = null;
-            if (account != null) {
-                UserDetailDTO accountDetail = UserDetailDAO.getUserDetailByUserId(account.getId());
-                fullName = accountDetail.getLastName() + " " + accountDetail.getFirstName();
-                accountRecipe = RecipeDAO.getRecipeByUserId(account.getId());
-                reviewList = ReviewDAO.getReviewByUserId(account.getId());
-            }
-        %>
-        <%@include file="header.jsp" %>
+        <div class="navigator-bar">
+            <div class="container ">
+                <div class="row navigation-bar-first">
+                    <a href="homePage.html" class="logo col-md-3">
+                        <img src="./assets/Logo2.png" alt="">
+                    </a>
+                    <div class="search-bar col-md-6">
+                        <form action="" method="post" class="search-bar-content">
+                            <input type="text" placeholder="What are you searching for ?">
+                            <select name="" id="">
+                                <option value="">TITLE</option>
+                                <option value="">CATEGORY</option>
+                                <option value="">INGREDIENT</option>
+                                <option value="">CUISINES</option>
+                            </select>
+                            <button type="submit"><img src="./assets/search-button.svg" alt="Search Icon"></button>
+                        </form>
+                    </div>
+                    <div class="account col-md-3">
+                        <a href="">
+                            <img src="assets/profile-pic.svg" alt="">
+                            <span>My Account</span>
+                        </a>
+                    </div>
+
+                </div>
+                <div class="row navigation-bar-last">
+                    <ul class="navigation-bar-content">
+                        <li>
+                            <div class="dropdown">
+                                <button class="dropbtn">CATEGORIES</button>
+                                <div class="dropdown-content">
+                                    <a href="">1</a>
+                                    <a href="">2</a>
+                                    <a href="">3</a>
+                                    <a href="searchResultPage.html">View More</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="dropdown">
+                                <button class="dropbtn">CUISINES</button>
+                                <div class="dropdown-content">
+                                    <a href="">1</a>
+                                    <a href="">2</a>
+                                    <a href="">3</a>
+                                    <a href="searchResultPage.html">View More</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="dropdown">
+                                <button class="dropbtn">DIFFICULTIES</button>
+                                <div class="dropdown-content">
+                                    <a href="">1</a>
+                                    <a href="">2</a>
+                                    <a href="">3</a>
+                                    <a href="searchResultPage.html">View More</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li><a href="newsPage.html">NEWS</a></li>
+                        <li><a href="">ABOUT US</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
 
 
         <!--        User Public Info Manage        -->
         <%
             String userId = request.getParameter("userId");
+            UserDTO user = UserDAO.getUserByUserId(new Integer(userId));
             UserDetailDTO userDetail = UserDetailDAO.getUserDetailByUserId(new Integer(userId));
         %>
         <div class="blank-background">
