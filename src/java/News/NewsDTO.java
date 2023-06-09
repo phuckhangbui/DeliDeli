@@ -28,19 +28,23 @@ public class NewsDTO {
     private String title;
     private String desc;
     private String image;
-    private Date create_at;
-    private Date update_at;
+    private Date createAt;
+    private Date updateAt;
     private int user_id;
     private int news_category;
 
     //Constructor use for insert
-    public NewsDTO(String title, String desc, String image, Date create_at, Date update_at, int user_id, int news_category) {
+    public NewsDTO(String title, String desc, String image, Date createAt, Date updateAt, int user_id, int news_category) {
         this.title = title;
         this.desc = desc;
         this.image = image;
-        this.create_at = create_at;
-        this.update_at = update_at;
+        this.createAt = createAt;
+        this.updateAt = updateAt;
         this.user_id = user_id;
         this.news_category = news_category;
+    }
+
+    public String getImage() {
+        return "pictures/News/"+this.id+"/"+this.image;
     }
 }

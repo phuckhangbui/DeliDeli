@@ -20,9 +20,15 @@ public class IngredientDetailDTO {
     
     private int id;
     private String desc;
-    private String unit;
-    private String quantity;
     private int ingredient_id;
     private int recipe_id;
+
+    public IngredientDetailDTO(String desc, int ingredient_id, int recipe_id) {
+        this.desc = desc;
+        this.ingredient_id = ingredient_id;
+        this.recipe_id = recipe_id;
+    }
+    
+    
     
 }

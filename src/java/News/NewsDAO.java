@@ -17,6 +17,88 @@ import java.util.ArrayList;
  */
 public class NewsDAO {
     
+    public static int deleteNews(int newsId) {
+        int result = 0;
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                String sql = "DELETE News WHERE id = ?";
+
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setInt(1, newsId);
+                result = pst.executeUpdate();
+                pst.close();
+                cn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public static int updateNews(int newsId, String title, String desc, Date updateAt, int categoryId) {
+        int result = 0;
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                String sql = "UPDATE News SET \n"
+                        + "title = ?,\n"
+                        + "description = ?,\n"
+                        + "update_at = ?, \n"
+                        + "news_category_id = ?\n"
+                        + "WHERE id = ?";
+
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setString(1, title);
+                pst.setString(2, desc);
+                pst.setDate(3, updateAt);
+                pst.setInt(4, categoryId);
+                pst.setInt(5, newsId);
+                result = pst.executeUpdate();
+                pst.close();
+                cn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public static int insertNews(String title, String desc, String image, Date createAt, Date updateAt, int userId, int categoryId) {
+        int result = 0;
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                String sql = "INSERT INTO News(title, description, image, create_at, update_at, user_id, news_category_id) \n"
+                        + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setString(1, title);
+                pst.setString(2, desc);
+                pst.setString(3, image);
+                pst.setDate(4, createAt);
+                pst.setDate(5, createAt);
+                pst.setInt(6, userId);
+                pst.setInt(7, categoryId);
+                result = pst.executeUpdate();
+                pst.close();
+                cn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     public static ArrayList<String> getAllNewsCategory() {
         ArrayList<String> result = new ArrayList<>();
         Connection cn = null;
@@ -129,12 +211,12 @@ public class NewsDAO {
                         String title = rs.getString("title");
                         String description = rs.getString("description");
                         String image = rs.getString("image");
-                        Date create_at = rs.getDate("create_at");
-                        Date update_at = rs.getDate("update_at");
+                        Date createAt = rs.getDate("create_at");
+                        Date updateAt = rs.getDate("update_at");
                         int user_id = rs.getInt("user_id");
                         int news_category_id = rs.getInt("news_category_id");
 
-                        NewsDTO news = new NewsDTO(id, title, description, image, create_at, update_at, user_id, news_category_id);
+                        NewsDTO news = new NewsDTO(id, title, description, image, createAt, updateAt, user_id, news_category_id);
                         result.add(news);
                     }
                 }
@@ -167,12 +249,12 @@ public class NewsDAO {
                         String title = rs.getString("title");
                         String description = rs.getString("description");
                         String image = rs.getString("image");
-                        Date create_at = rs.getDate("create_at");
-                        Date update_at = rs.getDate("update_at");
+                        Date createAt = rs.getDate("create_at");
+                        Date updateAt = rs.getDate("update_at");
                         int user_id = rs.getInt("user_id");
                         int news_category_id = rs.getInt("news_category_id");
 
-                        news = new NewsDTO(id, title, description, image, create_at, update_at, user_id, news_category_id);
+                        news = new NewsDTO(id, title, description, image, createAt, updateAt, user_id, news_category_id);
                     }
                 }
                 rs.close();
@@ -192,6 +274,10 @@ public class NewsDAO {
 //        for (NewsDTO o : list) {
 //            System.out.println(o);
 //        }
-        System.out.println(NewsDAO.getAllNewsCategory());
+        java.util.Date date = new java.util.Date();
+        java.sql.Date createAt = new java.sql.Date(date.getTime());
+        java.sql.Date updateAt = createAt;
+
+        System.out.println(NewsDAO.deleteNews(5));
     }
 }

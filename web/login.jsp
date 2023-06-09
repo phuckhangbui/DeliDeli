@@ -46,7 +46,7 @@
                                 <input type="password" name="txtPass" placeholder="Your password" required="">
                             </div>
                             <div class="error-popup">
-                                <p>${requestScope.errorList}</p>
+                                <p>${requestScope.errorList[0]}</p>
                             </div>
                             <%
                                 String recipeID = request.getParameter("recipeID");

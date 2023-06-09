@@ -9,16 +9,17 @@ import Direction.DirectionDTO;
 import IngredientDetail.IngredientDetailDTO;
 import java.sql.Date;
 import java.util.List;
+import lombok.*;
 
 /**
  *
  * @author Daiisuke
  */
-//@NoArgsConstructor
-//@AllArgsConstructor
-//@Getter
-//@Setter
-//@ToString
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@ToString
 public class RecipeDTO {
 
     private int id;
@@ -33,12 +34,11 @@ public class RecipeDTO {
     private int category_id;
     private int user_id;
     private int level_id;
-    
-    public RecipeDTO() {
-    }
+    private int diet_id;
+    private int status;
 
-    public RecipeDTO(int id, String title, String description, int prep_time, int cook_time, int servings, Date create_at, Date update_at, int cuisine_id, int category_id, int user_id, int level_id) {
-        this.id = id;
+
+    public RecipeDTO(String title, String description, int prep_time, int cook_time, int servings, Date create_at, Date update_at, int cuisine_id, int category_id, int user_id, int level_id, int diet_id, int status) {
         this.title = title;
         this.description = description;
         this.prep_time = prep_time;
@@ -50,20 +50,8 @@ public class RecipeDTO {
         this.category_id = category_id;
         this.user_id = user_id;
         this.level_id = level_id;
-    }
-
-    public RecipeDTO(String title, String description, int prep_time, int cook_time, int servings, Date create_at, Date update_at, int cuisine_id, int category_id, int user_id, int level_id) {
-        this.title = title;
-        this.description = description;
-        this.prep_time = prep_time;
-        this.cook_time = cook_time;
-        this.servings = servings;
-        this.create_at = create_at;
-        this.update_at = update_at;
-        this.cuisine_id = cuisine_id;
-        this.category_id = category_id;
-        this.user_id = user_id;
-        this.level_id = level_id;
+        this.diet_id = diet_id;
+        this.status = status;
     }
 
     public int getId() {
@@ -162,9 +150,5 @@ public class RecipeDTO {
         this.level_id = level_id;
     }
 
-    @Override
-    public String toString() {
-        return "RecipeDTO{" + "id=" + id + ", title=" + title + ", description=" + description + ", prep_time=" + prep_time + ", cook_time=" + cook_time + ", servings=" + servings + ", create_at=" + create_at + ", update_at=" + update_at + ", cuisine_id=" + cuisine_id + ", category_id=" + category_id + ", user_id=" + user_id + ", level_id=" + level_id + '}';
-    }
 
 }

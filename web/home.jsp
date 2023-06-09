@@ -3,6 +3,7 @@
     Created on : May 23, 2023, 8:09:36 AM
     Author     : Admin
 --%>
+<%@page import="RecipeImage.RecipeImageDAO"%>
 <%@page import="User.UserDTO"%>
 <%@page import="Recipe.RecipeDAO"%>
 <%@page import="java.util.ArrayList"%>
@@ -30,17 +31,53 @@
         <%@include file="header.jsp" %>
 
         <!--         The banner       -->
-        <div class="container-fluid banner">
-            <div class="container">
-                <a href="" class="row ">
-                    <div class="banner-content col-md-3">
+        <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <a class="carousel-item active" href="">
+                    <div class="banner-content">
                         <p>All new</p>
                         <p>Perfect Breakfast</p>
                         <p>Try out our new recipes for an easy and delicious breakfast that everybody can enjoy</p>
                     </div>
+                    <img src="./pictures/banner.svg" class="d-block w-100" alt="...">
+                </a>
+                <a class="carousel-item" href="">
+                    <div class="banner-content ">
+                        <p>All new</p>
+                        <p>It's fry-day!</p>
+                        <p>Get yourself some all new fried recipes so you can oil up for your next perfect weekend</p>
+                    </div>
+                    <img src="./pictures/fried-banner.svg" class="d-block w-100 " alt="...">
+                </a>
+                <a class="carousel-item" href="">
+                    <div class="banner-content ">
+                        <p>All new</p>
+                        <p>Pasta La Vista, baby!</p>
+                        <p>Try out these new pasta recipes that are so good it will make pasta way</p>
+                    </div>
+                    <img src="./pictures/pasta-banner.svg" class="d-block w-100" alt="...">
+                </a>
+                <a class="carousel-item" href="">
+                    <div class="banner-content ">
+                        <p>All new</p>
+                        <p>Udon know anything!</p>
+                        <p>That's why we've prepared for you some delicious Japanese recipes to try out</p>
+                    </div>
+                    <img src="./pictures/udon-banner.svg" class="d-block w-100" alt="...">
                 </a>
             </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
+                    data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying"
+                    data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
         </div>
+
 
         <!--         The news section      -->
         <div class="new">
@@ -95,7 +132,7 @@
                     %>
                     <a href="MainController?action=getRecipeDetailById&id=<%= r.getId()%>" class="col-md-4 recommendation-content-post">
                         <div class="recommendation-content-picture">
-                            <img src="<%= RecipeDAO.getThumbnailByRecipeId(r.getId())%>" alt="">
+                            <img src="<%= RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath()%>" alt="">
                         </div>
                         <div>
                             <p><%= RecipeDAO.getCategoryByRecipeId(r.getId())%></p>

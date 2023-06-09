@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,6 +17,10 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author khang
  */
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB - exceed 2MB => disk, else memory => caching.
+        maxFileSize = 1024 * 1024 * 10, // 10MB => maximum upload to server.
+        maxRequestSize = 1024 * 1024 * 50) // 50MB => maximum request from server.
+
 public class MainController extends HttpServlet {
 
     private String url = "errorpage.html";
@@ -63,11 +68,68 @@ public class MainController extends HttpServlet {
                     case "getFeedback":
                         url = "FeedbackServlet";
                         break;
+                    case "editFeedback":
+                        url = "EditFeedbackServlet";
+                        break;
+                    case "deleteFeedBack":
+                        url = "DeleteFeedbackServlet";
+                        break;
+                    case "addRecipe":
+                        url= "AddRecipeServlet";
+                        break;
+                    case "editRecipe":
+                        url="EditRecipeServlet";
+                        break;
+                    case "deleteRecipe":
+                        url="DeleteRecipeServlet";
+                        break;
                     case "getNewsDetail":
                         url = "NewsDetailServlet";
                         break;
                     case "logout":
                         url = "LogOutServlet";
+                        break;
+                    case "manageAccount":
+                        url = "ManageAccountServlet";
+                        break;
+                    case "deactivateAcc":
+                        url = "DeactivateAccountServlet";
+                        break;
+                    case "activateAcc":
+                        url = "ActivateAccountServlet";
+                        break;
+                    case "deleteAcc":
+                        url = "DeleteAccountServlet";
+                        break;
+                    case "manageRecipe":
+                        url = "ManageRecipeServlet";
+                        break;
+                    case "confirmRecipe":
+                        url = "ConfirmRecipeServlet";
+                        break;
+                    case "searchAccount":
+                        url = "SearchAccountServlet";
+                        break;
+                    case "showUserDetail":
+                        url = "ShowUserDetailServlet";
+                        break;
+                    case "showRecipeDetail":
+                        url = "ShowRecipeDetailServlet";
+                        break;
+                    case "manageNews":
+                        url = "ManageNewsServlet";
+                        break;
+                    case "showNewsDetail":
+                        url = "ShowNewsDetailServlet";
+                        break;
+                    case "createNews":
+                        url = "CreateNewsServlet";
+                        break;
+                    case "updateNews":
+                        url = "UpdateNewsServlet";
+                        break;
+                    case "deleteNews":
+                        url = "DeleteNewsServlet";
                         break;
                 }
             }

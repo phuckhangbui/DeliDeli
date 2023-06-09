@@ -6,6 +6,7 @@ package Servlet;
 
 import Recipe.RecipeDAO;
 import Recipe.RecipeDTO;
+import Utils.NavigationBarUtils;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -35,26 +36,35 @@ public class SearchServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
+            String admin = request.getParameter("admin");
             String txtsearch = request.getParameter("txtsearch").toLowerCase();
             String searchBy = request.getParameter("searchBy").toLowerCase();
-            HttpSession session = request.getSession();
-            session.setAttribute("searchRecipesList", null);
-            session.setAttribute("ERROR_MSG", null);
-            session.setAttribute("SUCCESS_MSG", null);
 
-            if (txtsearch == null || txtsearch.equals("")) {
-                session.setAttribute("ERROR_MSG", "What do you want to eat? Please search");
+            //Search recipe for admin
+            if (admin != null) {
+                ArrayList<RecipeDTO> list = NavigationBarUtils.searchRecipes(txtsearch, searchBy);
+                request.setAttribute("searchRecipesList", list);
+                request.getRequestDispatcher("manageRecipe.jsp").forward(request, response);
             } else {
-                ArrayList<RecipeDTO> list = RecipeDAO.searchRecipes(txtsearch, searchBy);
-                if (list.size() != 0) {
-                    session.setAttribute("searchRecipesList", list);
-                    session.setAttribute("SUCCESS_MSG", "Result of '" + txtsearch + "' in recipe's " + searchBy);
+                HttpSession session = request.getSession();
+                session.setAttribute("searchRecipesList", null);
+                session.setAttribute("ERROR_MSG", null);
+                session.setAttribute("SUCCESS_MSG", null);
+                
+                if (txtsearch == null || txtsearch.equals("")) {
+                    session.setAttribute("ERROR_MSG", "What do you want to eat? Please search");
                 } else {
-                    session.setAttribute("ERROR_MSG", "There is no '" + txtsearch + "' in recipe's " + searchBy);
+                    ArrayList<RecipeDTO> list = NavigationBarUtils.searchRecipes(txtsearch, searchBy);
+                    if (list.size() != 0) {
+                        session.setAttribute("searchRecipesList", list);
+                        session.setAttribute("SUCCESS_MSG", "Result of '" + txtsearch + "' in recipe's " + searchBy);
+                    } else {
+                        session.setAttribute("ERROR_MSG", "There is no '" + txtsearch + "' in recipe's " + searchBy);
+                    }
+                    
                 }
-
+                request.getRequestDispatcher("searchResultPage.jsp").forward(request, response);
             }
-            request.getRequestDispatcher("searchResultPage.jsp").forward(request, response);
         }
     }
 

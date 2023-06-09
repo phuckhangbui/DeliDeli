@@ -85,6 +85,7 @@ public class ReviewDAO {
         return result;
     }
     
+
     public static ArrayList<ReviewDTO> getReviewByUserId(int userId) {
         ArrayList<ReviewDTO> result = new ArrayList<>();
         Connection cn = null;
@@ -93,7 +94,10 @@ public class ReviewDAO {
             cn = DBUtils.getConnection();
 
             if (cn != null) {
-                String sql = "SELECT * FROM Review WHERE user_id = ?";
+                String sql = "SELECT *\n"
+                        + "FROM Review\n"
+                        + "WHERE user_id = ?\n"
+                        + "ORDER BY COALESCE(update_at, create_at) DESC, create_at DESC;";
 
                 PreparedStatement pst = cn.prepareStatement(sql);
                 pst.setInt(1, userId);
@@ -139,7 +143,7 @@ public class ReviewDAO {
                 pst.setInt(3, recipeId);
                 pst.setInt(4, userId);
                 result = pst.executeUpdate();
-                
+
                 pst.close();
                 cn.close();
             }
@@ -150,11 +154,141 @@ public class ReviewDAO {
         return result;
     }
 
-    public static void main(String[] args) {
-        ArrayList<ReviewDTO> list = ReviewDAO.getReviewByUserId(1);
-//        System.out.println("Owner: " + getReviewByUserId(1));
-        for (ReviewDTO o : list) {
-            System.out.println(o);
+    public static ReviewDTO getReviewById(int reviewId) {
+        ReviewDTO result = null;
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                String sql = "SELECT * FROM Review WHERE id = ? ";
+
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setInt(1, reviewId);
+                ResultSet rs = pst.executeQuery();
+                if (rs != null) {
+                    while (rs.next()) {
+                        int id = rs.getInt("id");
+                        int rating = rs.getInt("rating");
+                        String content = rs.getString("content");
+                        Date create_at = rs.getDate("create_at");
+                        Date update_at = rs.getDate("update_at");
+                        int recipe_id = rs.getInt("recipe_id");
+                        int user_id = rs.getInt("user_id");
+
+                        result = new ReviewDTO(id, rating, content, create_at, update_at, recipe_id, user_id);
+                    }
+                }
+                rs.close();
+                pst.close();
+                cn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
+        return result;
+    }
+
+    public static ReviewDTO getReviewByRecipeAndUser(int userId, int recipeId) {
+        ReviewDTO result = null;
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                String sql = "SELECT * FROM Review WHERE user_id = ? AND recipe_id= ?";
+
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setInt(1, userId);
+                pst.setInt(2, recipeId);
+                ResultSet rs = pst.executeQuery();
+                if (rs != null) {
+                    while (rs.next()) {
+                        int id = rs.getInt("id");
+                        int rating = rs.getInt("rating");
+                        String content = rs.getString("content");
+                        Date create_at = rs.getDate("create_at");
+                        Date update_at = rs.getDate("update_at");
+                        int recipe_id = rs.getInt("recipe_id");
+                        int user_id = rs.getInt("user_id");
+
+                        result = new ReviewDTO(id, rating, content, create_at, update_at, recipe_id, user_id);
+                    }
+                }
+                rs.close();
+                pst.close();
+                cn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    public static int deleteReview(int reviewId) {
+        int result = 0;
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                String sql = " DELETE FROM [dbo].[Review]\n"
+                        + " WHERE id = ?";
+
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setInt(1, reviewId);
+                result = pst.executeUpdate();
+                pst.close();
+                cn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    public static boolean updateReview(ReviewDTO review) {
+        boolean success = false;
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                String sql = "UPDATE Review SET rating = ?, content = ?, update_at = ? WHERE id = ?";
+
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setInt(1, review.getRating());
+                pst.setString(2, review.getContent());
+                pst.setDate(3, review.getUpdate_at());
+                pst.setInt(4, review.getId());
+
+                int rowsAffected = pst.executeUpdate();
+                if (rowsAffected > 0) {
+                    success = true;
+                }
+
+                pst.close();
+                cn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return success;
+    }
+
+    public static void main(String[] args) {
+        ReviewDTO o = ReviewDAO.getReviewById(6);
+//        System.out.println("Owner: " + getReviewByUserId(1));
+        updateReview(o);
+        System.out.println(o);
+
     }
 }
