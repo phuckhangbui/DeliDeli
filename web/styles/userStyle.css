@@ -245,6 +245,7 @@ span {
 .recommendation-content-picture img {
 	width: 100%;
 	height: 250px;
+	object-fit: cover;
 }
 
 .recommendation-content a div p:nth-child(1) {
@@ -596,6 +597,7 @@ span {
 .search-result-content-picture img {
 	width: 100%;
 	height: 220px;
+	object-fit: cover;
 }
 
 .search-result-content a div p:nth-child(1) {
@@ -667,6 +669,7 @@ span {
 .recipe-detail-main-pic img {
 	max-width: 100%;
 	height: auto;
+	object-fit: cover;
 }
 
 .recipe-detail-main-pic {
@@ -761,6 +764,10 @@ span {
 	margin: 10px 0;
 }
 
+.recipe-detail-secondary-pic img {
+	width: 100%;
+	object-fit: cover;
+}
 .recipe-detail-info-header {
 	font-size: 32px;
 }
@@ -930,6 +937,21 @@ span {
 	z-index: 1;
 }
 
+.dropdown-content-right {
+	display: none;
+	position: absolute;
+	background-color: #fff;
+	min-width: 230px;
+	box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+	z-index: 1;
+	right: 0;
+	top: 0;
+}
+
+#dropdownUserRecipe a {
+	font-size: 24px;
+}
+
 /* Links inside the dropdown */
 .dropdown-content a {
 	font-size: 16px;
@@ -945,9 +967,19 @@ span {
 	background-color: #ec9131;
 }
 
+.dropdown-content-right a:hover {
+	background-color: #ec9131;
+}
+
 /* Show the dropdown menu on hover */
 .dropdown:hover .dropdown-content {
 	display: block;
+}
+
+.dropdown:hover .dropdown-content-right {
+	display: block;
+	left: 70%;
+	right: auto;
 }
 
 /* Change the background color of the dropdown button when the dropdown content is shown */
@@ -1271,7 +1303,12 @@ span {
 	height: 40px;
 	margin: 5px;
 }
-
+.delete-button a{
+	position: absolute;
+	width: 40px;
+	height: 40px;
+	margin: 5px;
+}
 .delete-button img {
 	width: 20px;
 	height: 20px;
@@ -1292,14 +1329,24 @@ span {
 	display: flex;
 	justify-content: right;
 }
+.user-profile-recipe-post-description{
+    margin-top: 5px;
+    display: flex;
+    justify-content: space-between;
 
-.user-profile-recipe-post div p:nth-child(1) {
-	margin-top: 10px;
-	color: rgba(0, 0, 0, 0.5);
-	margin-bottom: 0px;
 }
 
-.user-profile-recipe-post div p:nth-child(2) {
+.user-profile-recipe-post-description img{
+    width: 25px;
+    height: 25px;
+}
+
+.user-profile-recipe-post-description p{
+    margin: 0px;
+    color: rgba(0, 0, 0, 0.5);
+    padding-top: 7px;
+}
+.user-profile-recipe-post div a {
 	font-size: 24px;
 	margin-bottom: 0;
 }
@@ -1588,7 +1635,7 @@ span {
 .add-recipe-info-ingredient-content input {
 	padding: 0 5px;
 	border-radius: 10px;
-	width: auto;
+	width: 400px;
 	background-color: #f8f8f8;
 }
 .add-recipe-info-ingredient-content p{
