@@ -57,8 +57,9 @@
                             <%
                                 for (RecipeDTO r : recipeList) {
                             %>
-                            <div href="MainController?action=getRecipeDetailById&id=<%= r.getId()%>" class="col-md-6 user-profile-recipe-post">
-                                <a class="user-profile-recipe-post-picture" data-page="editRecipe.jsp?recipeId=<%=r.getId()%>">
+                            <div  class="col-md-6 user-profile-recipe-post">
+                                <a href="MainController?action=getRecipeDetailById&id=<%= r.getId()%>"
+                                    class="user-profile-recipe-post-picture" data-page="editRecipe.jsp?recipeId=<%=r.getId()%>">
                                     <img src="<%= RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath()%>" alt="">
                                 </a>
 
@@ -69,7 +70,7 @@
                                             <img src="./assets/edit.svg"/>
                                         </a>
                                     </div>
-                                    <p><%= r.getTitle()%></p>
+                                    <a href="MainController?action=getRecipeDetailById&id=<%= r.getId()%>"><%= r.getTitle()%></a>
                                 </div>
                                 <div class="recommendation-content-reciew">
                                     <%

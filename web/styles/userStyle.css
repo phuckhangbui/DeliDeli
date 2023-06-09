@@ -1175,13 +1175,20 @@ span {
     margin-top: 5px;
     display: flex;
     justify-content: space-between;
-    text-align: center;
+
 }
+
+.user-profile-recipe-post-description img{
+    width: 25px;
+    height: 25px;
+}
+
 .user-profile-recipe-post-description p{
     margin: 0px;
     color: rgba(0, 0, 0, 0.5);
+    padding-top: 7px;
 }
-.user-profile-recipe-post div p:nth-child(2) {
+.user-profile-recipe-post div a {
 	font-size: 24px;
 	margin-bottom: 0;
 }

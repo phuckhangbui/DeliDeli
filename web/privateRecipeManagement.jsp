@@ -57,17 +57,20 @@
                             <%
                                 for (RecipeDTO r : recipeList) {
                             %>
-                            <a href="MainController?action=getRecipeDetailById&id=<%= r.getId()%>" class="col-md-6 user-profile-recipe-post">
-                                <div class="user-profile-recipe-post-picture" data-page="editRecipe.jsp?recipeId=<%=r.getId()%>">
-                                    <div class="delete-button">
-                                        <img src="./assets/delete-button.svg" alt="" class="editButton">
-                                    </div>
+                            <div  class="col-md-6 user-profile-recipe-post">
+                                <a href="MainController?action=getRecipeDetailById&id=<%= r.getId()%>"
+                                    class="user-profile-recipe-post-picture" data-page="editRecipe.jsp?recipeId=<%=r.getId()%>">
                                     <img src="<%= RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath()%>" alt="">
-                                </div>
+                                </a>
 
                                 <div>
-                                    <p><%= RecipeDAO.getCategoryByRecipeId(r.getId())%></p>
-                                    <p><%= r.getTitle()%></p>
+                                    <div class="user-profile-recipe-post-description">
+                                        <p><%= RecipeDAO.getCategoryByRecipeId(r.getId())%></p>
+                                        <a href="editRecipe.jsp?recipeId=<%=r.getId()%>">
+                                            <img src="./assets/edit.svg"/>
+                                        </a>
+                                    </div>
+                                    <a href="MainController?action=getRecipeDetailById&id=<%= r.getId()%>"><%= r.getTitle()%></a>
                                 </div>
                                 <div class="recommendation-content-reciew">
                                     <%
@@ -79,8 +82,7 @@
                                     %>
                                     <p class="recommendation-content-reciew-rating"><%= RecipeDAO.getRatingByRecipeId(r.getId())%></p>
                                 </div>
-                                <a href="editRecipe.jsp?recipeId=<%=r.getId()%>">edit</a>
-                            </a>
+                            </div>
                             <% }%>
 
                             <script>

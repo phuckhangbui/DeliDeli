@@ -21,7 +21,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
 <html lang="en">
 
     <head>
-        <title>Add Recipe</title>
+        <title>Edit Recipe</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!--      Bootstrap         -->
@@ -106,7 +106,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                     <input type="file" id="image" name="pictures">
                                 </div>
                                 
-                                <p>(Will replace the previous picture, add nothing if you want to keep the old one)</p>
+                                <p>(Add nothing if you want to keep the old one)</p>
                             </div>
                         </div>
                         <div class="row add-recipe-info-number">
@@ -405,7 +405,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                 EDIT
                             </button>
                             <span></span>
-                            <button type="submit" name="action" value="deleteRecipe">
+                            <!--Goi MainController?action=deleteRecipe  -->
+                            <button type="submit" name="action" value="#">
                                 DELETE
                             </button>
                         </div>
