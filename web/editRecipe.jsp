@@ -406,7 +406,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                             </button>
                             <span></span>
                             <!--Goi MainController?action=deleteRecipe  -->
-                            <button type="submit" name="action" value="#">
+                            <button type="#" name="#" value="#">
                                 DELETE
                             </button>
                         </div>

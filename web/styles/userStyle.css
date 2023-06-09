@@ -1443,8 +1443,9 @@ span {
 .add-recipe-info-ingredient-content input {
 	padding: 0 5px;
 	border-radius: 10px;
-	width: auto;
+	width: 400px;
 	background-color: #f8f8f8;
+        
 }
 .add-recipe-info-ingredient-content p {
 	display: flex;
