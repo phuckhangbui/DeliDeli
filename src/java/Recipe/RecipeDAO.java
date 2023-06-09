@@ -318,8 +318,10 @@ public class RecipeDAO {
             cn = DBUtils.getConnection();
 
             if (cn != null) {
-                String sql = "SELECT * FROM Recipe\n"
-                        + "WHERE user_id = ? AND status = 3";
+                String sql = "SELECT *\n"
+                        + "FROM Recipe\n"
+                        + "WHERE user_id = ? AND status = 3\n"
+                        + "ORDER BY COALESCE(update_at, create_at) DESC, create_at DESC";
 
                 PreparedStatement pst = cn.prepareStatement(sql);
                 pst.setInt(1, userId);
@@ -357,7 +359,7 @@ public class RecipeDAO {
 
         return result;
     }
-    
+
     public static ArrayList<RecipeDTO> getPendingRecipeByUserId(int userId) {
         ArrayList<RecipeDTO> result = new ArrayList<RecipeDTO>();
         Connection cn = null;
@@ -366,8 +368,10 @@ public class RecipeDAO {
             cn = DBUtils.getConnection();
 
             if (cn != null) {
-                String sql = "SELECT * FROM Recipe\n"
-                        + "WHERE user_id = ? AND status = 2";
+                String sql = "SELECT *\n"
+                        + "FROM Recipe\n"
+                        + "WHERE user_id = ? AND status = 2\n"
+                        + "ORDER BY COALESCE(update_at, create_at) DESC, create_at DESC";
 
                 PreparedStatement pst = cn.prepareStatement(sql);
                 pst.setInt(1, userId);
@@ -405,7 +409,7 @@ public class RecipeDAO {
 
         return result;
     }
-    
+
     public static ArrayList<RecipeDTO> getPrivateRecipeByUserId(int userId) {
         ArrayList<RecipeDTO> result = new ArrayList<RecipeDTO>();
         Connection cn = null;
@@ -414,8 +418,10 @@ public class RecipeDAO {
             cn = DBUtils.getConnection();
 
             if (cn != null) {
-                String sql = "SELECT * FROM Recipe\n"
-                        + "WHERE user_id = ? AND status = 1";
+                String sql = "SELECT *\n"
+                        + "FROM Recipe\n"
+                        + "WHERE user_id = ? AND status = 1\n"
+                        + "ORDER BY COALESCE(update_at, create_at) DESC, create_at DESC";
 
                 PreparedStatement pst = cn.prepareStatement(sql);
                 pst.setInt(1, userId);

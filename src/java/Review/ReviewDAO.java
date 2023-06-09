@@ -93,7 +93,10 @@ public class ReviewDAO {
             cn = DBUtils.getConnection();
 
             if (cn != null) {
-                String sql = "SELECT * FROM Review WHERE user_id = ?";
+                String sql = "SELECT *\n"
+                        + "FROM Review\n"
+                        + "WHERE user_id = ?\n"
+                        + "ORDER BY COALESCE(update_at, create_at) DESC, create_at DESC;";
 
                 PreparedStatement pst = cn.prepareStatement(sql);
                 pst.setInt(1, userId);
@@ -248,38 +251,37 @@ public class ReviewDAO {
 
         return result;
     }
-    
+
     public static boolean updateReview(ReviewDTO review) {
-    boolean success = false;
-    Connection cn = null;
+        boolean success = false;
+        Connection cn = null;
 
-    try {
-        cn = DBUtils.getConnection();
+        try {
+            cn = DBUtils.getConnection();
 
-        if (cn != null) {
-            String sql = "UPDATE Review SET rating = ?, content = ?, update_at = ? WHERE id = ?";
+            if (cn != null) {
+                String sql = "UPDATE Review SET rating = ?, content = ?, update_at = ? WHERE id = ?";
 
-            PreparedStatement pst = cn.prepareStatement(sql);
-            pst.setInt(1, review.getRating());
-            pst.setString(2, review.getContent());
-            pst.setDate(3, review.getUpdate_at()); 
-            pst.setInt(4, review.getId());
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setInt(1, review.getRating());
+                pst.setString(2, review.getContent());
+                pst.setDate(3, review.getUpdate_at());
+                pst.setInt(4, review.getId());
 
-            int rowsAffected = pst.executeUpdate();
-            if (rowsAffected > 0) {
-                success = true;
+                int rowsAffected = pst.executeUpdate();
+                if (rowsAffected > 0) {
+                    success = true;
+                }
+
+                pst.close();
+                cn.close();
             }
-
-            pst.close();
-            cn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    } catch (Exception e) {
-        e.printStackTrace();
+
+        return success;
     }
-
-    return success;
-}
-
 
     public static void main(String[] args) {
         ReviewDTO o = ReviewDAO.getReviewById(6);

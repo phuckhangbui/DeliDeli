@@ -1322,6 +1322,7 @@ span {
 .user-profile-recipe-post-picture img {
 	width: 100%;
 	height: auto;
+        object-fit: cover;
 }
 
 .user-profile-recipe-post-picture {
