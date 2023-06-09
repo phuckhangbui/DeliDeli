@@ -39,31 +39,35 @@ public class ShowRecipeDetailServlet extends HttpServlet {
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             String id = request.getParameter("id");
-            
+
             RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(new Integer(id));
             request.setAttribute("recipe", recipe);
-            
+
             String owner = RecipeDAO.getRecipeOwnerByRecipeId(new Integer(id));
             request.setAttribute("owner", owner);
-            
+
             int totalReview = RecipeDAO.getTotalReviewByRecipeId(new Integer(id));
             request.setAttribute("totalReview", totalReview);
 
             double avgRating = RecipeDAO.getRatingByRecipeId(new Integer(id));
             request.setAttribute("avgRating", avgRating);
-            
-            String thumbnail = RecipeDAO.getThumbnailByRecipeId(new Integer(id));
+
+            String thumbnail = RecipeDAO.getThumbnailByRecipeId(new Integer(id)).getThumbnailPath();
             request.setAttribute("thumbnail", thumbnail);
 
             ArrayList<IngredientDetailDTO> ingredientDetailList = IngredientDetailDAO.getIngredientDetailByRecipeId(new Integer(id));
             request.setAttribute("ingredientDetailList", ingredientDetailList);
 
-            ArrayList<DirectionDTO> directionList = DirectionDAO.getDirectionByRecipeId(new Integer(id));
+            DirectionDTO directionList = DirectionDAO.getDirectionByRecipeId(new Integer(id));
             request.setAttribute("directionList", directionList);
 
-            String image = RecipeDAO.getImageByRecipeId(new Integer(id));
-            request.setAttribute("image", image);
-            
+            try {
+                String image = RecipeDAO.getImageByRecipeId(new Integer(id)).getImgPath();
+                request.setAttribute("image", image);
+            } catch (Exception e) {
+
+            }
+
             request.getRequestDispatcher("recipeDetail.jsp").forward(request, response);
         }
     }

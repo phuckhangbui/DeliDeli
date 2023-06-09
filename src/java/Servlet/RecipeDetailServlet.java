@@ -10,6 +10,7 @@ import IngredientDetail.IngredientDetailDAO;
 import IngredientDetail.IngredientDetailDTO;
 import Recipe.RecipeDAO;
 import Recipe.RecipeDTO;
+import RecipeImage.RecipeImageDTO;
 import Review.ReviewDAO;
 import Review.ReviewDTO;
 import java.io.IOException;
@@ -56,18 +57,10 @@ public class RecipeDetailServlet extends HttpServlet {
 
             double avgRating = RecipeDAO.getRatingByRecipeId(new Integer(id));
             request.setAttribute("avgRating", avgRating);
-            
-            String thumbnail = RecipeDAO.getThumbnailByRecipeId(new Integer(id));
-            request.setAttribute("thumbnail", thumbnail);
 
             ArrayList<IngredientDetailDTO> ingredientDetailList = IngredientDetailDAO.getIngredientDetailByRecipeId(new Integer(id));
             request.setAttribute("ingredientDetailList", ingredientDetailList);
 
-            ArrayList<DirectionDTO> directionList = DirectionDAO.getDirectionByRecipeId(new Integer(id));
-            request.setAttribute("directionList", directionList);
-
-            String image = RecipeDAO.getImageByRecipeId(new Integer(id));
-            request.setAttribute("image", image);
 
             //REVIEW----------------------------------------------------------------------------------
             ArrayList<ReviewDTO> reviewList = ReviewDAO.getReviewByRecipeId(new Integer(id));

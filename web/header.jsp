@@ -32,10 +32,12 @@
             HashMap<Integer, String> cuisineMap = Utils.NavigationBarUtils.getMap("Cuisine");
             HashMap<Integer, String> levelMap = Utils.NavigationBarUtils.getMap("Level");
             HashMap<Integer, String> ingredientMap = Utils.NavigationBarUtils.getMap("Ingredient");
-            
+            HashMap<Integer, String> dietMap = Utils.NavigationBarUtils.getMap("Diet");
+
             HashMap<Integer, String> newsMap = Utils.NavigationBarUtils.getMap("NewsCategory");
-            
+
             UserDTO user = (UserDTO) session.getAttribute("user");
+            
         %>
         <div class="navigator-bar">
             <div class="container ">
@@ -51,6 +53,7 @@
                                 <option value="Category">CATEGORY</option>
                                 <!--<option value="">INGREDIENT</option>-->
                                 <option value="Cuisine">CUISINES</option>
+                                <option value="Diet">DIETS</option>
                             </select>
                             <button type="submit" name="action" value="search"><img src="./assets/search-button.svg" alt="Search Icon"></button>
                         </form>
@@ -61,14 +64,15 @@
                             <div class="user-dropdown">
                                 <button class="user-dropbtn"><%=user.getUserName()%></button>
                                 <div class="user-dropdown-content">
-                                    <a href="userCommunityProfile.jsp?accountName=<%= user.getUserName() %>">Your profile</a>
-                                    <a href="userPublicDetail.jsp?userId=<%=user.getId() %>">Management</a>
+                                    <a href="userCommunityProfile.jsp?accountName=<%= user.getUserName()%>">Your profile</a>
+                                    <a href="userPublicDetail.jsp?userId=<%=user.getId()%>">Management</a>
+                                    <a href="addRecipe.jsp">Add Recipe</a>
                                     <a href="MainController?action=logout" >Logout</a>
                                 </div>
                             </div>
                         </span>
                     </div>
-                                
+
                     <%} else { %>
                     <div class="account col-md-3">
                         <span><a href="login.jsp">Sign in</a></span>
@@ -133,6 +137,20 @@
                                 </div>
                             </div>
                         </li>
+                        <li>
+                            <div class="dropdown">
+                                <button class="dropbtn">DIETS</button>
+                                <div class="dropdown-content">
+                                    <% for (Map.Entry<Integer, String> entry : dietMap.entrySet()) {
+                                            Integer key = entry.getKey();
+                                            String value = entry.getValue();
+                                    %>
+                                    <a href="searchResultPage.jsp?type=Diet&id=<%=key%>"><%=value%></a>
+                                    <%}%>
+                                </div>
+                            </div>
+                        </li>
+
                         <li>
                             <div class="dropdown">
                                 <button class="dropbtn">NEWS</button>

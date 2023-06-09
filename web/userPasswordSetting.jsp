@@ -41,42 +41,7 @@
             <div class="container ">
                 <form action="MainController" class="row user-profile" method="post">
                     <input type="hidden" name="userId" value="<%= userId%>">
-                    <div class="col-md-3 user-profile-column-1">
-                        <div class="user-profile-header">
-                            <div>
-                                Setting
-                            </div>
-                            <p>
-                                Customize your profile
-                            </p>
-                        </div>
-                        <div class="user-profile-option">
-                            <a href="userPublicDetail.jsp?userId=<%= userId%>">
-                                <img src="./assets/public.svg" alt="">
-                                Public Profile
-                            </a>
-                            <a href="userEmailSetting.jsp?userId=<%= userId%>">
-                                <img src="./assets/personal.png" alt="">
-                                Personal Setting
-                            </a>
-                            <a href="userPasswordSetting.jsp?userId=<%= userId%>">
-                                <img src="./assets/Password.svg" alt="">
-                                Change Password
-                            </a>
-                            <a href="userSavedRecipes.html">
-                                <img src="./assets/favorite.svg" alt="">
-                                Saved Recipes
-                            </a>
-                            <a href="userOwnRecipes.html">
-                                <img src="./assets/my-recipe.svg" alt="">
-                                My Own Recipes
-                            </a>
-                            <a href="userOwnReviews.html">
-                                <img src="./assets/full-star.png" alt="">
-                                My Reviews
-                            </a>
-                        </div>
-                    </div>
+                    <%@include file="userManagementSideBar.jsp" %>
                     <div class="col-md-5 user-profile-column-2">
                         <div class="user-profile-header">
                             <div>

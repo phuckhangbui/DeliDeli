@@ -4,6 +4,7 @@
     Author     : khang
 --%>
 
+<%@page import="RecipeImage.RecipeImageDAO"%>
 <%@page import="Review.ReviewDAO"%>
 <%@page import="Review.ReviewDTO"%>
 <%@page import="Recipe.RecipeDAO"%>
@@ -43,7 +44,7 @@
             if (account != null) {
                 UserDetailDTO accountDetail = UserDetailDAO.getUserDetailByUserId(account.getId());
                 fullName = accountDetail.getLastName() + " " + accountDetail.getFirstName();
-                accountRecipe = RecipeDAO.getRecipeByUserId(account.getId());
+                accountRecipe = RecipeDAO.getPublicRecipeByUserId(account.getId());
                 reviewList = ReviewDAO.getReviewByUserId(account.getId());
             }
         %>
@@ -139,7 +140,7 @@
                         %>
                         <a href="MainController?action=getRecipeDetailById&id=<%= r.getId()%>" class="col-md-4 recommendation-content-post">
                             <div class="search-result-content-picture">
-                                <img src="<%= RecipeDAO.getThumbnailByRecipeId(r.getId())%>" alt="">
+                                <img src="<%= RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath()%>" alt="">
                             </div>
                             <div>
                                 <p><%= RecipeDAO.getCategoryByRecipeId(r.getId())%></p>
@@ -168,55 +169,59 @@
                     </div>
                 </div>
 
-
-                <!--        User Community Own Reviews       -->
-                <div class="container user-community-recipe">
-                    <div class="row ">
-                        <header class="user-community-recipe-header">
-                            <p>Recipes Reviews</p>
-                        </header>
-                    </div>
-                    <div class="row user-community-recipe-review">
-                        <% int count1 = 0;
-                            for (ReviewDTO review : reviewList) {
-                                count1++;
-                                RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(review.getRecipe_id());
-                                
-                        %>
-                        <a href="MainController?action=getRecipeDetailById&id=<%= recipe.getId()%>&activeScroll=true" class="col-md-3 user-community-recipe-review-card">
-                            <div class="user-community-recipe-review-card-picture">
-                                <img src="<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId())%>" alt="">
-                            </div>
-                            <div class="user-community-recipe-review-card-title">
-                                <p><%= recipe.getTitle()%></p>
-                            </div>
-                            <div class="recommendation-content-reciew">
-                                <%
-                                    for (int i = 0; i < review.getRating(); i++) {
-                                %>
-                                <img src="./assets/full-star.png" alt="">
-                                <%
-                                    }
-                                %>
-                            </div>
-                            <div class="user-community-recipe-review-card-content">
-                                <p><%=review.getContent() %></p>
-                            </div>
-                        </a>
-                            <% 
-                            }%>
-                        
-
-                    </div>
-                </div>
-
                 <div class="row user-community-favorite-recipe">
 
                 </div>
                 <div class="row ">
 
                 </div>
+
+                
+                
+            
+
+            <!--        User Community Own Reviews       -->
+            <div class="container user-community-recipe">
+                <div class="row ">
+                    <header class="user-community-recipe-header">
+                        <p>Recipes Reviews</p>
+                    </header>
+                </div>
+                <div class="row user-community-recipe-review">
+                    <% int count1 = 0;
+                        for (ReviewDTO review : reviewList) {
+                            count1++;
+                            RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(review.getRecipe_id());
+
+                    %>
+                    <a href="MainController?action=getRecipeDetailById&id=<%= recipe.getId()%>&activeScroll=true" class="col-md-3 user-community-recipe-review-card">
+                        <div class="user-community-recipe-review-card-picture">
+                            <img src="<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
+                        </div>
+                        <div class="user-community-recipe-review-card-title">
+                            <p><%= recipe.getTitle()%></p>
+                        </div>
+                        <div class="recommendation-content-reciew">
+                            <%
+                                for (int i = 0; i < review.getRating(); i++) {
+                            %>
+                            <img src="./assets/full-star.png" alt="">
+                            <%
+                                }
+                            %>
+                        </div>
+                        <div class="user-community-recipe-review-card-content">
+                            <p><%=review.getContent()%></p>
+                        </div>
+                    </a>
+                    <%
+                        }%>
+
+
+                </div>
             </div>
+
+
         </div>
 
 

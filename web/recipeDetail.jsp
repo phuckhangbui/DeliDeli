@@ -4,6 +4,8 @@
     Author     : Admin
 --%>
 
+<%@page import="Recipe.RecipeDAO"%>
+<%@page import="Direction.DirectionDAO"%>
 <%@page import="User.UserDAO"%>
 <%@page import="User.UserDTO"%>
 <%@page import="Review.ReviewDAO"%>
@@ -35,7 +37,6 @@
 
         <%
             ArrayList<IngredientDetailDTO> ingredientDetailList = (ArrayList) request.getAttribute("ingredientDetailList");
-            ArrayList<DirectionDTO> directionList = (ArrayList) request.getAttribute("directionList");
             ArrayList<ReviewDTO> reviewList = (ArrayList) request.getAttribute("reviewList");
             RecipeDTO recipe = (RecipeDTO) request.getAttribute("recipe");
             int ownerId = recipe.getUser_id();
@@ -89,7 +90,7 @@
                         </button>
                     </div>
                     <div class="recipe-detail-main-pic">
-                        <img src="<%= request.getAttribute("thumbnail")%>" alt="">
+                        <img src="<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
                     </div>
                     <div class="recipe-detail-info-overview">
                         <div class="recipe-detail-info-overview-content">
@@ -163,133 +164,27 @@
                         </div>
                         <div>
                             <%
-                                if (directionList.size() > 0 && directionList != null) {
-                                    for (DirectionDTO o : directionList) {
+                                DirectionDTO direction = DirectionDAO.getDirectionByRecipeId(recipe.getId());
                             %>
-                            <p class="recipe-detail-info-direction-header">Step <%= o.getStep()%></p>
-                            <p><%= o.getDesc()%></p>
-                            <%
-                                    }
-                                }
-                            %>
+
+                            <p class="recipe-detail-info-direction-header"><%= direction.getDesc()%></p>
+
+
                         </div>
                     </div>
+                    <% try {
+                            String path = RecipeDAO.getImageByRecipeId(recipe.getId()).getImgPath();
+
+                    %>
                     <div class="recipe-detail-secondary-pic">
-                        <img src="<%= request.getAttribute("image")%>" alt="">
+                        <img src="<%= RecipeDAO.getImageByRecipeId(recipe.getId()).getImgPath()%>" alt="">
                     </div>
+                    <% } catch (Exception e) {
+
+                        }%>
                 </div>
 
-
-
-
-
-                <!--        Reviews         -->
-                <div class="row recipe-detail-review" id="scrollTarget">
-                    <header class="recipe-detail-review-main-header">
-                        REVIEWS
-                    </header>
-                    <%if (user != null) {%>
-                    <form class="recipe-detail-review-self" id="ratingForm" action="MainController" method="post">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <p class="recipe-detail-review-self-header">Your Rating</p>
-                                <div class="recipe-detail-review-self-rating rate">
-                                    <input type="text" name="recipeId" value="<%= recipe.getId()%>" hidden="">
-
-                                    <input type="radio" id="star5" name="rating" value="5" />
-                                    <label for="star5" title="text">5 stars</label>
-                                    <input type="radio" id="star4" name="rating" value="4" />
-                                    <label for="star4" title="text">4 stars</label>
-                                    <input type="radio" id="star3" name="rating" value="3" />
-                                    <label for="star3" title="text">3 stars</label>
-                                    <input type="radio" id="star2" name="rating" value="2" />
-                                    <label for="star2" title="text">2 stars</label>
-                                    <input type="radio" id="star1" name="rating" value="1"/>
-                                    <label for="star1" title="text">1 star</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <p class="recipe-detail-review-self-header">Your Review</p>
-                                <textarea name="txtReview" id="" cols="1" rows="5" class="recipe-detail-review-self-review"
-                                          placeholder="What do think of the recipe above? (Optional)"></textarea>
-                            </div>
-                        </div>
-                        <div class="recipe-detail-review-self-button" >
-                            <button name="action" value="getFeedback" id="submitButton" type="submit" disabled="">SUBMIT</button>
-                        </div>
-                    </form>
-
-                    <script>
-                        const ratingForm = document.getElementById('ratingForm');
-                        const submitButton = document.getElementById('submitButton');
-
-                        ratingForm.addEventListener('change', function () {
-                            const stars = document.querySelectorAll('input[name="rating"]');
-                            let starChecked = false;
-                            for (let i = 0; i < stars.length; i++) {
-                                if (stars[i].checked) {
-                                    starChecked = true;
-                                    break;
-                                }
-                            }
-                            submitButton.disabled = !starChecked;
-                        });
-
-                    </script>
-
-                    <%
-                        //Only active scroll whenever needed.
-                        String activeScroll = request.getParameter("activeScroll");
-                        if (activeScroll != null) {
-                    %>
-                    <script>
-                        window.onload = function () {
-                            const scrollTarget = document.getElementById("scrollTarget");
-                            scrollTarget.scrollIntoView({behavior: 'smooth'});
-                        }
-                    </script>
-                    <%
-                        }
-                    %>
-
-
-                    <%} else {%>
-                    <p>You must <a href="login.jsp?recipeID=1">login</a> to review</p>
-                    <% }%>
-                    <div class="recipe-detail-review-others">
-
-                        <%
-                            if (reviewList.size() > 0 && reviewList != null) {
-                                for (ReviewDTO o : reviewList) {
-                        %>
-                        <div class="recipe-detail-review-others-info">
-                            <a href=""><img src="./assets/profile-pic.svg" alt=""></a>
-                            <div class="recipe-detail-review-others-info-content">
-                                <a href=""><%= ReviewDAO.getReviewOwnerByUserId(o.getUser_id())%></a>
-                                <div class="recipe-detail-review-others-info-review">
-                                    <%
-                                        for (int i = 0; i < o.getRating(); i++) {
-                                    %>
-                                    <img src="./assets/full-star.png" alt="">
-                                    <%
-                                        }
-                                    %>
-                                    <div><%= o.getCreate_at()%></div>
-                                </div>
-                                <p>
-                                    <%= o.getContent()%>
-                                </p>
-                            </div>
-                        </div>
-                        <%
-                                }
-                            }
-                        %>
-                    </div>
-                </div>
-
-
-
+                <%@include file="reviewSection.jsp" %>
             </div>
         </div>
 

@@ -38,35 +38,35 @@ public class FeedbackServlet extends HttpServlet {
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             HttpSession session = request.getSession();
-            UserDTO user =(UserDTO) session.getAttribute("user");
+            UserDTO user = (UserDTO) session.getAttribute("user");
             int rating = Integer.parseInt(request.getParameter("rating"));
             String review = request.getParameter("txtReview");
-            if(review == null){
-                review="";
+            if (review == null) {
+                review = "";
             }
             int recipeId = Integer.parseInt(request.getParameter("recipeId"));
             ArrayList<ReviewDTO> reviewList = ReviewDAO.getReviewByRecipeId(recipeId);
             boolean alreadyReview = false;
-            if(user != null && reviewList.size() > 0){
-                for (ReviewDTO r: reviewList){
-                    
+            if (user != null && reviewList.size() > 0) {
+                for (ReviewDTO r : reviewList) {
+
                     //User already review this, cannot review more
-                    if(r.getUser_id() == user.getId()){
+                    if (r.getUser_id() == user.getId()) {
                         alreadyReview = true;
                     }
                 }
-                
-                if(!alreadyReview){
+
+                if (!alreadyReview) {
                     //Do the review
                     int result = ReviewDAO.makeFeedback(user.getId(), recipeId, rating, review);
-                    response.sendRedirect("MainController?action=getRecipeDetailById&id="+recipeId);
-                }else{
+                    response.sendRedirect("MainController?action=getRecipeDetailById&id=" + recipeId + "&activeScroll=true");
+
+                } else {
                     // forward user to edit review?
                     out.print("Already review, could only edit the review");
                 }
             }
-            
-            
+
         }
     }
 

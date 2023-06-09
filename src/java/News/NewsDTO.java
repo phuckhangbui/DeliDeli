@@ -43,4 +43,8 @@ public class NewsDTO {
         this.user_id = user_id;
         this.news_category = news_category;
     }
+
+    public String getImage() {
+        return "pictures/News/"+this.id+"/"+this.image;
+    }
 }
