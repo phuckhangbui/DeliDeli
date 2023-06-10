@@ -13,6 +13,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
@@ -307,6 +308,8 @@ public class UserDAO {
     public static int insertUserDetailDefault() {
         int result = 0;
         int userId = 0;
+        java.util.Date date = new java.util.Date();
+        java.sql.Date birthDate = new java.sql.Date(date.getTime());
         Connection cn = null;
 
         try {
@@ -322,15 +325,16 @@ public class UserDAO {
                     }
                 }
                 
-                sql = "INSERT INTO UserDetail(user_id, first_name, last_name, specialty, bio) \n"
-                        + "VALUES (?, ?, ?, ?, ?)";
+                sql = "INSERT INTO UserDetail(user_id, first_name, last_name, specialty, birthdate, bio) \n"
+                        + "VALUES (?, ?, ?, ?, ?, ?)";
 
                 pst = cn.prepareStatement(sql);
                 pst.setInt(1, userId);
                 pst.setString(2, "");
                 pst.setString(3, "");
                 pst.setString(4, "");
-                pst.setString(5, "");
+                pst.setDate(5, birthDate);
+                pst.setString(6, "");
                 result = pst.executeUpdate();
 
                 pst.close();
