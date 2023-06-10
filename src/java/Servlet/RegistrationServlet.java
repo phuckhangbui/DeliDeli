@@ -74,6 +74,7 @@ public class RegistrationServlet extends HttpServlet {
                 boolean check = UserDAO.insertAccount(userName, email, password, sqlDate, STATUS, ROLE, SETTING,DEFAULT_TOKEN);
                 userDAO.updateStatusFalse(userName); //Patched this shit up.
                 if (check) {
+                    UserDAO.insertUserDetailDefault();
                     request.setAttribute("USER_TYPE", "RegisterUser");
                     request.setAttribute("MSG_SUCCESS", "You have successfully registered an account!");
                     request.getRequestDispatcher(CONFIRM_EMAIL).forward(request, response);

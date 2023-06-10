@@ -20,7 +20,7 @@ import java.util.ArrayList;
  * @author Daiisuke
  */
 public class UserDAO {
-    
+
     //New
     public static int getTotalAccountsBasedOnRole(String roleTag) {
         int result = 0;
@@ -271,7 +271,7 @@ public class UserDAO {
                     int status = rs.getInt("status");
                     int role = rs.getInt("role_id");
                     int setting = rs.getInt("user_setting_id");
-                    user = new UserDTO(id,userName, email, password, avatar, createAt, status, role, setting);
+                    user = new UserDTO(id, userName, email, password, avatar, createAt, status, role, setting);
                 }
             }
         } catch (Exception e) {
@@ -302,6 +302,44 @@ public class UserDAO {
             check = pst.executeUpdate() > 0 ? true : false;
         }
         return check;
+    }
+
+    public static int insertUserDetailDefault() {
+        int result = 0;
+        int userId = 0;
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                String sql = "SELECT TOP 1 id FROM [User] ORDER BY id DESC";
+                PreparedStatement pst = cn.prepareStatement(sql);
+                ResultSet rs = pst.executeQuery();
+                if (rs != null) {
+                    while (rs.next()) {
+                        userId= rs.getInt("id");
+                    }
+                }
+                
+                sql = "INSERT INTO UserDetail(user_id, first_name, last_name, specialty, bio) \n"
+                        + "VALUES (?, ?, ?, ?, ?)";
+
+                pst = cn.prepareStatement(sql);
+                pst.setInt(1, userId);
+                pst.setString(2, "");
+                pst.setString(3, "");
+                pst.setString(4, "");
+                pst.setString(5, "");
+                result = pst.executeUpdate();
+
+                pst.close();
+                cn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     //Dumb patching idk.
@@ -573,7 +611,7 @@ public class UserDAO {
     }
 
     public static void main(String[] args) throws Exception {
-        System.out.println(UserDAO.getAccountByName("khangbui").getId());
+        System.out.println(UserDAO.insertUserDetailDefault());
     }
 
 }
