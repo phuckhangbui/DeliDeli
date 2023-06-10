@@ -9,80 +9,93 @@
 */
 
 body {
-	font-family: 'Fira Sans Extra Condensed', sans-serif;
-	margin: 0;
-	font-weight: 500;
-	font-size: 16px;
+    font-family: 'Fira Sans Extra Condensed', sans-serif;
+    margin: 0;
+    font-weight: 500;
+    font-size: 16px;
 }
 
 a {
-	text-decoration: none;
-	color: black;
+    text-decoration: none;
+    color: black;
 }
 
 ul {
-	list-style: none;
+    list-style: none;
 }
 
 
 
 /*     Nav Bar Top      */
-.nav-top-bar{
+.nav-top-bar {
     height: 50px;
     display: flex;
     justify-content: flex-end;
 }
-.dashboard{
+
+.dashboard {
     padding-left: 0px;
 }
+
 .logo {
-	display: flex;
-	justify-content: center;
-	align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+
 .logo img {
-	width: 60%;
+    width: 60%;
     height: 60%;
 }
-.navbar{
+
+.navbar {
     padding: 0;
 }
-.nav-top-bar-account{
+
+.nav-top-bar-account {
     display: flex;
     flex-direction: row-reverse;
     align-items: center;
 }
-.nav-top-bar-account div p{
+
+.nav-top-bar-account div p {
     margin: 0px;
 }
-.nav-top-bar-account div p:last-child{
+
+.nav-top-bar-account div p:last-child {
     color: rgba(0, 0, 0, 0.5);
 }
-.nav-top-bar-account div p:first-child{
+
+.nav-top-bar-account div p:first-child {
     font-size: 18px;
 }
+
 .nav-top-bar-account div {
     margin-right: 5px;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
 }
-.nav-top-bar-search form button{
+
+.nav-top-bar-search form button {
     border: none;
     background-color: transparent;
     position: absolute;
     padding: 3px 5px 0 10px;
 }
-.nav-top-bar-search form button img{
+
+.nav-top-bar-search form button img {
     width: 20px;
 }
-.nav-top-bar-search{
+
+.nav-top-bar-search {
     display: flex;
     align-items: center;
     font-size: 18px;
     margin-left: 30px;
 }
-.nav-top-bar-search form input{
+
+.nav-top-bar-search form input {
     width: 300px;
     padding: 5px 5px 5px 40px;
     border-radius: 20px;
@@ -90,7 +103,8 @@ ul {
     background-color: rgba(0, 0, 0, 0.05);
     outline: none;
 }
-.nav-top-bar-search form select{
+
+.nav-top-bar-search form select {
     padding: 5px 5px 5px 5px;
     border-radius: 20px;
     outline: none;
@@ -100,17 +114,18 @@ ul {
 }
 
 .user-dropbtn {
-	background-color: #fff;
-	font-size: 18px;
-	outline: none;
-	padding: 10.5px;
-	font-weight: 500;
-	border: 1px solid;
-	border: none;
+    background-color: #fff;
+    font-size: 18px;
+    outline: none;
+    padding: 10.5px;
+    font-weight: 500;
+    border: 1px solid;
+    border: none;
 }
+
 .user-dropbtn:hover {
-	text-decoration: underline;
-	text-decoration-color: #ec9131;
+    text-decoration: underline;
+    text-decoration-color: #ec9131;
 }
 
 
@@ -122,14 +137,17 @@ ul {
     padding-left: 0;
     padding-right: 0;
 }
-.dashboard-header{
+
+.dashboard-header {
     display: flex;
     font-size: 48px;
     justify-content: center;
 }
-.dashboard-header p{
+
+.dashboard-header p {
     margin: 0px;
 }
+
 .main-panel {
     display: flex;
     flex-direction: column;
@@ -178,24 +196,29 @@ ul {
 .bg-gradient-danger {
     background-color: hsla(31, 83%, 56%);
 }
-.card-title{
+
+.card-title {
     font-size: 36px;
     text-align: center;
 }
-.latest-table-button{
+
+.latest-table-button {
     display: flex;
     justify-content: center;
 }
-.btn-table{
+
+.btn-table {
     padding: 5px 15px;
     border-radius: 20px;
     background-color: #ec9131;
     border: none;
 }
-.btn-table a{
+
+.btn-table a {
     color: white;
 }
-.card-total-content{
+
+.card-total-content {
     display: flex;
     justify-content: space-between;
     padding: 30px;
@@ -203,17 +226,20 @@ ul {
     color: white;
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
-.card-total-content h4{
+
+.card-total-content h4 {
     font-weight: normal;
     margin: 0px;
 }
-.card-total-see-more{
+
+.card-total-see-more {
     color: white;
     display: flex;
     justify-content: space-between;
     padding: 20px;
 }
-.card-total-see-more p{
+
+.card-total-see-more p {
     margin: 0px;
 }
 
@@ -222,7 +248,7 @@ ul {
 
 
 /*     Nav Bar Left      */
-.nav-left-bar{
+.nav-left-bar {
     display: flex;
     position: fixed;
     flex-direction: column;
@@ -231,33 +257,38 @@ ul {
     border-right: 1px solid rgba(0, 0, 0, 0.2);
     height: 100%;
 }
-.nav-left-bar div{
+
+.nav-left-bar div {
     display: flex;
     margin: 0;
-    
+
 }
-.nav-left-bar div a img{
+
+.nav-left-bar div a img {
     width: 20px;
     height: 20px;
     margin-right: 5px;
 }
-.nav-left-bar div a{
+
+.nav-left-bar div a {
     display: flex;
     padding: 10px 10px 10px 50px;
     align-items: center;
     width: 90%;
 }
-.active{
+
+.active {
     background-color: rgba(236, 146, 49, 0.5);
     color: #ec9131;
     border-radius: 0 50px 50px 0;
 }
-.nav-left-bar div a:hover:not(.active){
+
+.nav-left-bar div a:hover:not(.active) {
     background-color: rgba(0, 0, 0, 0.05);
     border-radius: 0 50px 50px 0;
 }
 
-.dashboard{
+.dashboard {
     margin-left: auto;
     padding: 0px;
 }
@@ -267,33 +298,43 @@ ul {
 
 
 /*    User List      */
-.user-list{
+.user-list {
     margin-left: auto;
     padding: 0px;
 }
-.table-redirect{
+
+.table-redirect {
     display: flex;
     justify-content: center;
     font-size: 20px;
 }
-.table-redirect a{
+
+.table-redirect a {
     padding: 10px 20px;
     margin: 10px;
     border-radius: 50px;
 }
-.table-redirect a:hover{
+
+.table-redirect a:hover {
     background-color: #ec9131;
     color: white;
     transition: all 0.4s;
 }
-.table-redirect-active-link{
+
+.table-redirect-active-link {
     background-color: #ec9131;
     color: white;
 }
-.table-redirect a p, .table-redirect div p{
+
+.table-redirect a p,
+.table-redirect div p {
     margin: 0;
 }
-.activate-acc-button button{
+
+.news-table-button button,
+.user-detail-admin-button button,
+.recipe-table-button button,
+.activate-acc-button button {
     display: inline-block;
     border-radius: 20px;
     color: white;
@@ -302,27 +343,31 @@ ul {
     padding: 0 10px;
     width: 85px;
 }
-.delete-acc-button button{
-    
+
+.delete-acc-button button {
     border-radius: 20px;
     color: white;
     background-color: rgb(200, 0, 0);
     border: none;
     padding: 0 10px;
 }
-.user-action-button form{
+
+.user-action-button form {
     display: inline-block;
 }
-.user-header{
+
+.user-header {
     display: flex;
     font-size: 48px;
     justify-content: center;
     margin-top: 20px;
 }
-thead{
+
+thead {
     font-size: 20px;
-    
+
 }
+
 .table-redirect div {
     display: flex;
     align-self: center;
@@ -334,8 +379,138 @@ thead{
     padding: 0;
 }
 
+.news-content,
+.news-table {
+    margin: 0 auto;
+    padding: 25px;
+}
+
+.news-create-button button{
+    background-color: #ec9131;
+    border-radius: 100rem;
+    padding: 5px 20px;
+    border: none;
+    color: #fff;
+}
+
+.news-create-button {
+    padding: 0;
+}
+
+.news-detail-admin-button a,
+.news-create-button a {
+    color: #fff;
+}
+
+.news-content-info {
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+
+
+.news-content-info input {
+    font-size: 20px;
+    padding: 5px;
+    border-radius: 10px;
+    background-color: #f8f8f8;
+    width: 50%;
+    margin-left: 5px;
+}
+
+.news-content-info-white-background input {
+    background-color: #fff;
+}
+
+.news-content-info select, option {
+    margin-left: 5px;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 20px;
+    background-color: #f8f8f8;
+}
+
+.news-detail-admin {
+    margin-left: auto;
+    padding: 0;
+}
+
+.news-detail-admin-action {
+    margin-top: 20px;
+    display: flex;
+    justify-content: end;
+}
+
+.news-detail-admin-button button{
+    background-color: #ec9131;
+    border-radius: 100rem;
+    padding: 5px 20px;
+    border: none;
+}
+
+.news-detail-admin-button > .news-detail-admin-button-delete {
+    background-color: rgb(200, 0, 0);
+    color: #fff;
+    margin-left: 5px;
+}
+
+
 /* Recipe */
 .recipe {
     margin-left: auto;
     padding: 0;
+}
+
+.recipe-table {
+    margin: 0 auto;
+    padding: 25px;
+}
+
+.recipe-table-title {
+    text-align: center;
+    font-size: 36px;
+}
+
+.recipe-table-form form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.recipe-detail-admin {
+    margin-left: auto;
+    padding: 0;
+}
+
+.recipe-detail-admin-action {
+    margin-top: 20px;
+    display: flex;
+    justify-content: end;
+}
+
+.recipe-table-button > .recipe-table-button-delete{
+    background-color: rgb(200, 0, 0);
+    color: #fff;
+    margin-left: 5px;
+}
+
+/* User */
+.user {
+    margin-left: auto;
+    padding: 0;
+}
+
+.user-detail-admin {
+    margin-left: auto;
+    padding: 25px;
+}
+
+.user-detail-admin-heading {
+    display: flex;
+    align-items: center;
+    min-height: 80px;
+}
+
+.user-detail-admin-title {
+    color: #ec9131;
 }

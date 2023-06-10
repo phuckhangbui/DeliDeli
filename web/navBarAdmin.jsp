@@ -25,8 +25,8 @@
     </head>
     <body>
         <%
-            UserDTO user = (UserDTO) session.getAttribute("user");
-            if (user == null || user.getRole() != 2) {
+            UserDTO admin = (UserDTO) session.getAttribute("user");
+            if (admin == null || admin.getRole() != 2) {
                 response.sendRedirect("error.jsp");
             } else {
         %>
@@ -52,7 +52,7 @@
                 <div class="nav-top-bar-account dropdown">
                     <img src="./assets/profile-pic.svg" alt="">
                     <div>
-                        <p><%= user.getUserName()%></p>
+                        <p><%= admin.getUserName()%></p>
                         <p>Admin</p>
                     </div>
                 </div>

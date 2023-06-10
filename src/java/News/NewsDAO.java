@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 /**
@@ -16,7 +17,30 @@ import java.util.ArrayList;
  * @author Admin
  */
 public class NewsDAO {
-    
+
+    public static int updateNewsImage(int newsId, String image) {
+        int result = 0;
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                String sql = "UPDATE News SET image = ? WHERE id = ?";
+
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setString(1, image);
+                pst.setInt(2, newsId);
+                result = pst.executeUpdate();
+                pst.close();
+                cn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     public static int deleteNews(int newsId) {
         int result = 0;
         Connection cn = null;
@@ -70,7 +94,7 @@ public class NewsDAO {
         return result;
     }
 
-    public static int insertNews(String title, String desc, String image, Date createAt, Date updateAt, int userId, int categoryId) {
+    public static int insertNews(String title, String desc, Date createAt, Date updateAt, int userId, int categoryId) {
         int result = 0;
         Connection cn = null;
 
@@ -78,18 +102,29 @@ public class NewsDAO {
             cn = DBUtils.getConnection();
 
             if (cn != null) {
-                String sql = "INSERT INTO News(title, description, image, create_at, update_at, user_id, news_category_id) \n"
-                        + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+                String sql = "INSERT INTO News(title, description, create_at, update_at, user_id, news_category_id) \n"
+                        + "VALUES (?, ?, ?, ?, ?, ?)";
 
-                PreparedStatement pst = cn.prepareStatement(sql);
+                PreparedStatement pst = cn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                 pst.setString(1, title);
                 pst.setString(2, desc);
-                pst.setString(3, image);
+                pst.setDate(3, createAt);
                 pst.setDate(4, createAt);
-                pst.setDate(5, createAt);
-                pst.setInt(6, userId);
-                pst.setInt(7, categoryId);
-                result = pst.executeUpdate();
+                pst.setInt(5, userId);
+                pst.setInt(6, categoryId);
+                
+                pst.executeUpdate();
+
+                ResultSet generatedKeys = pst.getGeneratedKeys();
+
+                // Step 4: Retrieve the generated ID
+                if (generatedKeys.next()) {
+                    result = generatedKeys.getInt(1);
+                }
+
+                // Step 5: Close the database connection and resources
+                generatedKeys.close();
+                
                 pst.close();
                 cn.close();
             }
@@ -278,6 +313,6 @@ public class NewsDAO {
         java.sql.Date createAt = new java.sql.Date(date.getTime());
         java.sql.Date updateAt = createAt;
 
-        System.out.println(NewsDAO.deleteNews(5));
+        System.out.println(NewsDAO.insertNews("title", "desc", createAt, updateAt, 4, 3));
     }
 }

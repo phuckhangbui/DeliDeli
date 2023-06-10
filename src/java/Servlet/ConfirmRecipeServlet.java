@@ -32,7 +32,7 @@ public class ConfirmRecipeServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            String id = request.getParameter("id");
+            String id = request.getParameter("recipeId");
             
             int result = AdminDAO.confirmRecipe(new Integer(id));
             if(result > 0) {

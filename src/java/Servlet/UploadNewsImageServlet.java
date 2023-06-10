@@ -4,45 +4,76 @@
  */
 package Servlet;
 
+import Admin.AdminDAO;
 import News.NewsDAO;
-import News.NewsDTO;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 /**
  *
  * @author Admin
  */
-public class NewsDetailServlet extends HttpServlet {
+@WebServlet("/createNews")
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+        maxFileSize = 1024 * 1024 * 10, // 10MB
+        maxRequestSize = 1024 * 1024 * 50)
+public class UploadNewsImageServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            String id = request.getParameter("id");
+            int newsId = (Integer) request.getAttribute("newsId");
             
-            NewsDTO news = NewsDAO.getNewsByNewsId(new Integer(id));
-            request.setAttribute("news", news);
+            String fileName = "";
+            Part filePart = request.getPart("file");
+            String uploadPath = "C:/project-swp/web/pictures/News/" + newsId;
             
-            String author = NewsDAO.getNewsAuthorByNewsId(new Integer(id));
-            request.setAttribute("author", author);
+            File uploadDir = new File(uploadPath);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdirs();
+            }
             
-            request.getRequestDispatcher("newsDetail.jsp").forward(request, response);
             
+            fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString(); // MSIE fix.
+            InputStream fileContent = filePart.getInputStream();
+//
+//            // Check if file already exists
+            File existingFile = new File(uploadDir.getAbsolutePath() + File.separator + fileName);
+            if (existingFile.exists()) {
+                // Append number to filename to avoid overwriting existing file
+                int i = 1;
+                while (existingFile.exists()) {
+                    fileName = i + "_" + fileName;
+                    existingFile = new File(uploadDir.getAbsolutePath() + File.separator + fileName);
+                    i++;
+                }
+            }
+
+            // saves the file to the server
+            Path filePath = Paths.get(uploadDir.getAbsolutePath() + File.separator + fileName);
+            Files.copy(fileContent, filePath);
+            fileContent.close();
+            
+            int id = AdminDAO.getTop1NewsId();
+            int result = NewsDAO.updateNewsImage(id, fileName);
+            if(result > 0) {
+                request.getRequestDispatcher("ManageNewsServlet").forward(request, response);
+            }
         }
     }
 

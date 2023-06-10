@@ -68,7 +68,7 @@ public class ShowRecipeDetailServlet extends HttpServlet {
 
             }
 
-            request.getRequestDispatcher("recipeDetail.jsp").forward(request, response);
+            request.getRequestDispatcher("showRecipeDetail.jsp").forward(request, response);
         }
     }
 

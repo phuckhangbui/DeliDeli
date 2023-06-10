@@ -4,34 +4,40 @@
  */
 package Servlet;
 
+import Admin.AdminDAO;
 import News.NewsDAO;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 /**
  *
  * @author Admin
  */
-public class CreateNewsServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB - exceed 2MB => disk, else memory => caching.
+        maxFileSize = 1024 * 1024 * 10, // 10MB => maximum upload to server.
+        maxRequestSize = 1024 * 1024 * 50) // 50MB => maximum request from server.
+
+public class CreateNewsServlet extends HttpServlet {
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
+            
             String title = request.getParameter("txtTitle");
             String content = request.getParameter("editorContent");
             String userId = request.getParameter("userId");
@@ -40,10 +46,10 @@ public class CreateNewsServlet extends HttpServlet {
             java.sql.Date createAt = new java.sql.Date(date.getTime());
             java.sql.Date updateAt = createAt;
                         
-            int result = NewsDAO.insertNews(title, content, "", createAt, updateAt, new Integer(userId), new Integer(category));
-            if(result > 0) {
-                request.getRequestDispatcher("ManageNewsServlet").forward(request, response);
-            }
+            int newsId = NewsDAO.insertNews(title, content, createAt, updateAt, new Integer(userId), new Integer(category));
+            request.setAttribute("newsId", newsId);
+            request.getRequestDispatcher("UploadNewsImageServlet").forward(request, response);
+
             
 //            out.println(category);
 //            out.println(content);

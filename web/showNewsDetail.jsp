@@ -1,12 +1,12 @@
 <%-- 
-    Document   : manageNews
-    Created on : Jun 7, 2023, 3:32:15 PM
+    Document   : showNewsDetail
+    Created on : Jun 10, 2023, 11:28:20 AM
     Author     : Admin
 --%>
 
-<%@page import="News.NewsDAO"%>
-<%@page import="News.NewsDTO"%>
 <%@page import="java.util.ArrayList"%>
+<%@page import="News.NewsDTO"%>
+<%@page import="News.NewsDAO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -18,7 +18,7 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
               integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
         <!--      CSS         -->
-        <link rel="stylesheet" href="./styles/adminStyle.css">
+        <link rel="stylesheet" href="./styles/userStyle.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link
@@ -39,7 +39,7 @@
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageAccount">
+                        <a href="MainController?action=manageAccount" >
                             <img src="./assets/personal.png" alt="">
                             User
                         </a>
@@ -82,61 +82,37 @@
                     </div>
                 </nav>
 
-                <div class="col-md-10 news">
+                <div class="col-md-10 news-detail-admin">
                     <div class="container">
-                        <div class="row news-table">
-                            <%                                ArrayList<NewsDTO> listNews = (ArrayList) request.getAttribute("listNews");
-                                if (listNews.size() > 0 && listNews != null) {
-                            %>
-                            <table class="table table-striped table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Title</th>
-                                        <th>Create at</th>
-                                        <th>Update at</th>
-                                        <th>Owner</th>
-                                        <th>Category</th>
-                                        <th>Action</th>
-                                        <!--<th>Edit</th>-->
-                                    </tr>
-                                </thead>
-                                <tbody class="table-group-divider">
-                                    <%
-                                        for (NewsDTO n : listNews) {
+                        <div class="new-result">
+                            <div class="container ">
+                                <div class="row new-result-content">
+                                    <%                                        NewsDTO news = (NewsDTO) request.getAttribute("news");
                                     %>
-                                    <tr>
-                                        <td><%= n.getId()%></td>
-                                        <td><%= n.getTitle()%></td>
-                                        <td><%= n.getCreateAt()%></td>
-                                        <td><%= n.getUpdateAt()%></td>
-                                        <td><%= NewsDAO.getNewsAuthorByNewsId(n.getId())%></td>
-                                        <td><%= NewsDAO.getNewsCategoryByNewsId(n.getId())%></td>
-                                        <td>
-                                            <form action="MainController" method="post" class="news-table-button">
-                                                <input type="hidden" value="<%= n.getId()%>" name="newsId">
-                                                <button type="submit" value="showNewsDetail" name="action">Show</button>
-                                            </form>
-                                        </td>
-                                        <!--<td><a href="createNews.jsp?id=<%= n.getId()%>" >Edit</a></td>-->
-                                    </tr>
-                                    <%
-                                        }
-                                    %>
-                                </tbody>
-                            </table>
-                            <%
-                                }
-                            %>
+                                    <div >
+                                        <p><%= NewsDAO.getNewsCategoryByNewsId(news.getId())%></p>
+                                        <p class="new-result-content-post-title"><%= news.getTitle()%></p>
+                                    </div>
+                                    <p>By: <%= request.getAttribute("author")%></p>
+                                    <p>Create at: <%= news.getCreateAt()%></p>
+                                    <img src="<%= news.getImage()%>" alt="">
 
-                            <div class="news-create-button">
-                                <button><a href="createNews.jsp">Create</a></button>
+                                    <p><%= news.getDesc()%></p>
+                                </div>
+                            </div>
+
+                            <div class="news-detail-admin-action">
+                                <form action="MainController" method="post" class="news-detail-admin-button">
+                                    <input type="hidden" value="<%= news.getId()%>" name="newsId">
+                                    <button><a href="updateNews.jsp?newsId=<%= news.getId()%>">Edit</a></button>
+                                    <button type="submit" name="action" value="deleteNews" class="news-detail-admin-button-delete">Delete</a></button>
+                                </form>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
+
     </body>
 </html>
