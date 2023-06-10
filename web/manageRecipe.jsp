@@ -35,7 +35,7 @@
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageRecipe">
+                        <a href="MainController?action=manageRecipe" class="active">
                             <img src="./assets/post-unchose.svg" alt="">
                             Posts
                         </a>
@@ -47,7 +47,7 @@
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageNews" class="active">
+                        <a href="MainController?action=manageNews" >
                             <img src="./assets/news-unchose.svg" alt="">
                             News
                         </a>
