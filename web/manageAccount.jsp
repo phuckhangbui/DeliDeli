@@ -26,9 +26,9 @@
             rel="stylesheet">
     </head>
     <body>
-        
+
         <div class="container-fluid">
-            <%@include file="navBarAdmin.jsp" %>
+
 
             <%                ArrayList<UserDTO> listAcc = (ArrayList) request.getAttribute("listAcc");
                 ArrayList<UserDTO> listAccSearched = (ArrayList) request.getAttribute("listAccSearched");
@@ -46,6 +46,9 @@
 
             <div class="row">
                 <nav class="nav-left-bar col-md-2">
+                    <a class="logo" href="">
+                        <img src="assets/Logo3.svg" alt="">
+                    </a>
                     <div>
                         <a href="admin.jsp">
                             <img src="./assets/public-unchose.svg" alt="">
@@ -100,24 +103,64 @@
 
 
                 <div class="col-md-10 user-list">
+                    <%
+                        UserDTO user = (UserDTO) session.getAttribute("user");
+                        if (user == null || user.getRole() != 2) {
+                            response.sendRedirect("error.jsp");
+                        } else {
+                    %>
+                    <nav class="navbar">
+                        <div class="nav-top-bar">
+                            <div class="nav-top-bar-account dropdown">
+                                <img src="./assets/profile-pic.svg" alt="">
+                                <div>
+                                    <p><%= user.getUserName()%></p>
+                                    <p>Admin</p>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
 
-                    <form action="MainController" method="post" style="display: flex; justify-content: center; align-items: center">
-                        <input type="hidden" value="<%= currentRole%>" name="currentRole">
-                        <input type="hidden" value="<%= tag%>" name="tag">
-                        <input type="text" name="txtSearch">
-                        <button type="submit" value="searchAccount" name="action">Search</button>
-                    </form>
+                    <%
+                        }
+                    %>
+                    <div class="user-header">
+                        Users List
+                    </div>
+                    <div class="nav-top-bar-search">
+                        <form action="MainController" method="post">
+                            <button><img src="assets/search2.svg" alt=""></button>
+                            <input type="text" placeholder="Who are you searching for ?">
+                            <input type="hidden" value="<%= currentRole%>" name="currentRole">
+                            <input type="hidden" value="<%= tag%>" name="tag">
+                            <select name="" id="" class="">
+                                <option value="">User</option>
+                                <option value="">Admin</option>
+                                <option value="">Moderator</option>
+                            </select>
+                        </form>
+                        <form action="MainController?action=manageAccount" method="post">
+                            <select name="role">
+                                <option value="user">User</option>
+                                <option value="admin">Admin</option>
+                                <option value="all">All</option>
+                                <input type="submit" value="Filter">
+                            </select>
+                        </form>
+                    </div>
+                    <!--                    <form action="MainController" method="post" style="display: flex; justify-content: center; align-items: center">
+                                            <input type="hidden" value="<%= currentRole%>" name="currentRole">
+                                            <input type="hidden" value="<%= tag%>" name="tag">
+                                            <input type="text" name="txtSearch">
+                                            <button type="submit" value="searchAccount" name="action">Search</button>
+                                        </form>-->
 
-                    <form action="MainController?action=manageAccount" method="post">
-                        <select name="role">
-                            <option value="user">User</option>
-                            <option value="admin">Admin</option>
-                            <option value="all">All</option>
-                            <input type="submit" value="Filter">
-                        </select>
-                    </form>
+
 
                     <!--      User List         -->
+
+
+
                     <%
                         int currentPage = 1;
 
@@ -139,7 +182,7 @@
                                 <th>Email</th>
                                 <th>Create at</th>
                                 <th>Status</th>
-                                <th>Action</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody class="table-group-divider">
@@ -204,7 +247,7 @@
                                 <th>Email</th>
                                 <th>Create at</th>
                                 <th>Status</th>
-                                <th>Action</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody class="table-group-divider">
