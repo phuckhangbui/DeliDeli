@@ -67,7 +67,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                 <div class="row add-recipe-info">
                     <form id="addRecipe" action="MainController" enctype="multipart/form-data" method="post">
                         <div class="add-recipe-header">
-                            
+
                             <p>Edit Recipe</p>
                             <p>
                                 Customize your very own recipe to share with the world your own unique flavor
@@ -95,7 +95,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                 <div class="col-md-6 add-recipe-info-overview-picture-main">
                                     <div class="add-recipe-info-header-secondary">
                                         Thumbnail Picture
-                                        
+
                                     </div> 
                                     <input type="file" id="image" name="thumbnail">
                                 </div>
@@ -105,7 +105,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                     </div>
                                     <input type="file" id="image" name="pictures">
                                 </div>
-                                
+
                                 <p>(Add nothing if you want to keep the old one)</p>
                             </div>
                         </div>
@@ -127,7 +127,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                 <div>Cook Time:</div>
                                 <input type="text" id="cookTime" required max="100" min="1"
                                        oninput="this.value=this.value.slice(0,this.maxLength),this.value = this.value.replace(/[^0-9]/g, '')"
-                                       maxlength="5" value="<%=recipe.getCook_time() %>">
+                                       maxlength="5" value="<%=recipe.getCook_time()%>">
                                 <select id="cookTimeUnit">
                                     <option value="minutes" selected="">minutes</option>
                                     <option value="hours">hours</option>
@@ -335,8 +335,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
 
                                         }
                                         <%
-                                                            }
-                                                        }%>
+                                                }
+                                            }%>
                                     </select>
                                     <button type="button" class="btnDeleteIngredient">
                                         <img src="assets/close.svg" alt="">
@@ -406,14 +406,33 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                             </button>
                             <span></span>
                             <!--Goi MainController?action=deleteRecipe  -->
-                            <button type="#" name="#" value="#">
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                 DELETE
                             </button>
+                        </div>
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="popup-confirm">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel">CONFIRMATION</h1>
+                                        </div>
+                                        <div class="modal-body">
+                                            Pressing delete will remove your recipe from this site forever, are you sure you still want to delete it ?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, I changed my mind</button>
+                                            <button type="button" class="btn popup-confirm-btn">Yes, delete it</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
+
         <%}
             } catch (Exception e) {
 
@@ -421,38 +440,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
         %>
 
         <!--         Footer       -->
-        <div class="footer">
-            <div class="container">
-                <div class="row">
-                    <div class="website-social-media col-md-6">
-                        <a href="homePage.html" class="website-social-media-logo">
-                            <img src="./assets/Logo2.png" alt="">
-                        </a>
-                        <div class="website-social-media-icons">
-                            <span>Follow us:</span>
-                            <a href="#"><img src="./assets/facebook-icon.svg" alt="Facebook Logo"></a>
-                            <a href="#"><img src="./assets/twitter-icon.svg" alt="Twitter Logo"></a>
-                        </div>
-                    </div>
-                    <nav class="navigation-bar-footer col-md-3">
-                        <ul class="navigation-bar-footer-content">
-                            <li><a href="">CATEGORIES</a></li>
-                            <li><a href="">INGREDIENTS</a></li>
-                            <li><a href="">CUISINES</a></li>
-                            <li><a href="">DIFFICULTIES</a></li>
-                            <li><a href="">NEWS</a></li>
-                        </ul>
-                    </nav>
-                    <nav class="website-infomation-bar col-md-3">
-                        <ul class="website-infomation-bar-content">
-                            <li><a href="">About us</a></li>
-                            <li><a href="">Privacy Policies</a></li>
-                            <li><a href="">Term of Services</a></li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        </div>
+        <%@include file="footer.jsp" %>
+
+
+
     </body>
 
 </html>

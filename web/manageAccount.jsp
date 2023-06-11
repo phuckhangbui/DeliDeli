@@ -128,7 +128,7 @@
                         Users List
                     </div>
                     <div class="nav-top-bar-search">
-                        <form action="MainController" method="post">
+                        <form action="MainController" method="post" class="nav-top-bar-search-user">
                             <button><img src="assets/search2.svg" alt=""></button>
                             <input type="text" placeholder="Who are you searching for ?">
                             <input type="hidden" value="<%= currentRole%>" name="currentRole">
@@ -139,23 +139,15 @@
                                 <option value="">Moderator</option>
                             </select>
                         </form>
-                        <form action="MainController?action=manageAccount" method="post">
+                        <form action="MainController?action=manageAccount" method="post" class="nav-top-bar-search-filter">
                             <select name="role">
                                 <option value="user">User</option>
                                 <option value="admin">Admin</option>
                                 <option value="all">All</option>
-                                <input type="submit" value="Filter">
                             </select>
+                            <button type="submit" value="Filter">Filter</button>
                         </form>
                     </div>
-                    <!--                    <form action="MainController" method="post" style="display: flex; justify-content: center; align-items: center">
-                                            <input type="hidden" value="<%= currentRole%>" name="currentRole">
-                                            <input type="hidden" value="<%= tag%>" name="tag">
-                                            <input type="text" name="txtSearch">
-                                            <button type="submit" value="searchAccount" name="action">Search</button>
-                                        </form>-->
-
-
 
                     <!--      User List         -->
 
@@ -215,7 +207,25 @@
                                     <form action="MainController?username=<%= u.getUserName()%>" method="post" class="delete-acc-button">
                                         <input type="hidden" value="<%= currentRole%>" name="currentRole">
                                         <input type="hidden" value="<%= tag%>" name="tag">
-                                        <button type="submit" value="deleteAcc" name="action" >Delete</button>
+                                        <button type="button" data-bs-toggle="modal" data-bs-target="#userListModal">Delete</button>
+                                        <div class="modal fade" id="userListModal" tabindex="-1" aria-labelledby="userListModalLabel" aria-hidden="true">
+                                            <div class="popup-confirm">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h1 class="modal-title fs-5" id="exampleModalLabel">CONFIRMATION</h1>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            Pressing delete will remove this user from this site forever, are you sure you still want to delete them ?
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, I changed my mind</button>
+                                                            <button type="button" class="btn popup-confirm-btn">Yes, delete them</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </form>
                                 </td>
                             </tr>
@@ -280,7 +290,25 @@
                                     <form action="MainController?username=<%= u.getUserName()%>" method="post" class="delete-acc-button">
                                         <input type="hidden" value="<%= currentRole%>" name="currentRole">
                                         <input type="hidden" value="<%= tag%>" name="tag">
-                                        <button type="submit" value="deleteAcc" name="action">Delete</button>
+                                        <button type="button" data-bs-toggle="modal" data-bs-target="#userListModal">Delete</button>
+                                        <div class="modal fade" id="userListModal" tabindex="-1" aria-labelledby="userListModalLabel" aria-hidden="true">
+                                            <div class="popup-confirm">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h1 class="modal-title fs-5" id="exampleModalLabel">CONFIRMATION</h1>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            Pressing delete will remove this user from this site forever, are you sure you still want to delete them ?
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, I changed my mind</button>
+                                                            <button type="button" class="btn popup-confirm-btn">Yes, delete them</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </form>
                                 </td>
                             </tr>
@@ -289,6 +317,8 @@
                             %>
                         </tbody>
                     </table>
+
+
 
                     <div class="table-redirect">
                         <%
@@ -306,6 +336,7 @@
                 </div>
             </div>
         </div>
+
         <script src="./script/userListScript.js"></script>
         <!--<a href="admin.jsp">Back to daskboard</a>-->
     </body>

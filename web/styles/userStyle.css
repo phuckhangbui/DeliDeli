@@ -1637,3 +1637,28 @@ span {
     border-radius: 20px;
     border: 1px solid #ec9131;
 }
+
+
+
+/*    Confirm Popup      */
+.popup-confirm{
+    display: flex;
+    height: 100%;
+    align-items: center;
+}
+.popup-confirm-btn{
+    background-color: #ec9131;
+    border-color: #ec9131;
+    color: white;
+}
+.popup-confirm-btn:hover{
+    background-color: #da8100;
+    border-color: #da8100;
+    color: white;
+}
+
+
+
+
+
+
