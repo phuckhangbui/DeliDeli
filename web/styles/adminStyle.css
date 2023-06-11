@@ -250,7 +250,7 @@ ul {
     width: 90%;
 }
 .active{
-    background-color: rgba(236, 146, 49, 0.5);
+    background-color: rgba(236, 146, 49, 0.3);
     color: #ec9131;
     border-radius: 0 50px 50px 0;
 }

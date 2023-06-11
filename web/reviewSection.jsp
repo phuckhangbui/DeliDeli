@@ -174,7 +174,7 @@
             <header class="recipe-detail-review-main-header">
                 REVIEWS
             </header>
-            <p>You must <a href="login.jsp?recipeID=1">login</a> to review</p>
+            <p class="recipe-detail-review-link">You must <a href="login.jsp?recipeID=1">login</a> to review</p>
             <% }%>
             <div class="recipe-detail-review-others">
 

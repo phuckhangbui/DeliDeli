@@ -4,6 +4,8 @@
     Author     : khang
 --%>
 
+<%@page import="User.UserDetailDTO"%>
+<%@page import="User.UserDetailDAO"%>
 <%@page import="Recipe.RecipeDAO"%>
 <%@page import="Recipe.RecipeDTO"%>
 <%@page import="Review.ReviewDAO"%>
@@ -36,11 +38,58 @@
 
 
         <!--        User Public Info Manage        -->
+        <%
+            String userId = request.getParameter("userId");
+            UserDetailDTO userDetail = UserDetailDAO.getUserDetailByUserId(new Integer(userId));
+        %>
         <div class="blank-background">
             <div class="container ">
                 <form class="row user-profile">
 
-                    <%@include file="userManagementSideBar.jsp" %>
+                    <input type="hidden" name="userId" value="<%= userId%>">
+                    <div class="col-md-3 user-profile-column-1">
+                        <div class="user-profile-header">
+                            <div>
+                                Setting
+                            </div>
+                            <p>
+                                Customize your profile
+                            </p>
+                        </div>
+                        <div class="user-profile-option">
+                            <a href="userPublicDetail.jsp?userId=<%= userId%>">
+                                <img src="./assets/public-unchose.svg" alt="">
+                                Public Profile
+                            </a>
+                            <a href="userEmailSetting.jsp?userId=<%= userId%>" >
+                                <img src="./assets/user-unchose.svg" alt="">
+                                Personal Setting
+                            </a>
+                            <a href="userPasswordSetting.jsp?userId=<%= user.getId()%>" ">
+                                <img src="./assets/Password-unchose.svg" alt="">
+                                Change Password
+                            </a>
+                            <a href="userSavedRecipes.html">
+                                <img src="./assets/favorite-unchose.svg" alt="">
+                                Saved Recipes
+                            </a>
+                            <div class="dropdown" id="dropdownUserRecipe">
+                                <a href="#" class="dropbtn">
+                                    <img src="./assets/my-recipe-unchose.svg" alt="">
+                                    My Own Recipes
+                                </a>
+                                <div class="dropdown-content-right">
+                                    <a href="privateRecipeManagement.jsp?userId=<%= userId%>">Private Recipes</a>
+                                    <a href="pendingRecipeManagement.jsp?userId=<%= userId%>">Pending Recipes</a>
+                                    <a href="publicRecipeManagement.jsp?userId=<%= userId%>">Public Recipes</a>
+                                </div>
+                            </div>
+                            <a href="userReviewManagement.jsp?userId=<%= userId%>" class="active-link">
+                                <img src="./assets/full-star.png" alt="">
+                                My Reviews
+                            </a>
+                        </div>
+                    </div>
 
                     <div class="col-md-5 user-profile-column-2">
                         <div class="user-profile-header">
@@ -90,14 +139,13 @@
                                 Profile Picture
                             </div>
                             <p>
-                                Click the image to change your profile picture
+                                This is your avatar that everyone can see
                             </p>
                         </div>
                         <div class="user-profile-public-avatar">
                             <div>
                                 <img id="preview-image" src="./assets/profile-pic.svg" alt="">
                             </div>
-                            <input type="file" id="image-input" accept="image/*" onchange="previewImage(event)">
                         </div>
                     </div>
 
@@ -107,38 +155,7 @@
 
 
         <!--         Footer       -->
-        <div class="footer">
-            <div class="container">
-                <div class="row">
-                    <div class="website-social-media col-md-6">
-                        <a href="homePage.html" class="website-social-media-logo">
-                            <img src="./assets/Logo2.png" alt="">
-                        </a>
-                        <div class="website-social-media-icons">
-                            <span>Follow us:</span>
-                            <a href="#"><img src="./assets/facebook-icon.svg" alt="Facebook Logo"></a>
-                            <a href="#"><img src="./assets/twitter-icon.svg" alt="Twitter Logo"></a>
-                        </div>
-                    </div>
-                    <nav class="navigation-bar-footer col-md-3">
-                        <ul class="navigation-bar-footer-content">
-                            <li><a href="">CATEGORIES</a></li>
-                            <li><a href="">INGREDIENTS</a></li>
-                            <li><a href="">CUISINES</a></li>
-                            <li><a href="">DIFFICULTIES</a></li>
-                            <li><a href="">NEWS</a></li>
-                        </ul>
-                    </nav>
-                    <nav class="website-infomation-bar col-md-3">
-                        <ul class="website-infomation-bar-content">
-                            <li><a href="">About us</a></li>
-                            <li><a href="">Privacy Policies</a></li>
-                            <li><a href="">Term of Services</a></li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        </div>
+        <%@include file="footer.jsp" %>
 
         <!--      Bootstrap for JS         -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
