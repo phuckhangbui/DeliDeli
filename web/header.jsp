@@ -37,7 +37,7 @@
             HashMap<Integer, String> newsMap = Utils.NavigationBarUtils.getMap("NewsCategory");
 
             UserDTO user = (UserDTO) session.getAttribute("user");
-            
+
         %>
         <div class="navigator-bar">
             <div class="container ">
@@ -45,26 +45,26 @@
                     <a href="home.jsp" class="logo col-md-3">
                         <img src="./assets/Logo2.png" alt="">
                     </a>
-                    <div class="search-bar col-md-6">
-                        <form action="MainController" method="post" class="search-bar-content">
+                    <div class="search-bar col-md-7">
+                        <form <form action="MainController" method="post">
+                            <button type="submit" name="action" value="search"><img src="assets/search2.svg" alt=""></button>
                             <input type="text" name="txtsearch" placeholder="What are you searching for ?">
-                            <select name="searchBy" id="">
+                            <select name="searchBy" id="" class="">
                                 <option value="Title" selected="selected">TITLE</option>
-                                <option value="Category">CATEGORY</option>
-                                <!--<option value="">INGREDIENT</option>-->
+                                <option value="Category">CATEGORIES</option>
+                                <option value="">INGREDIENTS</option>
                                 <option value="Cuisine">CUISINES</option>
                                 <option value="Diet">DIETS</option>
                             </select>
-                            <button type="submit" name="action" value="search"><img src="./assets/search-button.svg" alt="Search Icon"></button>
                         </form>
                     </div>
                     <%if (user != null) {%>
-                    <div class="account col-md-3">
+                    <div class="account col-md-2">
                         <span>
                             <div class="user-dropdown">
                                 <button class="user-dropbtn"><%=user.getUserName()%></button>
                                 <div class="user-dropdown-content">
-                                    <a href="userCommunityProfile.jsp?accountName=<%= user.getUserName()%>">Your profile</a>
+                                    <a href="userCommunityProfile.jsp?accountName=<%= user.getUserName()%>">Your Profile</a>
                                     <a href="userPublicDetail.jsp?userId=<%=user.getId()%>">Management</a>
                                     <a href="addRecipe.jsp">Add Recipe</a>
                                     <a href="MainController?action=logout" >Logout</a>
@@ -74,7 +74,7 @@
                     </div>
 
                     <%} else { %>
-                    <div class="account col-md-3">
+                    <div class="account col-md-2">
                         <span><a href="login.jsp">Sign in</a></span>
                         <span>|</span>
                         <span><a href="registration.jsp">Register</a></span>
@@ -164,7 +164,7 @@
                                 </div>
                             </div>
                         </li>
-                        <li><a href="">ABOUT US</a></li>
+                        <li><a href="#">ABOUT US</a></li>
                     </ul>
                 </div>
             </div>

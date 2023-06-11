@@ -26,81 +26,56 @@
         <!--         The navigation bar       -->
         <%@include file="header.jsp" %>
 
-
-
+        
         <!--        Log in Form         -->
         <div class="blank-background">
-            <div class="container ">
-                <div class="row form">
-                    <header class="form-header col-md-12">
-                        SIGN IN
-                    </header>
-                    <div>
-                        <form action="MainController" method="post" class="sign-in-form">
-                            <div>
-                                <p>Email</p>
-                                <input type="text" name="txtEmail" placeholder="Your email" required="">
-                            </div>
-                            <div>
-                                <p>Password</p>
-                                <input type="password" name="txtPass" placeholder="Your password" required="">
-                            </div>
-                            <div class="error-popup">
-                                <p>${requestScope.errorList[0]}</p>
-                            </div>
-                            <%
-                                String recipeID = request.getParameter("recipeID");
-                                //Prevent from nulling.
-                                if (recipeID != null) {
-                            %>
-                            <input type="hidden" name="recipeID" value="<%= recipeID%>" />
-                            <%
-                                }
-                            %>
-                            <button type="submit" value="login" name="action">SIGN IN</button>
-                            <a href="forgotPassword.jsp">
-                                <p>Forgot password?</p>
-                            </a>
-                        </form>
+            <div class="container user-form">
+                <form class="row" action="MainController" method="post">
+                    <div class="col-md-6 user-form-picture-left">
+                        <img src="pictures/form-picture.jpg"/>
                     </div>
-                </div>
+                    <div class="col-md-6 user-form-content">
+                        <div class="user-form-content-header">
+                            SIGN IN
+                        </div>
+                        <div class="user-form-content-input">
+                            <p>Email</p>
+                            <input type="text" name="txtEmail" required=""/>
+                        </div>
+                        <div class="user-form-content-input">
+                            <p>Password</p>
+                            <input type="password" name="txtPass" required="" />
+                        </div>
+                        <div class="user-form-content-remember">
+                            <input type="checkbox" /><span>Remember me</span>
+                        </div>
+
+                        <%
+                            String recipeID = request.getParameter("recipeID");
+                            //Prevent from nulling.
+                            if (recipeID != null) {
+                        %>
+                        <input type="hidden" name="recipeID" value="<%= recipeID%>" />
+                        <%
+                            }
+                        %>
+                        <p class="error-popup">${requestScope.errorList[0]}</p>
+                        <button type="submit" value="login" name="action" class="user-form-content-button">SIGN IN</button>
+                        <a href="forgotPassword.jsp" class="user-form-content-forgot">
+                            Forgot password?
+                        </a>
+                        <div class="user-form-content-sign-up">
+                            Don't have an account? Sign up <a href="registration.jsp">here</a>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
+
 
 
         <!--         Footer       -->
-        <div class="footer">
-            <div class="container">
-                <div class="row">
-                    <div class="website-social-media col-md-6">
-                        <a href="homePage.html" class="website-social-media-logo">
-                            <img src="./assets/Logo2.png" alt="">
-                        </a>
-                        <div class="website-social-media-icons">
-                            <span>Follow us:</span>
-                            <a href="#"><img src="./assets/facebook-icon.svg" alt="Facebook Logo"></a>
-                            <a href="#"><img src="./assets/twitter-icon.svg" alt="Twitter Logo"></a>
-                        </div>
-                    </div>
-                    <nav class="navigation-bar-footer col-md-3">
-                        <ul class="navigation-bar-footer-content">
-                            <li><a href="">CATEGORIES</a></li>
-                            <li><a href="">INGREDIENTS</a></li>
-                            <li><a href="">CUISINES</a></li>
-                            <li><a href="">DIFFICULTIES</a></li>
-                            <li><a href="">NEWS</a></li>
-                        </ul>
-                    </nav>
-                    <nav class="website-infomation-bar col-md-3">
-                        <ul class="website-infomation-bar-content">
-                            <li><a href="">About us</a></li>
-                            <li><a href="">Privacy Policies</a></li>
-                            <li><a href="">Term of Services</a></li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        </div>
+        <%@include file="footer.jsp" %>
 
         <!--      Bootstrap for JS         -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"

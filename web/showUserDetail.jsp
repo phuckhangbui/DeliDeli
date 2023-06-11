@@ -17,26 +17,39 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Delideli</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!--      Bootstrap         -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+              integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+        <!--      CSS         -->
+        <link rel="stylesheet" href="./styles/adminStyle.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet">
     </head>
     <body>
 
         <div class="container-fluid">
 
-            <%@include file="navBarAdmin.jsp" %>
 
             <div class="row">
                 <nav class="nav-left-bar col-md-2">
+                    <a class="logo" href="">
+                        <img src="assets/Logo3.svg" alt="">
+                    </a>
                     <div>
-                        <a href="admin.jsp">
-                            <img src="./assets/public-unchose.svg" alt="">
+                        <a href="admin.jsp" >
+                            <img src="./assets/public.svg" alt="">
                             Dashboard
                         </a>
                     </div>
                     <div>
                         <a href="MainController?action=manageAccount" class="active">
-                            <img src="./assets/personal.png" alt="">
+                            <img src="./assets/user-unchose.svg" alt="">
                             User
                         </a>
                     </div>
@@ -53,7 +66,7 @@
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageNews" >
+                        <a href="MainController?action=manageNews">
                             <img src="./assets/news-unchose.svg" alt="">
                             News
                         </a>
@@ -76,9 +89,33 @@
                             Report
                         </a>
                     </div>
+
+
                 </nav>
 
                 <div class="col-md-10 user">
+                    <%
+                        UserDTO admin = (UserDTO) session.getAttribute("user");
+                        if (admin == null || admin.getRole() != 2) {
+                            response.sendRedirect("error.jsp");
+                        } else {
+                    %>
+                    <nav class="navbar">
+                        <div class="nav-top-bar">
+                            <div class="nav-top-bar-account dropdown">
+                                <img src="./assets/profile-pic.svg" alt="">
+                                <div>
+                                    <p><%= admin.getUserName()%></p>
+                                    <p>Admin</p>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+
+                    <%
+                        }
+                    %>
+                    
                     <div class="container">
                         <div class="user-detail-admin">
                             <div class="user-detail-admin-heading">

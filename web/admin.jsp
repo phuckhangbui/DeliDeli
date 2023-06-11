@@ -34,11 +34,14 @@
     </head>
     <body>
         <div class="container-fluid">
-            <%@include file="navBarAdmin.jsp" %>
+
 
 
             <div class="row">
                 <nav class="nav-left-bar col-md-2">
+                    <a class="logo" href="">
+                        <img src="assets/Logo3.svg" alt="">
+                    </a>
                     <div>
                         <a href="admin.jsp" class="active">
                             <img src="./assets/public.svg" alt="">
@@ -93,7 +96,27 @@
 
 
                 <div class="col-md-10 dashboard">
+                    <%
+                        UserDTO user = (UserDTO) session.getAttribute("user");
+                        if (user == null || user.getRole() != 2) {
+                            response.sendRedirect("error.jsp");
+                        } else {
+                    %>
+                    <nav class="navbar">
+                        <div class="nav-top-bar">
+                            <div class="nav-top-bar-account dropdown">
+                                <img src="./assets/profile-pic.svg" alt="">
+                                <div>
+                                    <p><%= user.getUserName()%></p>
+                                    <p>Admin</p>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
 
+                    <%
+                        }
+                    %>
                     <!--      Dashboard         -->
                     <div class="main-panel">
                         <div class="content-wrapper">

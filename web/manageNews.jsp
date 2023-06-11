@@ -4,6 +4,7 @@
     Author     : Admin
 --%>
 
+<%@page import="User.UserDTO"%>
 <%@page import="News.NewsDAO"%>
 <%@page import="News.NewsDTO"%>
 <%@page import="java.util.ArrayList"%>
@@ -28,19 +29,21 @@
     <body>
 
         <div class="container-fluid">
-            <%@include file="navBarAdmin.jsp" %>
 
             <div class="row">
                 <nav class="nav-left-bar col-md-2">
+                    <a class="logo" href="">
+                        <img src="assets/Logo3.svg" alt="">
+                    </a>
                     <div>
                         <a href="admin.jsp">
-                            <img src="./assets/public-unchose.svg" alt="">
+                            <img src="./assets/public.svg" alt="">
                             Dashboard
                         </a>
                     </div>
                     <div>
                         <a href="MainController?action=manageAccount">
-                            <img src="./assets/personal.png" alt="">
+                            <img src="./assets/user-unchose.svg" alt="">
                             User
                         </a>
                     </div>
@@ -80,9 +83,34 @@
                             Report
                         </a>
                     </div>
+
+
                 </nav>
 
                 <div class="col-md-10 news">
+                    <%
+                        UserDTO user = (UserDTO) session.getAttribute("user");
+                        if (user == null || user.getRole() != 2) {
+                            response.sendRedirect("error.jsp");
+                        } else {
+                    %>
+
+                    <nav class="navbar">
+                        <div class="nav-top-bar">
+                            <div class="nav-top-bar-account dropdown">
+                                <img src="./assets/profile-pic.svg" alt="">
+                                <div>
+                                    <p><%= user.getUserName()%></p>
+                                    <p>Admin</p>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+
+                    <%
+                        }
+                    %>
+
                     <div class="container">
                         <div class="row news-table">
                             <%                                ArrayList<NewsDTO> listNews = (ArrayList) request.getAttribute("listNews");

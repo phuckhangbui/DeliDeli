@@ -39,90 +39,81 @@
     <body>
         <%@include file="header.jsp" %>
 
-        <!--        Log in Form         -->
-        <div class="blank-background">
-            <div class="container">
-                <div class="row form">
-                    <header class="form-header col-md-12">
-                        RESET PASSWORD
-                    </header>
-                    <div>
-                        <form
-                            action="MainController"
-                            method="POST"
-                            class="sign-in-form">
+        <!--        Reset Password Form         -->
+        <!--        <div class="blank-background">
+                    <div class="container">
+                        <div class="row form">
+                            <header class="form-header col-md-12">
+                                RESET PASSWORD
+                            </header>
                             <div>
-                                <p>
-                                    <span>Enter Password</span> <span>*</span>
-                                </p>
-                                <input
-                                    type="password"
-                                    name="txtPassword"
-                                    placeholder="Your password" />
+                                <form
+                                    action="MainController"
+                                    method="POST"
+                                    class="sign-in-form">
+                                    <div>
+                                        <p>
+                                            <span>Enter Password</span> <span>*</span>
+                                        </p>
+                                        <input
+                                            type="password"
+                                            name="txtPassword"
+                                            placeholder="Your password" />
+                                    </div>
+                                    <div>
+                                        <p>
+                                            <span>Re-Enter Password</span>
+                                            <span>*</span>
+                                        </p>
+                                        <input
+                                            type="password"
+                                            name="txtRePassword"
+                                            placeholder="Your password" />
+                                        <p class="error-popup">${requestScope.PASS_INCORRECT}</p>
+                                    </div>
+                                    <button type='submit' value='updatePassByToken' name='action'>SAVE</button>
+                                </form>
                             </div>
-                            <div>
-                                <p>
-                                    <span>Re-Enter Password</span>
-                                    <span>*</span>
-                                </p>
-                                <input
-                                    type="password"
-                                    name="txtRePassword"
-                                    placeholder="Your password" />
-                                <p class="error-popup">${requestScope.PASS_INCORRECT}</p>
-                            </div>
-                            <button type='submit' value='updatePassByToken' name='action'>SAVE</button>
-                        </form>
+                        </div>
                     </div>
-                </div>
+                </div>-->
+
+
+        <div class="blank-background">
+            <div class="container user-form">
+                <form class="row" action="MainController" method="POST">
+                    <div class="col-md-3 user-form-picture-left">
+                        <img src="pictures/form-picture-3.jpg"/>
+                    </div>
+                    <div class="col-md-6 user-form-content">
+                        <div class="user-form-content-header">
+                            RESET PASSWORD
+                        </div>
+                        <div class="user-form-content-input">
+                            <span>New Password</span> <span>*</span>
+                            <input type="password" name="txtPassword" required="" placeholder="Must have 1 uppercase and 1 number (Length: 8-16)"/>
+                        </div>
+                        <div class="user-form-content-input">
+                            <span>Re-enter New Password</span> <span>*</span>
+                            <input type="password" name="txtRePassword" required="" placeholder="Re-enter your new password"/>
+                        </div>
+                        <p class="error-popup">${requestScope.PASS_INCORRECT}</p>
+                        <button  type='submit' value='updatePassByToken' name='action' class="user-form-content-button">RESET</button>
+                    </div>
+                    <div class="col-md-3 user-form-picture-right">
+                        <img src="pictures/form-picture-6.jpg"/>
+                    </div>
+                </form>
             </div>
         </div>
 
+
+
+
+
+
         <!--         Footer       -->
-        <div class="footer">
-            <div class="container">
-                <div class="row">
-                    <div class="website-social-media col-md-6">
-                        <a
-                            href="homePage.html"
-                            class="website-social-media-logo">
-                            <img
-                                src="./assets/Logo2.png"
-                                alt="" />
-                        </a>
-                        <div class="website-social-media-icons">
-                            <span>Follow us:</span>
-                            <a href="#"
-                               ><img
-                                    src="./assets/facebook-icon.svg"
-                                    alt="Facebook Logo"
-                                    /></a>
-                            <a href="#"
-                               ><img
-                                    src="./assets/twitter-icon.svg"
-                                    alt="Twitter Logo"
-                                    /></a>
-                        </div>
-                    </div>
-                    <nav class="navigation-bar-footer col-md-3">
-                        <ul class="navigation-bar-footer-content">
-                            <li><a href="">CATEGORIES</a></li>
-                            <li><a href="">INGREDIENTS</a></li>
-                            <li><a href="">CUISINES</a></li>
-                            <li><a href="">DIFFICULTIES</a></li>
-                            <li><a href="">NEWS</a></li>
-                        </ul>
-                    </nav>
-                    <nav class="website-infomation-bar col-md-3">
-                        <ul class="website-infomation-bar-content">
-                            <li><a href="">About us</a></li>
-                            <li><a href="">Privacy Policies</a></li>
-                            <li><a href="">Term of Services</a></li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        </div>
+        <%@include file="footer.jsp" %>
 
         <!--      Bootstrap for JS         -->
         <script

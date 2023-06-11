@@ -4,6 +4,7 @@
     Author     : Admin
 --%>
 
+<%@page import="User.UserDTO"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="News.NewsDTO"%>
 <%@page import="News.NewsDAO"%>
@@ -19,6 +20,7 @@
               integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
         <!--      CSS         -->
         <link rel="stylesheet" href="./styles/userStyle.css">
+        <link rel="stylesheet" href="./styles/adminStyle.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link
@@ -28,19 +30,21 @@
     <body>
 
         <div class="container-fluid">
-            <%@include file="navBarAdmin.jsp" %>
 
             <div class="row">
                 <nav class="nav-left-bar col-md-2">
+                    <a class="logo" href="">
+                        <img src="assets/Logo3.svg" alt="">
+                    </a>
                     <div>
                         <a href="admin.jsp">
-                            <img src="./assets/public-unchose.svg" alt="">
+                            <img src="./assets/public.svg" alt="">
                             Dashboard
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageAccount" >
-                            <img src="./assets/personal.png" alt="">
+                        <a href="MainController?action=manageAccount">
+                            <img src="./assets/user-unchose.svg" alt="">
                             User
                         </a>
                     </div>
@@ -80,9 +84,33 @@
                             Report
                         </a>
                     </div>
+
+
                 </nav>
 
                 <div class="col-md-10 news-detail-admin">
+                    <%
+                        UserDTO user = (UserDTO) session.getAttribute("user");
+                        if (user == null || user.getRole() != 2) {
+                            response.sendRedirect("error.jsp");
+                        } else {
+                    %>
+                    <nav class="navbar">
+                        <div class="nav-top-bar">
+                            <div class="nav-top-bar-account dropdown">
+                                <img src="./assets/profile-pic.svg" alt="">
+                                <div>
+                                    <p><%= user.getUserName()%></p>
+                                    <p>Admin</p>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+
+                    <%
+                        }
+                    %>
+                    
                     <div class="container">
                         <div class="new-result">
                             <div class="container ">

@@ -27,62 +27,36 @@
         <%@include file="header.jsp" %>
 
         <!--        Forgot Password         -->
+        
         <div class="blank-background">
-            <div class="container">
-                <div class="row form">
-                    <header class="form-header col-md-12">
-                        FORGOT PASSWORD
-                    </header>
-                    <div>
-                        <form action="MainController" method="POST" class="reset-password-form">
-                            <div class="reset-password-form-content">
-                                <input class="" type="text" name="txtEmail" placeholder="Your email or username" />
-                                <select class="">
-                                    <option>Email</option>
-                                    <option>Username</option>
-                                </select>
-                            </div>
-                            <p class="account-no-popup"></p>
-                            <button type='submit' value='forgotPass' name='action' >SEND</button>
-                        </form>
+            <div class="container user-form">
+                <form class="row" action="MainController" method="POST">
+                    <div class="col-md-3 user-form-picture-left">
+                        <img src="pictures/form-picture-5.jpg"/>
                     </div>
-                </div>
+                    <div class="col-md-6 user-form-content">
+                        <div class="user-form-content-header">
+                            FORGOT PASSWORD
+                        </div>
+                        <div class="user-form-content-input">
+                            <span>Email</span> <span>*</span>
+                            <input class="" type="email" name="txtEmail" required=""/>
+                        </div>
+                        <p class="user-form-content-description">We will send a request to reset your password via entered email</p>
+                        <button  type='submit' value='forgotPass' name='action' class="user-form-content-button">SEND</button>
+                        <div class="user-form-content-sign-up">
+                            Remember already? Sign in <a href="login.jsp">here</a>
+                        </div>
+                    </div>
+                    <div class="col-md-3 user-form-picture-right">
+                        <img src="pictures/form-picture-4.jpg"/>
+                    </div>
+                </form>
             </div>
         </div>
 
         <!--         Footer       -->
-        <div class="footer">
-            <div class="container">
-                <div class="row">
-                    <div class="website-social-media col-md-6">
-                        <a href="homePage.html" class="website-social-media-logo">
-                            <img src="./assets/Logo2.png" alt="" />
-                        </a>
-                        <div class="website-social-media-icons">
-                            <span>Follow us:</span>
-                            <a href="#"><img src="./assets/facebook-icon.svg" alt="Facebook Logo" /></a>
-                            <a href="#"><img src="./assets/twitter-icon.svg" alt="Twitter Logo" /></a>
-                        </div>
-                    </div>
-                    <nav class="navigation-bar-footer col-md-3">
-                        <ul class="navigation-bar-footer-content">
-                            <li><a href="">CATEGORIES</a></li>
-                            <li><a href="">INGREDIENTS</a></li>
-                            <li><a href="">CUISINES</a></li>
-                            <li><a href="">DIFFICULTIES</a></li>
-                            <li><a href="">NEWS</a></li>
-                        </ul>
-                    </nav>
-                    <nav class="website-infomation-bar col-md-3">
-                        <ul class="website-infomation-bar-content">
-                            <li><a href="">About us</a></li>
-                            <li><a href="">Privacy Policies</a></li>
-                            <li><a href="">Term of Services</a></li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        </div>
+        <%@include file="footer.jsp" %>
 
         <!--      Bootstrap for JS         -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
