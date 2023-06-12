@@ -19,6 +19,35 @@ import java.util.TreeMap;
  * @author Admin
  */
 public class AdminDAO {
+    
+    public static String getRoleByRoleId(int id) {
+        String result = "";
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                String sql = "SELECT title FROM Role WHERE id = ?";
+
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setInt(1, id);
+                ResultSet rs = pst.executeQuery();
+                if (rs != null) {
+                    while (rs.next()) {
+                        result = rs.getString("title");
+                    }
+                }
+                rs.close();
+                pst.close();
+                cn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
 
     public static TreeMap<Integer, Integer> getRatingAllRecipesOfOwnerMap(int userId) {
         TreeMap<Integer, Integer> map = new TreeMap<Integer, Integer>();
@@ -589,7 +618,7 @@ public class AdminDAO {
 //        for (UserDTO o : list) {
 //            System.out.println(o);
 //        }
-        System.out.println(AdminDAO.getTop1NewsId());
+        System.out.println(AdminDAO.getRoleByRoleId(1));
     }
 
 }
