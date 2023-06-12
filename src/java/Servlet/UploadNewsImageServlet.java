@@ -31,48 +31,51 @@ import javax.servlet.http.Part;
         maxRequestSize = 1024 * 1024 * 50)
 public class UploadNewsImageServlet extends HttpServlet {
 
-    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             int newsId = (Integer) request.getAttribute("newsId");
-            
+
             String fileName = "";
             Part filePart = request.getPart("file");
-            String uploadPath = "C:/project-swp/web/pictures/News/" + newsId;
-            
-            File uploadDir = new File(uploadPath);
-            if (!uploadDir.exists()) {
-                uploadDir.mkdirs();
-            }
-            
-            
-            fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString(); // MSIE fix.
-            InputStream fileContent = filePart.getInputStream();
+
+            if (filePart == null) {
+                request.getRequestDispatcher("ManageNewsServlet").forward(request, response);
+            } else {
+                String uploadPath = "C:/project-swp/web/pictures/News/" + newsId;
+
+                File uploadDir = new File(uploadPath);
+                if (!uploadDir.exists()) {
+                    uploadDir.mkdirs();
+                }
+
+                fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString(); // MSIE fix.
+                InputStream fileContent = filePart.getInputStream();
 //
 //            // Check if file already exists
-            File existingFile = new File(uploadDir.getAbsolutePath() + File.separator + fileName);
-            if (existingFile.exists()) {
-                // Append number to filename to avoid overwriting existing file
-                int i = 1;
-                while (existingFile.exists()) {
-                    fileName = i + "_" + fileName;
-                    existingFile = new File(uploadDir.getAbsolutePath() + File.separator + fileName);
-                    i++;
+                File existingFile = new File(uploadDir.getAbsolutePath() + File.separator + fileName);
+                if (existingFile.exists()) {
+                    // Append number to filename to avoid overwriting existing file
+                    int i = 1;
+                    while (existingFile.exists()) {
+                        fileName = i + "_" + fileName;
+                        existingFile = new File(uploadDir.getAbsolutePath() + File.separator + fileName);
+                        i++;
+                    }
                 }
-            }
 
-            // saves the file to the server
-            Path filePath = Paths.get(uploadDir.getAbsolutePath() + File.separator + fileName);
-            Files.copy(fileContent, filePath);
-            fileContent.close();
-            
-            int id = AdminDAO.getTop1NewsId();
-            int result = NewsDAO.updateNewsImage(id, fileName);
-            if(result > 0) {
-                request.getRequestDispatcher("ManageNewsServlet").forward(request, response);
+                // saves the file to the server
+                Path filePath = Paths.get(uploadDir.getAbsolutePath() + File.separator + fileName);
+                Files.copy(fileContent, filePath);
+                fileContent.close();
+
+                int id = AdminDAO.getTop1NewsId();
+                int result = NewsDAO.updateNewsImage(id, fileName);
+                if (result > 0) {
+                    request.getRequestDispatcher("ManageNewsServlet").forward(request, response);
+                }
             }
         }
     }

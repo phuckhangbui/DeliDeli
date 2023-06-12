@@ -1015,6 +1015,10 @@ span {
     background-color: white;
 }
 
+.new-result-content-link a{
+    text-decoration: underline;
+    color: #114388;
+}
 
 
 /* RATING STAR */
