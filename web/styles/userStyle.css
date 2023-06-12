@@ -1209,6 +1209,7 @@ span {
 }
 
 .user-profile-personal-content-password p:last-child {
+    margin-left: 5px;
     color: red;
 }
 
@@ -1636,6 +1637,9 @@ span {
     background-color: #ec9131;
     border-radius: 20px;
     border: 1px solid #ec9131;
+}
+.add-recipe-info-header span {
+    color: red;
 }
 
 

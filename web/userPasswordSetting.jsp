@@ -100,15 +100,19 @@
                                 <p>*</p>
                             </div>
                             <input type="password" name="txtOldPassword" placeholder="Enter old password" required="">
-                            <div>
+                            <div class="user-profile-personal-content-password">
                                 <p>New Password</p>
-                                <input type="password" name="txtNewPassword" placeholder="Enter new password" required="">
+                                <p>*</p>
+
                             </div>
-                            <div>
+                            <input type="password" name="txtNewPassword" placeholder="Enter new password" required="">
+                            <div class="user-profile-personal-content-password">
                                 <p>Re-enter New Password</p>
-                                <input type="password" name="txtConfirmNewPassword" placeholder="Re-enter new password" required="">
+                                <p>*</p>
                             </div>
+                            <input type="password" name="txtConfirmNewPassword" placeholder="Re-enter new password" required="">
                         </div>
+
                         <div class="user-profile-save-button">
                             <p class='error-popup'>${requestScope.errorList[0]}</p>
                             <p>Save Changes ?</p>

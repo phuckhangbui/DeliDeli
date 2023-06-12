@@ -129,20 +129,16 @@
                     </div>
                     <div class="nav-top-bar-search">
                         <form action="MainController" method="post" class="nav-top-bar-search-user">
-                            <button><img src="assets/search2.svg" alt=""></button>
+                            <button class="submit"><img src="assets/search2.svg" alt=""></button>
                             <input type="text" placeholder="Who are you searching for ?">
                             <input type="hidden" value="<%= currentRole%>" name="currentRole">
                             <input type="hidden" value="<%= tag%>" name="tag">
-                            <select name="" id="" class="">
-                                <option value="">User</option>
-                                <option value="">Admin</option>
-                                <option value="">Moderator</option>
-                            </select>
                         </form>
                         <form action="MainController?action=manageAccount" method="post" class="nav-top-bar-search-filter">
                             <select name="role">
                                 <option value="user">User</option>
                                 <option value="admin">Admin</option>
+                                <option value="moderator">Moderator</option>
                                 <option value="all">All</option>
                             </select>
                             <button type="submit" value="Filter">Filter</button>
@@ -168,11 +164,11 @@
                     <table class="table table-striped table-hover">
                         <thead>
                             <tr>
-                                <th>ID</th>
+                                <th>No.</th>
                                 <th>User name</th>
                                 <th>Role</th>
                                 <th>Email</th>
-                                <th>Create at</th>
+                                <th>Created</th>
                                 <th>Status</th>
                                 <th></th>
                             </tr>
@@ -251,11 +247,11 @@
                     <table class="table table-striped table-hover">
                         <thead>
                             <tr>
-                                <th>ID</th>
+                                <th>No.</th>
                                 <th>User name</th>
                                 <th>Role</th>
                                 <th>Email</th>
-                                <th>Create at</th>
+                                <th>Created</th>
                                 <th>Status</th>
                                 <th></th>
                             </tr>

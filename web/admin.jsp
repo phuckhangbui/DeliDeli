@@ -209,17 +209,18 @@
                                             <table class="table table-striped table-hover">
                                                 <thead>
                                                     <tr>
-                                                        <th>ID</th>
+                                                        <th>No.</th>
                                                         <th>Title</th>
-                                                        <th>Create at</th>
+                                                        <th>Created</th>
                                                         <th>Owner</th>
                                                     </tr>
                                                 </thead>
                                                 <%                if (listRecipe != null && listRecipe.size() > 0) {
+                                                        int i = 0;
                                                         for (RecipeDTO r : listRecipe) {
                                                 %>
                                                 <tr>
-                                                    <td><%= r.getId()%></td>
+                                                    <td><%= ++i%></td>
                                                     <td><%= r.getTitle()%></td>
                                                     <td><%= r.getCreate_at()%></td>
                                                     <td><a href="MainController?action=showUserDetail&username=<%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%>"><%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%></a></td>
@@ -265,21 +266,22 @@
                                                         <th>Created</th>
                                                     </tr>
                                                 </thead>
-                                                <%                if (listUser != null && listUser.size() > 0) {
-                                                        for (UserDTO u : listUser) {
-                                                %>
+
                                                 <tbody>
+                                                    <%                if (listUser != null && listUser.size() > 0) {
+                                                            int i = 0;
+                                                            for (UserDTO u : listUser) {
+                                                    %>
                                                     <tr>
-                                                        <td><%= u.getId()%></td>
+                                                        <td><%= ++i%></td>
                                                         <td><a href="MainController?action=showUserDetail&username=<%= u.getUserName()%>"><%= u.getUserName()%></a></td>
                                                         <td><%= u.getEmail()%></td>
                                                         <td><%= u.getCreateAt()%></td>
                                                     </tr>
+                                                    <% }
+                                                        }
+                                                    %>
                                                 </tbody>
-
-                                                <% }
-                                                    }
-                                                %>
                                             </table>
                                             <div class="latest-table-button">
                                                 <button class="btn-table">
@@ -300,7 +302,7 @@
             //if (user == null || user.getRole() != 2) {
             //response.sendRedirect("error.jsp");
             //} else {
-%>
+        %>
 
 <!--        <h1>Welcome ${user.getUserName()}</h1>
         <p>Today is: <%= LocalDate.now()%></p>

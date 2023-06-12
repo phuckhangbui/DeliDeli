@@ -115,7 +115,6 @@
                             </div>
                         </a>
 
-
                         <div class="user-community-recipe-button">
                             <button id="toggleButtonFavorite" onclick="toggleExpandCollapseFavorite()" class="col-md-12">
                                 <a href="javascript:void(0)">SHOW MORE</a>
@@ -194,7 +193,7 @@
                                 if (count < 4) {
                         %>
                         <a href="MainController?action=getRecipeDetailById&id=<%= r.getId()%>" class="col-md-4 recommendation-content-post">
-                            <div class="search-result-content-picture">
+                            <div class="recommendation-content-picture">
                                 <img src="<%= RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath()%>" alt="">
                             </div>
                             <div>
@@ -235,6 +234,7 @@
 
                         <%}
                             }
+                            if (count > 3) {
                         %>
 
                         <div class="user-community-recipe-button">
@@ -242,7 +242,7 @@
                                 <a href="javascript:void(0)">SHOW MORE</a>
                             </button>
                         </div>
-
+                        <% } %>
                     </div>
                 </div>
 
@@ -376,13 +376,14 @@
                             </div>
                         </a>
                         <% }
-                            }%>
+                            }
+                            if (count1 > 4) {%>
                         <div class="user-community-recipe-button">
                             <button id="toggleButtonReview" onclick="toggleExpandCollapseReview()" class="col-md-12">
                                 <a href="javascript:void(0)">SHOW MORE</a>
                             </button>
                         </div>
-
+                        <% }%>
 
                     </div>
                 </div>

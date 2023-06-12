@@ -60,14 +60,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                         </div>
                         <div class="add-recipe-info-overview">
                             <div class="add-recipe-info-header">
-                                Recipe Title
+                                Recipe Title <span>*</span>
                                 <div>
                                     <input class="input-full" type="text" name="title" required
                                            placeholder="What's your recipe called ?" maxlength="100">
                                 </div>
                             </div>
                             <div class="add-recipe-info-header">
-                                Description
+                                Description <span>*</span>
                                 <textarea class="input-full" rows="5" name="description" required
                                           placeholder="Give us a summary of your recipe" maxlength="500"></textarea>
                             </div>
@@ -91,7 +91,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                             </div>
                         </div>
                         <div class="row add-recipe-info-number">
-                            <div class="add-recipe-info-header">Overview</div>
+                            <div class="add-recipe-info-header">Overview <span>*</span></div>
                             <div class="col-md-3 add-recipe-info-number-content">
                                 <div>Prep Time:</div>
                                 <input type="text" id="prepTime" required max="100" min="1"
@@ -278,7 +278,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                         </div>
                         <div class="row add-recipe-info-ingredient">
                             <div class="draggable-container-ingredient col-md-8 add-recipe-info-ingredient-content">
-                                <div class="add-recipe-info-header">Ingredient</div>
+                                <div class="add-recipe-info-header">Ingredient <span>*</span></div>
                                 <p class="draggable-ingredient draggable" draggable="false">
                                     <input type="text" class="input" name="ingredientDesc" required="">
                                     <select class="ingredientList" name="ingredientId"></select>
@@ -306,7 +306,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                         
                                 
                                 
-                        <div class="add-recipe-info-header">Direction:</div>
+                        <div class="add-recipe-info-header">Direction <span>*</span></div>
                         <p><textarea name="direction" rows="10" cols="10" id="editor" value="<%=user.getId()%>"></textarea></p>
                         <script>
                             CKEDITOR.replace('editor');
