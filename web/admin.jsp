@@ -34,11 +34,14 @@
     </head>
     <body>
         <div class="container-fluid">
-            <%@include file="navBarAdmin.jsp" %>
+
 
 
             <div class="row">
                 <nav class="nav-left-bar col-md-2">
+                    <a class="logo" href="">
+                        <img src="assets/Logo3.svg" alt="">
+                    </a>
                     <div>
                         <a href="admin.jsp" class="active">
                             <img src="./assets/public.svg" alt="">
@@ -93,7 +96,27 @@
 
 
                 <div class="col-md-10 dashboard">
+                    <%
+                        UserDTO user = (UserDTO) session.getAttribute("user");
+                        if (user == null || user.getRole() != 2) {
+                            response.sendRedirect("error.jsp");
+                        } else {
+                    %>
+                    <nav class="navbar">
+                        <div class="nav-top-bar">
+                            <div class="nav-top-bar-account dropdown">
+                                <img src="./assets/profile-pic.svg" alt="">
+                                <div>
+                                    <p><%= user.getUserName()%></p>
+                                    <p>Admin</p>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
 
+                    <%
+                        }
+                    %>
                     <!--      Dashboard         -->
                     <div class="main-panel">
                         <div class="content-wrapper">
@@ -186,17 +209,18 @@
                                             <table class="table table-striped table-hover">
                                                 <thead>
                                                     <tr>
-                                                        <th>ID</th>
+                                                        <th>No.</th>
                                                         <th>Title</th>
-                                                        <th>Create at</th>
+                                                        <th>Created</th>
                                                         <th>Owner</th>
                                                     </tr>
                                                 </thead>
                                                 <%                if (listRecipe != null && listRecipe.size() > 0) {
+                                                        int i = 0;
                                                         for (RecipeDTO r : listRecipe) {
                                                 %>
                                                 <tr>
-                                                    <td><%= r.getId()%></td>
+                                                    <td><%= ++i%></td>
                                                     <td><%= r.getTitle()%></td>
                                                     <td><%= r.getCreate_at()%></td>
                                                     <td><a href="MainController?action=showUserDetail&username=<%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%>"><%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%></a></td>
@@ -242,21 +266,22 @@
                                                         <th>Created</th>
                                                     </tr>
                                                 </thead>
-                                                <%                if (listUser != null && listUser.size() > 0) {
-                                                        for (UserDTO u : listUser) {
-                                                %>
+
                                                 <tbody>
+                                                    <%                if (listUser != null && listUser.size() > 0) {
+                                                            int i = 0;
+                                                            for (UserDTO u : listUser) {
+                                                    %>
                                                     <tr>
-                                                        <td><%= u.getId()%></td>
+                                                        <td><%= ++i%></td>
                                                         <td><a href="MainController?action=showUserDetail&username=<%= u.getUserName()%>"><%= u.getUserName()%></a></td>
                                                         <td><%= u.getEmail()%></td>
                                                         <td><%= u.getCreateAt()%></td>
                                                     </tr>
+                                                    <% }
+                                                        }
+                                                    %>
                                                 </tbody>
-
-                                                <% }
-                                                    }
-                                                %>
                                             </table>
                                             <div class="latest-table-button">
                                                 <button class="btn-table">
@@ -277,7 +302,7 @@
             //if (user == null || user.getRole() != 2) {
             //response.sendRedirect("error.jsp");
             //} else {
-%>
+        %>
 
 <!--        <h1>Welcome ${user.getUserName()}</h1>
         <p>Today is: <%= LocalDate.now()%></p>

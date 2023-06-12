@@ -39,108 +39,51 @@
         <!--         The navigation bar       -->
         <%@include file="header.jsp" %>
 
-        <!--        Log in Form         -->
+        <!--        Register Form         -->
         <div class="blank-background">
-            <div class="container">
-                <div class="row form">
-                    <header class="form-header col-md-12">REGISTRATION</header>
-                    <div>
-                        <form
-                            action="MainController"
-                            method="POST"
-                            class="register-form">
-                            <div class="row  register-form-content">
-                                <div class="register-form-content-input">
-                                    <p>
-                                        <span>Username</span>
-                                        <span>*</span>
-                                    </p>
-                                    <input type="text" name="txtUserName" placeholder="Enter your username" />
-                                    <p class="error-popup">${requestScope.MSG_INCORRECT_USERNAME}${requestScope.MSG_USERNAME_EXIST}</p>
-                                </div>
-                                <div class=" register-form-content-input">
-                                    <p>
-                                        <span>Email</span>
-                                        <span>*</span>
-                                    </p>
-                                    <input type="text" name="txtEmail" placeholder="Enter your email" />
-                                    <p class="error-popup">${requestScope.MSG_EMAIL_EXIST}${requestScope.MSG_INCORRECT_EMAIL}</p>
-                                </div>
-                                <div class="register-form-content-input">
-                                    <p>
-                                        <span>Password</span>
-                                        <span>*</span>
-                                    </p>
-                                    <input type="password" name="txtPass" value="" placeholder="Must have 1 uppercase and 1 number (Max letters: 18)" />
-                                    <p class="error-popup">${requestScope.MSG_INCORRECT_PASSWORD}</p>
-                                </div>
-                                <div class="register-form-content-input">
-                                    <p>
-                                        <span>Re-enter password</span>
-                                        <span>*</span>
-                                    </p>
-                                    <input type="password" name="txtConfirmPass" value="" placeholder="Re-enter your password" />
-                                    <p class="error-popup">${requestScope.MSG_INCORRECT_CONFIRM_PASSWORD}</p>
-                                </div>
-                            </div>
-                                <button type="submit" value="signup" name="action">SIGN UP</button>
-                            <div class="register-already-have-account">
-                                <span> Already have an account? </span>
-                                <span>
-                                    <a href="login.jsp">Sign In</a>
-                                </span>
-                            </div>
-                        </form>
+            <div class="container user-form">
+                <form class="row" action="MainController" method="POST">
+                    <div class="col-md-6 user-form-content">
+                        <div class="user-form-content-header">
+                            REGISRATION
+                        </div>
+                        <div class="user-form-content-input">
+                            <span>User Name</span> <span>*</span>
+                            <input type="text" name="txtUserName" placeholder="Enter your username" />
+                        </div>
+                        <p class="error-popup">${requestScope.MSG_INCORRECT_USERNAME}${requestScope.MSG_USERNAME_EXIST}</p>
+                        <div class="user-form-content-input">
+                            <span>Email</span> <span>*</span>
+                            <input type="text" name="txtEmail" placeholder="Enter your email" />
+                        </div>
+                        <p class="error-popup">${requestScope.MSG_EMAIL_EXIST}${requestScope.MSG_INCORRECT_EMAIL}</p>
+                        <div class="user-form-content-input">
+                            <span>Password</span> <span>*</span>
+                            <input type="password" name="txtPass" value="" placeholder="Must have 1 uppercase and 1 number (Length: 8-16)" />
+                        </div>
+                        <p class="error-popup">${requestScope.MSG_INCORRECT_PASSWORD}</p>
+                        <div class="user-form-content-input">
+                            <span>Re-enter Password</span> <span>*</span>
+                            <input type="password" name="txtConfirmPass" value="" placeholder="Re-enter your password" />
+                        </div>
+                        <p class="error-popup">${requestScope.MSG_INCORRECT_CONFIRM_PASSWORD}</p>
+                        <button type="submit" value="signup" name="action" class="user-form-content-button">SIGN UP</button>
+                        <a href="forgotPassword.jsp" class="user-form-content-forgot">
+                            Forgot password?
+                        </a>
+                        <div class="user-form-content-sign-up">
+                            Already have an account? Sign in <a href="login.jsp">here</a>
+                        </div>
                     </div>
-                </div>
+                    <div class="col-md-6 user-form-picture-right">
+                        <img src="pictures/form-picture-2.jpg"/>
+                    </div>
+                </form>
             </div>
         </div>
 
         <!--         Footer       -->
-        <div class="footer">
-            <div class="container">
-                <div class="row">
-                    <div class="website-social-media col-md-6">
-                        <a
-                            href="homePage.html"
-                            class="website-social-media-logo">
-                            <img
-                                src="./assets/Logo2.png"
-                                alt="" />
-                        </a>
-                        <div class="website-social-media-icons">
-                            <span>Follow us:</span>
-                            <a href="#"
-                               ><img
-                                    src="./assets/facebook-icon.svg"
-                                    alt="Facebook Logo"
-                                    /></a>
-                            <a href="#"
-                               ><img
-                                    src="./assets/twitter-icon.svg"
-                                    alt="Twitter Logo"
-                                    /></a>
-                        </div>
-                    </div>
-                    <nav class="navigation-bar-footer col-md-3">
-                        <ul class="navigation-bar-footer-content">
-                            <li><a href="">CATEGORIES</a></li>
-                            <li><a href="">INGREDIENTS</a></li>
-                            <li><a href="">CUISINES</a></li>
-                            <li><a href="">DIFFICULTIES</a></li>
-                            <li><a href="">NEWS</a></li>
-                        </ul>
-                    </nav>
-                    <nav class="website-infomation-bar col-md-3">
-                        <ul class="website-infomation-bar-content">
-                            <li><a href="">About us</a></li>
-                            <li><a href="">Privacy Policies</a></li>
-                            <li><a href="">Term of Services</a></li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        </div>
+        <%@include file="footer.jsp" %>
 
         <!--      Bootstrap for JS         -->
         <script

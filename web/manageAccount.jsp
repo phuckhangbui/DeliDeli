@@ -26,9 +26,9 @@
             rel="stylesheet">
     </head>
     <body>
-        
+
         <div class="container-fluid">
-            <%@include file="navBarAdmin.jsp" %>
+
 
             <%                ArrayList<UserDTO> listAcc = (ArrayList) request.getAttribute("listAcc");
                 ArrayList<UserDTO> listAccSearched = (ArrayList) request.getAttribute("listAccSearched");
@@ -46,6 +46,9 @@
 
             <div class="row">
                 <nav class="nav-left-bar col-md-2">
+                    <a class="logo" href="">
+                        <img src="assets/Logo3.svg" alt="">
+                    </a>
                     <div>
                         <a href="admin.jsp">
                             <img src="./assets/public-unchose.svg" alt="">
@@ -100,24 +103,52 @@
 
 
                 <div class="col-md-10 user-list">
+                    <%
+                        UserDTO user = (UserDTO) session.getAttribute("user");
+                        if (user == null || user.getRole() != 2) {
+                            response.sendRedirect("error.jsp");
+                        } else {
+                    %>
+                    <nav class="navbar">
+                        <div class="nav-top-bar">
+                            <div class="nav-top-bar-account dropdown">
+                                <img src="./assets/profile-pic.svg" alt="">
+                                <div>
+                                    <p><%= user.getUserName()%></p>
+                                    <p>Admin</p>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
 
-                    <form action="MainController" method="post" style="display: flex; justify-content: center; align-items: center">
-                        <input type="hidden" value="<%= currentRole%>" name="currentRole">
-                        <input type="hidden" value="<%= tag%>" name="tag">
-                        <input type="text" name="txtSearch">
-                        <button type="submit" value="searchAccount" name="action">Search</button>
-                    </form>
-
-                    <form action="MainController?action=manageAccount" method="post">
-                        <select name="role">
-                            <option value="user">User</option>
-                            <option value="admin">Admin</option>
-                            <option value="all">All</option>
-                            <input type="submit" value="Filter">
-                        </select>
-                    </form>
+                    <%
+                        }
+                    %>
+                    <div class="user-header">
+                        Users List
+                    </div>
+                    <div class="nav-top-bar-search">
+                        <form action="MainController" method="post" class="nav-top-bar-search-user">
+                            <button class="submit"><img src="assets/search2.svg" alt=""></button>
+                            <input type="text" placeholder="Who are you searching for ?">
+                            <input type="hidden" value="<%= currentRole%>" name="currentRole">
+                            <input type="hidden" value="<%= tag%>" name="tag">
+                        </form>
+                        <form action="MainController?action=manageAccount" method="post" class="nav-top-bar-search-filter">
+                            <select name="role">
+                                <option value="user">User</option>
+                                <option value="admin">Admin</option>
+                                <option value="moderator">Moderator</option>
+                                <option value="all">All</option>
+                            </select>
+                            <button type="submit" value="Filter">Filter</button>
+                        </form>
+                    </div>
 
                     <!--      User List         -->
+
+
+
                     <%
                         int currentPage = 1;
 
@@ -133,13 +164,13 @@
                     <table class="table table-striped table-hover">
                         <thead>
                             <tr>
-                                <th>ID</th>
+                                <th>No.</th>
                                 <th>User name</th>
                                 <th>Role</th>
                                 <th>Email</th>
-                                <th>Create at</th>
+                                <th>Created</th>
                                 <th>Status</th>
-                                <th>Action</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody class="table-group-divider">
@@ -172,7 +203,25 @@
                                     <form action="MainController?username=<%= u.getUserName()%>" method="post" class="delete-acc-button">
                                         <input type="hidden" value="<%= currentRole%>" name="currentRole">
                                         <input type="hidden" value="<%= tag%>" name="tag">
-                                        <button type="submit" value="deleteAcc" name="action" >Delete</button>
+                                        <button type="button" data-bs-toggle="modal" data-bs-target="#userListModal">Delete</button>
+                                        <div class="modal fade" id="userListModal" tabindex="-1" aria-labelledby="userListModalLabel" aria-hidden="true">
+                                            <div class="popup-confirm">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h1 class="modal-title fs-5" id="exampleModalLabel">CONFIRMATION</h1>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            Pressing delete will remove this user from this site forever, are you sure you still want to delete them ?
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, I changed my mind</button>
+                                                            <button type="button" class="btn popup-confirm-btn">Yes, delete them</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </form>
                                 </td>
                             </tr>
@@ -198,13 +247,13 @@
                     <table class="table table-striped table-hover">
                         <thead>
                             <tr>
-                                <th>ID</th>
+                                <th>No.</th>
                                 <th>User name</th>
                                 <th>Role</th>
                                 <th>Email</th>
-                                <th>Create at</th>
+                                <th>Created</th>
                                 <th>Status</th>
-                                <th>Action</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody class="table-group-divider">
@@ -237,7 +286,25 @@
                                     <form action="MainController?username=<%= u.getUserName()%>" method="post" class="delete-acc-button">
                                         <input type="hidden" value="<%= currentRole%>" name="currentRole">
                                         <input type="hidden" value="<%= tag%>" name="tag">
-                                        <button type="submit" value="deleteAcc" name="action">Delete</button>
+                                        <button type="button" data-bs-toggle="modal" data-bs-target="#userListModal">Delete</button>
+                                        <div class="modal fade" id="userListModal" tabindex="-1" aria-labelledby="userListModalLabel" aria-hidden="true">
+                                            <div class="popup-confirm">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h1 class="modal-title fs-5" id="exampleModalLabel">CONFIRMATION</h1>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            Pressing delete will remove this user from this site forever, are you sure you still want to delete them ?
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, I changed my mind</button>
+                                                            <button type="button" class="btn popup-confirm-btn">Yes, delete them</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </form>
                                 </td>
                             </tr>
@@ -246,6 +313,8 @@
                             %>
                         </tbody>
                     </table>
+
+
 
                     <div class="table-redirect">
                         <%
@@ -263,6 +332,7 @@
                 </div>
             </div>
         </div>
+
         <script src="./script/userListScript.js"></script>
         <!--<a href="admin.jsp">Back to daskboard</a>-->
     </body>
