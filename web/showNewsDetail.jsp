@@ -1,15 +1,13 @@
 <%-- 
-    Document   : createNews
-    Created on : Jun 7, 2023, 3:51:24 PM
+    Document   : showNewsDetail
+    Created on : Jun 10, 2023, 11:28:20 AM
     Author     : Admin
 --%>
 
 <%@page import="User.UserDTO"%>
-<%@page import="java.util.Map"%>
-<%@page import="java.util.HashMap"%>
-<%@page import="News.NewsDAO"%>
-<%@page import="News.NewsDTO"%>
 <%@page import="java.util.ArrayList"%>
+<%@page import="News.NewsDTO"%>
+<%@page import="News.NewsDAO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -21,13 +19,13 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
               integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
         <!--      CSS         -->
+        <link rel="stylesheet" href="./styles/userStyle.css">
         <link rel="stylesheet" href="./styles/adminStyle.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link
             href="https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed:wght@300;400;500;600;700&display=swap"
             rel="stylesheet">
-        <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
     </head>
     <body>
 
@@ -90,7 +88,7 @@
 
                 </nav>
 
-                <div class="col-md-10 news">
+                <div class="col-md-10 news-detail-admin">
                     <%
                         UserDTO user = (UserDTO) session.getAttribute("user");
                         if (user == null || user.getRole() != 2) {
@@ -114,59 +112,35 @@
                     %>
                     
                     <div class="container">
-                        <div class="row news-content">
-                            <%                                
-                                //UserDTO user = (UserDTO) session.getAttribute("user");
-                                //String id = request.getParameter("newsId");
-                            %>
+                        <div class="new-result">
+                            <div class="container ">
+                                <div class="row new-result-content">
+                                    <%                                        NewsDTO news = (NewsDTO) request.getAttribute("news");
+                                    %>
+                                    <div >
+                                        <p><%= NewsDAO.getNewsCategoryByNewsId(news.getId())%></p>
+                                        <p class="new-result-content-post-title"><%= news.getTitle()%></p>
+                                    </div>
+                                    <p>By: <%= request.getAttribute("author")%></p>
+                                    <p>Create at: <%= news.getCreateAt()%></p>
+                                    <img src="<%= news.getImage()%>" alt="">
 
-                            <form action="MainController" method="post" class="news-create-button" enctype="multipart/form-data">
-                                <div class="news-content-info">
-                                    <p>Title: <input type="text" name="txtTitle"></p>
+                                    <p><%= news.getDesc()%></p>
                                 </div>
-                                <div class="news-content-info">
-                                    <p>Category:
-                                        <select name="category">
-                                            <%
-                                                HashMap<Integer, String> newsMap = Utils.NavigationBarUtils.getMap("NewsCategory");
-                                                for (Map.Entry<Integer, String> entry : newsMap.entrySet()) {
-                                            %>
-                                            <option value="<%= entry.getKey()%>"><%= entry.getValue()%></option>
-                                            <%
-                                                }
-                                            %>
-                                        </select>
-                                    </p>
-                                </div>
-                                <div class="news-content-info news-content-info-white-background">
-                                    <p>Image: <input type="file" name="file"></p>
-                                </div>
-                                <div class="news-content-info">
-                                    <p>Description: <textarea rows="10" cols="10" id="editor"></textarea></p>
-                                </div>
-                                <input type="hidden" name="editorContent" id="editorContent" value="">
-                                <input type="hidden" name="userId" value="<%= user.getId()%>">
-                                <button type="submit" value="createNews" name="action">Create</button>
-                            </form>
+                            </div>
+
+                            <div class="news-detail-admin-action">
+                                <form action="MainController" method="post" class="news-detail-admin-button">
+                                    <input type="hidden" value="<%= news.getId()%>" name="newsId">
+                                    <button><a href="updateNews.jsp?newsId=<%= news.getId()%>">Edit</a></button>
+                                    <button type="submit" name="action" value="deleteNews" class="news-detail-admin-button-delete">Delete</a></button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-
-        <script>
-            CKEDITOR.replace('editor');
-        </script>
-
-        <script>
-            document.querySelector('form').addEventListener('submit', function (event) {
-                // Get the CKEditor content
-                var editorContent = CKEDITOR.instances.editor.getData();
-
-                // Assign the content to a hidden input field
-                document.getElementById('editorContent').value = editorContent;
-            });
-        </script>
     </body>
 </html>

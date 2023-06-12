@@ -129,8 +129,8 @@
                     </div>
                     <div class="nav-top-bar-search">
                         <form action="MainController" method="post" class="nav-top-bar-search-user">
-                            <button class="submit"><img src="assets/search2.svg" alt=""></button>
-                            <input type="text" placeholder="Who are you searching for ?">
+                            <button type="submit" name="action" value="searchAccount"><img src="assets/search2.svg" alt=""></button>
+                            <input type="text" name="txtSearch" placeholder="Who are you searching for ?">
                             <input type="hidden" value="<%= currentRole%>" name="currentRole">
                             <input type="hidden" value="<%= tag%>" name="tag">
                         </form>
@@ -138,7 +138,6 @@
                             <select name="role">
                                 <option value="user">User</option>
                                 <option value="admin">Admin</option>
-                                <option value="moderator">Moderator</option>
                                 <option value="all">All</option>
                             </select>
                             <button type="submit" value="Filter">Filter</button>

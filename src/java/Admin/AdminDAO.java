@@ -224,6 +224,33 @@ public class AdminDAO {
         }
         return result;
     }
+    
+    public static int getTop1NewsId() {
+        int result = 0;
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                String sql = "SELECT TOP 1 id FROM [News] ORDER BY id DESC";
+
+                PreparedStatement pst = cn.prepareStatement(sql);
+                ResultSet rs = pst.executeQuery();
+                if (rs != null) {
+                    while (rs.next()) {
+                        result = rs.getInt("id");
+                    }
+                }
+
+                pst.close();
+                cn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 
     public static int getTotalAccount() {
         int result = 0;
@@ -562,7 +589,7 @@ public class AdminDAO {
 //        for (UserDTO o : list) {
 //            System.out.println(o);
 //        }
-        System.out.println(AdminDAO.getRatingAllRecipesOfOwnerMap(2));
+        System.out.println(AdminDAO.getTop1NewsId());
     }
 
 }

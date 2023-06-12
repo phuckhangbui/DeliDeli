@@ -32,10 +32,16 @@ public class DeleteRecipeServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
+            String admin = request.getParameter("admin");
             int recipeId = Integer.parseInt(request.getParameter("recipeId"));
 
-            RecipeDAO.deleteRecipe(recipeId);
-            response.sendRedirect("home.jsp");
+            if (admin != null) {
+                RecipeDAO.deleteRecipe(recipeId);
+                request.getRequestDispatcher("ManageRecipeServlet").forward(request, response);
+            } else {
+                RecipeDAO.deleteRecipe(recipeId);
+                response.sendRedirect("home.jsp");
+            }
         }
     }
 

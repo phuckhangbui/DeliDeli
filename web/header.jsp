@@ -52,6 +52,7 @@
                             <select name="searchBy" id="" class="">
                                 <option value="Title" selected="selected">TITLE</option>
                                 <option value="Category">CATEGORIES</option>
+                                <option value="">INGREDIENTS</option>
                                 <option value="Cuisine">CUISINES</option>
                                 <option value="Diet">DIETS</option>
                             </select>

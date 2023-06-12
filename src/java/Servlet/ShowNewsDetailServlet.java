@@ -41,7 +41,7 @@ public class ShowNewsDetailServlet extends HttpServlet {
             String author = NewsDAO.getNewsAuthorByNewsId(new Integer(newsId));
             request.setAttribute("author", author);
             
-            request.getRequestDispatcher("newsDetail.jsp").forward(request, response);
+            request.getRequestDispatcher("showNewsDetail.jsp").forward(request, response);
         }
     }
 
