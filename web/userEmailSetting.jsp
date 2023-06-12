@@ -28,79 +28,11 @@
     </head>
 
     <body>
-        <div class="navigator-bar">
-            <div class="container ">
-                <div class="row navigation-bar-first">
-                    <a href="homePage.html" class="logo col-md-3">
-                        <img src="./assets/Logo2.png" alt="">
-                    </a>
-                    <div class="search-bar col-md-6">
-                        <form action="" method="post" class="search-bar-content">
-                            <input type="text" placeholder="What are you searching for ?">
-                            <select name="" id="">
-                                <option value="">TITLE</option>
-                                <option value="">CATEGORY</option>
-                                <option value="">INGREDIENT</option>
-                                <option value="">CUISINES</option>
-                            </select>
-                            <button type="submit"><img src="./assets/search-button.svg" alt="Search Icon"></button>
-                        </form>
-                    </div>
-                    <div class="account col-md-3">
-                        <a href="">
-                            <img src="assets/profile-pic.svg" alt="">
-                            <span>My Account</span>
-                        </a>
-                    </div>
-
-                </div>
-                <div class="row navigation-bar-last">
-                    <ul class="navigation-bar-content">
-                        <li>
-                            <div class="dropdown">
-                                <button class="dropbtn">CATEGORIES</button>
-                                <div class="dropdown-content">
-                                    <a href="">1</a>
-                                    <a href="">2</a>
-                                    <a href="">3</a>
-                                    <a href="searchResultPage.html">View More</a>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="dropdown">
-                                <button class="dropbtn">CUISINES</button>
-                                <div class="dropdown-content">
-                                    <a href="">1</a>
-                                    <a href="">2</a>
-                                    <a href="">3</a>
-                                    <a href="searchResultPage.html">View More</a>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="dropdown">
-                                <button class="dropbtn">DIFFICULTIES</button>
-                                <div class="dropdown-content">
-                                    <a href="">1</a>
-                                    <a href="">2</a>
-                                    <a href="">3</a>
-                                    <a href="searchResultPage.html">View More</a>
-                                </div>
-                            </div>
-                        </li>
-                        <li><a href="newsPage.html">NEWS</a></li>
-                        <li><a href="">ABOUT US</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
+        <%@include file="header.jsp" %>
 
         <!--        User Public Info Manage        -->
         <%
             String userId = request.getParameter("userId");
-            UserDTO user = UserDAO.getUserByUserId(new Integer(userId));
             UserDetailDTO userDetail = UserDetailDAO.getUserDetailByUserId(new Integer(userId));
         %>
         <div class="blank-background">
@@ -118,27 +50,34 @@
                         </div>
                         <div class="user-profile-option">
                             <a href="userPublicDetail.jsp?userId=<%= userId%>">
-                                <img src="./assets/public.svg" alt="">
+                                <img src="./assets/public-unchose.svg" alt="">
                                 Public Profile
                             </a>
-                            <a href="userEmailSetting.jsp?userId=<%= userId%>">
+                            <a href="userEmailSetting.jsp?userId=<%= userId%>" class="active-link">
                                 <img src="./assets/personal.png" alt="">
                                 Personal Setting
                             </a>
-                            <a href="userPasswordSetting.jsp?userId=<%= userId%>">
-                                <img src="./assets/Password.svg" alt="">
+                            <a href="userPasswordSetting.jsp?userId=<%= user.getId()%>">
+                                <img src="./assets/Password-unchose.svg" alt="">
                                 Change Password
                             </a>
                             <a href="userSavedRecipes.html">
-                                <img src="./assets/favorite.svg" alt="">
+                                <img src="./assets/favorite-unchose.svg" alt="">
                                 Saved Recipes
                             </a>
-                            <a href="userOwnRecipes.html">
-                                <img src="./assets/my-recipe.svg" alt="">
-                                My Own Recipes
-                            </a>
-                            <a href="userOwnReviews.html">
-                                <img src="./assets/full-star.png" alt="">
+                            <div class="dropdown" id="dropdownUserRecipe">
+                                <a href="#" class="dropbtn">
+                                    <img src="./assets/my-recipe-unchose.svg" alt="">
+                                    My Own Recipes
+                                </a>
+                                <div class="dropdown-content-right">
+                                    <a href="privateRecipeManagement.jsp?userId=<%= userId%>">Private Recipes</a>
+                                    <a href="pendingRecipeManagement.jsp?userId=<%= userId%>">Pending Recipes</a>
+                                    <a href="publicRecipeManagement.jsp?userId=<%= userId%>">Public Recipes</a>
+                                </div>
+                            </div>
+                            <a href="userReviewManagement.jsp?userId=<%= userId%>">
+                                <img src="./assets/review-unchose.svg" alt="">
                                 My Reviews
                             </a>
                         </div>
@@ -174,7 +113,7 @@
                                 Profile Picture
                             </div>
                             <p>
-                                Click the image to change your profile picture
+                                This is your avatar that everyone can see
                             </p>
                         </div>
                         <div class="user-profile-public-avatar">
@@ -210,5 +149,8 @@
             </div>
             <button type="submit" value="saveUserPrivateDetail" name="action">SAVE</button>
         </form>-->
+
+
+        <%@include file="footer.jsp" %>
     </body>
 </html>

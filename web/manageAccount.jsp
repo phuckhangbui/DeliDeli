@@ -163,11 +163,11 @@
                     <table class="table table-striped table-hover">
                         <thead>
                             <tr>
-                                <th>ID</th>
+                                <th>No.</th>
                                 <th>User name</th>
                                 <th>Role</th>
                                 <th>Email</th>
-                                <th>Create at</th>
+                                <th>Created</th>
                                 <th>Status</th>
                                 <th></th>
                             </tr>
@@ -246,11 +246,11 @@
                     <table class="table table-striped table-hover">
                         <thead>
                             <tr>
-                                <th>ID</th>
+                                <th>No.</th>
                                 <th>User name</th>
                                 <th>Role</th>
                                 <th>Email</th>
-                                <th>Create at</th>
+                                <th>Created</th>
                                 <th>Status</th>
                                 <th></th>
                             </tr>

@@ -28,7 +28,7 @@
     </head>
 
     <body>
-        
+
         <%@include file="header.jsp" %>
 
 
@@ -41,7 +41,50 @@
             <div class="container ">
                 <form action="MainController" class="row user-profile" method="post">
                     <input type="hidden" name="userId" value="<%= userId%>">
-                    <%@include file="userManagementSideBar.jsp" %>
+                    <div class="col-md-3 user-profile-column-1">
+                        <div class="user-profile-header">
+                            <div>
+                                Setting
+                            </div>
+                            <p>
+                                Customize your profile
+                            </p>
+                        </div>
+                        <div class="user-profile-option">
+                            <a href="userPublicDetail.jsp?userId=<%= userId%>">
+                                <img src="./assets/public-unchose.svg" alt="">
+                                Public Profile
+                            </a>
+                            <a href="userEmailSetting.jsp?userId=<%= userId%>" >
+                                <img src="./assets/user-unchose.svg" alt="">
+                                Personal Setting
+                            </a>
+                            <a href="userPasswordSetting.jsp?userId=<%= user.getId()%>" class="active-link">
+                                <img src="./assets/Password.svg" alt="">
+                                Change Password
+                            </a>
+                            <a href="userSavedRecipes.html">
+                                <img src="./assets/favorite-unchose.svg" alt="">
+                                Saved Recipes
+                            </a>
+                            <div class="dropdown" id="dropdownUserRecipe">
+                                <a href="#" class="dropbtn">
+                                    <img src="./assets/my-recipe-unchose.svg" alt="">
+                                    My Own Recipes
+                                </a>
+                                <div class="dropdown-content-right">
+                                    <a href="privateRecipeManagement.jsp?userId=<%= userId%>">Private Recipes</a>
+                                    <a href="pendingRecipeManagement.jsp?userId=<%= userId%>">Pending Recipes</a>
+                                    <a href="publicRecipeManagement.jsp?userId=<%= userId%>">Public Recipes</a>
+                                </div>
+                            </div>
+                            <a href="userReviewManagement.jsp?userId=<%= userId%>">
+                                <img src="./assets/review-unchose.svg" alt="">
+                                My Reviews
+                            </a>
+                        </div>
+                    </div>
+
                     <div class="col-md-5 user-profile-column-2">
                         <div class="user-profile-header">
                             <div>
@@ -57,15 +100,19 @@
                                 <p>*</p>
                             </div>
                             <input type="password" name="txtOldPassword" placeholder="Enter old password" required="">
-                            <div>
+                            <div class="user-profile-personal-content-password">
                                 <p>New Password</p>
-                                <input type="password" name="txtNewPassword" placeholder="Enter new password" required="">
+                                <p>*</p>
+
                             </div>
-                            <div>
+                            <input type="password" name="txtNewPassword" placeholder="Enter new password" required="">
+                            <div class="user-profile-personal-content-password">
                                 <p>Re-enter New Password</p>
-                                <input type="password" name="txtConfirmNewPassword" placeholder="Re-enter new password" required="">
+                                <p>*</p>
                             </div>
+                            <input type="password" name="txtConfirmNewPassword" placeholder="Re-enter new password" required="">
                         </div>
+
                         <div class="user-profile-save-button">
                             <p class='error-popup'>${requestScope.errorList[0]}</p>
                             <p>Save Changes ?</p>
@@ -78,7 +125,7 @@
                                 Profile Picture
                             </div>
                             <p>
-                                Click the image to change your profile picture
+                                This is your avatar that everyone can see
                             </p>
                         </div>
                         <div class="user-profile-public-avatar">
@@ -114,5 +161,7 @@
             </div>
             <button type="submit" value="saveUserPrivateDetail" name="action">SAVE</button>
         </form>-->
+
+        <%@include file="footer.jsp" %>
     </body>
 </html>

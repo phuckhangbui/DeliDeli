@@ -96,7 +96,7 @@
                             <p>Favorite Recipes</p>
                         </header>
                     </div>
-                    <div class="row user-community-favorite-recipe">
+                    <div class="row user-community-favorite-recipe" id="favoriteRecipe">
                         <a href="" class="col-md-4 recommendation-content-post">
                             <div class="recommendation-content-picture">
                                 <img src="./pictures/egg1.jpeg" alt="">
@@ -115,14 +115,68 @@
                             </div>
                         </a>
 
-
                         <div class="user-community-recipe-button">
-                            <button class="col-md-12">
-                                <a href="">VIEW ALL</a>
+                            <button id="toggleButtonFavorite" onclick="toggleExpandCollapseFavorite()" class="col-md-12">
+                                <a href="javascript:void(0)">SHOW MORE</a>
                             </button>
                         </div>
 
+
+
                     </div>
+                    <script>
+                        function toggleExpandCollapseFavorite() {
+                            var container = document.getElementById("favoriteRecipe");
+                            var hiddenElements = container.querySelectorAll(".hidden");
+                            var toggleButton = document.getElementById("toggleButtonFavorite");
+
+                            if (hiddenElements.length > 0) {
+                                hiddenElements.forEach(element => {
+                                    element.classList.remove("hidden");
+                                    element.style.opacity = "0";
+                                });
+
+                                setTimeout(function () {
+                                    container.style.height = container.scrollHeight + "px";
+                                    hiddenElements.forEach(element => {
+                                        element.style.opacity = "1";
+                                    });
+                                }, 10);
+
+                                setTimeout(function () {
+                                    container.style.height = "auto";
+                                    container.style.overflow = "";
+                                }, 300);
+
+                                toggleButton.querySelector("a").textContent = "SHOW LESS";
+                            } else {
+                                container.style.height = container.offsetHeight + "px";
+                                container.style.overflow = "hidden";
+
+
+
+
+                                var defaultElements = document.querySelectorAll("#favoriteRecipe > a:not(.hidden)");
+                                setTimeout(function () {
+                                    defaultElements.forEach((element, index) => {
+                                        if (index >= 3) {
+                                            element.classList.add("hidden");
+                                        }
+                                    });
+                                }, 300);
+
+
+                                toggleButton.querySelector("a").textContent = "SHOW MORE";
+                                setTimeout(function () {
+                                    container.style.height = "auto";
+                                    container.style.overflow = "";
+                                }, 300);
+
+                            }
+                        }
+
+
+                    </script>
                 </div>
 
                 <!--        User Community Own Recipe       -->
@@ -132,13 +186,33 @@
                             <p>User Own Recipes</p>
                         </header>
                     </div>
-                    <div class="row user-community-own-recipe ">
+                    <div class="row user-community-own-recipe" id="ownRecipe">
                         <% int count = 0;
                             for (RecipeDTO r : accountRecipe) {
                                 count++;
                                 if (count < 4) {
                         %>
                         <a href="MainController?action=getRecipeDetailById&id=<%= r.getId()%>" class="col-md-4 recommendation-content-post">
+                            <div class="recommendation-content-picture">
+                                <img src="<%= RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath()%>" alt="">
+                            </div>
+                            <div>
+                                <p><%= RecipeDAO.getCategoryByRecipeId(r.getId())%></p>
+                                <p><%= r.getTitle()%></p>
+                            </div>
+                            <div class="recommendation-content-reciew">
+                                <%
+                                    for (int i = 0; i < RecipeDAO.getRatingByRecipeId(r.getId()); i++) {
+                                %>
+                                <img src="./assets/full-star.png" alt="">
+                                <%
+                                    }
+                                %>
+                                <p class="recommendation-content-reciew-rating"><%= RecipeDAO.getRatingByRecipeId(r.getId())%></p>
+                            </div>
+                        </a>
+                        <%       } else {%>
+                        <a href="MainController?action=getRecipeDetailById&id=<%= r.getId()%>" class="col-md-4 recommendation-content-post hidden">
                             <div class="search-result-content-picture">
                                 <img src="<%= RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath()%>" alt="">
                             </div>
@@ -157,17 +231,81 @@
                                 <p class="recommendation-content-reciew-rating"><%= RecipeDAO.getRatingByRecipeId(r.getId())%></p>
                             </div>
                         </a>
-                        <%       }
-                            }%>
+
+                        <%}
+                            }
+                            if (count > 3) {
+                        %>
 
                         <div class="user-community-recipe-button">
-                            <button class="col-md-12">
-                                <a href="">VIEW ALL</a>
+                            <button id="toggleButtonOwn" onclick="toggleExpandCollapseOwn()" class="col-md-12">
+                                <a href="javascript:void(0)">SHOW MORE</a>
                             </button>
                         </div>
-
+                        <% } %>
                     </div>
                 </div>
+
+                <script>
+                    function toggleExpandCollapseOwn() {
+                        var container = document.getElementById("ownRecipe");
+                        var hiddenElements = container.querySelectorAll(".hidden");
+                        var toggleButton = document.getElementById("toggleButtonOwn");
+
+                        if (hiddenElements.length > 0) {
+                            hiddenElements.forEach(element => {
+                                element.classList.remove("hidden");
+                                element.style.opacity = "0";
+                            });
+
+                            setTimeout(function () {
+                                container.style.height = container.scrollHeight + "px";
+                                hiddenElements.forEach(element => {
+                                    element.style.opacity = "1";
+                                });
+                            }, 10);
+
+                            setTimeout(function () {
+                                container.style.height = "auto";
+                                container.style.overflow = "";
+                            }, 300);
+
+                            toggleButton.querySelector("a").textContent = "SHOW LESS";
+                        } else {
+                            container.style.height = container.offsetHeight + "px";
+                            container.style.overflow = "hidden";
+
+
+
+
+                            var defaultElements = document.querySelectorAll("#ownRecipe > a:not(.hidden)");
+                            setTimeout(function () {
+                                defaultElements.forEach((element, index) => {
+                                    if (index >= 3) {
+                                        element.classList.add("hidden");
+                                    }
+                                });
+                            }, 300);
+
+
+                            toggleButton.querySelector("a").textContent = "SHOW MORE";
+                            setTimeout(function () {
+                                container.style.height = "auto";
+                                container.style.overflow = "";
+                            }, 300);
+
+                        }
+                    }
+
+
+                </script>            
+
+                <style>
+                    .hidden {
+                        display: none;
+                    }
+
+                </style>
 
                 <div class="row user-community-favorite-recipe">
 
@@ -176,91 +314,144 @@
 
                 </div>
 
-                
-                
-            
 
-            <!--        User Community Own Reviews       -->
-            <div class="container user-community-recipe">
-                <div class="row ">
-                    <header class="user-community-recipe-header">
-                        <p>Recipes Reviews</p>
-                    </header>
+
+
+
+                <!--        User Community Own Reviews       -->
+                <div class="container user-community-recipe">
+                    <div class="row ">
+                        <header class="user-community-recipe-header">
+                            <p>Recipes Reviews</p>
+                        </header>
+                    </div>
+                    <div class="row user-community-recipe-review" id="review">
+                        <% int count1 = 0;
+                            for (ReviewDTO review : reviewList) {
+                                count1++;
+                                RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(review.getRecipe_id());
+                                if (count1 < 5) {
+                        %>
+                        <a href="MainController?action=getRecipeDetailById&id=<%= recipe.getId()%>&activeScroll=true" class="col-md-3 user-community-recipe-review-card">
+                            <div class="user-community-recipe-review-card-picture">
+                                <img src="<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
+                            </div>
+                            <div class="user-community-recipe-review-card-title">
+                                <p><%= recipe.getTitle()%></p>
+                            </div>
+                            <div class="recommendation-content-reciew">
+                                <%
+                                    for (int i = 0; i < review.getRating(); i++) {
+                                %>
+                                <img src="./assets/full-star.png" alt="">
+                                <%
+                                    }
+                                %>
+                            </div>
+                            <div class="user-community-recipe-review-card-content">
+                                <p><%=review.getContent()%></p>
+                            </div>
+                        </a>
+                        <%
+                        } else {%>
+
+                        <a href="MainController?action=getRecipeDetailById&id=<%= recipe.getId()%>&activeScroll=true" class="col-md-3 user-community-recipe-review-card hidden">
+                            <div class="user-community-recipe-review-card-picture">
+                                <img src="<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
+                            </div>
+                            <div class="user-community-recipe-review-card-title">
+                                <p><%= recipe.getTitle()%></p>
+                            </div>
+                            <div class="recommendation-content-reciew">
+                                <%
+                                    for (int i = 0; i < review.getRating(); i++) {
+                                %>
+                                <img src="./assets/full-star.png" alt="">
+                                <%
+                                    }
+                                %>
+                            </div>
+                            <div class="user-community-recipe-review-card-content">
+                                <p><%=review.getContent()%></p>
+                            </div>
+                        </a>
+                        <% }
+                            }
+                            if (count1 > 4) {%>
+                        <div class="user-community-recipe-button">
+                            <button id="toggleButtonReview" onclick="toggleExpandCollapseReview()" class="col-md-12">
+                                <a href="javascript:void(0)">SHOW MORE</a>
+                            </button>
+                        </div>
+                        <% }%>
+
+                    </div>
                 </div>
-                <div class="row user-community-recipe-review">
-                    <% int count1 = 0;
-                        for (ReviewDTO review : reviewList) {
-                            count1++;
-                            RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(review.getRecipe_id());
 
-                    %>
-                    <a href="MainController?action=getRecipeDetailById&id=<%= recipe.getId()%>&activeScroll=true" class="col-md-3 user-community-recipe-review-card">
-                        <div class="user-community-recipe-review-card-picture">
-                            <img src="<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
-                        </div>
-                        <div class="user-community-recipe-review-card-title">
-                            <p><%= recipe.getTitle()%></p>
-                        </div>
-                        <div class="recommendation-content-reciew">
-                            <%
-                                for (int i = 0; i < review.getRating(); i++) {
-                            %>
-                            <img src="./assets/full-star.png" alt="">
-                            <%
-                                }
-                            %>
-                        </div>
-                        <div class="user-community-recipe-review-card-content">
-                            <p><%=review.getContent()%></p>
-                        </div>
-                    </a>
-                    <%
-                        }%>
+                <script>
+                    function toggleExpandCollapseReview() {
+                        var container = document.getElementById("review");
+                        var hiddenElements = container.querySelectorAll(".hidden");
+                        var toggleButton = document.getElementById("toggleButtonReview");
+
+                        if (hiddenElements.length > 0) {
+                            hiddenElements.forEach(element => {
+                                element.classList.remove("hidden");
+                                element.style.opacity = "0";
+                            });
+
+                            setTimeout(function () {
+                                container.style.height = container.scrollHeight + "px";
+                                hiddenElements.forEach(element => {
+                                    element.style.opacity = "1";
+                                });
+                            }, 10);
+
+                            setTimeout(function () {
+                                container.style.height = "auto";
+                                container.style.overflow = "";
+                            }, 300);
+
+                            toggleButton.querySelector("a").textContent = "SHOW LESS";
+                        } else {
+                            container.style.height = container.offsetHeight + "px";
+                            container.style.overflow = "hidden";
 
 
-                </div>
+
+
+                            var defaultElements = document.querySelectorAll("#review > a:not(.hidden)");
+                            setTimeout(function () {
+                                defaultElements.forEach((element, index) => {
+                                    if (index >= 4) {
+                                        element.classList.add("hidden");
+                                    }
+                                });
+                            }, 300);
+
+
+                            toggleButton.querySelector("a").textContent = "SHOW MORE";
+                            setTimeout(function () {
+                                container.style.height = "auto";
+                                container.style.overflow = "";
+                            }, 300);
+
+                        }
+                    }
+
+
+
+                </script>
+
+
             </div>
-
-
         </div>
-
 
         <!--         Footer       -->
-        <div class="footer">
-            <div class="container">
-                <div class="row">
-                    <div class="website-social-media col-md-6">
-                        <a href="homePage.html" class="website-social-media-logo">
-                            <img src="./assets/Logo2.png" alt="">
-                        </a>
-                        <div class="website-social-media-icons">
-                            <span>Follow us:</span>
-                            <a href="#"><img src="./assets/facebook-icon.svg" alt="Facebook Logo"></a>
-                            <a href="#"><img src="./assets/twitter-icon.svg" alt="Twitter Logo"></a>
-                        </div>
-                    </div>
-                    <nav class="navigation-bar-footer col-md-3">
-                        <ul class="navigation-bar-footer-content">
-                            <li><a href="">CATEGORIES</a></li>
-                            <li><a href="">INGREDIENTS</a></li>
-                            <li><a href="">CUISINES</a></li>
-                            <li><a href="">DIFFICULTIES</a></li>
-                            <li><a href="">NEWS</a></li>
-                        </ul>
-                    </nav>
-                    <nav class="website-infomation-bar col-md-3">
-                        <ul class="website-infomation-bar-content">
-                            <li><a href="">About us</a></li>
-                            <li><a href="">Privacy Policies</a></li>
-                            <li><a href="">Term of Services</a></li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        </div>
+        <%@include file="footer.jsp" %>
 
-        <!--      Bootstrap for JS         -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
-                integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
-        crossorigin="anonymous"></script>
+            <!--      Bootstrap for JS         -->
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+                    integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+            crossorigin="anonymous"></script>
     </body>
