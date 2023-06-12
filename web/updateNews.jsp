@@ -112,17 +112,17 @@
                     <%
                         }
                     %>
-                    
+
                     <div class="container">
                         <div class="row news-content">
-                            <%                                
+                            <%
                                 //UserDTO user = (UserDTO) session.getAttribute("user");
                                 String id = request.getParameter("newsId");
 
                                 try {
                                     NewsDTO news = NewsDAO.getNewsByNewsId(new Integer(id));
                                     //if (news.getUser_id() == user.getId()) {
-                            %>
+%>
                             <form action="MainController" method="post" class="news-create-button" enctype="multipart/form-data">
                                 <div class="news-content-info">
                                     <p>Title: <input type="text" name="txtTitle" value="<%= news.getTitle()%>"></p>
@@ -145,7 +145,7 @@
                                     <!--<p>Image: <input type="file" name="file"></p>-->
                                 </div>
                                 <div class="news-content-info">
-                                    <p>Description: <textarea rows="10" cols="10" id="editor" value="<%= news.getDesc()%>"></textarea></p>
+                                    <p><textarea rows="10" cols="10" id="editor" value=""><%= news.getDesc()%></textarea></p>
                                 </div>
                                 <input type="hidden" name="editorContent" id="editorContent" value="">
                                 <input type="hidden" name="newsId" value="<%= id%>">

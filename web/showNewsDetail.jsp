@@ -114,7 +114,7 @@
                     <div class="container">
                         <div class="new-result">
                             <div class="container ">
-                                <div class="row new-result-content">
+                                <div class="row new-result-content new-result-content-link">
                                     <%                                        NewsDTO news = (NewsDTO) request.getAttribute("news");
                                     %>
                                     <div >

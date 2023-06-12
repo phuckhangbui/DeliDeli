@@ -4,6 +4,7 @@
     Author     : Admin
 --%>
 
+<%@page import="Admin.AdminDAO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="User.UserDAO"%>
 <%@page import="java.util.ArrayList"%>
@@ -179,7 +180,7 @@
                             <tr>
                                 <td><%= u.getId()%></td>
                                 <td><a href="MainController?action=showUserDetail&username=<%= u.getUserName()%>"><%= u.getUserName()%></a></td>
-                                <td><%= u.getRole()%></td>
+                                <td><%= AdminDAO.getRoleByRoleId(u.getRole())%></td>
                                 <td><%= u.getEmail()%></td>
                                 <td><%= u.getCreateAt()%></td>
                                 <td><%= tmp[u.getStatus()]%></td>
@@ -262,7 +263,7 @@
                             <tr>
                                 <td><%= u.getId()%></td>
                                 <td><a href="MainController?action=showUserDetail&username=<%= u.getUserName()%>"><%= u.getUserName()%></a></td>
-                                <td><%= u.getRole()%></td>
+                                <td><%= AdminDAO.getRoleByRoleId(u.getRole()) %></td>
                                 <td><%= u.getEmail()%></td>
                                 <td><%= u.getCreateAt()%></td>
                                 <td><%= tmp[u.getStatus()]%></td>
