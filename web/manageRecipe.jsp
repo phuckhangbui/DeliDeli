@@ -112,7 +112,7 @@
                     <%
                         }
                     %>
-                    
+
                     <%
                         ArrayList<RecipeDTO> listSearch = (ArrayList) request.getAttribute("searchRecipesList");
                         if (listSearch != null && listSearch.size() > 0) {
@@ -120,8 +120,9 @@
 
                     <div class="container">
                         <div class="row recipe-table">
-                            <div class="recipe-table-form search-bar">
-                                <form action="MainController" method="post" class="recipe-table-form search-bar-content">
+                            <div class="nav-top-bar-search">
+                                <form action="MainController" method="post" class="nav-top-bar-search-user">
+                                    <button type="submit" name="action" value="search"><img src="assets/search2.svg" alt=""></button>
                                     <input type="hidden" name="admin" value="admin"> 
                                     <input type="text" name="txtsearch">
                                     <select name="searchBy" id="">
@@ -129,7 +130,6 @@
                                         <option value="Category">CATEGORY</option>
                                         <option value="Cuisine">CUISINES</option>
                                     </select>
-                                    <input type="submit" name="action" value="search">
                                 </form>
                             </div>
                             <h3 class="recipe-table-title">Recipe List</h3>
@@ -180,8 +180,9 @@
                             <%
                                 if (listRecipeConfirmed != null && listRecipeUnConfirmed != null) {
                             %>
-                            <div class="recipe-table-form">
-                                <form action="MainController" method="post" class="recipe-table-form">
+                            <div class="nav-top-bar-search">
+                                <form action="MainController" method="post" class="nav-top-bar-search-user">
+                                    <button type="submit" name="action" value="search"><img src="assets/search2.svg" alt=""></button>
                                     <input type="hidden" name="admin" value="admin"> 
                                     <input type="text" name="txtsearch">
                                     <select name="searchBy" id="">
@@ -189,7 +190,6 @@
                                         <option value="Category">CATEGORY</option>
                                         <option value="Cuisine">CUISINES</option>
                                     </select>
-                                    <input type="submit" name="action" value="search">
                                 </form>
                             </div>
                             <%
