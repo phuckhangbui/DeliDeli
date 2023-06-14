@@ -108,7 +108,7 @@
                             %>
                             <a href="MainController?action=getRecipeDetailById&id=<%= recipe.getId()%>&activeScroll=true" class="col-md-6 user-profile-recipe-review">
                                 <div class="user-profile-recipe-post-picture">
-                                    <img src="<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
+                                    <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
                                 </div>
                                 <div class="user-profile-recipe-review-title">
                                     <p><%= recipe.getTitle()%></p>

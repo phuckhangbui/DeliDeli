@@ -75,7 +75,7 @@ public class UploadImageServlet extends HttpServlet {
         recipeImage = recipeImageDAO.checkRecipeImageByID(recipeId);
 
         //Path
-        String uploadPath = "C:/project-swp/web/pictures/Recipe/" + recipeId;
+        String uploadPath = "C:/project-swp/pictures/Recipe/" + recipeId;
         String uploadPathThumbnail = uploadPath + "/Thumbnail"; //.../Recipe/[ID]/ImageThumbnail
         String uploadPathDetail = uploadPath + "/Detail";
 

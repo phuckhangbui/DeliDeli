@@ -128,7 +128,8 @@
                     %>
                     <a href="MainController?action=getRecipeDetailById&id=<%= r.getId()%>" class="col-md-4 recommendation-content-post">
                         <div class="recommendation-content-picture">
-                            <img src="<%= RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath()%>" alt="">
+                            
+                            <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath()%>" alt="">
                         </div>
                         <div>
                             <p><%= RecipeDAO.getCategoryByRecipeId(r.getId())%></p>
