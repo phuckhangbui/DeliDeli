@@ -91,7 +91,7 @@
                     %>
                     <a href="MainController?action=getNewsDetail&id=<%= news.getId()%>" class="col-md-3 new-result-content-post">
                         <div class="new-result-content-picture">
-                            <img src="<%= news.getImage()%>" alt="">
+                            <img src="ServletImageLoader?identifier=<%= news.getImage()%>" alt="">
                         </div>
                         <div >
                             <p><%= NewsDAO.getNewsCategoryByNewsId(news.getId())%></p>

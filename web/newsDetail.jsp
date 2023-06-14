@@ -77,23 +77,32 @@
         <!--       News Result     -->
         <div class="new-result">
             <div class="container ">
+                <%
+                    NewsDTO news = (NewsDTO) request.getAttribute("news");
+                %>
                 <div class="row">
+                    <p><%= NewsDAO.getNewsCategoryByNewsId(news.getId())%></p>
                     <header class="new-result-header">
-                        <p>What's New on The Board</p>
+                        <p><%= news.getTitle()%></p>
                     </header>
                 </div>
                 <div class="row new-result-content new-result-content-link">
-                    <%
-                        NewsDTO news = (NewsDTO) request.getAttribute("news");
-                    %>
-                    <div >
-                        <p><%= NewsDAO.getNewsCategoryByNewsId(news.getId())%></p>
-                        <p class="new-result-content-post-title"><%= news.getTitle()%></p>
+                    <div>
+                        <!--<p class="new-result-content-post-title"><%= news.getTitle()%></p>-->
+                        <p class="new-result-content-post-title">By: <%= request.getAttribute("author")%></p>
+                        <%
+                            if (news.getCreateAt().equals(news.getUpdateAt())) {
+                        %>
+                        <p>Create at: <%= news.getCreateAt()%></p>
+                        <%
+                        } else {
+                        %>
+                        <p>Update at: <%= news.getUpdateAt()%></p>
+                        <%
+                            }
+                        %>
                     </div>
-                    <p>By: <%= request.getAttribute("author")%></p>
-                    <p>Create at: <%= news.getCreateAt()%></p>
-                    <img src="<%= news.getImage()%>" alt="">
-
+                    <img src="ServletImageLoader?identifier=<%= news.getImage()%>" alt="">
                     <p><%= news.getDesc()%></p>
                 </div>
             </div>

@@ -44,7 +44,7 @@ public class UploadNewsImageServlet extends HttpServlet {
             if (filePart == null) {
                 request.getRequestDispatcher("ManageNewsServlet").forward(request, response);
             } else {
-                String uploadPath = "C:/project-swp/web/pictures/News/" + newsId;
+                String uploadPath = "C:/project-swp/pictures/News/" + newsId;
 
                 File uploadDir = new File(uploadPath);
                 if (!uploadDir.exists()) {
