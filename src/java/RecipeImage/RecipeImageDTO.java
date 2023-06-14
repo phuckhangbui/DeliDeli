@@ -65,12 +65,12 @@ public class RecipeImageDTO {
     }
     
     public String getThumbnailPath(){
-        String path = "pictures/Recipe/"+this.recipe_id+"/Thumbnail/"+this.image;
+        String path = "Recipe/"+this.recipe_id+"/Thumbnail/"+this.image;
         return path;
     }
     
     public String getImgPath(){
-        String path = "pictures/Recipe/"+this.recipe_id+"/Detail/"+this.image;
+        String path = "Recipe/"+this.recipe_id+"/Detail/"+this.image;
         return path;
     }
 }

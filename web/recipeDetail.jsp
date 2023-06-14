@@ -94,7 +94,7 @@
                         </button>
                     </div>
                     <div class="recipe-detail-main-pic">
-                        <img src="<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
+                        <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
                     </div>
                     <div class="recipe-detail-info-overview">
                         <div class="recipe-detail-info-overview-content">
@@ -181,7 +181,7 @@
 
                     %>
                     <div class="recipe-detail-secondary-pic">
-                        <img src="<%= RecipeDAO.getImageByRecipeId(recipe.getId()).getImgPath()%>" alt="">
+                        <img src="ServletImageLoader?identifier=<%= RecipeDAO.getImageByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
                     </div>
                     <% } catch (Exception e) {
 

@@ -107,7 +107,7 @@
                             <div  class="col-md-6 user-profile-recipe-post">
                                 <a href="MainController?action=getRecipeDetailById&id=<%= r.getId()%>"
                                    class="user-profile-recipe-post-picture" data-page="editRecipe.jsp?recipeId=<%=r.getId()%>">
-                                    <img src="<%= RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath()%>" alt="">
+                                    <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath()%>" alt="">
                                 </a>
 
                                 <div>

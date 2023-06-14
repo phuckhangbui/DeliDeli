@@ -152,6 +152,10 @@
         <servlet-name>UploadNewsImageServlet</servlet-name>
         <servlet-class>Servlet.UploadNewsImageServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletImageLoader</servlet-name>
+        <servlet-class>Servlet.ServletImageLoader</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Example</servlet-name>
         <url-pattern>/Example</url-pattern>
@@ -283,6 +287,10 @@
     <servlet-mapping>
         <servlet-name>UploadNewsImageServlet</servlet-name>
         <url-pattern>/UploadNewsImageServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletImageLoader</servlet-name>
+        <url-pattern>/ServletImageLoader</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
