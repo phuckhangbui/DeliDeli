@@ -23,7 +23,6 @@ public class FavoriteDAO {
         PreparedStatement stm = null;
         ResultSet rs = null;
         
-        
         String sql = "SELECT *\n"
                 + "FROM FavoriteRecipe\n"
                 + "WHERE user_id = ?";
@@ -36,7 +35,10 @@ public class FavoriteDAO {
                 rs = stm.executeQuery();
                 
                 if (rs != null){
-                    while (rs.next()) {                        
+                    while (rs.next()) {       
+                        
+                        System.out.println("This is loading");
+                        
                         int id = rs.getInt("id");
                         int user_id = rs.getInt("user_id");
                         int recipe_id = rs.getInt("recipe_id");

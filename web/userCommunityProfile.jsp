@@ -101,31 +101,31 @@
                         </header>
                     </div>
                     <div class="row user-community-favorite-recipe" id="favoriteRecipe">
-                        <% int count = 0;
+                        <% 
+                            int count = 0;
                             for (FavoriteDTO list : favoriteList) {
                                 count++;
-                                RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(list.getId());
-                                ReviewDTO review = ReviewDAO.getReviewById(list.getId());
+                                RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(list.getRecipe_id());
                                 if (count < 4) {
                         %>
-                        <a href="MainController?action=getRecipeDetailById&id=<%= list.getId()%>" class="col-md-4 recommendation-content-post">
+                        <a href="MainController?action=getRecipeDetailById&id=<%= list.getRecipe_id()%>" class="col-md-4 recommendation-content-post">
                             <div class="recommendation-content-picture">
-                                <img src="<%= RecipeDAO.getThumbnailByRecipeId(list.getId()).getThumbnailPath()%>" alt="">
+                                <img src="<%= RecipeDAO.getThumbnailByRecipeId(list.getRecipe_id()).getThumbnailPath()%>" alt="">
                             </div>
                             <div>
-                                <p><%= RecipeDAO.getCategoryByRecipeId(list.getId()) %></p>
+                                <p><%= RecipeDAO.getCategoryByRecipeId(list.getRecipe_id()) %></p>
                                 <p><%= recipe.getTitle() %></p>
                             </div>
                             <div class="recommendation-content-reciew">
                                 <%
-                                    for (int i = 0; i < review.getRating(); i++) {
+                                    for (int i = 0; i < RecipeDAO.getRatingByRecipeId(list.getRecipe_id()); i++) {
                                 %>
                                 <img src="./assets/full-star.png" alt="">
                                 <%
                                     }
                                 %>
                                 <p class="recommendation-content-reciew-rating">
-                                    <%= review.getContent() %>
+                                    <%= RecipeDAO.getRatingByRecipeId(list.getRecipe_id()) %>
                                 </p>
                             </div>
                         </a>
