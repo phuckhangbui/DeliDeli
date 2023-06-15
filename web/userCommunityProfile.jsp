@@ -4,6 +4,8 @@
     Author     : khang
 --%>
 
+<%@page import="Favorite.FavoriteDAO"%>
+<%@page import="Favorite.FavoriteDTO"%>
 <%@page import="RecipeImage.RecipeImageDAO"%>
 <%@page import="Review.ReviewDAO"%>
 <%@page import="Review.ReviewDTO"%>
@@ -41,11 +43,13 @@
             String fullName = "";
             ArrayList<RecipeDTO> accountRecipe = null;
             ArrayList<ReviewDTO> reviewList = null;
+            ArrayList<FavoriteDTO> favoriteList = null;
             if (account != null) {
                 UserDetailDTO accountDetail = UserDetailDAO.getUserDetailByUserId(account.getId());
                 fullName = accountDetail.getLastName() + " " + accountDetail.getFirstName();
                 accountRecipe = RecipeDAO.getPublicRecipeByUserId(account.getId());
                 reviewList = ReviewDAO.getReviewByUserId(account.getId());
+                favoriteList = FavoriteDAO.getAllFavoriteRecipeByUserId(account.getId());
             }
         %>
         <%@include file="header.jsp" %>
@@ -97,29 +101,47 @@
                         </header>
                     </div>
                     <div class="row user-community-favorite-recipe" id="favoriteRecipe">
-                        <a href="" class="col-md-4 recommendation-content-post">
+                        <% int count = 0;
+                            for (FavoriteDTO list : favoriteList) {
+                                count++;
+                                RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(list.getId());
+                                ReviewDTO review = ReviewDAO.getReviewById(list.getId());
+                                if (count < 4) {
+                        %>
+                        <a href="MainController?action=getRecipeDetailById&id=<%= list.getId()%>" class="col-md-4 recommendation-content-post">
                             <div class="recommendation-content-picture">
-                                <img src="./pictures/egg1.jpeg" alt="">
+                                <img src="<%= RecipeDAO.getThumbnailByRecipeId(list.getId()).getThumbnailPath()%>" alt="">
                             </div>
                             <div>
-                                <p>Indian</p>
-                                <p>Chicken Curry</p>
+                                <p><%= RecipeDAO.getCategoryByRecipeId(list.getId()) %></p>
+                                <p><%= recipe.getTitle() %></p>
                             </div>
                             <div class="recommendation-content-reciew">
+                                <%
+                                    for (int i = 0; i < review.getRating(); i++) {
+                                %>
                                 <img src="./assets/full-star.png" alt="">
-                                <img src="./assets/full-star.png" alt="">
-                                <img src="./assets/full-star.png" alt="">
-                                <img src="./assets/full-star.png" alt="">
-                                <img src="./assets/full-star.png" alt="">
-                                <p class="recommendation-content-reciew-rating">2 ratings</p>
+                                <%
+                                    }
+                                %>
+                                <p class="recommendation-content-reciew-rating">
+                                    <%= review.getContent() %>
+                                </p>
                             </div>
                         </a>
+
+                        <%}
+                            }
+                            if (count > 3) {
+                        %>
 
                         <div class="user-community-recipe-button">
                             <button id="toggleButtonFavorite" onclick="toggleExpandCollapseFavorite()" class="col-md-12">
                                 <a href="javascript:void(0)">SHOW MORE</a>
                             </button>
                         </div>
+
+                        <% } %>
 
 
 
@@ -187,7 +209,7 @@
                         </header>
                     </div>
                     <div class="row user-community-own-recipe" id="ownRecipe">
-                        <% int count = 0;
+                        <% int count1 = 0;
                             for (RecipeDTO r : accountRecipe) {
                                 count++;
                                 if (count < 4) {
@@ -326,7 +348,7 @@
                         </header>
                     </div>
                     <div class="row user-community-recipe-review" id="review">
-                        <% int count1 = 0;
+                        <% int count2 = 0;
                             for (ReviewDTO review : reviewList) {
                                 count1++;
                                 RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(review.getRecipe_id());
@@ -450,8 +472,8 @@
         <!--         Footer       -->
         <%@include file="footer.jsp" %>
 
-            <!--      Bootstrap for JS         -->
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
-                    integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
-            crossorigin="anonymous"></script>
+        <!--      Bootstrap for JS         -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+        crossorigin="anonymous"></script>
     </body>

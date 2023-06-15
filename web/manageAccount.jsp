@@ -31,7 +31,8 @@
         <div class="container-fluid">
 
 
-            <%                ArrayList<UserDTO> listAcc = (ArrayList) request.getAttribute("listAcc");
+            <%
+                ArrayList<UserDTO> listAcc = (ArrayList) request.getAttribute("listAcc");
                 ArrayList<UserDTO> listAccSearched = (ArrayList) request.getAttribute("listAccSearched");
                 int endPage = (Integer) request.getAttribute("endPage");
                 String tag = (String) request.getAttribute("tag");
@@ -263,7 +264,7 @@
                             <tr>
                                 <td><%= u.getId()%></td>
                                 <td><a href="MainController?action=showUserDetail&username=<%= u.getUserName()%>"><%= u.getUserName()%></a></td>
-                                <td><%= AdminDAO.getRoleByRoleId(u.getRole()) %></td>
+                                <td><%= AdminDAO.getRoleByRoleId(u.getRole())%></td>
                                 <td><%= u.getEmail()%></td>
                                 <td><%= u.getCreateAt()%></td>
                                 <td><%= tmp[u.getStatus()]%></td>
