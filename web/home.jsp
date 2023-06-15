@@ -3,6 +3,8 @@
     Created on : May 23, 2023, 8:09:36 AM
     Author     : Admin
 --%>
+<%@page import="Utils.NavigationBarUtils"%>
+<%@page import="java.time.LocalTime"%>
 <%@page import="RecipeImage.RecipeImageDAO"%>
 <%@page import="User.UserDTO"%>
 <%@page import="Recipe.RecipeDAO"%>
@@ -164,65 +166,70 @@
         <div class="recommendation-2">
             <div class="container">
                 <div class="row">
+                    <%
+                        LocalTime currentTime = LocalTime.now();
+                        String time = "";
+
+                        System.out.println("Current Time: " + currentTime);
+
+                        ArrayList<RecipeDTO> recommendList = null;
+                        //Time define
+                        LocalTime MorningStartTime = LocalTime.of(6, 0);
+                        LocalTime AfternoonStartTime = LocalTime.of(12, 0);
+                        LocalTime EveningStartTime = LocalTime.of(17, 0);
+                        LocalTime NightStartTime = LocalTime.of(20, 0);
+
+                        if (currentTime.isAfter(MorningStartTime) && currentTime.isBefore(AfternoonStartTime)) {
+                            recommendList = NavigationBarUtils.searchRecipes("Breakfast", "Category");
+                            time = "breakfast";
+                        } else if (currentTime.isAfter(AfternoonStartTime) && currentTime.isBefore(EveningStartTime)) {
+                            recommendList = NavigationBarUtils.searchRecipes("Snack", "Category");
+                            time = "lunch";
+                        } else if (currentTime.isAfter(EveningStartTime) && currentTime.isBefore(NightStartTime)) {
+                            recommendList = NavigationBarUtils.searchRecipes("Dinner", "Category");
+                            time = "dinner";
+                        } else if (currentTime.isAfter(NightStartTime) || currentTime.isBefore(MorningStartTime)) {
+                            recommendList = NavigationBarUtils.searchRecipes("Snack", "Category");
+                            time = "midnight snacks";
+                        }
+                    %>
                     <header>
                         <a href="" class="header">
-                            <p>Vegan Season</p>
+                            <p>What's for <%= time%> today? </p>
                             <img src="./assets/arrow.svg" alt="">
                         </a>
                     </header>
                 </div>
                 <div class="row recommendation-content">
+                    <%
+                        if (recommendList != null && recommendList.size() != 0) {
+                            for (RecipeDTO list : recommendList) {
+                    %>
                     <a href="" class="col-md-4 recommendation-content-post">
                         <div class="recommendation-content-picture">
-                            <img src="./pictures/egg1.jpeg" alt="">
+                            <img src="<%= RecipeDAO.getThumbnailByRecipeId(list.getId()).getThumbnailPath()%>" alt="">
                         </div>
                         <div>
-                            <p>Indian</p>
-                            <p>Chicken Curry</p>
+                            <p><%= RecipeDAO.getCategoryByRecipeId(list.getId())%></p>
+                            <p><%= list.getTitle()%></p>
                         </div>
                         <div class="recommendation-content-reciew">
+                            <%
+                                for (int i = 0; i < RecipeDAO.getRatingByRecipeId(list.getId()); i++) {
+                            %>
                             <img src="./assets/full-star.png" alt="">
-                            <img src="./assets/full-star.png" alt="">
-                            <img src="./assets/full-star.png" alt="">
-                            <img src="./assets/full-star.png" alt="">
-                            <img src="./assets/full-star.png" alt="">
-                            <p class="recommendation-content-reciew-rating">2 ratings</p>
+                            <%
+                                }
+                            %>
+                            <p class="recommendation-content-reciew-rating"><%= RecipeDAO.getRatingByRecipeId(list.getId())%></p>
                         </div>
                     </a>
-                    <a href="" class="col-md-4 recommendation-content-post">
-                        <div class="recommendation-content-picture">
-                            <img src="./pictures/egg1.jpeg" alt="">
-                        </div>
-                        <div>
-                            <p>Indian</p>
-                            <p>Chicken Curry</p>
-                        </div>
-                        <div class="recommendation-content-reciew">
-                            <img src="./assets/full-star.png" alt="">
-                            <img src="./assets/full-star.png" alt="">
-                            <img src="./assets/full-star.png" alt="">
-                            <img src="./assets/full-star.png" alt="">
-                            <img src="./assets/full-star.png" alt="">
-                            <p class="recommendation-content-reciew-rating">2 ratings</p>
-                        </div>
-                    </a>
-                    <a href="" class="col-md-4 recommendation-content-post">
-                        <div class="recommendation-content-picture">
-                            <img src="./pictures/egg1.jpeg" alt="">
-                        </div>
-                        <div>
-                            <p>Indian</p>
-                            <p>Chicken Curry</p>
-                        </div>
-                        <div class="recommendation-content-reciew">
-                            <img src="./assets/full-star.png" alt="">
-                            <img src="./assets/full-star.png" alt="">
-                            <img src="./assets/full-star.png" alt="">
-                            <img src="./assets/full-star.png" alt="">
-                            <img src="./assets/full-star.png" alt="">
-                            <p class="recommendation-content-reciew-rating">2 ratings</p>
-                        </div>
-                    </a>
+                    <%
+                            }
+                        } else {
+                            System.out.println("[TIME BASED RECIPE]: The recipe recieved is null");
+                        }
+                    %>
                 </div>
             </div>
         </div>
