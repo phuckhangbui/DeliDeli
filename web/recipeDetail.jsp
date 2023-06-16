@@ -45,10 +45,10 @@
         %>
 
         <%@include file="header.jsp" %>
-        
-        
-        
-        
+
+
+
+
         <!--        Recipe Detail         -->
         <div class="blank-background">
             <div class="container ">
@@ -144,6 +144,15 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+
+                    <div class="recipe-detail-info-ingredients">
+                        <div class="recipe-detail-info-header">
+                            Description
+                        </div>
+                        <p>
+                            <%= recipe.getDescription()%>
+                        </p>
                     </div>
 
                     <div class="recipe-detail-info-ingredients">
