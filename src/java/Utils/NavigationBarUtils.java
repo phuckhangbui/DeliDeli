@@ -30,7 +30,7 @@ public class NavigationBarUtils {
 
             if (cn != null) {
                 String sql = "SELECT r.[id],r.[title],[prep_time],[cook_time],\n"
-                        + "[servings],r.[create_at],r.[update_at],[cuisine_id],[category_id],r.[user_id],[level_id], diet_id, status\n"
+                        + "[servings],r.[create_at],r.[update_at],[cuisine_id],[category_id],r.[user_id],[level_id], status\n"
                         + "FROM [dbo].[Recipe] r LEFT JOIN [dbo].[Review] re ON r.[id] = re.recipe_id\n";
                 if (searchBy.equalsIgnoreCase("Title")) {
                     sql += "WHERE r.title LIKE ?\n";
@@ -52,7 +52,7 @@ public class NavigationBarUtils {
                 }
 
                 sql += "GROUP BY r.[id],r.[title],r.[prep_time],r.[cook_time],[servings],\n"
-                        + "r.[create_at],r.[update_at],[cuisine_id],[category_id],r.[user_id],[level_id], diet_id, status\n"
+                        + "r.[create_at],r.[update_at],[cuisine_id],[category_id],r.[user_id],[level_id], status\n"
                         + "ORDER BY CAST(SUM(re.rating) AS decimal) / COUNT(re.rating) DESC";
 
                 PreparedStatement pst = cn.prepareStatement(sql);
@@ -144,7 +144,7 @@ public class NavigationBarUtils {
 
             if (cn != null) {
                 String sql = "SELECT r.[id],r.[title],r.[prep_time],r.[cook_time],[servings],\n"
-                        + "r.[create_at],r.[update_at],[cuisine_id],[category_id],r.[user_id],[level_id], diet_id, status\n"
+                        + "r.[create_at],r.[update_at],[cuisine_id],[category_id],r.[user_id],[level_id], status\n"
                         + "FROM [dbo].[Recipe] r JOIN [dbo].[Review] re ON r.[id] = re.recipe_id\n";
 
                 if (type.equals("Ingredient")) {
@@ -165,7 +165,7 @@ public class NavigationBarUtils {
                 }
 
                 sql += "GROUP BY r.[id],r.[title],r.[prep_time],r.[cook_time],[servings],\n"
-                        + "r.[create_at],r.[update_at],[cuisine_id],[category_id],r.[user_id],[level_id], diet_id, status\n"
+                        + "r.[create_at],r.[update_at],[cuisine_id],[category_id],r.[user_id],[level_id], status\n"
                         + "ORDER BY CAST(SUM(re.rating) AS decimal) / COUNT(re.rating) DESC";
 
                 PreparedStatement pst = cn.prepareStatement(sql);
@@ -227,7 +227,7 @@ public class NavigationBarUtils {
 
             if (cn != null) {
                 String sql = "SELECT r.[id],r.[title],r.[prep_time],r.[cook_time],[servings],\n"
-                        + "r.[create_at],r.[update_at],[cuisine_id],[category_id],r.[user_id],[level_id], diet_id, status\n"
+                        + "r.[create_at],r.[update_at],[cuisine_id],[category_id],r.[user_id],[level_id], status\n"
                         + "FROM [dbo].[Recipe] r\n";
 
                 if (type.equals("Ingredient")) {
