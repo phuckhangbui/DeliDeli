@@ -68,7 +68,7 @@ public class AddRecipeServlet extends HttpServlet {
             int status = Integer.parseInt(request.getParameter("status"));
 
             RecipeDTO newRecipe = new RecipeDTO(title, description, prepTime, cookTime, servings,
-                    currentDate, null, cuisine, category, userId, level, diet, status); // Process other parameters as needed...
+                    currentDate, null, cuisine, category, userId, level, status); // Process other parameters as needed...
             int recipeId = RecipeDAO.addRecipe(newRecipe);
             request.setAttribute("recipeId", recipeId);
             out.print(newRecipe.toString());

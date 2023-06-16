@@ -71,11 +71,10 @@ public class NavigationBarUtils {
                         int category_id = rs.getInt("category_id");
                         int user_id = rs.getInt("user_id");
                         int level_id = rs.getInt("level_id");
-                        int diet_id = rs.getInt("diet_id");
                         int status = rs.getInt("status");
                         RecipeDTO recipe = new RecipeDTO(id, title, "", prep_time,
                                 cook_time, servings, create_at, update_at, cuisin_id,
-                                category_id, user_id, level_id, diet_id, status);
+                                category_id, user_id, level_id, status);
                         result.add(recipe);
                     }
                 }
@@ -186,12 +185,11 @@ public class NavigationBarUtils {
                         int category_id = rs.getInt("category_id");
                         int user_id = rs.getInt("user_id");
                         int level_id = rs.getInt("level_id");
-                        int diet_id = rs.getInt("diet_id");
                         int status = rs.getInt("status");
 
                         RecipeDTO recipe = new RecipeDTO(id, title, description, prep_time,
                                 cook_time, servings, create_at, update_at, cuisin_id,
-                                category_id, user_id, level_id, diet_id, status);
+                                category_id, user_id, level_id, status);
                         ratingList.add(recipe);
                     }
                 }
@@ -266,12 +264,11 @@ public class NavigationBarUtils {
                         int category_id = rs.getInt("category_id");
                         int user_id = rs.getInt("user_id");
                         int level_id = rs.getInt("level_id");
-                        int diet_id = rs.getInt("diet_id");
                         int status = rs.getInt("status");
 
                         RecipeDTO recipe = new RecipeDTO(id, title, description, prep_time,
                                 cook_time, servings, create_at, update_at, cuisin_id,
-                                category_id, user_id, level_id, diet_id, status);
+                                category_id, user_id, level_id, status);
                         result.add(recipe);
                     }
                 }
