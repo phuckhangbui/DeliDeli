@@ -38,7 +38,7 @@
                     </a>
                     <div>
                         <a href="admin.jsp">
-                            <img src="./assets/public.svg" alt="">
+                            <img src="./assets/public-unchose.svg" alt="">
                             Dashboard
                         </a>
                     </div>
@@ -62,7 +62,7 @@
                     </div>
                     <div>
                         <a href="MainController?action=manageNews" class="active">
-                            <img src="./assets/news-unchose.svg" alt="">
+                            <img src="./assets/news.svg" alt="">
                             News
                         </a>
                     </div>
@@ -110,46 +110,47 @@
                     <%
                         }
                     %>
-
-                    <div class="container">
-                        <div class="new-result">
-                            <div class="container ">
-                                <%
-                                    NewsDTO news = (NewsDTO) request.getAttribute("news");
-                                %>
-                                <div class="row">
-                                    <p><%= NewsDAO.getNewsCategoryByNewsId(news.getId())%></p>
-                                    <header class="new-result-header">
-                                        <p><%= news.getTitle()%></p>
-                                    </header>
-                                </div>
-                                <div class="row new-result-content new-result-content-link">
-                                    <div>
-                                        <!--<p class="new-result-content-post-title"><%= news.getTitle()%></p>-->
-                                        <p class="new-result-content-post-title">By: <%= request.getAttribute("author")%></p>
-                                        <%
-                                            if (news.getCreateAt().equals(news.getUpdateAt())) {
-                                        %>
-                                        <p>Create at: <%= news.getCreateAt()%></p>
-                                        <%
-                                        } else {
-                                        %>
-                                        <p>Update at: <%= news.getUpdateAt()%></p>
-                                        <%
-                                            }
-                                        %>
+                    <div class="blank-background">
+                        <div class="container">
+                            <div class="new-result">
+                                <div class="container ">
+                                    <%
+                                        NewsDTO news = (NewsDTO) request.getAttribute("news");
+                                    %>
+                                    <div class="row">
+                                        <p><%= NewsDAO.getNewsCategoryByNewsId(news.getId())%></p>
+                                        <header class="new-result-header">
+                                            <p><%= news.getTitle()%></p>
+                                        </header>
                                     </div>
-                                    <img src="ServletImageLoader?identifier=<%= news.getImage()%>" alt="">
-                                    <p><%= news.getDesc()%></p>
+                                    <div class="row new-result-content new-result-content-link">
+                                        <div>
+                                            <!--<p class="new-result-content-post-title"><%= news.getTitle()%></p>-->
+                                            <p class="new-result-content-post-title">By: <%= request.getAttribute("author")%></p>
+                                            <%
+                                                if (news.getCreateAt().equals(news.getUpdateAt())) {
+                                            %>
+                                            <p>Created at: <%= news.getCreateAt()%></p>
+                                            <%
+                                            } else {
+                                            %>
+                                            <p>Updated at: <%= news.getUpdateAt()%></p>
+                                            <%
+                                                }
+                                            %>
+                                        </div>
+                                        <img src="ServletImageLoader?identifier=<%= news.getImage()%>" alt="">
+                                        <p><%= news.getDesc()%></p>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="news-detail-admin-action">
-                                <form action="MainController" method="post" class="news-detail-admin-button">
-                                    <input type="hidden" value="<%= news.getId()%>" name="newsId">
-                                    <button><a href="updateNews.jsp?newsId=<%= news.getId()%>">Edit</a></button>
-                                    <button type="submit" name="action" value="deleteNews" class="news-detail-admin-button-delete">Delete</a></button>
-                                </form>
+                                <div class="news-detail-admin-action">
+                                    <form action="MainController" method="post" class="news-detail-admin-button">
+                                        <input type="hidden" value="<%= news.getId()%>" name="newsId">
+                                        <button><a href="updateNews.jsp?newsId=<%= news.getId()%>">Edit</a></button>
+                                        <button type="submit" name="action" value="deleteNews" class="news-detail-admin-button-delete">Delete</a></button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
