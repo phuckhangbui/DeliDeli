@@ -112,172 +112,123 @@
                     <%
                         }
                     %>
+                    <div class="user-header">
+                        Recipe List
+                    </div>
+
+                    <%
+                        String[] tmp = {"", "", "Pending", "Approved"};
+                    %>
+
+                    <%
+                        ArrayList<RecipeDTO> listRecipe = (ArrayList) request.getAttribute("listRecipe");
+                        if (listRecipe != null && listRecipe.size() > 0) {
+                    %>
+
+                    <div class="nav-top-bar-search">
+                        <form action="MainController" method="post" class="nav-top-bar-search-user">
+                            <button type="submit" name="action" value="search"><img src="assets/search2.svg" alt=""></button>
+                            <input type="hidden" name="admin" value="admin"> 
+                            <input type="text" name="txtsearch">
+                            <select name="searchBy" id="">
+                                <option value="Title" selected="selected">TITLE</option>
+                                <option value="Category">CATEGORY</option>
+                                <option value="Cuisine">CUISINES</option>
+                            </select>
+                        </form>
+                    </div>
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Title</th>
+                                <th>Create at</th>
+                                <th>Owner</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-group-divider">
+                            <%
+                                int count = 1;
+                                for (RecipeDTO r : listRecipe) {
+                            %>
+                            <tr>
+                                <td><%= count%></td>
+                                <td><%= r.getTitle()%></td>
+                                <td><%= r.getCreate_at()%></td>
+                                <td><a href="MainController?action=showUserDetail&username=<%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%>"><%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%></a></td>
+                                <td><%= tmp[r.getStatus()]%></td>
+                                <td>
+                                    <form action="MainController" method="post" class="recipe-table-button">
+                                        <input type="hidden" value="<%= r.getId()%>" name="id">
+                                        <button type="submit" value="showRecipeDetail" name="action">Show</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <%
+                                        count++;
+                                    }
+                                }
+                            %>
+                        </tbody>
+                    </table>
+
 
                     <%
                         ArrayList<RecipeDTO> listSearch = (ArrayList) request.getAttribute("searchRecipesList");
                         if (listSearch != null && listSearch.size() > 0) {
                     %>
 
-                    <div class="container">
-                        <div class="row recipe-table">
-                            <div class="nav-top-bar-search">
-                                <form action="MainController" method="post" class="nav-top-bar-search-user">
-                                    <button type="submit" name="action" value="search"><img src="assets/search2.svg" alt=""></button>
-                                    <input type="hidden" name="admin" value="admin"> 
-                                    <input type="text" name="txtsearch">
-                                    <select name="searchBy" id="">
-                                        <option value="Title" selected="selected">TITLE</option>
-                                        <option value="Category">CATEGORY</option>
-                                        <option value="Cuisine">CUISINES</option>
-                                    </select>
-                                </form>
-                            </div>
-                            <h3 class="recipe-table-title">Recipe List</h3>
-                            <table class="table table-striped table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Title</th>
-                                        <th>Create at</th>
-                                        <th>Owner</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="table-group-divider">
-                                    <%
-                                        for (RecipeDTO r : listSearch) {
-                                    %>
-                                    <tr>
-                                        <td><%= r.getId()%></td>
-                                        <td><%= r.getTitle()%></td>
-                                        <td><%= r.getCreate_at()%></td>
-                                        <td><a href="MainController?action=showUserDetail&username=<%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%>"><%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%></a></td>
-                                        <td>
-                                            <form action="MainController" method="post" class="recipe-table-button">
-                                                <input type="hidden" value="<%= r.getId()%>" name="id">
-                                                <button type="submit" value="showRecipeDetail" name="action">Show</button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                    <% }
-                                        }
-                                    %>
-                                </tbody>
-                            </table>
-                        </div>
+                    <div class="nav-top-bar-search">
+                        <form action="MainController" method="post" class="nav-top-bar-search-user">
+                            <button type="submit" name="action" value="search"><img src="assets/search2.svg" alt=""></button>
+                            <input type="hidden" name="admin" value="admin"> 
+                            <input type="text" name="txtsearch">
+                            <select name="searchBy" id="">
+                                <option value="Title" selected="selected">TITLE</option>
+                                <option value="Category">CATEGORY</option>
+                                <option value="Cuisine">CUISINES</option>
+                            </select>
+                        </form>
                     </div>
-                </div>
-
-                <%
-                    ArrayList<RecipeDTO> listRecipeConfirmed = (ArrayList) request.getAttribute("listRecipeConfirmed");
-                    ArrayList<RecipeDTO> listRecipeUnConfirmed = (ArrayList) request.getAttribute("listRecipeUnConfirmed");
-                %>
-
-                <div class="col-md-10 recipe">
-                    <div class="container">
-                        <div class="row recipe-table">
-
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Title</th>
+                                <th>Create at</th>
+                                <th>Owner</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-group-divider">
                             <%
-                                if (listRecipeConfirmed != null && listRecipeUnConfirmed != null) {
+                                int count = 1;
+                                for (RecipeDTO r : listSearch) {
                             %>
-                            <div class="nav-top-bar-search">
-                                <form action="MainController" method="post" class="nav-top-bar-search-user">
-                                    <button type="submit" name="action" value="search"><img src="assets/search2.svg" alt=""></button>
-                                    <input type="hidden" name="admin" value="admin"> 
-                                    <input type="text" name="txtsearch">
-                                    <select name="searchBy" id="">
-                                        <option value="Title" selected="selected">TITLE</option>
-                                        <option value="Category">CATEGORY</option>
-                                        <option value="Cuisine">CUISINES</option>
-                                    </select>
-                                </form>
-                            </div>
+                            <tr>
+                                <td><%= count%></td>
+                                <td><%= r.getTitle()%></td>
+                                <td><%= r.getCreate_at()%></td>
+                                <td><a href="MainController?action=showUserDetail&username=<%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%>"><%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%></a></td>
+                                <td><%= tmp[r.getStatus()]%></td>
+                                <td>
+                                    <form action="MainController" method="post" class="recipe-table-button">
+                                        <input type="hidden" value="<%= r.getId()%>" name="id">
+                                        <button type="submit" value="showRecipeDetail" name="action">Show</button>
+                                    </form>
+                                </td>
+                            </tr>
                             <%
+                                        count++;
+                                    }
                                 }
                             %>
-
-                            <!-- Confirmed Recipe List -->
-                            <div class="col-md-6">
-                                <%                if (listRecipeConfirmed != null && listRecipeConfirmed.size() > 0) {
-                                %>
-                                <h3 class="recipe-table-title">Approved Recipe List</h3>
-                                <table class="table table-striped table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Title</th>
-                                            <th>Create at</th>
-                                            <th>Owner</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="table-group-divider">
-                                        <%
-                                            for (RecipeDTO r : listRecipeConfirmed) {
-                                        %>
-                                        <tr>
-                                            <td><%= r.getId()%></td>
-                                            <td><%= r.getTitle()%></td>
-                                            <td><%= r.getCreate_at()%></td>
-                                            <td><a href="MainController?action=showUserDetail&username=<%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%>"><%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%></a></td>
-                                            <td>
-                                                <form action="MainController" method="post" class="recipe-table-button">
-                                                    <input type="hidden" value="<%= r.getId()%>" name="id">
-                                                    <button type="submit" value="showRecipeDetail" name="action">Show</button>
-                                                    <!-- <button type="submit" value="deleteRecipe" name="action">Delete</button> -->
-                                                </form>
-                                            </td>
-                                        </tr>
-                                        <% }
-                                            }
-                                        %>
-                                    </tbody>
-                                </table>
-                                <!--<button onclick="loadMore()" class="btn btn-primary">Load more</button>-->
-                            </div>
-
-                            <div class="col-md-6">
-                                <!-- Unconfirmed Recipe List -->
-                                <%                if (listRecipeUnConfirmed != null && listRecipeUnConfirmed.size() > 0) {
-                                %>
-                                <h3 class="recipe-table-title">Pending Recipe List</h3>
-                                <table class="table table-striped table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Title</th>
-                                            <th>Create at</th>
-                                            <th>Owner</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="table-group-divider">
-                                        <%
-                                            for (RecipeDTO r : listRecipeUnConfirmed) {
-                                        %>
-                                        <tr>
-                                            <td><%= r.getId()%></td>
-                                            <td><%= r.getTitle()%></td>
-                                            <td><%= r.getCreate_at()%></td>
-                                            <td><a href="MainController?action=showUserDetail&username=<%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%>"><%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%></a></td>
-                                            <td>
-                                                <form action="MainController" method="post" class="recipe-table-button">
-                                                    <input type="hidden" value="<%= r.getId()%>" name="id">
-                                                    <button type="submit" value="showRecipeDetail" name="action">Show</button>
-                                                    <!-- <button type="submit" value="confirmRecipe" name="action">Confirm</button> -->
-                                                </form>
-                                            </td>
-                                        </tr>
-                                        <% }
-                                            }
-                                        %>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+                        </tbody>
+                    </table>
                 </div>
-
                 <!-- <a href="admin.jsp">Back to daskboard</a> -->
             </div>
         </div>

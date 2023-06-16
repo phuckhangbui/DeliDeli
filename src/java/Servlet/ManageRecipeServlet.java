@@ -5,6 +5,7 @@
 package Servlet;
 
 import Admin.AdminDAO;
+import Recipe.RecipeDAO;
 import Recipe.RecipeDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -20,19 +21,14 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ManageRecipeServlet extends HttpServlet {
 
-    private static final int COMFIRMED = 3;
-    private static final int UNCOMFIRMED = 2;
-    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            ArrayList<RecipeDTO> listRecipeConfirmed = AdminDAO.getRecipesByStatus(COMFIRMED);
-            ArrayList<RecipeDTO> listRecipeUnConfirmed = AdminDAO.getRecipesByStatus(UNCOMFIRMED);
-            
-            request.setAttribute("listRecipeConfirmed", listRecipeConfirmed);
-            request.setAttribute("listRecipeUnConfirmed", listRecipeUnConfirmed);
+
+            ArrayList<RecipeDTO> listRecipe = AdminDAO.getAllRecipes();
+            request.setAttribute("listRecipe", listRecipe);
             request.getRequestDispatcher("manageRecipe.jsp").forward(request, response);
         }
     }

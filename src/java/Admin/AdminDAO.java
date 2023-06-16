@@ -375,18 +375,17 @@ public class AdminDAO {
         return result;
     }
 
-    public static ArrayList<RecipeDTO> getRecipesByStatus(int status) {
-        ArrayList<RecipeDTO> result = new ArrayList<>();
+    public static ArrayList<RecipeDTO> getAllRecipes() {
+        ArrayList<RecipeDTO> result = new ArrayList<RecipeDTO>();
         Connection cn = null;
 
         try {
             cn = DBUtils.getConnection();
 
             if (cn != null) {
-                String sql = "SELECT * FROM Recipe WHERE [status] = ? ORDER BY create_at DESC";
+                String sql = "SELECT * FROM Recipe\n";
 
                 PreparedStatement pst = cn.prepareStatement(sql);
-                pst.setInt(1, status);
                 ResultSet rs = pst.executeQuery();
                 if (rs != null) {
                     while (rs.next()) {
@@ -402,7 +401,7 @@ public class AdminDAO {
                         int category_id = rs.getInt("category_id");
                         int user_id = rs.getInt("user_id");
                         int level_id = rs.getInt("level_id");
-                        status = rs.getInt("status");
+                        int status = rs.getInt("status");
 
                         RecipeDTO recipe = new RecipeDTO(id, title, description, prep_time,
                                 cook_time, servings, create_at, update_at, cuisin_id,
@@ -501,17 +500,17 @@ public class AdminDAO {
                 if (roleTag.equals("")) {
                     sql = "SELECT * FROM [User]\n"
                             + "ORDER BY id \n"
-                            + "OFFSET ? ROWS FETCH NEXT 5 ROWS ONLY";
+                            + "OFFSET ? ROWS FETCH NEXT 10 ROWS ONLY";
                     pst = cn.prepareStatement(sql);
-                    pst.setInt(1, (index - 1) * 5);
+                    pst.setInt(1, (index - 1) * 10);
                 } else {
                     sql = "SELECT * FROM [User]\n"
                             + "WHERE role_id = (SELECT id FROM Role WHERE title = ?)\n"
                             + "ORDER BY id \n"
-                            + "OFFSET ? ROWS FETCH NEXT 5 ROWS ONLY";
+                            + "OFFSET ? ROWS FETCH NEXT 10 ROWS ONLY";
                     pst = cn.prepareStatement(sql);
                     pst.setString(1, roleTag);
-                    pst.setInt(2, (index - 1) * 5);
+                    pst.setInt(2, (index - 1) * 10);
                 }
                 ResultSet rs = pst.executeQuery();
                 if (rs != null) {

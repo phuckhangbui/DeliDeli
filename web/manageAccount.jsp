@@ -29,9 +29,8 @@
     <body>
 
         <div class="container-fluid">
-
-
-            <%                ArrayList<UserDTO> listAcc = (ArrayList) request.getAttribute("listAcc");
+            <%
+                ArrayList<UserDTO> listAcc = (ArrayList) request.getAttribute("listAcc");
                 ArrayList<UserDTO> listAccSearched = (ArrayList) request.getAttribute("listAccSearched");
                 int endPage = (Integer) request.getAttribute("endPage");
                 String tag = (String) request.getAttribute("tag");
@@ -146,9 +145,6 @@
                     </div>
 
                     <!--      User List         -->
-
-
-
                     <%
                         int currentPage = 1;
 
@@ -159,7 +155,7 @@
                     %>
 
                     <%
-                        if (listAccSearched != null && !listAccSearched.isEmpty()) {
+                        if (listAcc != null && !listAcc.isEmpty()) {
                     %>
                     <table class="table table-striped table-hover">
                         <thead>
@@ -175,10 +171,11 @@
                         </thead>
                         <tbody class="table-group-divider">
                             <%
-                                for (UserDTO u : listAccSearched) {
+                                int count = 1;
+                                for (UserDTO u : listAcc) {
                             %>
                             <tr>
-                                <td><%= u.getId()%></td>
+                                <td><%= count%></td>
                                 <td><a href="MainController?action=showUserDetail&username=<%= u.getUserName()%>"><%= u.getUserName()%></a></td>
                                 <td><%= AdminDAO.getRoleByRoleId(u.getRole())%></td>
                                 <td><%= u.getEmail()%></td>
@@ -203,7 +200,7 @@
                                     <form action="MainController?username=<%= u.getUserName()%>" method="post" class="delete-acc-button">
                                         <input type="hidden" value="<%= currentRole%>" name="currentRole">
                                         <input type="hidden" value="<%= tag%>" name="tag">
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#userListModal">Delete</button>
+                                        <button type="submit" data-bs-toggle="modal" data-bs-target="#userListModal" name="action" value="deleteAcc">Delete</button>
                                         <div class="modal fade" id="userListModal" tabindex="-1" aria-labelledby="userListModalLabel" aria-hidden="true">
                                             <div class="popup-confirm">
                                                 <div class="modal-dialog">
@@ -226,6 +223,7 @@
                                 </td>
                             </tr>
                             <%
+                                    count++;
                                 }
                             %>
                         </tbody>
@@ -234,15 +232,15 @@
                     <div class="table-redirect">
                         <%
                             for (int i = 1; i <= endPage; i++) {
-                                String pageUrl = "MainController?action=manageAccount&page=" + i + "&role=" + currentRole;
                         %>
-                        <a class="<%= (currentPage == i) ? "table-redirect-active-link" : ""%>" href="<%= pageUrl%>"><%= i%></a>
+                        <a class="<%= (new Integer(tag) == i) ? "table-redirect-active-link" : ""%>" href="MainController?action=manageAccount&index=<%= i%>&role=<%= currentRole%>"><%= i%></a>
                         <%
                             }
                         %>
                     </div>
-
-                    <% } else if (listAcc != null && listAcc.size() > 0) {
+                    <% } else if (listAccSearched
+                            != null && listAccSearched.size()
+                            > 0) {
                     %>
                     <table class="table table-striped table-hover">
                         <thead>
@@ -258,12 +256,13 @@
                         </thead>
                         <tbody class="table-group-divider">
                             <%
-                                for (UserDTO u : listAcc) {
+                                int count = 1;
+                                for (UserDTO u : listAccSearched) {
                             %>
                             <tr>
-                                <td><%= u.getId()%></td>
+                                <td><%= count%></td>
                                 <td><a href="MainController?action=showUserDetail&username=<%= u.getUserName()%>"><%= u.getUserName()%></a></td>
-                                <td><%= AdminDAO.getRoleByRoleId(u.getRole()) %></td>
+                                <td><%= AdminDAO.getRoleByRoleId(u.getRole())%></td>
                                 <td><%= u.getEmail()%></td>
                                 <td><%= u.getCreateAt()%></td>
                                 <td><%= tmp[u.getStatus()]%></td>
@@ -286,7 +285,7 @@
                                     <form action="MainController?username=<%= u.getUserName()%>" method="post" class="delete-acc-button">
                                         <input type="hidden" value="<%= currentRole%>" name="currentRole">
                                         <input type="hidden" value="<%= tag%>" name="tag">
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#userListModal">Delete</button>
+                                        <button type="submit" data-bs-toggle="modal" data-bs-target="#userListModal" name="action" value="deleteAcc">Delete</button>
                                         <div class="modal fade" id="userListModal" tabindex="-1" aria-labelledby="userListModalLabel" aria-hidden="true">
                                             <div class="popup-confirm">
                                                 <div class="modal-dialog">
@@ -309,22 +308,19 @@
                                 </td>
                             </tr>
                             <%
+                                    count++;
                                 }
                             %>
                         </tbody>
                     </table>
-
-
-
                     <div class="table-redirect">
                         <%
                             for (int i = 1; i <= endPage; i++) {
+                                String pageUrl = "MainController?action=manageAccount&page=" + i + "&role=" + currentRole;
                         %>
-                        <a class="<%= (new Integer(tag) == i) ? "table-redirect-active-link" : ""%>" href="MainController?action=manageAccount&index=<%= i%>&role=<%= currentRole%>"><%= i%></a>
+                        <a class="<%= (currentPage == i) ? "table-redirect-active-link" : ""%>" href="<%= pageUrl%>"><%= i%></a>
                         <%
-                            }
-                        %>
-                        <%
+                                }
                             }
                         %>
                     </div>
@@ -334,6 +330,5 @@
         </div>
 
         <script src="./script/userListScript.js"></script>
-        <!--<a href="admin.jsp">Back to daskboard</a>-->
     </body>
 </html>
