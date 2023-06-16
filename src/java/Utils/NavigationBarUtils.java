@@ -21,7 +21,7 @@ import java.util.Set;
  * @author khang
  */
 public class NavigationBarUtils {
-    
+
     public static ArrayList<RecipeDTO> searchRecipes(String keyword, String searchBy) {
         ArrayList<RecipeDTO> result = new ArrayList<RecipeDTO>();
         Connection cn = null;
@@ -46,8 +46,8 @@ public class NavigationBarUtils {
                             + "WHERE c.title LIKE ?\n";
                 }
                 if (searchBy.equalsIgnoreCase("Diet")) {
-                    sql += "JOIN [dbo].[Diet] AS d \n"
-                            + "ON r.diet_id =d.id\n"
+                    sql += "LEFT JOIN [dbo].[RecipeDiet] rd ON r.id = rd.id\n"
+                            + "JOIN [dbo].[Diet] d ON rd.diet_id = d.id\n"
                             + "WHERE d.title LIKE ?\n";
                 }
 
@@ -161,7 +161,9 @@ public class NavigationBarUtils {
                     sql += "WHERE [level_id]= ? AND status = 3\n";
                 }
                 if (type.equals("Diet")) {
-                    sql += "WHERE [diet_id]= ? AND status = 3\n";
+                    sql += "JOIN [dbo].[RecipeDiet] rd ON rd.id = r.id\n"
+                            + "JOIN [dbo].[Diet] d ON d.id = rd.diet_id\n"
+                            + "WHERE d.title= ? AND status = 3\n";
                 }
 
                 sql += "GROUP BY r.[id],r.[title],r.[prep_time],r.[cook_time],[servings],\n"
@@ -244,7 +246,9 @@ public class NavigationBarUtils {
                     sql += "WHERE [level_id]= ? AND status = 3\n";
                 }
                 if (type.equals("Diet")) {
-                    sql += "WHERE [diet_id]= ? AND status = 3\n";
+                    sql += "JOIN [dbo].[RecipeDiet] rd ON rd.id = r.id\n"
+                            + "JOIN [dbo].[Diet] d ON d.id = rd.diet_id\n"
+                            + "WHERE d.title= ? AND status = 3\n";
                 }
 
                 PreparedStatement pst = cn.prepareStatement(sql);
