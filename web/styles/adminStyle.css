@@ -85,7 +85,7 @@ ul {
     font-size: 18px;
     margin:0 30px;
 }
-.nav-top-bar-search-filter button{
+/*.nav-top-bar-search-filter button{
     display: inline-block;
     border-radius: 20px;
     color: rgba(0, 0, 0, 0.5);
@@ -93,7 +93,7 @@ ul {
     border: none;
     padding: 5px 20px;
     font-weight: 600;
-}
+}*/
 .nav-top-bar-search form input{
     width: 300px;
     padding: 5px 5px 5px 40px;
@@ -339,6 +339,17 @@ thead{
     display: flex;
     align-self: center;
 }
+.filter-table-button {
+    display: inline-block;
+    border-radius: 20px;
+    color: white;
+    background-color: #ec9131;
+    border: none;
+    padding: 0 10px;
+    width: 85px;
+}
+
+
 
 
 /*    Confirm Popup      */
@@ -364,11 +375,7 @@ thead{
     padding: 0;
 }
 
-.news-content,
-.news-table {
-    margin: 0 auto;
-    padding: 25px;
-}
+
 
 .news-create-button button{
     background-color: #ec9131;
@@ -386,20 +393,37 @@ thead{
 .news-create-button a {
     color: #fff;
 }
-
-.news-content-info {
-    margin-bottom: 20px;
-    font-size: 20px;
+.blank-background {
+    background-color: rgb(0, 0, 0, 0.05);
+    height: initial;
+    padding: 80px  50px;
 }
-
-
-.news-content-info input {
+.add-news-header p:first-child {
+    font-size: 48px;
+    text-align: center;
+    margin: 0px;
+}
+.news-content-info-header{
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+.news-content-info{
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+.news-content-info-header span:first-child {
+    color: red;
+}
+.add-news-create{
+    display: flex;
+    justify-content: center;
+}
+.news-content-info-header input {
     font-size: 20px;
     padding: 5px;
     border-radius: 10px;
     background-color: #f8f8f8;
     width: 50%;
-    margin-left: 5px;
 }
 
 .news-content-info-white-background input {
@@ -449,6 +473,28 @@ thead{
     padding: 0 10px;
     width: 85px;
 }
+.news-action-button form{
+    display: inline-block;
+}
+.news-content {
+    background-color: white;
+    height: 100%;
+    padding: 30px 30px;
+    margin: 0 50px;
+}
+
+.news-content-info-header span{
+    color: red;
+}
+.new-result{
+    background-color: white;
+}
+
+
+
+
+
+
 
 /* Recipe */
 .recipe {

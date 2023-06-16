@@ -30,7 +30,7 @@
         <!--         The banner       -->
         <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
-                <a class="carousel-item active" href="">
+                <a class="carousel-item active" href="" data-bs-interval="4000">
                     <div class="banner-content">
                         <p>All new</p>
                         <p>Perfect Breakfast</p>
@@ -38,7 +38,7 @@
                     </div>
                     <img src="./pictures/banner.svg" class="d-block w-100" alt="...">
                 </a>
-                <a class="carousel-item" href="">
+                <a class="carousel-item" href="" data-bs-interval="4000">
                     <div class="banner-content ">
                         <p>All new</p>
                         <p>It's fry-day!</p>
@@ -46,15 +46,15 @@
                     </div>
                     <img src="./pictures/fried-banner.svg" class="d-block w-100 " alt="...">
                 </a>
-                <a class="carousel-item" href="">
+                <a class="carousel-item" href="" data-bs-interval="4000">
                     <div class="banner-content ">
                         <p>All new</p>
                         <p>Pasta La Vista, baby!</p>
-                        <p>Try out these new pasta recipes that are so good it will make pasta way</p>
+                        <p>Try out these new pasta recipes that are so good it will make you pasta way</p>
                     </div>
                     <img src="./pictures/pasta-banner.svg" class="d-block w-100" alt="...">
                 </a>
-                <a class="carousel-item" href="">
+                <a class="carousel-item" href="" data-bs-interval="4000">
                     <div class="banner-content ">
                         <p>All new</p>
                         <p>Udon know anything!</p>
@@ -63,16 +63,6 @@
                     <img src="./pictures/udon-banner.svg" class="d-block w-100" alt="...">
                 </a>
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
-                    data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying"
-                    data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
         </div>
 
         <!--       News Result     -->

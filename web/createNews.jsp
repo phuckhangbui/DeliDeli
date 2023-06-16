@@ -40,7 +40,7 @@
                     </a>
                     <div>
                         <a href="admin.jsp">
-                            <img src="./assets/public.svg" alt="">
+                            <img src="./assets/public-unchose.svg" alt="">
                             Dashboard
                         </a>
                     </div>
@@ -64,7 +64,7 @@
                     </div>
                     <div>
                         <a href="MainController?action=manageNews" class="active">
-                            <img src="./assets/news-unchose.svg" alt="">
+                            <img src="./assets/news.svg" alt="">
                             News
                         </a>
                     </div>
@@ -112,44 +112,61 @@
                     <%
                         }
                     %>
-                    
-                    <div class="container">
-                        <div class="row news-content">
-                            <%                                
-                                //UserDTO user = (UserDTO) session.getAttribute("user");
-                                //String id = request.getParameter("newsId");
-                            %>
 
-                            <form action="MainController" method="post" class="news-create-button" enctype="multipart/form-data">
-                                <div class="news-content-info">
-                                    <p>Title: <input type="text" name="txtTitle"></p>
-                                </div>
-                                <div class="news-content-info">
-                                    <p>Category:
-                                        <select name="category">
-                                            <%
-                                                HashMap<Integer, String> newsMap = Utils.NavigationBarUtils.getMap("NewsCategory");
-                                                for (Map.Entry<Integer, String> entry : newsMap.entrySet()) {
-                                            %>
-                                            <option value="<%= entry.getKey()%>"><%= entry.getValue()%></option>
-                                            <%
-                                                }
-                                            %>
-                                        </select>
-                                    </p>
-                                </div>
-                                <div class="news-content-info news-content-info-white-background">
-                                    <p>Image: <input type="file" name="file"></p>
-                                </div>
-                                <div class="news-content-info">
-                                    <p>Description: <textarea rows="10" cols="10" id="editor"></textarea></p>
-                                </div>
-                                <input type="hidden" name="editorContent" id="editorContent" value="">
-                                <input type="hidden" name="userId" value="<%= user.getId()%>">
-                                <button type="submit" value="createNews" name="action">Create</button>
-                            </form>
+
+
+                    <div class="blank-background">
+                        <div class="container ">
+                            <div class="row news-content">
+                                <%
+                                    //UserDTO user = (UserDTO) session.getAttribute("user");
+                                    //String id = request.getParameter("newsId");
+                                %>
+
+                                <form action="MainController" method="post" class="news-create-button" enctype="multipart/form-data">
+                                    <div class="add-news-header">
+                                        <p>Add a New</p>
+                                    </div>
+                                    <div class="news-content-info-header">
+                                        Title <span>*</span>
+                                        <div>
+                                            <input type="text" name="txtTitle" placeholder="What's the new called?">
+                                        </div>
+                                    </div>
+                                    <div class="news-content-info-header">
+                                        <p>Category <span>*</span>
+                                            <select name="category">
+                                                <%                                                HashMap<Integer, String> newsMap = Utils.NavigationBarUtils.getMap("NewsCategory");
+                                                    for (Map.Entry<Integer, String> entry : newsMap.entrySet()) {
+                                                %>
+                                                <option value="<%= entry.getKey()%>"><%= entry.getValue()%></option>
+                                                <%
+                                                    }
+                                                %>
+                                            </select>
+                                        </p>
+                                    </div>
+                                    <div class="news-content-info-header news-content-info-white-background">
+                                        <p>Image <span>*</span> <input type="file" name="file"></p>
+                                    </div>
+                                    <div class="news-content-info">
+                                        Description
+                                        <textarea rows="10" cols="10" id="editor"></textarea>
+                                    </div>
+                                    <input type="hidden" name="editorContent" id="editorContent" value="">
+                                    <input type="hidden" name="userId" value="<%= user.getId()%>">
+                                    
+                                    <div class="add-news-create">
+                                        <button type="submit" value="createNews" name="action" >CREATE</button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
+
+
+
+
                 </div>
             </div>
         </div>

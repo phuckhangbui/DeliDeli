@@ -31,14 +31,8 @@
 
         <!--         The banner       -->
         <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-indicators">
-                <button type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                <button type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                <button type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide-to="2" aria-label="Slide 3"></button>
-                <button type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide-to="3" aria-label="Slide 4"></button>
-            </div>
             <div class="carousel-inner">
-                <a class="carousel-item active" href="">
+                <a class="carousel-item active" href="" data-bs-interval="4000">
                     <div class="banner-content">
                         <p>All new</p>
                         <p>Perfect Breakfast</p>
@@ -46,7 +40,7 @@
                     </div>
                     <img src="./pictures/banner.svg" class="d-block w-100" alt="...">
                 </a>
-                <a class="carousel-item" href="">
+                <a class="carousel-item" href="" data-bs-interval="4000">
                     <div class="banner-content ">
                         <p>All new</p>
                         <p>It's fry-day!</p>
@@ -54,7 +48,7 @@
                     </div>
                     <img src="./pictures/fried-banner.svg" class="d-block w-100 " alt="...">
                 </a>
-                <a class="carousel-item" href="">
+                <a class="carousel-item" href="" data-bs-interval="4000">
                     <div class="banner-content ">
                         <p>All new</p>
                         <p>Pasta La Vista, baby!</p>
@@ -62,7 +56,7 @@
                     </div>
                     <img src="./pictures/pasta-banner.svg" class="d-block w-100" alt="...">
                 </a>
-                <a class="carousel-item" href="">
+                <a class="carousel-item" href="" data-bs-interval="4000">
                     <div class="banner-content ">
                         <p>All new</p>
                         <p>Udon know anything!</p>
