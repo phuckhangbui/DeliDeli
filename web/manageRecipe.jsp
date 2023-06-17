@@ -91,6 +91,7 @@
 
 
                 <div class="col-md-10 recipe">
+                    <a href="suggestionRecipe.jsp">Suggestion</a>
                     <%
                         UserDTO user = (UserDTO) session.getAttribute("user");
                         if (user == null || user.getRole() != 2) {
@@ -229,7 +230,6 @@
                         </tbody>
                     </table>
                 </div>
-                <!-- <a href="admin.jsp">Back to daskboard</a> -->
             </div>
         </div>
     </div>

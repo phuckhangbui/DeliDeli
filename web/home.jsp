@@ -3,6 +3,7 @@
     Created on : May 23, 2023, 8:09:36 AM
     Author     : Admin
 --%>
+<%@page import="Suggestion.SuggestionDAO"%>
 <%@page import="RecipeImage.RecipeImageDAO"%>
 <%@page import="User.UserDTO"%>
 <%@page import="Recipe.RecipeDAO"%>
@@ -17,8 +18,8 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!--      Bootstrap         -->
-<!--        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
-              integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">-->
+        <!--        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+                      integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" 
               integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
         <!--      CSS         -->
@@ -160,66 +161,52 @@
         <!--         Recommendation 2       -->
         <div class="recommendation-2">
             <div class="container">
+                <%
+                    String selectedSuggestion = (String) session.getAttribute("selectedSuggestion");
+                    if (selectedSuggestion == null || selectedSuggestion.isEmpty()) {
+                        selectedSuggestion = "Similar";
+                        session.setAttribute("selectedSuggestion", selectedSuggestion);
+                    }
+                %>
                 <div class="row">
                     <header>
                         <a href="" class="header">
-                            <p>Vegan Season</p>
+                            <p><%= selectedSuggestion%> Recipe</p>
                             <img src="./assets/arrow.svg" alt="">
                         </a>
                     </header>
                 </div>
                 <div class="row recommendation-content">
-                    <a href="" class="col-md-4 recommendation-content-post">
+                    <%
+                        ArrayList<RecipeDTO> suggestionRecipeList = SuggestionDAO.getAllRecipesIdBySuggestion(selectedSuggestion);
+                        if (suggestionRecipeList != null && suggestionRecipeList.size() != 0) {
+                            for (RecipeDTO r : suggestionRecipeList) {
+                    %>
+                    <a href="MainController?action=getRecipeDetailById&id=<%= r.getId()%>" class="col-md-4 recommendation-content-post">
                         <div class="recommendation-content-picture">
-                            <img src="./pictures/egg1.jpeg" alt="">
+
+                            <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath()%>" alt="">
                         </div>
                         <div>
-                            <p>Indian</p>
-                            <p>Chicken Curry</p>
+                            <p><%= RecipeDAO.getCategoryByRecipeId(r.getId())%></p>
+                            <p><%= r.getTitle()%></p>
                         </div>
                         <div class="recommendation-content-reciew">
+                            <%
+                                for (int i = 0; i < RecipeDAO.getRatingByRecipeId(r.getId()); i++) {
+                            %>
                             <img src="./assets/full-star.png" alt="">
-                            <img src="./assets/full-star.png" alt="">
-                            <img src="./assets/full-star.png" alt="">
-                            <img src="./assets/full-star.png" alt="">
-                            <img src="./assets/full-star.png" alt="">
-                            <p class="recommendation-content-reciew-rating">2 ratings</p>
+                            <%
+                                }
+                            %>
+                            <p class="recommendation-content-reciew-rating"><%= RecipeDAO.getRatingByRecipeId(r.getId())%></p>
                         </div>
                     </a>
-                    <a href="" class="col-md-4 recommendation-content-post">
-                        <div class="recommendation-content-picture">
-                            <img src="./pictures/egg1.jpeg" alt="">
-                        </div>
-                        <div>
-                            <p>Indian</p>
-                            <p>Chicken Curry</p>
-                        </div>
-                        <div class="recommendation-content-reciew">
-                            <img src="./assets/full-star.png" alt="">
-                            <img src="./assets/full-star.png" alt="">
-                            <img src="./assets/full-star.png" alt="">
-                            <img src="./assets/full-star.png" alt="">
-                            <img src="./assets/full-star.png" alt="">
-                            <p class="recommendation-content-reciew-rating">2 ratings</p>
-                        </div>
-                    </a>
-                    <a href="" class="col-md-4 recommendation-content-post">
-                        <div class="recommendation-content-picture">
-                            <img src="./pictures/egg1.jpeg" alt="">
-                        </div>
-                        <div>
-                            <p>Indian</p>
-                            <p>Chicken Curry</p>
-                        </div>
-                        <div class="recommendation-content-reciew">
-                            <img src="./assets/full-star.png" alt="">
-                            <img src="./assets/full-star.png" alt="">
-                            <img src="./assets/full-star.png" alt="">
-                            <img src="./assets/full-star.png" alt="">
-                            <img src="./assets/full-star.png" alt="">
-                            <p class="recommendation-content-reciew-rating">2 ratings</p>
-                        </div>
-                    </a>
+                    <%
+                            }
+
+                        }
+                    %>
                 </div>
             </div>
         </div>
@@ -299,7 +286,7 @@
 
         <!--      Bootstrap for JS         -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" 
-        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" 
+                integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" 
         crossorigin="anonymous"></script>
     </body>
 </html>
