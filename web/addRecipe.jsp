@@ -118,7 +118,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                         </div>
                         <div class="row add-recipe-info-number">
                             <div class="add-recipe-info-header">Overview <span>*</span></div>
-                            <div class="col-md-4 add-recipe-info-number-content">
+                            <div class="col-md-3 add-recipe-info-number-content">
+                                <div>Serving:</div>
+                                <input type="text" name="servings" required
+                                       oninput="this.value=this.value.slice(0,this.maxLength),this.value = this.value.replace(/[^0-9]/g, '')"
+                                       maxlength="3">
+                            </div>
+                            <div class="col-md-3 add-recipe-info-number-content">
                                 <div>Prep Time:</div>
                                 <input type="text" id="prepTime" required max="100" min="1"
                                        oninput="this.value=this.value.slice(0,this.maxLength),this.value = this.value.replace(/[^0-9]/g, '')"
@@ -130,7 +136,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                 </select>
                             </div>
 
-                            <div class="col-md-4 add-recipe-info-number-content">
+                            <div class="col-md-3 add-recipe-info-number-content">
                                 <div>Cook Time:</div>
                                 <input type="text" id="cookTime" required max="100" min="1"
                                        oninput="this.value=this.value.slice(0,this.maxLength),this.value = this.value.replace(/[^0-9]/g, '')"
@@ -141,7 +147,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                     <option value="days">days</option>
                                 </select>
                             </div>
-                            <div class="col-md-4 add-recipe-info-number-content">
+                            <div class="col-md-3 add-recipe-info-number-content">
                                 <div>Total Time:
                                     <p id="totalTime"></p>
                                     <script>
@@ -244,16 +250,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                     </script>
                                 </div>
                             </div>
-                            <div class="col-md-4 add-recipe-info-number-content">
-                                <div>Serving:</div>
-                                <input type="text" name="servings" required
-                                       oninput="this.value=this.value.slice(0,this.maxLength),this.value = this.value.replace(/[^0-9]/g, '')"
-                                       maxlength="3">
-                            </div>
+                            
                         </div>
                         <div class="row add-recipe-info-type">
 
-                            <div class="col-md-4 add-recipe-info-type-content">
+                            <div class="col-md-3 add-recipe-info-type-content">
                                 <div>Category:</div>
                                 <select name="category">
                                     <%for (Map.Entry<Integer, String> entry : cateMap.entrySet()) {
@@ -265,7 +266,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                     <% }%>
                                 </select>
                             </div>
-                            <div class="col-md-4 add-recipe-info-type-content">
+                            <div class="col-md-3 add-recipe-info-type-content">
                                 <div>Cuisine:</div>
                                 <select name="cuisine">
                                     <%for (Map.Entry<Integer, String> entry : cuisineMap.entrySet()) {
@@ -278,8 +279,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                 </select>
                             </div>
 
-                            <div class="col-md-4 add-recipe-info-type-content">
-                                <div>Difficulties</div>
+                            <div class="col-md-3 add-recipe-info-type-content">
+                                <div>Difficulties:</div>
                                 <select name="level">
                                     <%for (Map.Entry<Integer, String> entry : levelMap.entrySet()) {
                                             Integer key = entry.getKey();
@@ -290,13 +291,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                     <% }%>
                                 </select>
                             </div>
+                                
 
 
-
-
-                            <div class="col-md-4 add-recipe-info-type-content">
-                                <div>Diet:</div>
-                                <p>(If your diet is not here, please let these boxes empty)</p>
+                            <div class="col-md-12 add-recipe-info-type-content">
+                                <div>Diet: <span>(If the diet you're looking for is not here, then no need to tick any of these boxes )</span></div>
+                                
                                 <div class="">
                                     <% for (Map.Entry<Integer, String> entry : dietMap.entrySet()) {
                                             Integer key = entry.getKey();
@@ -306,6 +306,44 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                     <label for="diet" style="padding-right: 10px;"><%= value%></label>
                                     <% }%>
                                 </div>
+                            </div>
+                        </div>
+                                
+                                
+                        <div class="row add-recipe-info-number">
+                            <div class="add-recipe-info-header">Nutrition <span class="add-recipe-info-header-des">(Per serving)</span> <span>*</span></div>
+                            <div>
+                                For references:
+                                <button>Nutrition Table</button>
+                            </div>
+                            
+
+                            <div class="col-md-3 add-recipe-info-number-content">
+                                <div>Calories:</div>
+                                <input type="text" id="" name="calories" required max="100" min="1"
+                                       oninput="this.value=this.value.slice(0,this.maxLength),this.value = this.value.replace(/[^0-9]/g, '')"
+                                       maxlength="5">
+                            </div>
+
+                            <div class="col-md-3 add-recipe-info-number-content">
+                                <div>Fat (grams):</div>
+                                <input type="text" id="" name="fat" required max="100" min="1"
+                                       oninput="this.value=this.value.slice(0,this.maxLength),this.value = this.value.replace(/[^0-9]/g, '')"
+                                       maxlength="5">
+                            </div>
+
+                            <div class="col-md-3 add-recipe-info-number-content">
+                                <div>Carbs (grams):</div>
+                                <input type="text" id="" name="carbs" required max="100" min="1"
+                                       oninput="this.value=this.value.slice(0,this.maxLength),this.value = this.value.replace(/[^0-9]/g, '')"
+                                       maxlength="5">
+                            </div>
+
+                            <div class="col-md-3 add-recipe-info-number-content">
+                                <div>Protein (grams):</div>
+                                <input type="text" id="" name="protein" required max="100" min="1"
+                                       oninput="this.value=this.value.slice(0,this.maxLength),this.value = this.value.replace(/[^0-9]/g, '')"
+                                       maxlength="5">
                             </div>
                         </div>
 
@@ -342,42 +380,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                             </div>
                         </div>
 
-                        <div class="row add-recipe-info-number">
-                            <div class="add-recipe-info-header">Nutrition <span>*</span></div>
-                            <p>(Per serving)</p>
-                            <button>
-                                button to popup bảng kham khảo dinh dưỡng, m style giùm t để để t làm cái popup gắn vô sau
-                                để bên hông cái nutrition
-                            </button>
 
-                            <div class="col-md-3 add-recipe-info-number-content">
-                                <div>Calories:</div>
-                                <input type="text" id="" name="calories" required max="100" min="1"
-                                       oninput="this.value=this.value.slice(0,this.maxLength),this.value = this.value.replace(/[^0-9]/g, '')"
-                                       maxlength="4">
-                            </div>
-
-                            <div class="col-md-3 add-recipe-info-number-content">
-                                <div>Fat:</div>
-                                <input type="text" id="" name="fat" required max="100" min="1"
-                                       oninput="this.value=this.value.slice(0,this.maxLength),this.value = this.value.replace(/[^0-9]/g, '')"
-                                       maxlength="3">
-                            </div>
-                            
-                            <div class="col-md-3 add-recipe-info-number-content">
-                                <div>Carbs:</div>
-                                <input type="text" id="" name="carbs" required max="100" min="1"
-                                       oninput="this.value=this.value.slice(0,this.maxLength),this.value = this.value.replace(/[^0-9]/g, '')"
-                                       maxlength="3">
-                            </div>
-                            
-                            <div class="col-md-3 add-recipe-info-number-content">
-                                <div>Protein</div>
-                                <input type="text" id="" name="protein" required max="100" min="1"
-                                       oninput="this.value=this.value.slice(0,this.maxLength),this.value = this.value.replace(/[^0-9]/g, '')"
-                                       maxlength="3">
-                            </div>
-                        </div>
 
 
 
@@ -397,18 +400,18 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                 Do you want to make this recipe public?
                             </div>
                             <div class="add-recipe-info-status-content">
-                                <div>
+                                <label>
                                     <input type="radio" name="status" value="2" checked>Yes, make it public
                                     <span>(Your recipe will be submitted and will be checked by our moderator. This may take
                                         some time)</span>
 
-                                </div>
-                                <div>
+                                </label>
+                                <label>
                                     <input type="radio" name="status" value="1">No, make it private
                                     <span>(Your recipe won't need to go through our moderator team, but the recipe can
                                         only be view by you)</span>
 
-                                </div>
+                                </label>
                             </div>
                         </div>
                         <input type="text" name="userId" value="<%=user.getId()%>" hidden/>
@@ -424,38 +427,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
         </div>
 
         <!--         Footer       -->
-        <div class="footer">
-            <div class="container">
-                <div class="row">
-                    <div class="website-social-media col-md-6">
-                        <a href="homePage.html" class="website-social-media-logo">
-                            <img src="./assets/Logo2.png" alt="">
-                        </a>
-                        <div class="website-social-media-icons">
-                            <span>Follow us:</span>
-                            <a href="#"><img src="./assets/facebook-icon.svg" alt="Facebook Logo"></a>
-                            <a href="#"><img src="./assets/twitter-icon.svg" alt="Twitter Logo"></a>
-                        </div>
-                    </div>
-                    <nav class="navigation-bar-footer col-md-3">
-                        <ul class="navigation-bar-footer-content">
-                            <li><a href="">CATEGORIES</a></li>
-                            <li><a href="">INGREDIENTS</a></li>
-                            <li><a href="">CUISINES</a></li>
-                            <li><a href="">DIFFICULTIES</a></li>
-                            <li><a href="">NEWS</a></li>
-                        </ul>
-                    </nav>
-                    <nav class="website-infomation-bar col-md-3">
-                        <ul class="website-infomation-bar-content">
-                            <li><a href="">About us</a></li>
-                            <li><a href="">Privacy Policies</a></li>
-                            <li><a href="">Term of Services</a></li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        </div>
+        <%@include file="footer.jsp" %>
     </body>
 
 </html>

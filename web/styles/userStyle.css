@@ -1522,17 +1522,19 @@ span {
     background-color: #f8f8f8;
     width: 50%;
 }
-
+.add-recipe-info-number button{
+    border-radius: 20px;
+    padding: 5px 10px;
+    border-radius: 10px;
+}
 .add-recipe-info-number-content select {
-    appearance: none;
     text-align: center;
     padding: 0 5px;
     border-radius: 5px;
-    width: 60px;
+    width: 95px;
 }
 
 .add-recipe-info-type-content {
-    display: flex;
     margin-top: 12px;
 }
 
@@ -1544,7 +1546,7 @@ span {
 }
 
 .add-recipe-info-number {
-    margin-top: 20px;
+    margin: 20px 0;
 }
 
 .add-recipe-info-type {
@@ -1646,7 +1648,14 @@ span {
 .add-recipe-info-header span {
     color: red;
 }
-
+.add-recipe-info-header-des{
+    color: rgb(0, 0, 0, 0.5) !important;
+    font-size: 20px;
+}
+.add-recipe-info-type-content span {
+    font-size: 16px;
+    color: rgb(0, 0, 0, 0.5);
+}
 
 
 /*    Confirm Popup      */
