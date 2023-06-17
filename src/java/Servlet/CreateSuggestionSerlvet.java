@@ -5,7 +5,6 @@
 package Servlet;
 
 import Recipe.RecipeDTO;
-import Suggestion.SuggestionDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -19,7 +18,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author Admin
  */
-public class SuggestionRecipeServlet extends HttpServlet {
+public class CreateSuggestionSerlvet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,11 +34,15 @@ public class SuggestionRecipeServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            String suggestion = request.getParameter("suggestion");
-
             HttpSession session = request.getSession();
-            session.setAttribute("selectedSuggestion", suggestion);
-
+            
+            String title = request.getParameter("txtTitle");
+            ArrayList<RecipeDTO> customSuggestionList = (ArrayList<RecipeDTO>) session.getAttribute("customSuggestionList");
+            
+            session.setAttribute("title", title);
+            session.setAttribute("customSuggestionListHome", customSuggestionList);
+            session.removeAttribute("customSuggestionList");
+            
             request.getRequestDispatcher("suggestionRecipe.jsp").forward(request, response);
         }
     }

@@ -580,6 +580,12 @@ public class RecipeDAO {
                 pst = cn.prepareStatement(sql);
                 pst.setInt(1, recipeId);
                 result = pst.executeUpdate();
+                
+                sql = "DELETE FROM [dbo].[SuggestionRecipe]\n"
+                        + "WHERE recipe_id = ?";
+                pst = cn.prepareStatement(sql);
+                pst.setInt(1, recipeId);
+                result = pst.executeUpdate();
 
                 sql = "DELETE FROM [dbo].[Recipe]\n"
                         + "WHERE id = ?";

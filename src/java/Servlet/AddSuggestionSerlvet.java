@@ -4,11 +4,13 @@
  */
 package Servlet;
 
+import Recipe.RecipeDAO;
 import Recipe.RecipeDTO;
 import Suggestion.SuggestionDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +21,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author Admin
  */
-public class SuggestionRecipeServlet extends HttpServlet {
+public class AddSuggestionSerlvet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,11 +37,34 @@ public class SuggestionRecipeServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            String suggestion = request.getParameter("suggestion");
-
+            //String[] customSuggestionListValues = request.getParameterValues("customSuggestionList");
             HttpSession session = request.getSession();
-            session.setAttribute("selectedSuggestion", suggestion);
+            String id = request.getParameter("id");
 
+            RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(new Integer(id));
+
+            ArrayList<RecipeDTO> customSuggestionList = (ArrayList<RecipeDTO>) session.getAttribute("customSuggestionList");
+            if (customSuggestionList == null) {
+                customSuggestionList = new ArrayList<>();
+            } else {
+                boolean isDuplicate = false;
+                for (RecipeDTO existingRecipe : customSuggestionList) {
+                    if (existingRecipe.getId() == recipe.getId()) {
+                        isDuplicate = true;
+                        break;
+                    }
+                }
+
+                if (isDuplicate) {
+                    request.setAttribute("error", "Recipe already added");
+                    request.getRequestDispatcher("suggestionRecipe.jsp").forward(request, response);
+                    return; 
+                }
+            }
+
+            customSuggestionList.add(recipe);
+
+            session.setAttribute("customSuggestionList", customSuggestionList);
             request.getRequestDispatcher("suggestionRecipe.jsp").forward(request, response);
         }
     }

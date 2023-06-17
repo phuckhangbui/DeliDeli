@@ -134,6 +134,12 @@ public class MainController extends HttpServlet {
                     case "suggestionRecipe":
                         url = "SuggestionRecipeServlet";
                         break;
+                    case "addSuggestion":
+                        url = "AddSuggestionSerlvet";
+                        break;
+                    case "createSuggestion":
+                        url = "CreateSuggestionSerlvet";
+                        break;
                 }
             }
             RequestDispatcher rd = request.getRequestDispatcher(url);

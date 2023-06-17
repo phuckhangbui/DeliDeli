@@ -115,6 +115,70 @@
                     %>
 
                     <%
+                        ArrayList<RecipeDTO> customSuggestionList = (ArrayList<RecipeDTO>) session.getAttribute("customSuggestionList");
+                    %>
+
+                    <%
+                        ArrayList<RecipeDTO> listRecipe = (ArrayList) RecipeDAO.getAllRecipes();
+                        if (listRecipe != null && listRecipe.size() > 0) {
+                    %>
+
+                    <div class="nav-top-bar-search">
+                        <form action="MainController" method="post" class="nav-top-bar-search-user">
+                            <button type="submit" name="action" value="search"><img src="assets/search2.svg" alt=""></button>
+                            <input type="hidden" name="admin" value="admin"> 
+                            <input type="text" name="txtsearch">
+                            <select name="searchBy" id="">
+                                <option value="Title" selected="selected">TITLE</option>
+                                <option value="Category">CATEGORY</option>
+                                <option value="Cuisine">CUISINES</option>
+                            </select>
+                        </form>
+                    </div>
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Title</th>
+                                <th>Create at</th>
+                                <th>Owner</th>
+                                <th>Show</th>
+                                <th>Add</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-group-divider">
+                            <%
+                                int count = 1;
+                                for (RecipeDTO r : listRecipe) {
+                            %>
+                            <tr>
+                                <td><%= count%></td>
+                                <td><%= r.getTitle()%></td>
+                                <td><%= r.getCreate_at()%></td>
+                                <td><a href="MainController?action=showUserDetail&username=<%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%>"><%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%></a></td>
+                                <td>
+                                    <form action="MainController" method="post" class="recipe-table-button">
+                                        <input type="hidden" value="<%= r.getId()%>" name="id">
+                                        <button type="submit" value="showRecipeDetail" name="action">Show</button>
+                                    </form>
+                                </td>
+                                <td>
+                                    <form action="MainController" method="post" class="recipe-table-button">
+                                        <input type="hidden" value="<%= r.getId()%>" name="id">
+                                        <input type="hidden" value="<%= customSuggestionList%>" name="customSuggestionList">
+                                        <button type="submit" value="addSuggestion" name="action">Add</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <%
+                                        count++;
+                                    }
+                                }
+                            %>
+                        </tbody>
+                    </table>
+
+                    <%
                         ArrayList<String> suggestionList = SuggestionDAO.getAllSuggestion();
                     %>
 
@@ -132,6 +196,59 @@
                             <button type="submit" name="action" value="suggestionRecipe">Submit</button>
                         </form>
                     </div>
+
+                    <%
+                        //ArrayList<RecipeDTO> customSuggestionList = (ArrayList) request.getAttribute("customSuggestionList");
+                        if (customSuggestionList != null && customSuggestionList.size() > 0) {
+                    %>
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Title</th>
+                                <th>Create at</th>
+                                <th>Owner</th>
+                                <th>Show</th>
+                                <th>Remove</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-group-divider">
+                            <%
+                                int count = 1;
+                                for (RecipeDTO r : customSuggestionList) {
+                            %>
+                            <tr>
+                                <td><%= count%></td>
+                                <td><%= r.getTitle()%></td>
+                                <td><%= r.getCreate_at()%></td>
+                                <td><a href="MainController?action=showUserDetail&username=<%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%>"><%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%></a></td>
+                                <td>
+                                    <form action="MainController" method="post" class="recipe-table-button">
+                                        <input type="hidden" value="<%= r.getId()%>" name="id">
+                                        <button type="submit" value="showRecipeDetail" name="action">Show</button>
+                                    </form>
+                                </td>
+                                <td>
+                                    <form action="MainController" method="post" class="recipe-table-button">
+                                        <input type="hidden" value="<%= r.getId()%>" name="id">
+                                        <button type="submit" value="" name="action">Remove</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <%
+                                        count++;
+                                    }
+                                }
+                            %>
+                        </tbody>
+                    </table>
+
+                    <form action="MainController" method="post">
+                        <input type="text" name="txtTitle">
+                        <input type="hidden" value="<%= customSuggestionList%>" name="customSuggestionList" required="">
+                        <button type="submit" name="action" value="createSuggestion">Create</button>
+                        <p class="error-popup">${requestScope.error}</p>
+                    </form>
 
                 </div>
                 <!-- <a href="admin.jsp">Back to daskboard</a> -->

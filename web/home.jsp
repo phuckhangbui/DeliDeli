@@ -162,6 +162,9 @@
         <div class="recommendation-2">
             <div class="container">
                 <%
+                    ArrayList<RecipeDTO> customSuggestionList = (ArrayList<RecipeDTO>) session.getAttribute("customSuggestionListHome");
+                    String title = (String) session.getAttribute("title");
+
                     String selectedSuggestion = (String) session.getAttribute("selectedSuggestion");
                     if (selectedSuggestion == null || selectedSuggestion.isEmpty()) {
                         selectedSuggestion = "Similar";
@@ -171,7 +174,7 @@
                 <div class="row">
                     <header>
                         <a href="" class="header">
-                            <p><%= selectedSuggestion%> Recipe</p>
+                            <p><%= (title != null) ? title : selectedSuggestion%> Recipe(s)</p>
                             <img src="./assets/arrow.svg" alt="">
                         </a>
                     </header>
@@ -179,7 +182,7 @@
                 <div class="row recommendation-content">
                     <%
                         ArrayList<RecipeDTO> suggestionRecipeList = SuggestionDAO.getAllRecipesIdBySuggestion(selectedSuggestion);
-                        if (suggestionRecipeList != null && suggestionRecipeList.size() != 0) {
+                        if (customSuggestionList == null && suggestionRecipeList != null) {
                             for (RecipeDTO r : suggestionRecipeList) {
                     %>
                     <a href="MainController?action=getRecipeDetailById&id=<%= r.getId()%>" class="col-md-4 recommendation-content-post">
@@ -203,8 +206,32 @@
                         </div>
                     </a>
                     <%
-                            }
+                        }
+                    } else if (customSuggestionList != null && customSuggestionList.size() != 0) {
+                        for (RecipeDTO r : customSuggestionList) {
+                    %>
+                    <a href="MainController?action=getRecipeDetailById&id=<%= r.getId()%>" class="col-md-4 recommendation-content-post">
+                        <div class="recommendation-content-picture">
 
+                            <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath()%>" alt="">
+                        </div>
+                        <div>
+                            <p><%= RecipeDAO.getCategoryByRecipeId(r.getId())%></p>
+                            <p><%= r.getTitle()%></p>
+                        </div>
+                        <div class="recommendation-content-reciew">
+                            <%
+                                for (int i = 0; i < RecipeDAO.getRatingByRecipeId(r.getId()); i++) {
+                            %>
+                            <img src="./assets/full-star.png" alt="">
+                            <%
+                                }
+                            %>
+                            <p class="recommendation-content-reciew-rating"><%= RecipeDAO.getRatingByRecipeId(r.getId())%></p>
+                        </div>
+                    </a>
+                    <%
+                            }
                         }
                     %>
                 </div>

@@ -160,6 +160,14 @@
         <servlet-name>SuggestionRecipeServlet</servlet-name>
         <servlet-class>Servlet.SuggestionRecipeServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddSuggestionSerlvet</servlet-name>
+        <servlet-class>Servlet.AddSuggestionSerlvet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateSuggestionSerlvet</servlet-name>
+        <servlet-class>Servlet.CreateSuggestionSerlvet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Example</servlet-name>
         <url-pattern>/Example</url-pattern>
@@ -299,6 +307,14 @@
     <servlet-mapping>
         <servlet-name>SuggestionRecipeServlet</servlet-name>
         <url-pattern>/SuggestionRecipeServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddSuggestionSerlvet</servlet-name>
+        <url-pattern>/AddSuggestionSerlvet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateSuggestionSerlvet</servlet-name>
+        <url-pattern>/CreateSuggestionSerlvet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

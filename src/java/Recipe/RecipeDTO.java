@@ -7,6 +7,7 @@ package Recipe;
 
 import Direction.DirectionDTO;
 import IngredientDetail.IngredientDetailDTO;
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
 import lombok.*;
@@ -20,7 +21,7 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-public class RecipeDTO {
+public class RecipeDTO implements Serializable {
 
     private int id;
     private String title;
