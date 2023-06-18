@@ -19,7 +19,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author Admin
  */
-public class CreateSuggestionSerlvet extends HttpServlet {
+public class FilterSuggestionServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,27 +36,18 @@ public class CreateSuggestionSerlvet extends HttpServlet {
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             HttpSession session = request.getSession();
+            String selectedSuggestion = request.getParameter("suggestion");
             
-            String title = request.getParameter("txtTitle");
-            String txtUserId = request.getParameter("txtUserId");
-            ArrayList<RecipeDTO> customSuggestionList = (ArrayList<RecipeDTO>) session.getAttribute("customSuggestionList");
-            
-            boolean check = SuggestionDAO.checkSuggestionExist(title);
-            if (check) {
-                request.setAttribute("titleExist", "Suggestion title is already existed.");
-                request.getRequestDispatcher("suggestionRecipe.jsp").forward(request, response);
-                return;
-            }   
-            
-            int suggestionId = SuggestionDAO.insertSuggestion(title, new Integer(txtUserId));
-            
-            for (RecipeDTO recipe : customSuggestionList) {
-                SuggestionDAO.insertSuggestionList(suggestionId, recipe.getId());
-            }
+            ArrayList<RecipeDTO> suggestionRecipeList = SuggestionDAO.getAllRecipesIdBySuggestion(selectedSuggestion);
             
             session.removeAttribute("customSuggestionList");
-            
+            request.setAttribute("selectedSuggestion", selectedSuggestion);
+            request.setAttribute("suggestionRecipeList", suggestionRecipeList);
             request.getRequestDispatcher("suggestionRecipe.jsp").forward(request, response);
+            
+//            for (RecipeDTO recipeDTO : suggestionRecipeList) {
+//                out.println(recipeDTO);
+//            }
         }
     }
 

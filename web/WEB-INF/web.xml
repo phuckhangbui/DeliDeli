@@ -168,6 +168,10 @@
         <servlet-name>CreateSuggestionSerlvet</servlet-name>
         <servlet-class>Servlet.CreateSuggestionSerlvet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>FilterSuggestionServlet</servlet-name>
+        <servlet-class>Servlet.FilterSuggestionServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Example</servlet-name>
         <url-pattern>/Example</url-pattern>
@@ -315,6 +319,10 @@
     <servlet-mapping>
         <servlet-name>CreateSuggestionSerlvet</servlet-name>
         <url-pattern>/CreateSuggestionSerlvet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FilterSuggestionServlet</servlet-name>
+        <url-pattern>/FilterSuggestionServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

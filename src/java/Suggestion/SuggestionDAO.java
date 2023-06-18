@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,6 +24,93 @@ import java.util.logging.Logger;
 public class SuggestionDAO {
 
     private static final String DATE_FORMAT = "yyyy-MM-dd";
+
+    public static int insertSuggestionList(int suggestionId, int recipeId) {
+        int result = 0;
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+            String sql = "INSERT INTO SuggestionRecipe(suggestion_id, recipe_id) \n"
+                    + "VALUES (?, ?)";
+            PreparedStatement pst = cn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            pst.setInt(1, suggestionId);
+            pst.setInt(2, recipeId);
+
+            result = pst.executeUpdate();
+//            ResultSet generatedKeys = pst.getGeneratedKeys();
+//
+//            if (generatedKeys.next()) {
+//                generatedId = generatedKeys.getInt(1);
+//            }
+//
+//            generatedKeys.close();
+            pst.close();
+            cn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+    
+    public static boolean checkSuggestionExist(String title) {
+        boolean result = false;
+        String oldTitle = "";
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+            String sql = "SELECT * FROM Suggestion WHERE title = ?";
+            PreparedStatement pst = cn.prepareStatement(sql);
+            pst.setString(1, title);
+
+            ResultSet rs = pst.executeQuery();
+            if (rs != null && rs.next()) {
+                oldTitle = rs.getString("title");
+            }
+            cn.close();
+            if (oldTitle.equalsIgnoreCase(title)) {
+                return true;
+            }
+
+            pst.close();
+            cn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    public static int insertSuggestion(String title, int userId) {
+        int generatedId = -1;
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+            String sql = "INSERT INTO Suggestion(title, user_id) \n"
+                    + "VALUES (?, ?)";
+            PreparedStatement pst = cn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            pst.setString(1, title);
+            pst.setInt(2, userId);
+
+            pst.executeUpdate();
+            ResultSet generatedKeys = pst.getGeneratedKeys();
+
+            if (generatedKeys.next()) {
+                generatedId = generatedKeys.getInt(1);
+            }
+
+            generatedKeys.close();
+            pst.close();
+            cn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return generatedId;
+    }
 
     public static RecipeDTO fromString(String string) {
         String[] parts = string.split(",");
@@ -44,7 +132,7 @@ public class SuggestionDAO {
         } catch (ParseException ex) {
             Logger.getLogger(SuggestionDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         try {
             java.util.Date utilDate = dateFormat.parse(parts[7]);
             java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
@@ -145,6 +233,6 @@ public class SuggestionDAO {
     }
 
     public static void main(String[] args) {
-        System.out.println(SuggestionDAO.getAllRecipesIdBySuggestion("Popular"));
+        System.out.println(SuggestionDAO.getAllRecipesIdBySuggestion("Similar"));
     }
 }
