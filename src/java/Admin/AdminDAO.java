@@ -614,7 +614,7 @@ public class AdminDAO {
 //        for (UserDTO o : list) {
 //            System.out.println(o);
 //        }
-        System.out.println(AdminDAO.getRoleByRoleId(1));
+        System.out.println(AdminDAO.getTotalRecipe());
     }
 
 }

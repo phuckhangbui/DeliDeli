@@ -25,6 +25,82 @@ public class SuggestionDAO {
 
     private static final String DATE_FORMAT = "yyyy-MM-dd";
 
+    public static int getSuggestionIdFromSuggestionRecipe(String title) {
+        int result = 0;
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                String sql = "SELECT suggestion_id FROM SuggestionRecipe \n"
+                        + "WHERE suggestion_id IN (SELECT id FROM Suggestion WHERE title = ?)";
+
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setString(1, title);
+                ResultSet rs = pst.executeQuery();
+                if (rs != null) {
+                    while (rs.next()) {
+                        result = rs.getInt("suggestion_id");
+                    }
+                }
+                
+                pst.close();
+                cn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+    
+    public static int deleteSuggestionRecipeByRecipeId(int suggestionId, int recipeId) {
+        int result = 0;
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                String sql = "DELETE FROM SuggestionRecipe \n"
+                        + "WHERE suggestion_id = ? AND recipe_id = ?";
+
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setInt(1, suggestionId);
+                pst.setInt(2, recipeId);
+                result = pst.executeUpdate();
+                pst.close();
+                cn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public static int deleteSuggestion(String title) {
+        int result = 0;
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                String sql = "DELETE FROM Suggestion \n"
+                        + "WHERE title = ?";
+
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setString(1, title);
+                result = pst.executeUpdate();
+                pst.close();
+                cn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     public static int insertSuggestionList(int suggestionId, int recipeId) {
         int result = 0;
         Connection cn = null;
@@ -53,7 +129,7 @@ public class SuggestionDAO {
 
         return result;
     }
-    
+
     public static boolean checkSuggestionExist(String title) {
         boolean result = false;
         String oldTitle = "";
@@ -233,6 +309,6 @@ public class SuggestionDAO {
     }
 
     public static void main(String[] args) {
-        System.out.println(SuggestionDAO.getAllRecipesIdBySuggestion("Similar"));
+        System.out.println(SuggestionDAO.deleteSuggestion("Popular"));
     }
 }

@@ -232,6 +232,7 @@
                                 <td>
                                     <form action="MainController" method="post" class="recipe-table-button">
                                         <input type="hidden" value="<%= r.getId()%>" name="id">
+                                        <input type="hidden" value="<%= customSuggestionList%>" name="customSuggestionList">
                                         <button type="submit" value="removeSuggestion" name="action">Remove</button>
                                     </form>
                                 </td>
@@ -280,6 +281,8 @@
                                 <td>
                                     <form action="MainController" method="post" class="recipe-table-button">
                                         <input type="hidden" value="<%= r.getId()%>" name="id">
+                                        <input type="hidden" value="<%= selectedSuggestion%>" name="selectedSuggestion">
+                                        <input type="hidden" value="tag" name="tag">
                                         <button type="submit" value="removeSuggestion" name="action">Remove</button>
                                     </form>
                                 </td>
@@ -293,15 +296,14 @@
                     </table>
 
                     <form action="MainController" method="post">
-                        <input type="text" name="txtTitle">
+                        <input type="text" name="txtTitle" required="">
                         <input type="hidden" name="txtUserId" value="<%= user.getId()%>">
-                        <input type="hidden" value="<%= customSuggestionList%>" name="customSuggestionList" required="">
+                        <input type="hidden" value="<%= customSuggestionList%>" name="customSuggestionList">
                         <button type="submit" name="action" value="createSuggestion">Create</button>
                         <p class="error-popup">${requestScope.error}</p>
                         <p class="error-popup">${requestScope.titleExist}</p>
                     </form>
                 </div>
-                <!-- <a href="admin.jsp">Back to daskboard</a> -->
             </div>
         </div>
     </div>

@@ -172,6 +172,10 @@
         <servlet-name>FilterSuggestionServlet</servlet-name>
         <servlet-class>Servlet.FilterSuggestionServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>RemoveSuggestionServlet</servlet-name>
+        <servlet-class>Servlet.RemoveSuggestionServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Example</servlet-name>
         <url-pattern>/Example</url-pattern>
@@ -323,6 +327,10 @@
     <servlet-mapping>
         <servlet-name>FilterSuggestionServlet</servlet-name>
         <url-pattern>/FilterSuggestionServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RemoveSuggestionServlet</servlet-name>
+        <url-pattern>/RemoveSuggestionServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
