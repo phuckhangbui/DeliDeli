@@ -515,7 +515,6 @@ public class RecipeDAO {
                     + "    prep_time = ?, \n"
                     + "    cook_time = ?, \n"
                     + "    servings = ?, \n"
-                    + "    create_at = ?, \n"
                     + "    update_at = ?, \n"
                     + "    cuisine_id = ?, \n"
                     + "    category_id = ?, \n"
@@ -531,14 +530,13 @@ public class RecipeDAO {
             pst.setInt(3, recipe.getPrep_time());
             pst.setInt(4, recipe.getCook_time());
             pst.setInt(5, recipe.getServings());
-            pst.setDate(6, recipe.getCreate_at());
-            pst.setDate(7, recipe.getUpdate_at());
-            pst.setInt(8, recipe.getCuisine_id());
-            pst.setInt(9, recipe.getCategory_id());
-            pst.setInt(10, recipe.getUser_id());
-            pst.setInt(11, recipe.getLevel_id());
-            pst.setInt(12, recipe.getStatus());
-            pst.setInt(13, recipe.getId());
+            pst.setDate(6, recipe.getUpdate_at());
+            pst.setInt(7, recipe.getCuisine_id());
+            pst.setInt(8, recipe.getCategory_id());
+            pst.setInt(9, recipe.getUser_id());
+            pst.setInt(10, recipe.getLevel_id());
+            pst.setInt(11, recipe.getStatus());
+            pst.setInt(12, recipe.getId());
 
             // Step 3: Execute the prepared statement and retrieve the generated keys
             pst.executeUpdate();

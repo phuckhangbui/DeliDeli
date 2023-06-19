@@ -8,8 +8,12 @@ import Direction.DirectionDAO;
 import Direction.DirectionDTO;
 import IngredientDetail.IngredientDetailDAO;
 import IngredientDetail.IngredientDetailDTO;
+import Nutrition.NutritionDAO;
+import Nutrition.NutritionDTO;
 import Recipe.RecipeDAO;
 import Recipe.RecipeDTO;
+import RecipeDiet.RecipeDietDAO;
+import RecipeDiet.RecipeDietDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
@@ -45,7 +49,7 @@ public class EditRecipeServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            int recipeId = Integer.parseInt(request.getParameter("recipeId"));
+
             Date currentDate = new Date(System.currentTimeMillis());
             String title = request.getParameter("title");
             String description = request.getParameter("description");
@@ -54,22 +58,49 @@ public class EditRecipeServlet extends HttpServlet {
             int prepTime = Integer.parseInt(request.getParameter("prepTimeMinutes"));
             int cookTime = Integer.parseInt(request.getParameter("cookTimeMinutes"));
             int servings = Integer.parseInt(request.getParameter("servings"));
-            int diet = Integer.parseInt(request.getParameter("diet"));
+
             int category = Integer.parseInt(request.getParameter("category"));
             int cuisine = Integer.parseInt(request.getParameter("cuisine"));
             int level = Integer.parseInt(request.getParameter("level"));
+
             int userId = Integer.parseInt(request.getParameter("userId"));
             int status = Integer.parseInt(request.getParameter("status"));
-
+            int recipeId = Integer.parseInt(request.getParameter("recipeId"));
             RecipeDTO newRecipe = new RecipeDTO(recipeId, title, description, prepTime, cookTime, servings,
-                    currentDate, new Date(System.currentTimeMillis()), cuisine, category, userId, level, status); // Process other parameters as needed...
+                    null, currentDate, cuisine, category, userId, level, status); // Process other parameters as needed...
+
             RecipeDAO.editRecipe(newRecipe);
             request.setAttribute("recipeId", recipeId);
             out.print(newRecipe.toString());
+            
+            //Process nutrition
+            int calories = Integer.parseInt(request.getParameter("calories"));
+            int fat = Integer.parseInt(request.getParameter("fat"));
+            int carbs = Integer.parseInt(request.getParameter("carbs"));
+            int protein = Integer.parseInt(request.getParameter("protein"));
+
+            NutritionDTO nutrition = new NutritionDTO(recipeId, calories, fat, carbs, protein);
+            NutritionDAO.deleteNutrition(recipeId);
+            NutritionDAO.addNutrition(nutrition);
+            
+            //Process Diet
+            String[] txtDiet = request.getParameterValues("diet");
+
+            List<RecipeDietDTO> dietList = new ArrayList<RecipeDietDTO>();
+            if (txtDiet != null) {
+                for (int j = 0; j < txtDiet.length; j++) {
+                    int dietId = Integer.parseInt(txtDiet[j]);
+                    RecipeDietDTO diet = new RecipeDietDTO(0, recipeId, dietId);
+                    dietList.add(diet);
+                }
+            }
+            RecipeDietDAO.deleteRecipeDiet(recipeId);
+            RecipeDietDAO.addRecipeDiet(dietList);
+
+            // Process the ingredient parameters
             String[] ingredientDesc = request.getParameterValues("ingredientDesc");
             String[] ingredientId = request.getParameterValues("ingredientId");
 
-            // Process the ingredient parameters
             List<IngredientDetailDTO> detailList = new ArrayList<IngredientDetailDTO>();
             if (ingredientDesc != null && ingredientId != null && ingredientDesc.length == ingredientId.length) {
                 for (int i = 0; i < ingredientDesc.length; i++) {
@@ -87,7 +118,8 @@ public class EditRecipeServlet extends HttpServlet {
             String directionDesc = request.getParameter("direction");
             DirectionDAO.deleteDirection(recipeId);
             DirectionDAO.addDirections(new DirectionDTO(directionDesc, recipeId));
-
+            
+            
             request.getRequestDispatcher("UploadImageServlet").forward(request, response);
         }
     }

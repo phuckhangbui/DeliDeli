@@ -84,7 +84,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                     <div class="add-recipe-info-header-secondary">
                                         Additional Picture <p>(optional)</p>
                                     </div>
-                                    <input type="file" id="image" name="pictures">
+                                    <input type="file" id="image" name="picture">
                                 </div>
 
                             </div>
@@ -251,7 +251,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                 </div>
                             </div>
                             
-                        </div>
+                        
                         <div class="row add-recipe-info-type">
 
                             <div class="col-md-3 add-recipe-info-type-content">
@@ -308,7 +308,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                 </div>
                             </div>
                         </div>
-                                
+                                </div>
                                 
                         <div class="row add-recipe-info-number">
                             <div class="add-recipe-info-header">Nutrition <span class="add-recipe-info-header-des">(Per serving)</span> <span>*</span></div>
@@ -322,31 +322,30 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                 <div>Calories:</div>
                                 <input type="text" id="" name="calories" required max="100" min="1"
                                        oninput="this.value=this.value.slice(0,this.maxLength),this.value = this.value.replace(/[^0-9]/g, '')"
-                                       maxlength="5">
+                                       maxlength="4">
                             </div>
 
                             <div class="col-md-3 add-recipe-info-number-content">
                                 <div>Fat (grams):</div>
                                 <input type="text" id="" name="fat" required max="100" min="1"
                                        oninput="this.value=this.value.slice(0,this.maxLength),this.value = this.value.replace(/[^0-9]/g, '')"
-                                       maxlength="5">
+                                       maxlength="3">
                             </div>
 
                             <div class="col-md-3 add-recipe-info-number-content">
                                 <div>Carbs (grams):</div>
                                 <input type="text" id="" name="carbs" required max="100" min="1"
                                        oninput="this.value=this.value.slice(0,this.maxLength),this.value = this.value.replace(/[^0-9]/g, '')"
-                                       maxlength="5">
+                                       maxlength="3">
                             </div>
 
                             <div class="col-md-3 add-recipe-info-number-content">
                                 <div>Protein (grams):</div>
                                 <input type="text" id="" name="protein" required max="100" min="1"
                                        oninput="this.value=this.value.slice(0,this.maxLength),this.value = this.value.replace(/[^0-9]/g, '')"
-                                       maxlength="5">
+                                       maxlength="3">
                             </div>
                         </div>
-
 
 
 

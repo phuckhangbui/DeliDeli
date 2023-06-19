@@ -190,7 +190,7 @@
 
                     %>
                     <div class="recipe-detail-secondary-pic">
-                        <img src="ServletImageLoader?identifier=<%= RecipeDAO.getImageByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
+                        <img src="ServletImageLoader?identifier=<%= RecipeDAO.getImageByRecipeId(recipe.getId()).getImgPath()%>" alt="">
                     </div>
                     <% } catch (Exception e) {
 

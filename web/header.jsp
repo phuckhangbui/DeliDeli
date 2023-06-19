@@ -19,6 +19,7 @@
               integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
         <!--      CSS         -->
         <link rel="stylesheet" href="./styles/userStyle.css">
+        <link rel="stylesheet" href="./styles/notificationStyle.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed:wght@300;400;500&display=swap"
@@ -46,7 +47,7 @@
                         <img src="./assets/Logo2.png" alt="">
                     </a>
                     <div class="search-bar col-md-7">
-                        <form <form action="MainController" method="post">
+                       <form action="MainController" method="post">
                             <button type="submit" name="action" value="search"><img src="assets/search2.svg" alt=""></button>
                             <input type="text" name="txtsearch" placeholder="What are you searching for ?">
                             <select name="searchBy" id="" class="">
@@ -59,7 +60,126 @@
                         </form>
                     </div>
                     <%if (user != null) {%>
-                    <div class="account col-md-2">
+                    
+                    <div class="notification col-md-1">
+                    <div class="dropdown-notification">
+                        <button class="dropbtn-notification" onclick="toggleDropdown()"><img
+                                src="assets/notification.svg"></button>
+                        <div class="dropdown-content-notification" id="dropdownContent">
+                            <div>
+                                <div class="status-bar-notification">
+                                    <p>Total: 43</p>
+                                    <p>Unread: 17</p>
+                                </div>
+                            </div>
+                            <div class="notification-content">
+
+                                <a href="" class="a-notification">
+                                    <div class="notification-first-row"><img
+                                            src="assets/delideli-website-favicon-color.png" alt="img">
+                                        <p>Delideli</p>
+                                    </div>
+                                    <div class="text">
+
+                                        <p>Your recipe is not suitable for publicizing thag tri cho dien hahahahah</p>
+                                    </div>
+                                </a> <!-- Add closing tag for <a> element -->
+
+                                <a href="" class="a-notification">
+                                    <div class="notification-first-row"><img
+                                            src="assets/delideli-website-favicon-color.png" alt="img">
+                                        <p>Delideli</p>
+                                    </div>
+                                    <div class="text">
+
+                                        <p>Your recipe is not suitable for publicizing</p>
+                                    </div>
+                                </a> <!-- Add closing tag for <a> element -->
+
+                                <a href="" class="a-notification">
+                                    <div class="notification-first-row"><img
+                                            src="assets/delideli-website-favicon-color.png" alt="img">
+                                        <p>Delideli</p>
+                                    </div>
+                                    <div class="text">
+
+                                        <p>Your recipe is not suitable for publicizing</p>
+                                    </div>
+                                </a> <!-- Add closing tag for <a> element -->
+                                
+                                <a href="" class="a-notification">
+                                    <div class="notification-first-row"><img
+                                            src="assets/delideli-website-favicon-color.png" alt="img">
+                                        <p>Delideli</p>
+                                    </div>
+                                    <div class="text">
+
+                                        <p>Your recipe is not suitable for publicizing</p>
+                                    </div>
+                                </a> <!-- Add closing tag for <a> element -->
+                                
+                                <a href="" class="a-notification">
+                                    <div class="notification-first-row"><img
+                                            src="assets/delideli-website-favicon-color.png" alt="img">
+                                        <p>Delideli</p>
+                                    </div>
+                                    <div class="text">
+
+                                        <p>Your recipe is not suitable for publicizing</p>
+                                    </div>
+                                </a> <!-- Add closing tag for <a> element -->
+                                
+                                <a href="" class="a-notification">
+                                    <div class="notification-first-row"><img
+                                            src="assets/delideli-website-favicon-color.png" alt="img">
+                                        <p>Delideli</p>
+                                    </div>
+                                    <div class="text">
+
+                                        <p>Your recipe is not suitable for publicizing</p>
+                                    </div>
+                                </a> <!-- Add closing tag for <a> element -->
+                                
+                                <a href="" class="a-notification">
+                                    <div class="notification-first-row"><img
+                                            src="assets/delideli-website-favicon-color.png" alt="img">
+                                        <p>Delideli</p>
+                                    </div>
+                                    <div class="text">
+
+                                        <p>Your recipe is not suitable for publicizing</p>
+                                    </div>
+                                </a> <!-- Add closing tag for <a> element -->
+                                
+                                <a href="" class="a-notification">
+                                    <div class="notification-first-row"><img
+                                            src="assets/delideli-website-favicon-color.png" alt="img">
+                                        <p>Delideli</p>
+                                    </div>
+                                    <div class="text">
+
+                                        <p>Your recipe is not suitable for publicizing</p>
+                                    </div>
+                                </a> <!-- Add closing tag for <a> element -->
+                                
+                                <a href="" class="a-notification">
+                                    <div class="notification-first-row"><img
+                                            src="assets/delideli-website-favicon-color.png" alt="img">
+                                        <p>Delideli</p>
+                                    </div>
+                                    <div class="text">
+
+                                        <p>Your recipe is not suitable for publicizing</p>
+                                    </div>
+                                </a> <!-- Add closing tag for <a> element -->
+                                
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                    
+                    <div class="account col-md-1">
                         <span>
                             <div class="user-dropdown">
                                 <button class="user-dropbtn"><%=user.getUserName()%></button>
@@ -72,6 +192,24 @@
                             </div>
                         </span>
                     </div>
+                                    
+                                    <script>
+                    var dropdownContent = document.getElementById("dropdownContent");
+                    var dropbtnNotification = document.querySelector(".dropbtn-notification");
+
+                    // Toggle dropdown content
+                    function toggleDropdown() {
+                        dropdownContent.style.display = dropdownContent.style.display === "block" ? "none" : "block";
+                    }
+
+                    // Close dropdown content when clicking outside
+                    document.addEventListener("click", function (event) {
+                        var targetElement = event.target;
+                        if (targetElement !== dropbtnNotification && !dropbtnNotification.contains(targetElement)) {
+                            dropdownContent.style.display = "none";
+                        }
+                    });
+                </script>
 
                     <%} else { %>
                     <div class="account col-md-2">
@@ -98,9 +236,9 @@
                             </div>
                         </li>
                         <li>
-                            <div class="user-dropdown">
-                                <button class="user-dropbtn">CATEGORIES</button>
-                                <div class="user-dropdown-content">
+                            <div class="dropdown">
+                                <button class="dropbtn">CATEGORIES</button>
+                                <div class="dropdown-content">
                                     <% for (Map.Entry<Integer, String> entry : cateMap.entrySet()) {
                                             Integer key = entry.getKey();
                                             String value = entry.getValue();

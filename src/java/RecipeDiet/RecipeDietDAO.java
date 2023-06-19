@@ -10,7 +10,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -18,7 +20,7 @@ import java.util.List;
  */
 public class RecipeDietDAO {
 
-    public static ArrayList<RecipeDietDTO> getIngredientDetailByRecipeId(int id) {
+    public static ArrayList<RecipeDietDTO> getDietDetailByRecipeId(int id) {
         ArrayList<RecipeDietDTO> result = new ArrayList<>();
         Connection cn = null;
 
@@ -58,6 +60,42 @@ public class RecipeDietDAO {
 
         return result;
     }
+    
+    public static Set<Integer> getDietSetByRecipeId(int id) {
+        Set<Integer> result = new HashSet<>();
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                String sql = "SELECT rd.[id]\n"
+                        + "      ,[recipe_id]\n"
+                        + "      ,[diet_id]\n"
+                        + "  FROM [RecipeManagement].[dbo].[RecipeDiet] rd\n"
+                        + "  JOIN [dbo].[Diet] d ON rd.diet_id = d.id  \n"
+                        + "WHERE recipe_id = ?";
+
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setInt(1, id);
+                ResultSet rs = pst.executeQuery();
+                if (rs != null) {
+                    while (rs.next()) {
+                        int diet_id = rs.getInt("diet_id");
+                        result.add(diet_id);
+                    }
+                }
+                rs.close();
+                pst.close();
+                cn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+    
 
     public static int addRecipeDiet(List<RecipeDietDTO> recipeDiet) {
         int result = -1;
@@ -108,6 +146,10 @@ public class RecipeDietDAO {
             e.printStackTrace();
         }
         return result;
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(getDietDetailByRecipeId(9).size() == 0);
     }
 
 }

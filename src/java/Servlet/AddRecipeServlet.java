@@ -74,6 +74,7 @@ public class AddRecipeServlet extends HttpServlet {
 
             RecipeDTO newRecipe = new RecipeDTO(title, description, prepTime, cookTime, servings,
                     currentDate, null, cuisine, category, userId, level, status); // Process other parameters as needed...
+            
             int recipeId = RecipeDAO.addRecipe(newRecipe);
             request.setAttribute("recipeId", recipeId);
             out.print(newRecipe.toString());
