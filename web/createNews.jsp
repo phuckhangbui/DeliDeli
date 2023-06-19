@@ -35,13 +35,20 @@
         <div class="container-fluid">
 
             <div class="row">
+                <%
+                    UserDTO user = (UserDTO) session.getAttribute("user");
+                    if (user == null || user.getRole() == 1) {
+                        response.sendRedirect("error.jsp");
+                    } else if (user.getRole() == 2) {
+                %>
+
                 <nav class="nav-left-bar col-md-2">
                     <a class="logo" href="">
                         <img src="assets/Logo3.svg" alt="">
                     </a>
                     <div>
                         <a href="admin.jsp">
-                            <img src="./assets/public-unchose.svg" alt="">
+                            <img src="./assets/public.svg" alt="">
                             Dashboard
                         </a>
                     </div>
@@ -65,7 +72,7 @@
                     </div>
                     <div>
                         <a href="MainController?action=manageNews" class="active">
-                            <img src="./assets/news.svg" alt="">
+                            <img src="./assets/news-unchose.svg" alt="">
                             News
                         </a>
                     </div>
@@ -87,17 +94,10 @@
                             Report
                         </a>
                     </div>
-
-
                 </nav>
 
-                <div class="col-md-10 news">
-                    <%
-                        UserDTO user = (UserDTO) session.getAttribute("user");
-                        if (user == null || user.getRole() != 2) {
-                            response.sendRedirect("error.jsp");
-                        } else {
-                    %>
+                <div class="col-md-10 recipe">
+
                     <nav class="navbar">
                         <div class="nav-top-bar">
                             <div class="nav-top-bar-account dropdown">
@@ -111,86 +111,149 @@
                     </nav>
 
                     <%
-                        }
+                    } else if (user.getRole() == 3) {
                     %>
+                    <nav class="nav-left-bar col-md-2">
+                        <a class="logo" href="">
+                            <img src="assets/Logo3.svg" alt="">
+                        </a>
+                        <!--                        <div>
+                                                    <a href="admin.jsp">
+                                                        <img src="./assets/public-unchose.svg" alt="">
+                                                        Dashboard
+                                                    </a>
+                                                </div>-->
+                        <div>
+                            <a href="MainController?action=manageAccount">
+                                <img src="./assets/user-unchose.svg" alt="">
+                                User
+                            </a>
+                        </div>
+                        <div>
+                            <a href="MainController?action=manageRecipe">
+                                <img src="./assets/post-unchose.svg" alt="">
+                                Posts
+                            </a>
+                        </div>
+                        <div>
+                            <a href="suggestionRecipe.jsp">
+                                <img src="./assets/content-unchose.svg" alt="">
+                                Content
+                            </a>
+                        </div>
+                        <div>
+                            <a href="MainController?action=manageNews" class="active">
+                                <img src="./assets/news.svg" alt="">
+                                News
+                            </a>
+                        </div>
+                        <!--                        <div>
+                                                    <a href="#">
+                                                        <img src="./assets/policies-unchose.svg" alt="">
+                                                        Policies
+                                                    </a>
+                                                </div>-->
+                        <div>
+                            <a href="#">
+                                <img src="./assets/broadcast-unchose.svg" alt="">
+                                Broadcast
+                            </a>
+                        </div>
+                        <!--                        <div>
+                                                    <a href="#">
+                                                        <img src="./assets/bug-report-unchose.svg" alt="">
+                                                        Report
+                                                    </a>
+                                                </div>-->
+                    </nav>
 
-
-
-                    <div class="blank-background">
-                        <div class="container ">
-                            <div class="row news-content">
-                                <%
-                                    //UserDTO user = (UserDTO) session.getAttribute("user");
-                                    //String id = request.getParameter("newsId");
-                                %>
-
-                                <form action="MainController" method="post" class="news-create-button" enctype="multipart/form-data">
-                                    <div class="add-news-header">
-                                        <p>Add a New</p>
+                    <div class="col-md-10 recipe">
+                        <nav class="navbar">
+                            <div class="nav-top-bar">
+                                <div class="nav-top-bar-account dropdown">
+                                    <img src="./assets/profile-pic.svg" alt="">
+                                    <div>
+                                        <p><%= user.getUserName()%></p>
+                                        <p>Moderator</p>
                                     </div>
-                                    <div class="news-content-info-header">
-                                        Title <span>*</span>
-                                        <div>
-                                            <input type="text" name="txtTitle" placeholder="What's the new called?">
+                                </div>
+                            </div>
+                        </nav>
+                        <%
+                            }
+                        %>
+
+                        <div class="blank-background">
+                            <div class="container ">
+                                <div class="row news-content">
+                                    <%
+                                        //UserDTO user = (UserDTO) session.getAttribute("user");
+                                        //String id = request.getParameter("newsId");
+                                    %>
+
+                                    <form action="MainController" method="post" class="news-create-button" enctype="multipart/form-data">
+                                        <div class="add-news-header">
+                                            <p>Add a New</p>
                                         </div>
-                                    </div>
-                                    <div class="news-content-info-header">
-                                        <p>Category <span>*</span>
-                                            <select name="category">
-                                                <%                                                HashMap<Integer, String> newsMap = Utils.NavigationBarUtils.getMap("NewsCategory");
-                                                    for (Map.Entry<Integer, String> entry : newsMap.entrySet()) {
-                                                %>
-                                                <option value="<%= entry.getKey()%>"><%= entry.getValue()%></option>
-                                                <%
-                                                    }
-                                                %>
-                                            </select>
-                                        </p>
-                                    </div>
-                                    <div class="news-content-info-header news-content-info-white-background">
-                                        <p>Image <span>*</span> <input type="file" name="file"></p>
-                                    </div>
-                                    <div class="news-content-info">
-                                        Description
-                                        <textarea rows="10" cols="10" id="editor"></textarea>
-                                    </div>
-                                    <input type="hidden" name="editorContent" id="editorContent" value="">
-                                    <input type="hidden" name="userId" value="<%= user.getId()%>">
+                                        <div class="news-content-info-header">
+                                            Title <span>*</span>
+                                            <div>
+                                                <input type="text" name="txtTitle" placeholder="What's the new called?">
+                                            </div>
+                                        </div>
+                                        <div class="news-content-info-header">
+                                            <p>Category <span>*</span>
+                                                <select name="category">
+                                                    <%                                                HashMap<Integer, String> newsMap = Utils.NavigationBarUtils.getMap("NewsCategory");
+                                                        for (Map.Entry<Integer, String> entry : newsMap.entrySet()) {
+                                                    %>
+                                                    <option value="<%= entry.getKey()%>"><%= entry.getValue()%></option>
+                                                    <%
+                                                        }
+                                                    %>
+                                                </select>
+                                            </p>
+                                        </div>
+                                        <div class="news-content-info-header news-content-info-white-background">
+                                            <p>Image <span>*</span> <input type="file" name="file"></p>
+                                        </div>
+                                        <div class="news-content-info">
+                                            Description
+                                            <textarea rows="10" cols="10" id="editor"></textarea>
+                                        </div>
+                                        <input type="hidden" name="editorContent" id="editorContent" value="">
+                                        <input type="hidden" name="userId" value="<%= user.getId()%>">
 
-                                    <div class="add-news-create">
-                                        <button type="submit" value="createNews" name="action" >CREATE</button>
-                                    </div>
-                                </form>
+                                        <div class="add-news-create">
+                                            <button type="submit" value="createNews" name="action" >CREATE</button>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
-
-
-
-
                 </div>
             </div>
-        </div>
 
 
-        <script>
-            CKEDITOR.replace('editor', {
-                language: 'en',
-                extraPlugins: 'language',
-                removePlugins: 'scayt',
-                language_list: ['en', 'vi'],
-                scayt_autoStartup: true
-            });
-        </script>
+            <script>
+                CKEDITOR.replace('editor', {
+                    language: 'en',
+                    extraPlugins: 'language',
+                    removePlugins: 'scayt',
+                    language_list: ['en', 'vi'],
+                    scayt_autoStartup: true
+                });
+            </script>
 
-        <script>
-            document.querySelector('form').addEventListener('submit', function (event) {
-                // Get the CKEditor content
-                var editorContent = CKEDITOR.instances.editor.getData();
+            <script>
+                document.querySelector('form').addEventListener('submit', function (event) {
+                    // Get the CKEditor content
+                    var editorContent = CKEDITOR.instances.editor.getData();
 
-                // Assign the content to a hidden input field
-                document.getElementById('editorContent').value = editorContent;
-            });
-        </script>
+                    // Assign the content to a hidden input field
+                    document.getElementById('editorContent').value = editorContent;
+                });
+            </script>
     </body>
 </html>

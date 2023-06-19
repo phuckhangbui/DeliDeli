@@ -32,13 +32,20 @@
         <div class="container-fluid">
 
             <div class="row">
+                <%
+                    UserDTO user = (UserDTO) session.getAttribute("user");
+                    if (user == null || user.getRole() == 1) {
+                        response.sendRedirect("error.jsp");
+                    } else if (user.getRole() == 2) {
+                %>
+
                 <nav class="nav-left-bar col-md-2">
                     <a class="logo" href="">
                         <img src="assets/Logo3.svg" alt="">
                     </a>
                     <div>
                         <a href="admin.jsp">
-                            <img src="./assets/public-unchose.svg" alt="">
+                            <img src="./assets/public.svg" alt="">
                             Dashboard
                         </a>
                     </div>
@@ -62,7 +69,7 @@
                     </div>
                     <div>
                         <a href="MainController?action=manageNews" class="active">
-                            <img src="./assets/news.svg" alt="">
+                            <img src="./assets/news-unchose.svg" alt="">
                             News
                         </a>
                     </div>
@@ -84,17 +91,10 @@
                             Report
                         </a>
                     </div>
-
-
                 </nav>
 
-                <div class="col-md-10 news-detail-admin">
-                    <%
-                        UserDTO user = (UserDTO) session.getAttribute("user");
-                        if (user == null || user.getRole() != 2) {
-                            response.sendRedirect("error.jsp");
-                        } else {
-                    %>
+                <div class="col-md-10 recipe">
+
                     <nav class="navbar">
                         <div class="nav-top-bar">
                             <div class="nav-top-bar-account dropdown">
@@ -108,55 +108,126 @@
                     </nav>
 
                     <%
-                        }
+                    } else if (user.getRole() == 3) {
                     %>
-                    <div class="blank-background">
-                        <div class="container">
-                            <div class="new-result">
-                                <div class="container ">
-                                    <%
-                                        NewsDTO news = (NewsDTO) request.getAttribute("news");
-                                    %>
-                                    <div class="row">
-                                        <p><%= NewsDAO.getNewsCategoryByNewsId(news.getId())%></p>
-                                        <header class="new-result-header">
-                                            <p><%= news.getTitle()%></p>
-                                        </header>
-                                    </div>
-                                    <div class="row new-result-content new-result-content-link">
-                                        <div>
-                                            <!--<p class="new-result-content-post-title"><%= news.getTitle()%></p>-->
-                                            <p class="new-result-content-post-title">By: <%= request.getAttribute("author")%></p>
-                                            <%
-                                                if (news.getCreateAt().equals(news.getUpdateAt())) {
-                                            %>
-                                            <p>Created at: <%= news.getCreateAt()%></p>
-                                            <%
-                                            } else {
-                                            %>
-                                            <p>Updated at: <%= news.getUpdateAt()%></p>
-                                            <%
-                                                }
-                                            %>
-                                        </div>
-                                        <img src="ServletImageLoader?identifier=<%= news.getImage()%>" alt="">
-                                        <p><%= news.getDesc()%></p>
+                    <nav class="nav-left-bar col-md-2">
+                        <a class="logo" href="">
+                            <img src="assets/Logo3.svg" alt="">
+                        </a>
+                        <!--                        <div>
+                                                    <a href="admin.jsp">
+                                                        <img src="./assets/public-unchose.svg" alt="">
+                                                        Dashboard
+                                                    </a>
+                                                </div>-->
+                        <div>
+                            <a href="MainController?action=manageAccount">
+                                <img src="./assets/user-unchose.svg" alt="">
+                                User
+                            </a>
+                        </div>
+                        <div>
+                            <a href="MainController?action=manageRecipe">
+                                <img src="./assets/post-unchose.svg" alt="">
+                                Posts
+                            </a>
+                        </div>
+                        <div>
+                            <a href="suggestionRecipe.jsp">
+                                <img src="./assets/content-unchose.svg" alt="">
+                                Content
+                            </a>
+                        </div>
+                        <div>
+                            <a href="MainController?action=manageNews" class="active">
+                                <img src="./assets/news.svg" alt="">
+                                News
+                            </a>
+                        </div>
+                        <!--                        <div>
+                                                    <a href="#">
+                                                        <img src="./assets/policies-unchose.svg" alt="">
+                                                        Policies
+                                                    </a>
+                                                </div>-->
+                        <div>
+                            <a href="#">
+                                <img src="./assets/broadcast-unchose.svg" alt="">
+                                Broadcast
+                            </a>
+                        </div>
+                        <!--                        <div>
+                                                    <a href="#">
+                                                        <img src="./assets/bug-report-unchose.svg" alt="">
+                                                        Report
+                                                    </a>
+                                                </div>-->
+                    </nav>
+
+                    <div class="col-md-10 recipe">
+                        <nav class="navbar">
+                            <div class="nav-top-bar">
+                                <div class="nav-top-bar-account dropdown">
+                                    <img src="./assets/profile-pic.svg" alt="">
+                                    <div>
+                                        <p><%= user.getUserName()%></p>
+                                        <p>Moderator</p>
                                     </div>
                                 </div>
+                            </div>
+                        </nav>
+                        <%
+                            }
+                        %>
+                        
+                        <div class="blank-background">
+                            <div class="container">
+                                <div class="new-result">
+                                    <div class="container ">
+                                        <%
+                                            NewsDTO news = (NewsDTO) request.getAttribute("news");
+                                        %>
+                                        <div class="row">
+                                            <p><%= NewsDAO.getNewsCategoryByNewsId(news.getId())%></p>
+                                            <header class="new-result-header">
+                                                <p><%= news.getTitle()%></p>
+                                            </header>
+                                        </div>
+                                        <div class="row new-result-content new-result-content-link">
+                                            <div>
+                                                <!--<p class="new-result-content-post-title"><%= news 
+                                                    .getTitle()%></p>-->
+                                                <p class="new-result-content-post-title">By: <%= request.getAttribute("author")%></p>
+                                                <%
+                                                    if (news.getCreateAt().equals(news.getUpdateAt())) {
+                                                %>
+                                                <p>Created at: <%= news.getCreateAt()%></p>
+                                                <%
+                                                } else {
+                                                %>
+                                                <p>Updated at: <%= news.getUpdateAt()%></p>
+                                                <%
+                                                    }
+                                                %>
+                                            </div>
+                                            <img src="ServletImageLoader?identifier=<%= news.getImage()%>" alt="">
+                                            <p><%= news.getDesc()%></p>
+                                        </div>
+                                    </div>
 
-                                <div class="news-detail-admin-action">
-                                    <form action="MainController" method="post" class="news-detail-admin-button">
-                                        <input type="hidden" value="<%= news.getId()%>" name="newsId">
-                                        <button><a href="updateNews.jsp?newsId=<%= news.getId()%>">Edit</a></button>
-                                        <button type="submit" name="action" value="deleteNews" class="news-detail-admin-button-delete">Delete</a></button>
-                                    </form>
+                                    <div class="news-detail-admin-action">
+                                        <form action="MainController" method="post" class="news-detail-admin-button">
+                                            <input type="hidden" value="<%= news.getId()%>" name="newsId">
+                                            <button><a href="updateNews.jsp?newsId=<%= news.getId()%>">Edit</a></button>
+                                            <button type="submit" name="action" value="deleteNews" class="news-detail-admin-button-delete">Delete</a></button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
     </body>
 </html>

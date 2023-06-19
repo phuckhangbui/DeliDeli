@@ -46,6 +46,13 @@
             %>
 
             <div class="row">
+                <%
+                    UserDTO user = (UserDTO) session.getAttribute("user");
+                    if (user == null || user.getRole() == 1) {
+                        response.sendRedirect("error.jsp");
+                    } else if (user.getRole() == 2) {
+                %>
+
                 <nav class="nav-left-bar col-md-2">
                     <a class="logo" href="">
                         <img src="assets/Logo3.svg" alt="">
@@ -98,17 +105,10 @@
                             Report
                         </a>
                     </div>
-
-
                 </nav>
 
-                <div class="col-md-10 recipe-detail-admin">
-                    <%
-                        UserDTO user = (UserDTO) session.getAttribute("user");
-                        if (user == null || user.getRole() != 2) {
-                            response.sendRedirect("error.jsp");
-                        } else {
-                    %>
+                <div class="col-md-10 recipe">
+
                     <nav class="navbar">
                         <div class="nav-top-bar">
                             <div class="nav-top-bar-account dropdown">
@@ -122,158 +122,227 @@
                     </nav>
 
                     <%
-                        }
+                    } else if (user.getRole() == 3) {
                     %>
+                    <nav class="nav-left-bar col-md-2">
+                        <a class="logo" href="">
+                            <img src="assets/Logo3.svg" alt="">
+                        </a>
+                        <!--                        <div>
+                                                    <a href="admin.jsp">
+                                                        <img src="./assets/public-unchose.svg" alt="">
+                                                        Dashboard
+                                                    </a>
+                                                </div>-->
+                        <div>
+                            <a href="MainController?action=manageAccount">
+                                <img src="./assets/user-unchose.svg" alt="">
+                                User
+                            </a>
+                        </div>
+                        <div>
+                            <a href="MainController?action=manageRecipe" class="active">
+                                <img src="./assets/post-unchose.svg" alt="">
+                                Posts
+                            </a>
+                        </div>
+                        <div>
+                            <a href="suggestionRecipe.jsp">
+                                <img src="./assets/content-unchose.svg" alt="">
+                                Content
+                            </a>
+                        </div>
+                        <div>
+                            <a href="MainController?action=manageNews">
+                                <img src="./assets/news.svg" alt="">
+                                News
+                            </a>
+                        </div>
+                        <!--                        <div>
+                                                    <a href="#">
+                                                        <img src="./assets/policies-unchose.svg" alt="">
+                                                        Policies
+                                                    </a>
+                                                </div>-->
+                        <div>
+                            <a href="#">
+                                <img src="./assets/broadcast-unchose.svg" alt="">
+                                Broadcast
+                            </a>
+                        </div>
+                        <!--                        <div>
+                                                    <a href="#">
+                                                        <img src="./assets/bug-report-unchose.svg" alt="">
+                                                        Report
+                                                    </a>
+                                                </div>-->
+                    </nav>
 
-                    <div class="container ">
-                        <div class="row recipe-detail-info">
-                            <header class="recipe-detail-info-main-header">
-                                <%= recipe.getTitle()%>
-                            </header>
-                            <div class="recipe-detail-info-user">
-                                <a href="<%=link%>"><img src="./assets/profile-pic.svg" alt=""></a>
-                                <div>
-                                    <span>By</span>
-                                    <span><a href="<%=link%>"><%= request.getAttribute("owner")%></a></span>
-                                    <p>Published on <%= recipe.getCreate_at()%></p>
-                                </div>
-                            </div>
-                            <div class="recipe-detail-info-interaction">
-                                <div class="recipe-detail-info-review">
-                                    <%
-                                        double avaRating = (Double) request.getAttribute("avgRating");
-                                        for (double i = 0; i < avaRating; i++) {
-                                    %>
-                                    <img src="./assets/full-star.png" alt="">
-                                    <%
-                                        }
-                                    %>
-                                    <p><%= request.getAttribute("avgRating")%></p>
-                                    <!--<p>|</p>-->
-                                    <!--<p class=""><%= request.getAttribute("totalReview")%> ratings</p>-->
-                                </div>
-                            </div>
-                            <div class="recipe-detail-main-pic">
-                                <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
-                            </div>
-                            <div class="recipe-detail-info-overview">
-                                <div class="recipe-detail-info-overview-content">
-                                    <div class="recipe-detail-info-header">
-                                        <%= recipe.getTitle()%>
-                                    </div>
-                                    <div class="row recipe-detail-info-overview-content-info">
-                                        <div class="col-md-3">
-                                            <p>Prep time:</p>
-                                            <% if (recipe.getPrep_time() > 60) {
-                                            %>
-                                            <p><%= recipe.getPrep_time() / 60%> hr(s) <%= recipe.getPrep_time() % 60%> min(s)</p>
-                                            <%
-                                            } else {
-                                            %>
-                                            <p><%= recipe.getPrep_time()%> min(s)</p>
-                                            <%
-                                                }%>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <p>Cook time:</p>
-                                            <% if (recipe.getCook_time() > 60) {
-                                            %>
-                                            <p><%= recipe.getCook_time() / 60%> hr(s) <%= recipe.getCook_time() % 60%> min(s)</p>
-                                            <%
-                                            } else {
-                                            %>
-                                            <p><%= recipe.getCook_time()%> min(s)</p>
-                                            <%
-                                                }%>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <p>Total time:</p>
-                                            <% if ((recipe.getPrep_time() + recipe.getCook_time()) > 60) {
-                                            %>
-                                            <p><%= (recipe.getPrep_time() + recipe.getCook_time()) / 60%> hr(s) <%= (recipe.getPrep_time() + recipe.getCook_time()) % 60%> min(s)</p>
-                                            <%
-                                            } else {
-                                            %>
-                                            <p><%= (recipe.getPrep_time() + recipe.getCook_time())%> min(s)</p>
-                                            <%
-                                                }%>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <p>Serving:</p>
-                                            <p><%= recipe.getServings()%></p>
-                                        </div>
+                    <div class="col-md-10 recipe">
+                        <nav class="navbar">
+                            <div class="nav-top-bar">
+                                <div class="nav-top-bar-account dropdown">
+                                    <img src="./assets/profile-pic.svg" alt="">
+                                    <div>
+                                        <p><%= user.getUserName()%></p>
+                                        <p>Moderator</p>
                                     </div>
                                 </div>
                             </div>
+                        </nav>
+                        <%
+                            }
+                        %>
 
-                            <div class="recipe-detail-info-ingredients">
-                                <div class="recipe-detail-info-header">
-                                    Description
+                        <div class="container ">
+                            <div class="row recipe-detail-info">
+                                <header class="recipe-detail-info-main-header">
+                                    <%= recipe.getTitle()%>
+                                </header>
+                                <div class="recipe-detail-info-user">
+                                    <a href="<%=link%>"><img src="./assets/profile-pic.svg" alt=""></a>
+                                    <div>
+                                        <span>By</span>
+                                        <span><a href="<%=link%>"><%= request.getAttribute("owner")%></a></span>
+                                        <p>Published on <%= recipe.getCreate_at()%></p>
+                                    </div>
                                 </div>
-                                <p>
-                                    <%= recipe.getDescription()%>
-                                </p>
-                            </div>
-
-                            <div class="recipe-detail-info-ingredients">
-                                <div class="recipe-detail-info-header">
-                                    Ingredients
-                                </div>
-                                <ul>
-                                    <%
-                                        if (ingredientDetailList.size() > 0 && ingredientDetailList != null) {
-                                            for (IngredientDetailDTO o : ingredientDetailList) {
-                                    %>
-                                    <li><%= o.getDesc()%></li>
+                                <div class="recipe-detail-info-interaction">
+                                    <div class="recipe-detail-info-review">
                                         <%
-                                                }
+                                            double avaRating = (Double) request.getAttribute("avgRating");
+                                            for (double i = 0; i < avaRating; i++) {
+                                        %>
+                                        <img src="./assets/full-star.png" alt="">
+                                        <%
                                             }
                                         %>
-                                </ul>
-                            </div>
-                            <div class="recipe-detail-info-direction">
-                                <div class="recipe-detail-info-header">
-                                    Directions
+                                        <p><%= request.getAttribute("avgRating")%></p>
+                                        <!--<p>|</p>-->
+                                        <!--<p class=""><%= request.getAttribute("totalReview")%> ratings</p>-->
+                                    </div>
                                 </div>
-                                <div>
-                                    <%
-                                        DirectionDTO direction = DirectionDAO.getDirectionByRecipeId(recipe.getId());
-                                    %>
-
-                                    <p class="recipe-detail-info-direction-header"><%= direction.getDesc()%></p>
-
-
+                                <div class="recipe-detail-main-pic">
+                                    <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
                                 </div>
+                                <div class="recipe-detail-info-overview">
+                                    <div class="recipe-detail-info-overview-content">
+                                        <div class="recipe-detail-info-header">
+                                            <%= recipe.getTitle()%>
+                                        </div>
+                                        <div class="row recipe-detail-info-overview-content-info">
+                                            <div class="col-md-3">
+                                                <p>Prep time:</p>
+                                                <% if (recipe.getPrep_time() > 60) {
+                                                %>
+                                                <p><%= recipe.getPrep_time() / 60%> hr(s) <%= recipe.getPrep_time() % 60%> min(s)</p>
+                                                <%
+                                                } else {
+                                                %>
+                                                <p><%= recipe.getPrep_time()%> min(s)</p>
+                                                <%
+                                                }%>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <p>Cook time:</p>
+                                                <% if (recipe.getCook_time() > 60) {
+                                                %>
+                                                <p><%= recipe.getCook_time() / 60%> hr(s) <%= recipe.getCook_time() % 60%> min(s)</p>
+                                                <%
+                                                } else {
+                                                %>
+                                                <p><%= recipe.getCook_time()%> min(s)</p>
+                                                <%
+                                                }%>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <p>Total time:</p>
+                                                <% if ((recipe.getPrep_time() + recipe.getCook_time()) > 60) {
+                                                %>
+                                                <p><%= (recipe.getPrep_time() + recipe.getCook_time()) / 60%> hr(s) <%= (recipe.getPrep_time() + recipe.getCook_time()) % 60%> min(s)</p>
+                                                <%
+                                                } else {
+                                                %>
+                                                <p><%= (recipe.getPrep_time() + recipe.getCook_time())%> min(s)</p>
+                                                <%
+                                                }%>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <p>Serving:</p>
+                                                <p><%= recipe.getServings()%></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="recipe-detail-info-ingredients">
+                                    <div class="recipe-detail-info-header">
+                                        Description
+                                    </div>
+                                    <p>
+                                        <%= recipe.getDescription()%>
+                                    </p>
+                                </div>
+
+                                <div class="recipe-detail-info-ingredients">
+                                    <div class="recipe-detail-info-header">
+                                        Ingredients
+                                    </div>
+                                    <ul>
+                                        <%
+                                            if (ingredientDetailList.size() > 0 && ingredientDetailList != null) {
+                                                for (IngredientDetailDTO o : ingredientDetailList) {
+                                        %>
+                                        <li><%= o.getDesc()%></li>
+                                            <%
+                                                    }
+                                                }
+                                            %>
+                                    </ul>
+                                </div>
+                                <div class="recipe-detail-info-direction">
+                                    <div class="recipe-detail-info-header">
+                                        Directions
+                                    </div>
+                                    <div>
+                                        <%
+                                            DirectionDTO direction = DirectionDAO.getDirectionByRecipeId(recipe.getId());
+                                        %>
+
+                                        <p class="recipe-detail-info-direction-header"><%= direction.getDesc()%></p>
+
+
+                                    </div>
+                                </div>
+                                <% try {
+                                        String path = RecipeDAO.getImageByRecipeId(recipe.getId()).getImgPath();
+
+                                %>
+                                <div class="recipe-detail-secondary-pic">
+                                    <img src="ServletImageLoader?identifier=<%= RecipeDAO.getImageByRecipeId(recipe.getId()).getImgPath()%>" alt="">
+                                </div>
+                                <% } catch (Exception e) {
+
+                                    }%>
+
+                                <div class="recipe-detail-admin-action">
+                                    <form action="MainController" method="post" class="recipe-table-button">
+                                        <input type="hidden" value="<%= recipe.getId()%>" name="recipeId">
+                                        <input type="hidden" name="admin" value="admin">
+                                        <button type="submit" value="deleteRecipe" name="action" class="recipe-table-button-delete">Delete</button>
+                                        <%
+                                            if (recipe.getStatus() == 2) {
+                                        %>
+                                        <button type="submit" value="confirmRecipe" name="action">Confirm</button>
+                                        <%
+                                            }
+                                        %> 
+                                    </form>
+                                </div> 
                             </div>
-                            <% try {
-                                    String path = RecipeDAO.getImageByRecipeId(recipe.getId()).getImgPath();
-
-                            %>
-                            <div class="recipe-detail-secondary-pic">
-                                <img src="ServletImageLoader?identifier=<%= RecipeDAO.getImageByRecipeId(recipe.getId()).getImgPath()%>" alt="">
-                            </div>
-                            <% } catch (Exception e) {
-
-                                }%>
-
-                            <div class="recipe-detail-admin-action">
-                                <form action="MainController" method="post" class="recipe-table-button">
-                                    <input type="hidden" value="<%= recipe.getId()%>" name="recipeId">
-                                    <input type="hidden" name="admin" value="admin">
-                                    <button type="submit" value="deleteRecipe" name="action" class="recipe-table-button-delete">Delete</button>
-                                    <%
-                                        if (recipe.getStatus() == 2) {
-                                    %>
-                                    <button type="submit" value="confirmRecipe" name="action">Confirm</button>
-                                    <%
-                                        }
-                                    %> 
-                                </form>
-                            </div> 
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
     </body>
 </html>

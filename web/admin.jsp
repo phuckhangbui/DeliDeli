@@ -302,7 +302,7 @@
             //if (user == null || user.getRole() != 2) {
             //response.sendRedirect("error.jsp");
             //} else {
-        %>
+%>
 
 <!--        <h1>Welcome ${user.getUserName()}</h1>
         <p>Today is: <%= LocalDate.now()%></p>
