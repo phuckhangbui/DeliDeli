@@ -4,22 +4,18 @@
  */
 package Servlet;
 
-import Recipe.RecipeDTO;
-import Suggestion.SuggestionDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author Admin
  */
-public class FilterSuggestionServlet extends HttpServlet {
+public class ManageSuggestionServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,19 +31,7 @@ public class FilterSuggestionServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            HttpSession session = request.getSession();
-            String selectedSuggestion = request.getParameter("suggestion");
-            
-            ArrayList<RecipeDTO> suggestionRecipeList = SuggestionDAO.getAllRecipesIdBySuggestion(selectedSuggestion);
-            
-            session.removeAttribute("customSuggestionList");
-            request.setAttribute("selectedSuggestion", selectedSuggestion);
-            request.setAttribute("suggestionRecipeList", suggestionRecipeList);
-            request.getRequestDispatcher("manageSuggestion.jsp").forward(request, response);
-            
-//            for (RecipeDTO recipeDTO : suggestionRecipeList) {
-//                out.println(recipeDTO);
-//            }
+            response.sendRedirect("manageSuggestion.jsp");
         }
     }
 

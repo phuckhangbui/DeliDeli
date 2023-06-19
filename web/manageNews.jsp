@@ -61,7 +61,7 @@
                         </a>
                     </div>
                     <div>
-                        <a href="suggestionRecipe.jsp">
+                        <a href="MainController?action=manageSuggestion">
                             <img src="./assets/content-unchose.svg" alt="">
                             Content
                         </a>
@@ -132,7 +132,7 @@
                             </a>
                         </div>
                         <div>
-                            <a href="suggestionRecipe.jsp">
+                            <a href="MainController?action=manageSuggestion">
                                 <img src="./assets/content-unchose.svg" alt="">
                                 Content
                             </a>
@@ -183,16 +183,16 @@
                             <div class="user-header">
                                 News List
                             </div>
-<!--                            <div class="nav-top-bar-search">
-                                <form action="MainController" method="post" class="nav-top-bar-search-user">
+                            <div class="nav-top-bar-search">
+<!--                                <form action="MainController" method="post" class="nav-top-bar-search-user">
                                     <button type="submit" name="action" value="searchAccount"><img src="assets/search2.svg" alt=""></button>
                                     <input type="text" name="txtSearch" placeholder="What are you searching for ?">
                                     <input type="hidden" value="Title" name="">
-                                </form>
+                                </form>-->
                                 <div class="news-create-button">
                                     <button><a href="createNews.jsp">Create</a></button>
                                 </div>
-                            </div>-->
+                            </div>
 
                             <%                                
                                 ArrayList<NewsDTO> listNews = (ArrayList) request.getAttribute("listNews");

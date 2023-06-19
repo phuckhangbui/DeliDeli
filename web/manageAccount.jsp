@@ -75,7 +75,7 @@
                         </a>
                     </div>
                     <div>
-                        <a href="suggestionRecipe.jsp">
+                        <a href="MainController?action=manageSuggestion">
                             <img src="./assets/content-unchose.svg" alt="">
                             Content
                         </a>
@@ -146,7 +146,7 @@
                             </a>
                         </div>
                         <div>
-                            <a href="suggestionRecipe.jsp">
+                            <a href="MainController?action=manageSuggestion">
                                 <img src="./assets/content-unchose.svg" alt="">
                                 Content
                             </a>
