@@ -68,7 +68,7 @@
                         </a>
                     </div>
                     <div>
-                        <a href="#">
+                        <a href="suggestionRecipe.jsp">
                             <img src="./assets/content-unchose.svg" alt="">
                             Content
                         </a>
@@ -197,7 +197,7 @@
                                             }
                                         %>
                                     </form>
-                                    <form action="MainController?username=<%= u.getUserName()%>" method="post" class="delete-acc-button">
+<!--                                    <form action="MainController?username=<%= u.getUserName()%>" method="post" class="delete-acc-button">
                                         <input type="hidden" value="<%= currentRole%>" name="currentRole">
                                         <input type="hidden" value="<%= tag%>" name="tag">
                                         <button type="submit" data-bs-toggle="modal" data-bs-target="#userListModal" name="action" value="deleteAcc">Delete</button>
@@ -219,7 +219,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </form>
+                                    </form>-->
                                 </td>
                             </tr>
                             <%
@@ -282,7 +282,7 @@
                                             }
                                         %>
                                     </form>
-                                    <form action="MainController?username=<%= u.getUserName()%>" method="post" class="delete-acc-button">
+<!--                                    <form action="MainController?username=<%= u.getUserName()%>" method="post" class="delete-acc-button">
                                         <input type="hidden" value="<%= currentRole%>" name="currentRole">
                                         <input type="hidden" value="<%= tag%>" name="tag">
                                         <button type="submit" data-bs-toggle="modal" data-bs-target="#userListModal" name="action" value="deleteAcc">Delete</button>
@@ -304,7 +304,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </form>
+                                    </form>-->
                                 </td>
                             </tr>
                             <%

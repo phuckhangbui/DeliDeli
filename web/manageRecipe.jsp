@@ -55,7 +55,7 @@
                         </a>
                     </div>
                     <div>
-                        <a href="#">
+                        <a href="suggestionRecipe.jsp">
                             <img src="./assets/content-unchose.svg" alt="">
                             Content
                         </a>
@@ -91,7 +91,6 @@
 
 
                 <div class="col-md-10 recipe">
-                    <a href="suggestionRecipe.jsp">Suggestion</a>
                     <%
                         UserDTO user = (UserDTO) session.getAttribute("user");
                         if (user == null || user.getRole() != 2) {

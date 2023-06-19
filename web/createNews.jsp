@@ -27,7 +27,8 @@
         <link
             href="https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed:wght@300;400;500;600;700&display=swap"
             rel="stylesheet">
-        <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+        <script src="https://cdn.ckeditor.com/4.16.2/standard-all/ckeditor.js"></script>
+        <script src="https://cdn.ckeditor.com/ckeditor5/30.0.0/classic/translations/en.js"></script>
     </head>
     <body>
 
@@ -57,7 +58,7 @@
                         </a>
                     </div>
                     <div>
-                        <a href="#">
+                        <a href="suggestionRecipe.jsp">
                             <img src="./assets/content-unchose.svg" alt="">
                             Content
                         </a>
@@ -155,7 +156,7 @@
                                     </div>
                                     <input type="hidden" name="editorContent" id="editorContent" value="">
                                     <input type="hidden" name="userId" value="<%= user.getId()%>">
-                                    
+
                                     <div class="add-news-create">
                                         <button type="submit" value="createNews" name="action" >CREATE</button>
                                     </div>
@@ -173,7 +174,13 @@
 
 
         <script>
-            CKEDITOR.replace('editor');
+            CKEDITOR.replace('editor', {
+                language: 'en',
+                extraPlugins: 'language',
+                removePlugins: 'scayt',
+                language_list: ['en', 'vi'],
+                scayt_autoStartup: true
+            });
         </script>
 
         <script>

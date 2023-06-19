@@ -50,13 +50,13 @@
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageRecipe" class="active">
+                        <a href="MainController?action=manageRecipe">
                             <img src="./assets/post-unchose.svg" alt="">
                             Posts
                         </a>
                     </div>
                     <div>
-                        <a href="#">
+                        <a href="suggestionRecipe.jsp" class="active">
                             <img src="./assets/content-unchose.svg" alt="">
                             Content
                         </a>

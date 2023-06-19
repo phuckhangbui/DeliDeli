@@ -55,7 +55,7 @@
                         </a>
                     </div>
                     <div>
-                        <a href="#">
+                        <a href="suggestionRecipe.jsp">
                             <img src="./assets/content-unchose.svg" alt="">
                             Content
                         </a>
