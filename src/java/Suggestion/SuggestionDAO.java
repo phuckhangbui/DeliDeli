@@ -14,6 +14,7 @@ import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -24,6 +25,38 @@ import java.util.logging.Logger;
 public class SuggestionDAO {
 
     private static final String DATE_FORMAT = "yyyy-MM-dd";
+
+    public static TreeMap<String, Integer> getSuggestionMap() {
+        TreeMap<String, Integer> map = new TreeMap<String, Integer>();
+        Connection cn = null;
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                String sql = "SELECT title, COUNT(recipe_id) as total FROM Suggestion s\n"
+                        + "INNER JOIN SuggestionRecipe sg\n"
+                        + "ON s.id = sg.suggestion_id\n"
+                        + "GROUP BY title";
+
+                PreparedStatement pst = cn.prepareStatement(sql);
+                ResultSet rs = pst.executeQuery();
+                if (rs != null) {
+                    while (rs.next()) {
+                        String title = rs.getString("title");
+                        int total = rs.getInt("total");
+
+                        map.put(title, total);
+                    }
+                }
+                rs.close();
+                pst.close();
+                cn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return map;
+    }
 
     public static int getSuggestionIdFromSuggestionRecipe(String title) {
         int result = 0;
@@ -44,7 +77,7 @@ public class SuggestionDAO {
                         result = rs.getInt("suggestion_id");
                     }
                 }
-                
+
                 pst.close();
                 cn.close();
             }
@@ -54,6 +87,29 @@ public class SuggestionDAO {
         return result;
     }
     
+    public static int deleteSuggestionRecipe(int suggestionId) {
+        int result = 0;
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                String sql = "DELETE FROM SuggestionRecipe \n"
+                        + "WHERE suggestion_id = ?";
+
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setInt(1, suggestionId);
+                result = pst.executeUpdate();
+                pst.close();
+                cn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     public static int deleteSuggestionRecipeByRecipeId(int suggestionId, int recipeId) {
         int result = 0;
         Connection cn = null;
@@ -149,6 +205,55 @@ public class SuggestionDAO {
             if (oldTitle.equalsIgnoreCase(title)) {
                 return true;
             }
+
+            pst.close();
+            cn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+    
+    public static int getTotalRecipeBySuggestion(int suggestionId) {
+        int result = 0;
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+            String sql = "SELECT COUNT(recipe_id) as total FROM SuggestionRecipe WHERE suggestion_id = ?";
+            PreparedStatement pst = cn.prepareStatement(sql);
+            pst.setInt(1, suggestionId);
+
+            ResultSet rs = pst.executeQuery();
+            if (rs != null) {
+                while (rs.next()) {
+                    result = rs.getInt("total");
+                }
+            }
+
+            pst.close();
+            cn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    public static int updateSuggestionRecipe(int suggestionId, int recipeId) {
+        int result = 0;
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+            String sql = "UPDATE SuggestionRecipe SET recipe_id = ?\n"
+                    + "WHERE suggestion_id = ?";
+            PreparedStatement pst = cn.prepareStatement(sql);
+            pst.setInt(1, recipeId);
+            pst.setInt(2, suggestionId);
+
+            pst.executeUpdate();
 
             pst.close();
             cn.close();
@@ -259,7 +364,7 @@ public class SuggestionDAO {
         return result;
     }
 
-    public static ArrayList<RecipeDTO> getAllRecipesIdBySuggestion(String suggestion) {
+    public static ArrayList<RecipeDTO> getAllRecipesBySuggestion(String suggestion) {
         ArrayList<RecipeDTO> result = new ArrayList<>();
         Connection cn = null;
 
@@ -267,7 +372,7 @@ public class SuggestionDAO {
             cn = DBUtils.getConnection();
 
             if (cn != null) {
-                String sql = "SELECT TOP 3 * FROM Recipe WHERE id IN (SELECT recipe_id FROM SuggestionRecipe sg\n"
+                String sql = "SELECT * FROM Recipe WHERE id IN (SELECT recipe_id FROM SuggestionRecipe sg\n"
                         + "JOIN Suggestion s\n"
                         + "ON sg.suggestion_id = s.id\n"
                         + "WHERE s.title = ? AND status = 3)";
@@ -309,6 +414,6 @@ public class SuggestionDAO {
     }
 
     public static void main(String[] args) {
-        System.out.println(SuggestionDAO.deleteSuggestion("Popular"));
+        System.out.println(SuggestionDAO.deleteSuggestionRecipe(4));
     }
 }

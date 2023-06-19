@@ -4,8 +4,10 @@
  */
 package Servlet;
 
+import Suggestion.SuggestionDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.TreeMap;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -31,7 +33,11 @@ public class ManageSuggestionServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            response.sendRedirect("manageSuggestion.jsp");
+            TreeMap<String, Integer> map = SuggestionDAO.getSuggestionMap();
+            
+            request.setAttribute("suggestionMap", map);
+            
+            request.getRequestDispatcher("manageSuggestion.jsp").forward(request, response);
         }
     }
 

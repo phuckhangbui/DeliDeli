@@ -19,7 +19,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author Admin
  */
-public class FilterSuggestionServlet extends HttpServlet {
+public class UpdateSuggestionServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,18 +36,41 @@ public class FilterSuggestionServlet extends HttpServlet {
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             HttpSession session = request.getSession();
-            String selectedSuggestion = request.getParameter("suggestion");
-            
-            ArrayList<RecipeDTO> suggestionRecipeList = SuggestionDAO.getAllRecipesBySuggestion(selectedSuggestion);
-            
+
+            String suggestion = request.getParameter("suggestion");
+            String txtUserId = request.getParameter("txtUserId");
+            ArrayList<RecipeDTO> customSuggestionList = (ArrayList<RecipeDTO>) session.getAttribute("customSuggestionList");
+
+//            boolean check = SuggestionDAO.checkSuggestionExist(suggestion);
+//            if (check) {
+//                request.setAttribute("titleExist", "Suggestion title is already existed.");
+//                request.getRequestDispatcher("createSuggestion.jsp").forward(request, response);
+//                return;
+//            }   
+            int suggestionId = SuggestionDAO.getSuggestionIdFromSuggestionRecipe(suggestion);
+
+            int totalRecipeOldSuggestion = SuggestionDAO.getTotalRecipeBySuggestion(suggestionId);
+
+            if (customSuggestionList.size() != totalRecipeOldSuggestion) {
+
+                SuggestionDAO.deleteSuggestionRecipe(suggestionId);
+                
+                SuggestionDAO.deleteSuggestion(suggestion);
+                
+                int newSuggestionId = SuggestionDAO.insertSuggestion(suggestion, new Integer(txtUserId));
+
+                for (RecipeDTO recipe : customSuggestionList) {
+                    SuggestionDAO.insertSuggestionList(newSuggestionId, recipe.getId());
+                }
+            } else {
+                for (RecipeDTO recipe : customSuggestionList) {
+                    SuggestionDAO.updateSuggestionRecipe(suggestionId, recipe.getId());
+                }
+            }
             session.removeAttribute("customSuggestionList");
-            request.setAttribute("selectedSuggestion", selectedSuggestion);
-            request.setAttribute("suggestionRecipeList", suggestionRecipeList);
+
             request.getRequestDispatcher("ManageSuggestionServlet").forward(request, response);
-            
-//            for (RecipeDTO recipeDTO : suggestionRecipeList) {
-//                out.println(recipeDTO);
-//            }
+
         }
     }
 

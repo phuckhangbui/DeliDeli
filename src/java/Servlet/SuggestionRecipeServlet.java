@@ -40,7 +40,7 @@ public class SuggestionRecipeServlet extends HttpServlet {
             HttpSession session = request.getSession();
             session.setAttribute("selectedSuggestion", suggestion);
 
-            request.getRequestDispatcher("suggestionRecipe.jsp").forward(request, response);
+            request.getRequestDispatcher("ManageSuggestionServlet").forward(request, response);
         }
     }
 

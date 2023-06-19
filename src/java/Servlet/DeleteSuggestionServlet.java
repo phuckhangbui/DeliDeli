@@ -4,22 +4,19 @@
  */
 package Servlet;
 
-import Recipe.RecipeDTO;
 import Suggestion.SuggestionDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author Admin
  */
-public class FilterSuggestionServlet extends HttpServlet {
+public class DeleteSuggestionServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,19 +32,15 @@ public class FilterSuggestionServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            HttpSession session = request.getSession();
-            String selectedSuggestion = request.getParameter("suggestion");
+            String suggestion = request.getParameter("suggestion");
+
+            int suggestionId = SuggestionDAO.getSuggestionIdFromSuggestionRecipe(suggestion);
+
+            SuggestionDAO.deleteSuggestionRecipe(suggestionId);
+
+            SuggestionDAO.deleteSuggestion(suggestion);
             
-            ArrayList<RecipeDTO> suggestionRecipeList = SuggestionDAO.getAllRecipesBySuggestion(selectedSuggestion);
-            
-            session.removeAttribute("customSuggestionList");
-            request.setAttribute("selectedSuggestion", selectedSuggestion);
-            request.setAttribute("suggestionRecipeList", suggestionRecipeList);
             request.getRequestDispatcher("ManageSuggestionServlet").forward(request, response);
-            
-//            for (RecipeDTO recipeDTO : suggestionRecipeList) {
-//                out.println(recipeDTO);
-//            }
         }
     }
 

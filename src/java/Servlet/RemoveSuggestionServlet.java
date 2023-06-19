@@ -40,13 +40,14 @@ public class RemoveSuggestionServlet extends HttpServlet {
             HttpSession session = request.getSession();
             String recipeId = request.getParameter("id");
             String tag = request.getParameter("tag");
-            String selectedSuggestion = request.getParameter("selectedSuggestion");
-
+            String update = request.getParameter("update");
+            String selectedSuggestion = request.getParameter("suggestion");
+            
             if (tag == null) {
                 RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(Integer.parseInt(recipeId));
-
+                
                 ArrayList<RecipeDTO> customSuggestionList = (ArrayList<RecipeDTO>) session.getAttribute("customSuggestionList");
-
+                
                 Iterator<RecipeDTO> iterator = customSuggestionList.iterator();
                 while (iterator.hasNext()) {
                     RecipeDTO existingRecipe = iterator.next();
@@ -55,23 +56,29 @@ public class RemoveSuggestionServlet extends HttpServlet {
                         break;
                     }
                 }
-
+                
                 session.setAttribute("customSuggestionList", customSuggestionList);
-                request.getRequestDispatcher("suggestionRecipe.jsp").forward(request, response);
+                if (update == null) {
+                    request.getRequestDispatcher("createSuggestion.jsp").forward(request, response);
+                } else {
+                    request.getRequestDispatcher("updateSuggestion.jsp?suggestion=" + selectedSuggestion + "&update=" + update).forward(request, response);
+//                    response.sendRedirect("updateSuggestion.jsp?suggestion=" + selectedSuggestion);
+                }
             } else {
                 //ArrayList<RecipeDTO> suggestionRecipeList = (ArrayList<RecipeDTO>) request.getAttribute("suggestionRecipeList");
                 int suggestionId = SuggestionDAO.getSuggestionIdFromSuggestionRecipe(selectedSuggestion);
-
+                
                 int result = SuggestionDAO.deleteSuggestionRecipeByRecipeId(suggestionId, new Integer(recipeId));
-
+                
                 if (result > 0) {
-                    ArrayList<RecipeDTO> suggestionRecipeList = SuggestionDAO.getAllRecipesIdBySuggestion(selectedSuggestion);
-
+                    ArrayList<RecipeDTO> suggestionRecipeList = SuggestionDAO.getAllRecipesBySuggestion(selectedSuggestion);
+                    
                     if (suggestionRecipeList.isEmpty()) {
                         SuggestionDAO.deleteSuggestion(selectedSuggestion);
                     }
-                    session.setAttribute("suggestionRecipeList", suggestionRecipeList);
-                    request.getRequestDispatcher("suggestionRecipe.jsp").forward(request, response);
+                    request.setAttribute("selectedSuggestion", selectedSuggestion);
+                    request.setAttribute("suggestionRecipeList", suggestionRecipeList);
+                    request.getRequestDispatcher("ManageSuggestionServlet").forward(request, response);
                 }
             }
 

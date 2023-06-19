@@ -181,7 +181,7 @@
                 </div>
                 <div class="row recommendation-content">
                     <%
-                        ArrayList<RecipeDTO> suggestionRecipeList = SuggestionDAO.getAllRecipesIdBySuggestion(selectedSuggestion);
+                        ArrayList<RecipeDTO> suggestionRecipeList = SuggestionDAO.getAllRecipesBySuggestion(selectedSuggestion);
                         if (customSuggestionList == null && suggestionRecipeList != null) {
                             for (RecipeDTO r : suggestionRecipeList) {
                     %>

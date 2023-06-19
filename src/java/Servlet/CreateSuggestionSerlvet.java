@@ -44,7 +44,7 @@ public class CreateSuggestionSerlvet extends HttpServlet {
             boolean check = SuggestionDAO.checkSuggestionExist(title);
             if (check) {
                 request.setAttribute("titleExist", "Suggestion title is already existed.");
-                request.getRequestDispatcher("suggestionRecipe.jsp").forward(request, response);
+                request.getRequestDispatcher("createSuggestion.jsp").forward(request, response);
                 return;
             }   
             
@@ -56,7 +56,7 @@ public class CreateSuggestionSerlvet extends HttpServlet {
             
             session.removeAttribute("customSuggestionList");
             
-            request.getRequestDispatcher("suggestionRecipe.jsp").forward(request, response);
+            request.getRequestDispatcher("ManageSuggestionServlet").forward(request, response);
         }
     }
 

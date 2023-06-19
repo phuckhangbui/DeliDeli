@@ -23,15 +23,6 @@ import javax.servlet.http.HttpSession;
  */
 public class AddSuggestionSerlvet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -40,6 +31,15 @@ public class AddSuggestionSerlvet extends HttpServlet {
             //String[] customSuggestionListValues = request.getParameterValues("customSuggestionList");
             HttpSession session = request.getSession();
             String id = request.getParameter("id");
+            String update = request.getParameter("update");
+            String suggestion = request.getParameter("suggestion");
+            String link = "";
+
+            if (update == null) {
+                link = "createSuggestion.jsp";
+            } else {
+                link = "updateSuggestion.jsp?suggestion=" + suggestion;
+            }
 
             RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(new Integer(id));
 
@@ -57,15 +57,15 @@ public class AddSuggestionSerlvet extends HttpServlet {
 
                 if (isDuplicate) {
                     request.setAttribute("error", "Recipe already added");
-                    request.getRequestDispatcher("suggestionRecipe.jsp").forward(request, response);
-                    return; 
+                    request.getRequestDispatcher(link).forward(request, response);
+                    return;
                 }
             }
 
             customSuggestionList.add(recipe);
 
             session.setAttribute("customSuggestionList", customSuggestionList);
-            request.getRequestDispatcher("suggestionRecipe.jsp").forward(request, response);
+            request.getRequestDispatcher(link).forward(request, response);
         }
     }
 
