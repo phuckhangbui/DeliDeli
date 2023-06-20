@@ -207,6 +207,7 @@
                                 <select name="role">
                                     <option value="user">User</option>
                                     <option value="admin">Admin</option>
+                                    <option value="moderator">Moderator</option>
                                     <option value="all">All</option>
                                 </select>
                                 <button type="submit" value="Filter" class="filter-table-button">Filter</button>
@@ -255,11 +256,11 @@
                                             <input type="hidden" value="<%= currentRole%>" name="currentRole">
                                             <input type="hidden" value="<%= tag%>" name="tag">
                                             <%
-                                                if (tmp[u.getStatus()].equals("Deactivated")) {
+                                                if (tmp[u.getStatus()].equals("Deactivated") && user.getRole() != 1 && u.getRole() != 2) {
                                             %>
                                             <button type="submit" value="activateAcc" name="action" >Activate</button>
                                             <%
-                                            } else {
+                                            } else if (user.getRole() != 1 && u.getRole() != 2) {
                                             %>
                                             <button type="submit" value="deactivateAcc" name="action">Deactivate</button>
                                             <%

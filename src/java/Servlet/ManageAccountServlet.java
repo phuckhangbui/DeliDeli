@@ -70,6 +70,15 @@ public class ManageAccountServlet extends HttpServlet {
                     endPage++;
                 }
             }
+            else if (role.equals("moderator")) {
+                listAcc = AdminDAO.pagingAccount(new Integer(index), "moderator");
+                total = UserDAO.getTotalAccountsBasedOnRole("moderator");
+                endPage = total / 10;
+                if (total % 10 != 0) {
+                    endPage++;
+                }
+            }
+            
             request.setAttribute("tag", index);
             request.setAttribute("endPage", endPage);
             request.setAttribute("listAcc", listAcc);

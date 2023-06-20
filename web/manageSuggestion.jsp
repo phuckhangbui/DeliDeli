@@ -220,7 +220,15 @@
                                             <input type="hidden" name="suggestion" value="<%= key%>">
                                             <button type="submit" name="action" value="suggestionRecipe">Choose</button>
                                             <button><a href="updateSuggestion.jsp?suggestion=<%= key%>">Edit</a></button>
+                                            <%
+                                                if (map.size() > 1) {
+                                            %>
                                             <button type="submit" name="action" value="deleteSuggestion">Delete</button>
+                                            <%
+                                                } else if (map.size() == 1) {
+                                                    session.removeAttribute("selectedSuggestion");
+                                                }
+                                            %>
                                         </form>
                                     </td>
                                 </tr>
