@@ -185,7 +185,7 @@
                         </div>
 
                         <%
-                            String[] tmp = {"", "", "Pending", "Approved"};
+                            String[] tmp = {"", "", "Pending", "Approved", "Rejected"};
                         %>
 
                         <%

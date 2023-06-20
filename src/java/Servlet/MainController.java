@@ -107,6 +107,9 @@ public class MainController extends HttpServlet {
                     case "confirmRecipe":
                         url = "ConfirmRecipeServlet";
                         break;
+                    case "rejectRecipe":
+                        url = "RejectRecipeServlet";
+                        break;
                     case "searchAccount":
                         url = "SearchAccountServlet";
                         break;

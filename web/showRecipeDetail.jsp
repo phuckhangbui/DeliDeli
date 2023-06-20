@@ -329,7 +329,7 @@
                                     <form action="MainController" method="post" class="recipe-table-button">
                                         <input type="hidden" value="<%= recipe.getId()%>" name="recipeId">
                                         <input type="hidden" name="admin" value="admin">
-                                        <button type="submit" value="deleteRecipe" name="action" class="recipe-table-button-delete">Delete</button>
+                                        <button type="submit" value="rejectRecipe" name="action" class="recipe-table-button-delete">Reject</button>
                                         <%
                                             if (recipe.getStatus() == 2) {
                                         %>

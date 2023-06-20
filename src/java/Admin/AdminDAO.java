@@ -352,6 +352,28 @@ public class AdminDAO {
 
         return result;
     }
+    
+    public static int rejectRecipe(int id) {
+        int result = 0;
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                String sql = "UPDATE Recipe SET [status] = 4 WHERE id = ?";
+
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setInt(1, id);
+                result = pst.executeUpdate();
+                pst.close();
+                cn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 
     public static int confirmRecipe(int id) {
         int result = 0;
