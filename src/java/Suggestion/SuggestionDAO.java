@@ -11,20 +11,14 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.TreeMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
  * @author Admin
  */
 public class SuggestionDAO {
-
-    private static final String DATE_FORMAT = "yyyy-MM-dd";
 
     public static TreeMap<String, Integer> getSuggestionMap() {
         TreeMap<String, Integer> map = new TreeMap<String, Integer>();
@@ -170,13 +164,7 @@ public class SuggestionDAO {
             pst.setInt(2, recipeId);
 
             result = pst.executeUpdate();
-//            ResultSet generatedKeys = pst.getGeneratedKeys();
-//
-//            if (generatedKeys.next()) {
-//                generatedId = generatedKeys.getInt(1);
-//            }
-//
-//            generatedKeys.close();
+
             pst.close();
             cn.close();
         } catch (Exception e) {
@@ -291,44 +279,6 @@ public class SuggestionDAO {
         }
 
         return generatedId;
-    }
-
-    public static RecipeDTO fromString(String string) {
-        String[] parts = string.split(",");
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
-
-        RecipeDTO recipe = new RecipeDTO();
-        recipe.setId(Integer.parseInt(parts[0]));
-        recipe.setTitle(parts[1]);
-        recipe.setDescription(parts[2]);
-        recipe.setPrep_time(Integer.parseInt(parts[3]));
-        recipe.setCook_time(Integer.parseInt(parts[4]));
-        recipe.setServings(Integer.parseInt(parts[5]));
-
-        try {
-            java.util.Date utilDate = dateFormat.parse(parts[6]);
-            java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-            recipe.setCreate_at(sqlDate);
-        } catch (ParseException ex) {
-            Logger.getLogger(SuggestionDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        try {
-            java.util.Date utilDate = dateFormat.parse(parts[7]);
-            java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-            recipe.setUpdate_at(sqlDate);
-        } catch (ParseException ex) {
-            Logger.getLogger(SuggestionDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        recipe.setCuisine_id(Integer.parseInt(parts[8]));
-        recipe.setCategory_id(Integer.parseInt(parts[9]));
-        recipe.setUser_id(Integer.parseInt(parts[10]));
-        recipe.setLevel_id(Integer.parseInt(parts[11]));
-        recipe.setStatus(Integer.parseInt(parts[12]));
-
-        return recipe;
     }
 
     public static ArrayList<String> getAllSuggestion() {
