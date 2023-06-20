@@ -506,11 +506,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                             </button>
                             <span></span>
                             <!--Goi MainController?action=deleteRecipe  -->
-                            <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#deleteModal">
                                 DELETE
                             </button>
                         </div>
-                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="popup-confirm">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
@@ -522,12 +522,43 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, I changed my mind</button>
-                                            <button type="button" class="btn popup-confirm-btn">Yes, delete it</button>
+                                            <button type="button" class="btn btn-danger" id="deleteButton">Yes, delete it</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+                        <script>
+                            var deleteButton = document.getElementById("deleteButton");
+                            deleteButton.addEventListener("click", function () {
+                                // Perform your deletion logic here
+                                var recipeId = '<%= recipe.getId()%>'; // Replace with the actual recipe ID
+                                var userId = '<%= user.getId()%>'; // Replace with the actual user ID
+
+                                // Send an AJAX request to the servlet for handling the deletion
+                                var xhr = new XMLHttpRequest();
+                                xhr.open("POST", "MainController", true);
+                                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                                xhr.onreadystatechange = function () {
+                                    if (xhr.readyState === 4 && xhr.status === 200) {
+                                        // Handle the response from the server
+                                        console.log(xhr.responseText);
+
+                                        // Hide the modal
+                                        var modal = document.getElementById("deleteModal");
+                                        var modalInstance = bootstrap.Modal.getInstance(modal);
+                                        modalInstance.hide();
+
+                                        // Redirect to home.jsp
+                                        window.location.href = "home.jsp";
+                                    }
+                                };
+                                xhr.send("action=deleteRecipe&recipeId=" + recipeId + "&userId=" + userId);
+                            });
+
+                        </script>
+
                     </form>
                 </div>
             </div>

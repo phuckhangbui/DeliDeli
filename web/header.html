@@ -12,7 +12,7 @@
 
     <!--      CSS         -->
     <link rel="stylesheet" href="./styles/userStyle.css">
-    <link rel="stylesheet" href="./styles/notificationStype.css">
+    <link rel="stylesheet" href="./styles/notificationStyle.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -55,27 +55,24 @@
                             </div>
                             <div class="notification-content">
 
-                                <a href="" class="a-notification">
+                                <button type="button" class="a-notification" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal">
                                     <div class="notification-first-row"><img
                                             src="assets/delideli-website-favicon-color.png" alt="img">
                                         <p>Delideli</p>
                                     </div>
                                     <div class="text">
-
-                                        <p>Your recipe is not suitable for publicizing thag tri cho dien hahahahah</p>
+                                        <p>Your recipe is not suitable for publicizing thag tri cho dien hahahahah
+                                        </p>
                                     </div>
-                                </a> <!-- Add closing tag for <a> element -->
+                                    <p class="date">
+                                        2 hour ago
+                                    </p>
+                                </button> <!-- Add closing tag for <a> element -->
 
-                                <a href="" class="a-notification">
-                                    <div class="notification-first-row"><img
-                                            src="assets/delideli-website-favicon-color.png" alt="img">
-                                        <p>Delideli</p>
-                                    </div>
-                                    <div class="text">
 
-                                        <p>Your recipe is not suitable for publicizing</p>
-                                    </div>
-                                </a> <!-- Add closing tag for <a> element -->
+
+
 
 
                             </div>
@@ -86,22 +83,43 @@
 
 
 
+
                 <script>
                     var dropdownContent = document.getElementById("dropdownContent");
                     var dropbtnNotification = document.querySelector(".dropbtn-notification");
+                    var notificationButton = document.querySelector(".a-notification");
 
                     // Toggle dropdown content
                     function toggleDropdown() {
                         dropdownContent.style.display = dropdownContent.style.display === "block" ? "none" : "block";
                     }
 
-                    // Close dropdown content when clicking outside
-                    document.addEventListener("click", function (event) {
+                    // Open modal and prevent closing the dropdown
+                    notificationButton.addEventListener("click", function (event) {
+                        event.stopPropagation(); // Prevent the click event from bubbling up to the dropdown container
+                    });
+
+                    // Close dropdown content when clicking outside, unless a modal is open
+                    document.addEventListener("mousedown", function (event) {
                         var targetElement = event.target;
-                        if (targetElement !== dropbtnNotification && !dropbtnNotification.contains(targetElement)) {
-                            dropdownContent.style.display = "none";
+                        var modals = document.querySelectorAll(".modal");
+                        var isModalOpen = false;
+                        var isDropdownTarget = targetElement === dropbtnNotification || dropbtnNotification.contains(targetElement);
+                        var isNotificationTarget = targetElement.classList.contains("a-notification") ||
+                            targetElement.closest(".a-notification") !== null;
+
+                        if (!isDropdownTarget && !isNotificationTarget) {
+                            modals.forEach(function (modal) {
+                                if (modal.classList.contains("show")) {
+                                    isModalOpen = true;
+                                }
+                            });
+                            if (!isModalOpen) {
+                                dropdownContent.style.display = "none";
+                            }
                         }
                     });
+
                 </script>
 
 
@@ -154,9 +172,72 @@
         </div>
     </div>
 
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="deletePlanModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title fs-5" id="exampleModalLabel">
+                        <p class="modal-title-text">Thang tri cho dien haha haha aha a ha aha ah
+                            aha
+                            ah a aha a aha ha</p>
+                        <p class="modal-title-date">2 hour ago</p>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-body-content">content content content content content content content content
+                        content
+                        content
+                        content content content content
+                        content content content content
+                    </div>
+
+                    <a href="link.html" class="modal-link">Click here</a>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
+    <!-- For admin reject form-->
 
+    <button type="button" class="btn-disapprove" data-bs-toggle="modal" data-bs-target="#disapprove">
+        Disapprove
+    </button>
+
+    <div class="modal fade" id="disapprove" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="deletePlanModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title fs-5" id="exampleModalLabel">
+                        <p class="modal-title-text">Thang tri cho dien haha haha aha a ha aha ah
+                            aha
+                            ah a aha a aha ha</p>
+                        <p class="modal-title-date">2 hour ago</p>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-body-content">content content content content content content content content
+                        content
+                        content
+                        content content content content
+                        content content content content
+                    </div>
+
+                    <a href="link.html" class="modal-link">Click here</a>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Disapprove</button>
+                    <button type="button" class="btn btn-success" data-bs-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
 
     <!--      Bootstrap for JS         -->

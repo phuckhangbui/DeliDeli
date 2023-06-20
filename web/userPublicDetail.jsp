@@ -42,10 +42,10 @@
                     <div class="col-md-3 user-profile-column-1">
                         <div class="user-profile-header">
                             <div>
-                                Setting
+                                Management
                             </div>
                             <p>
-                                Customize your profile
+                                Manage your account
                             </p>
                         </div>
                         <div class="user-profile-option">
@@ -80,6 +80,9 @@
                                 <img src="./assets/review-unchose.svg" alt="">
                                 My Reviews
                             </a>
+                                <a href="">
+                                    
+                                </a>
                         </div>
                     </div>
 
