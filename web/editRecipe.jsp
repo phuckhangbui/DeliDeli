@@ -510,6 +510,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                 DELETE
                             </button>
                         </div>
+                        
+                        <!-- modal -->
                         <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="popup-confirm">
                                 <div class="modal-dialog">

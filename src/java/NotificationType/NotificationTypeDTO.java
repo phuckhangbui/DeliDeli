@@ -19,4 +19,5 @@ public class NotificationTypeDTO {
     private int id;
     private String title;
     private String image;
+    private String type;
 }

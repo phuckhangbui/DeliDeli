@@ -99,10 +99,15 @@
                                         ArrayList<NotificationDTO> list = NotificationDAO.getNotificationList(user.getId());
                                         for (NotificationDTO notification : list) {
                                             NotificationTypeDTO type = NotificationTypeDAO.getNotificationType(notification.getNotification_type());
-
+                                            if(notification.is_read()){
+                                            
                                     %>
-                                    <button type="button" class="a-notification" data-bs-toggle="modal"
+                                    <button type="button" class="a-notification " data-bs-toggle="modal"
                                             data-bs-target="#<%= notification.getId()%>">
+                                        <% }else{ %>
+                                        <button type="button" class="a-notification notification-disable" data-bs-toggle="modal"
+                                            data-bs-target="#<%= notification.getId()%>">
+                                        <% }%>
                                         <div class="notification-first-row"><img
                                                 src="assets/delideli-website-favicon-color.png" alt="img">
                                             <p><%= type.getTitle()%></p>
@@ -372,8 +377,29 @@
                     </div>
                     <div class="modal-body">
                         <div class="modal-body-content"><%= notification.getDescription()%></div>
+                        <%
+                            switch (type.getId()) {
+                                case 1:%>
+                        <a href="editRecipe.jsp?recipeId=<%=notification.getRecipe_id()%>" class="modal-link">Edit recipe</a>
 
-                        <a href="link.html" class="modal-link">Click here</a>
+                        <%          break;
+                                case 2:%>
+                        <a href="MainController?action=getRecipeDetailById&id=<%=notification.getRecipe_id()%>" class="modal-link">View recipe</a>
+
+                        <%          break;
+                                case 3: %>
+                        <a href="MainController?action=getRecipeDetailById&id=<%=notification.getRecipe_id()%>" class="modal-link">View recipe</a>
+
+                        <%          break;
+                                case 4: %> 
+                        <a href="#" class="modal-link">View plan</a>
+                        <%
+                                break;
+                                case 5:
+                                break;
+                                
+                            }
+                        %>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-success" data-bs-dismiss="modal">Close</button>
@@ -381,7 +407,8 @@
                 </div>
             </div>
         </div>
-        <% }}%>
+        <% }
+            }%>
 
 
         <!--      Bootstrap for JS         -->

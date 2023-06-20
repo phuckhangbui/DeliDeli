@@ -35,7 +35,8 @@ public class NotificationTypeDAO {
                     while (rs.next()) {
                         String title = rs.getString("title");
                         String image = rs.getString("image");
-                        type = new NotificationTypeDTO(typeId, title, image);
+                        String type_name = rs.getString("type");
+                        type = new NotificationTypeDTO(typeId, title, image, type_name);
                     }
                 }
                 rs.close();
