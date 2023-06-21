@@ -78,6 +78,7 @@
                                     <a href="privateRecipeManagement.jsp?userId=<%= userId%>">Private Recipes</a>
                                     <a href="pendingRecipeManagement.jsp?userId=<%= userId%>">Pending Recipes</a>
                                     <a href="publicRecipeManagement.jsp?userId=<%= userId%>">Public Recipes</a>
+                                    <a href="rejectedRecipeManagement.jsp?userId=<%= userId%>">Rejected Recipes</a>
                                 </div>
                             </div>
                             <a href="userReviewManagement.jsp?userId=<%= userId%>">
@@ -88,7 +89,7 @@
                     </div>
 
                     <%
-                        ArrayList<RecipeDTO> recipeList = RecipeDAO.getPrivateRecipeByUserId(user.getId());
+                        ArrayList<RecipeDTO> recipeList = RecipeDAO.getRecipeByUserIdAndType(user.getId(),1);
                     %>
 
                     <div class="col-md-5 user-profile-column-2">
@@ -107,7 +108,7 @@
                             <div  class="col-md-6 user-profile-recipe-post">
                                 <a href="MainController?action=getRecipeDetailById&id=<%= r.getId()%>"
                                    class="user-profile-recipe-post-picture" data-page="editRecipe.jsp?recipeId=<%=r.getId()%>">
-                                    <img src="<%= RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath()%>" alt="">
+                                    <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath()%>" alt="">
                                 </a>
 
                                 <div>

@@ -142,7 +142,7 @@
                                 <option value="admin">Admin</option>
                                 <option value="all">All</option>
                             </select>
-                            <button type="submit" value="Filter">Filter</button>
+                            <button type="submit" value="Filter" class="filter-table-button">Filter</button>
                         </form>
                     </div>
 

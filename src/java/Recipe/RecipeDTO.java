@@ -34,11 +34,10 @@ public class RecipeDTO {
     private int category_id;
     private int user_id;
     private int level_id;
-    private int diet_id;
     private int status;
 
 
-    public RecipeDTO(String title, String description, int prep_time, int cook_time, int servings, Date create_at, Date update_at, int cuisine_id, int category_id, int user_id, int level_id, int diet_id, int status) {
+    public RecipeDTO(String title, String description, int prep_time, int cook_time, int servings, Date create_at, Date update_at, int cuisine_id, int category_id, int user_id, int level_id, int status) {
         this.title = title;
         this.description = description;
         this.prep_time = prep_time;
@@ -50,7 +49,6 @@ public class RecipeDTO {
         this.category_id = category_id;
         this.user_id = user_id;
         this.level_id = level_id;
-        this.diet_id = diet_id;
         this.status = status;
     }
 

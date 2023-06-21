@@ -4,23 +4,21 @@
  */
 package Servlet;
 
-import Direction.DirectionDAO;
-import IngredientDetail.IngredientDetailDAO;
-import Recipe.RecipeDAO;
-import User.UserDTO;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author khang
  */
-public class DeleteRecipeServlet extends HttpServlet {
+public class ServletImageLoader extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,18 +34,15 @@ public class DeleteRecipeServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            String admin = request.getParameter("admin");
-            HttpSession session = request.getSession();
-            UserDTO user =(UserDTO) session.getAttribute("user");
-            
-            int recipeId = Integer.parseInt(request.getParameter("recipeId"));
-            int userId = Integer.parseInt(request.getParameter("userId"));
-
-            if(admin != null || user != null){
-                DirectionDAO.deleteDirection(recipeId);
-                IngredientDetailDAO.deleteIngredientDetails(recipeId);
-                RecipeDAO.deleteRecipe(recipeId);
-            }
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet ServletImageLoader</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet ServletImageLoader at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
     }
 
@@ -61,9 +56,39 @@ public class DeleteRecipeServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Get the identifier parameter from the request
+        String identifier = request.getParameter("identifier");
+
+        if (identifier == null || identifier.isEmpty()) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing identifier parameter");
+            return;
+        }
+
+        // Get the absolute file path based on the identifier (assuming images are stored in a specific directory)
+        String imagePath = "C:/project-swp/pictures/" + identifier;
+
+        File imageFile = new File(imagePath);
+
+        if (!imageFile.exists()) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Image not found");
+            return;
+        }
+
+        // Set the content type based on the image file's MIME type (you can customize this if needed)
+        response.setContentType(getServletContext().getMimeType(imagePath));
+        response.setContentLength((int) imageFile.length());
+
+        try (FileInputStream in = new FileInputStream(imageFile);
+             OutputStream out = response.getOutputStream()) {
+
+            // Read the image file and write its contents to the response output stream
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = in.read(buffer)) != -1) {
+                out.write(buffer, 0, bytesRead);
+            }
+        }
     }
 
     /**

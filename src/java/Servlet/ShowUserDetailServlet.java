@@ -43,7 +43,7 @@ public class ShowUserDetailServlet extends HttpServlet {
             UserDTO user = AdminDAO.getAccountByUserName(userName);
             UserDetailDTO userDetail = UserDetailDAO.getUserDetailByUserId(user.getId());
             
-            ArrayList<RecipeDTO> userRecipe = RecipeDAO.getPublicRecipeByUserId(user.getId());
+            ArrayList<RecipeDTO> userRecipe = RecipeDAO.getRecipeByUserIdAndType(user.getId(), 3);
             
             request.setAttribute("user", user);
             request.setAttribute("userDetail", userDetail);

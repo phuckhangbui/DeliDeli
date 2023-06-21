@@ -76,6 +76,7 @@
                                     <a href="privateRecipeManagement.jsp?userId=<%= userId%>">Private Recipes</a>
                                     <a href="pendingRecipeManagement.jsp?userId=<%= userId%>">Pending Recipes</a>
                                     <a href="publicRecipeManagement.jsp?userId=<%= userId%>">Public Recipes</a>
+                                    <a href="rejectedRecipeManagement.jsp?userId=<%= userId%>">Rejected Recipes</a>
                                 </div>
                             </div>
                             <a href="userReviewManagement.jsp?userId=<%= userId%>">

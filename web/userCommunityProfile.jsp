@@ -216,7 +216,7 @@
                         %>
                         <a href="MainController?action=getRecipeDetailById&id=<%= r.getId()%>" class="col-md-4 recommendation-content-post">
                             <div class="recommendation-content-picture">
-                                <img src="<%= RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath()%>" alt="">
+                                <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath()%>" alt="">
                             </div>
                             <div>
                                 <p><%= RecipeDAO.getCategoryByRecipeId(r.getId())%></p>
@@ -236,7 +236,7 @@
                         <%       } else {%>
                         <a href="MainController?action=getRecipeDetailById&id=<%= r.getId()%>" class="col-md-4 recommendation-content-post hidden">
                             <div class="search-result-content-picture">
-                                <img src="<%= RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath()%>" alt="">
+                                <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath()%>" alt="">
                             </div>
                             <div>
                                 <p><%= RecipeDAO.getCategoryByRecipeId(r.getId())%></p>
@@ -356,7 +356,7 @@
                         %>
                         <a href="MainController?action=getRecipeDetailById&id=<%= recipe.getId()%>&activeScroll=true" class="col-md-3 user-community-recipe-review-card">
                             <div class="user-community-recipe-review-card-picture">
-                                <img src="<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
+                                <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
                             </div>
                             <div class="user-community-recipe-review-card-title">
                                 <p><%= recipe.getTitle()%></p>
@@ -379,7 +379,7 @@
 
                         <a href="MainController?action=getRecipeDetailById&id=<%= recipe.getId()%>&activeScroll=true" class="col-md-3 user-community-recipe-review-card hidden">
                             <div class="user-community-recipe-review-card-picture">
-                                <img src="<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
+                                <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
                             </div>
                             <div class="user-community-recipe-review-card-title">
                                 <p><%= recipe.getTitle()%></p>

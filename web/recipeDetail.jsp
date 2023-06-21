@@ -45,10 +45,10 @@
         %>
 
         <%@include file="header.jsp" %>
-        
-        
-        
-        
+
+
+
+
         <!--        Recipe Detail         -->
         <div class="blank-background">
             <div class="container ">
@@ -94,7 +94,7 @@
                         </button>
                     </div>
                     <div class="recipe-detail-main-pic">
-                        <img src="<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
+                        <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
                     </div>
                     <div class="recipe-detail-info-overview">
                         <div class="recipe-detail-info-overview-content">
@@ -148,6 +148,15 @@
 
                     <div class="recipe-detail-info-ingredients">
                         <div class="recipe-detail-info-header">
+                            Description
+                        </div>
+                        <p>
+                            <%= recipe.getDescription()%>
+                        </p>
+                    </div>
+
+                    <div class="recipe-detail-info-ingredients">
+                        <div class="recipe-detail-info-header">
                             Ingredients
                         </div>
                         <ul>
@@ -181,7 +190,7 @@
 
                     %>
                     <div class="recipe-detail-secondary-pic">
-                        <img src="<%= RecipeDAO.getImageByRecipeId(recipe.getId()).getImgPath()%>" alt="">
+                        <img src="ServletImageLoader?identifier=<%= RecipeDAO.getImageByRecipeId(recipe.getId()).getImgPath()%>" alt="">
                     </div>
                     <% } catch (Exception e) {
 

@@ -244,12 +244,11 @@ public class RecipeDAO {
                         int category_id = rs.getInt("category_id");
                         int user_id = rs.getInt("user_id");
                         int level_id = rs.getInt("level_id");
-                        int diet_id = rs.getInt("diet_id");
                         int status = rs.getInt("status");
 
                         recipe = new RecipeDTO(id, title, description, prep_time,
                                 cook_time, servings, create_at, update_at, cuisin_id,
-                                category_id, user_id, level_id, diet_id, status);
+                                category_id, user_id, level_id, status);
 
                     }
                 }
@@ -291,12 +290,11 @@ public class RecipeDAO {
                         int category_id = rs.getInt("category_id");
                         int user_id = rs.getInt("user_id");
                         int level_id = rs.getInt("level_id");
-                        int diet_id = rs.getInt("diet_id");
                         int status = rs.getInt("status");
 
                         RecipeDTO recipe = new RecipeDTO(id, title, description, prep_time,
                                 cook_time, servings, create_at, update_at, cuisin_id,
-                                category_id, user_id, level_id, diet_id, status);
+                                category_id, user_id, level_id, status);
                         result.add(recipe);
                     }
                 }
@@ -311,7 +309,7 @@ public class RecipeDAO {
         return result;
     }
 
-    public static ArrayList<RecipeDTO> getPublicRecipeByUserId(int userId) {
+    public static ArrayList<RecipeDTO> getRecipeByUserIdAndType(int userId, int status) {
         ArrayList<RecipeDTO> result = new ArrayList<RecipeDTO>();
         Connection cn = null;
 
@@ -321,11 +319,12 @@ public class RecipeDAO {
             if (cn != null) {
                 String sql = "SELECT *\n"
                         + "FROM Recipe\n"
-                        + "WHERE user_id = ? AND status = 3\n"
+                        + "WHERE user_id = ? AND status = ?\n"
                         + "ORDER BY COALESCE(update_at, create_at) DESC, create_at DESC";
 
                 PreparedStatement pst = cn.prepareStatement(sql);
                 pst.setInt(1, userId);
+                pst.setInt(2, status);
                 ResultSet rs = pst.executeQuery();
                 if (rs != null) {
                     while (rs.next()) {
@@ -341,12 +340,11 @@ public class RecipeDAO {
                         int category_id = rs.getInt("category_id");
                         int user_id = rs.getInt("user_id");
                         int level_id = rs.getInt("level_id");
-                        int diet_id = rs.getInt("diet_id");
-                        int status = rs.getInt("status");
+                        status = rs.getInt("status");
 
                         RecipeDTO recipe = new RecipeDTO(id, title, description, prep_time,
                                 cook_time, servings, create_at, update_at, cuisin_id,
-                                category_id, user_id, level_id, diet_id, status);
+                                category_id, user_id, level_id, status);
                         result.add(recipe);
                     }
                 }
@@ -360,106 +358,8 @@ public class RecipeDAO {
 
         return result;
     }
-
-    public static ArrayList<RecipeDTO> getPendingRecipeByUserId(int userId) {
-        ArrayList<RecipeDTO> result = new ArrayList<RecipeDTO>();
-        Connection cn = null;
-
-        try {
-            cn = DBUtils.getConnection();
-
-            if (cn != null) {
-                String sql = "SELECT *\n"
-                        + "FROM Recipe\n"
-                        + "WHERE user_id = ? AND status = 2\n"
-                        + "ORDER BY COALESCE(update_at, create_at) DESC, create_at DESC";
-
-                PreparedStatement pst = cn.prepareStatement(sql);
-                pst.setInt(1, userId);
-                ResultSet rs = pst.executeQuery();
-                if (rs != null) {
-                    while (rs.next()) {
-                        int id = rs.getInt("id");
-                        String title = rs.getString("title");
-                        String description = rs.getString("description");
-                        int prep_time = rs.getInt("prep_time");
-                        int cook_time = rs.getInt("cook_time");
-                        int servings = rs.getInt("servings");
-                        Date create_at = rs.getDate("create_at");
-                        Date update_at = rs.getDate("update_at");
-                        int cuisin_id = rs.getInt("cuisine_id");
-                        int category_id = rs.getInt("category_id");
-                        int user_id = rs.getInt("user_id");
-                        int level_id = rs.getInt("level_id");
-                        int diet_id = rs.getInt("diet_id");
-                        int status = rs.getInt("status");
-
-                        RecipeDTO recipe = new RecipeDTO(id, title, description, prep_time,
-                                cook_time, servings, create_at, update_at, cuisin_id,
-                                category_id, user_id, level_id, diet_id, status);
-                        result.add(recipe);
-                    }
-                }
-                rs.close();
-                pst.close();
-                cn.close();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return result;
-    }
-
-    public static ArrayList<RecipeDTO> getPrivateRecipeByUserId(int userId) {
-        ArrayList<RecipeDTO> result = new ArrayList<RecipeDTO>();
-        Connection cn = null;
-
-        try {
-            cn = DBUtils.getConnection();
-
-            if (cn != null) {
-                String sql = "SELECT *\n"
-                        + "FROM Recipe\n"
-                        + "WHERE user_id = ? AND status = 1\n"
-                        + "ORDER BY COALESCE(update_at, create_at) DESC, create_at DESC";
-
-                PreparedStatement pst = cn.prepareStatement(sql);
-                pst.setInt(1, userId);
-                ResultSet rs = pst.executeQuery();
-                if (rs != null) {
-                    while (rs.next()) {
-                        int id = rs.getInt("id");
-                        String title = rs.getString("title");
-                        String description = rs.getString("description");
-                        int prep_time = rs.getInt("prep_time");
-                        int cook_time = rs.getInt("cook_time");
-                        int servings = rs.getInt("servings");
-                        Date create_at = rs.getDate("create_at");
-                        Date update_at = rs.getDate("update_at");
-                        int cuisin_id = rs.getInt("cuisine_id");
-                        int category_id = rs.getInt("category_id");
-                        int user_id = rs.getInt("user_id");
-                        int level_id = rs.getInt("level_id");
-                        int diet_id = rs.getInt("diet_id");
-                        int status = rs.getInt("status");
-
-                        RecipeDTO recipe = new RecipeDTO(id, title, description, prep_time,
-                                cook_time, servings, create_at, update_at, cuisin_id,
-                                category_id, user_id, level_id, diet_id, status);
-                        result.add(recipe);
-                    }
-                }
-                rs.close();
-                pst.close();
-                cn.close();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return result;
-    }
+    
+   
 
     public static int addRecipe(RecipeDTO recipe) {
         int generatedId = -1; // Default value if ID generation fails
@@ -469,8 +369,8 @@ public class RecipeDAO {
             cn = DBUtils.getConnection();
             // Step 2: Create a prepared statement to insert the recipe
             String sql = "INSERT INTO [dbo].[Recipe] (title, description, prep_time, cook_time, servings, create_at, \n"
-                    + "update_at, cuisine_id, category_id, user_id, level_id, diet_id, status) \n"
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
+                    + "update_at, cuisine_id, category_id, user_id, level_id, status) \n"
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement pst = cn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
             // Set the parameter values for the prepared statement
@@ -485,8 +385,7 @@ public class RecipeDAO {
             pst.setInt(9, recipe.getCategory_id());
             pst.setInt(10, recipe.getUser_id());
             pst.setInt(11, recipe.getLevel_id());
-            pst.setInt(12, recipe.getDiet_id());
-            pst.setInt(13, recipe.getStatus());
+            pst.setInt(12, recipe.getStatus());
 
             // Step 3: Execute the prepared statement and retrieve the generated keys
             pst.executeUpdate();
@@ -521,13 +420,11 @@ public class RecipeDAO {
                     + "    prep_time = ?, \n"
                     + "    cook_time = ?, \n"
                     + "    servings = ?, \n"
-                    + "    create_at = ?, \n"
                     + "    update_at = ?, \n"
                     + "    cuisine_id = ?, \n"
                     + "    category_id = ?, \n"
                     + "    user_id = ?, \n"
                     + "    level_id = ?, \n"
-                    + "    diet_id = ?, \n"
                     + "    status = ? \n"
                     + "WHERE id = ?";
             PreparedStatement pst = cn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -538,15 +435,13 @@ public class RecipeDAO {
             pst.setInt(3, recipe.getPrep_time());
             pst.setInt(4, recipe.getCook_time());
             pst.setInt(5, recipe.getServings());
-            pst.setDate(6, recipe.getCreate_at());
-            pst.setDate(7, recipe.getUpdate_at());
-            pst.setInt(8, recipe.getCuisine_id());
-            pst.setInt(9, recipe.getCategory_id());
-            pst.setInt(10, recipe.getUser_id());
-            pst.setInt(11, recipe.getLevel_id());
-            pst.setInt(12, recipe.getDiet_id());
-            pst.setInt(13, recipe.getStatus());
-            pst.setInt(14, recipe.getId());
+            pst.setDate(6, recipe.getUpdate_at());
+            pst.setInt(7, recipe.getCuisine_id());
+            pst.setInt(8, recipe.getCategory_id());
+            pst.setInt(9, recipe.getUser_id());
+            pst.setInt(10, recipe.getLevel_id());
+            pst.setInt(11, recipe.getStatus());
+            pst.setInt(12, recipe.getId());
 
             // Step 3: Execute the prepared statement and retrieve the generated keys
             pst.executeUpdate();
@@ -576,12 +471,25 @@ public class RecipeDAO {
             cn = DBUtils.getConnection();
 
             if (cn != null) {
-                String sql = "DELETE FROM [dbo].[Recipe]\n"
-                        + "WHERE id = ?";
+                String sql = "DELETE FROM [dbo].[RecipeDiet]\n"
+                        + "WHERE recipe_id = ?";
 
                 PreparedStatement pst = cn.prepareStatement(sql);
                 pst.setInt(1, recipeId);
                 result = pst.executeUpdate();
+                
+                sql = "DELETE FROM [dbo].[Nutrition]\n"
+                        + "WHERE recipe_id = ?";
+                pst = cn.prepareStatement(sql);
+                pst.setInt(1, recipeId);
+                result = pst.executeUpdate();
+
+                sql = "DELETE FROM [dbo].[Recipe]\n"
+                        + "WHERE id = ?";
+                pst = cn.prepareStatement(sql);
+                pst.setInt(1, recipeId);
+                result = pst.executeUpdate();
+                
                 pst.close();
                 cn.close();
             }
@@ -592,7 +500,7 @@ public class RecipeDAO {
     }
 
     public static void main(String[] args) {
-        System.out.println(getThumbnailByRecipeId(1));
+        System.out.println(deleteRecipe(1));
 //        List<RecipeDTO> list = RecipeDAO.getAllRecipes();
 //        for (RecipeDTO o : list) {
 //            System.out.println(o);

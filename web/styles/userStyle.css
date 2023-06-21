@@ -841,16 +841,48 @@ span {
     display: none;
     position: absolute;
     background-color: #fff;
-    min-width: 230px;
+    min-width: 150px;
+    max-height: 400px;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    scroll-behavior: auto;
+    border-radius: 3%;
+}
+
+/* Style the scrollbar */
+.dropdown-content {
+    scrollbar-color: #c0c0c0 transparent; /* Change the color of the scrollbar thumb and track */
+    position: absolute;
+}
+
+.dropdown-content::-webkit-scrollbar {
+    width: 8px; /* Adjust the width of the scrollbar */
+}
+
+.dropdown-content::-webkit-scrollbar-thumb {
+    background-color: #c0c0c0; /* Color of the scrollbar thumb */
+    border-radius: 4px; /* Round the corners of the scrollbar thumb */
+}
+
+.dropdown-content::-webkit-scrollbar-thumb:hover {
+    background-color: #a0a0a0; /* Color of the scrollbar thumb when hovering */
+}
+
+.dropdown-content::-webkit-scrollbar-track {
+    background-color: transparent; /* Color of the scrollbar track */
+}
+
+.dropdown-content::-webkit-scrollbar-track:hover {
+    background-color: #f0f0f0; /* Color of the scrollbar track when hovering */
 }
 
 .dropdown-content-right {
     display: none;
     position: absolute;
     background-color: #fff;
-    min-width: 230px;
+    min-width: 270px;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
     right: 0;
@@ -1522,17 +1554,19 @@ span {
     background-color: #f8f8f8;
     width: 50%;
 }
-
+.add-recipe-info-number button{
+    border-radius: 20px;
+    padding: 5px 10px;
+    border-radius: 10px;
+}
 .add-recipe-info-number-content select {
-    appearance: none;
     text-align: center;
     padding: 0 5px;
     border-radius: 5px;
-    width: 60px;
+    width: 95px;
 }
 
 .add-recipe-info-type-content {
-    display: flex;
     margin-top: 12px;
 }
 
@@ -1544,7 +1578,7 @@ span {
 }
 
 .add-recipe-info-number {
-    margin-top: 20px;
+    margin: 20px 0;
 }
 
 .add-recipe-info-type {
@@ -1646,7 +1680,14 @@ span {
 .add-recipe-info-header span {
     color: red;
 }
-
+.add-recipe-info-header-des{
+    color: rgb(0, 0, 0, 0.5) !important;
+    font-size: 20px;
+}
+.add-recipe-info-type-content span {
+    font-size: 16px;
+    color: rgb(0, 0, 0, 0.5);
+}
 
 
 /*    Confirm Popup      */

@@ -1,0 +1,259 @@
+.notification{
+    display: flex;
+    justify-content: center; /* Horizontal centering */
+    align-items: center; /* Vertical centering */
+}
+
+.dropbtn-notification {
+    background-color: #fff;
+    font-size: 18px;
+    outline: none;
+    font-weight: 500;
+    border: 1px solid;
+    border: none;
+    width: 30px;
+    height: 30px;
+}
+
+.dropbtn-notification img{
+    width: 30px;
+    height: 30px;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown-notification {
+    background-color: #f1f1f1;
+    position: relative;
+    display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content-notification {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    min-width: 250px;
+    min-height: 500px;
+    max-height: 500px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    scroll-behavior: auto;
+    padding: 5px 2px 5px 10px;
+    scrollbar-gutter: stable;
+
+}
+
+/* Style the scrollbar */
+.dropdown-content-notification {
+    scrollbar-color: #c0c0c0 transparent; /* Change the color of the scrollbar thumb and track */
+    position: absolute;
+}
+
+.dropdown-content-notification::-webkit-scrollbar {
+    width: 8px; /* Adjust the width of the scrollbar */
+}
+
+.dropdown-content-notification::-webkit-scrollbar-thumb {
+    background-color: #c0c0c0; /* Color of the scrollbar thumb */
+    border-radius: 4px; /* Round the corners of the scrollbar thumb */
+}
+
+.dropdown-content-notification::-webkit-scrollbar-thumb:hover {
+    background-color: #a0a0a0; /* Color of the scrollbar thumb when hovering */
+}
+
+.dropdown-content-notification::-webkit-scrollbar-track {
+    background-color: transparent; /* Color of the scrollbar track */
+}
+
+.dropdown-content-notification::-webkit-scrollbar-track:hover {
+    background-color: #f0f0f0; /* Color of the scrollbar track when hovering */
+}
+
+
+/* Change color of dropdown links on hover */
+.dropdown-content-notification button:hover {
+    background-color: #f0c9a0;
+}
+
+.status-bar-notification{
+    display: flex;
+    justify-content: space-between;
+    padding: 0px;
+    margin: 0 10px;
+}
+
+.status-bar-notification p{
+    margin: 0px;
+}
+
+.a-notification{
+    display: flex;
+    align-items: start;
+    flex-direction: column;
+    text-decoration: none;
+    position: relative;
+    font-size: 16px;
+    transition: 0.2s;
+    color: black;
+    padding: 8px 16px;
+    text-decoration: none;
+    text-align: center;
+    border: none;
+    background-color: transparent;
+    border: 0;
+    margin: 5px 0;
+    width: 100%;
+    border-radius: 3px;
+}
+
+.notification-disable{
+    background-color: gray;
+}
+.notification-first-row{
+    width: max-content;
+    display: flex;
+}
+
+.notification-first-row img{
+    width: 30px;
+    border-radius: 50%;
+}
+
+.notification-first-row p{
+    margin: 0;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.text{
+    display: inline-block;
+    font-weight: 400;
+    text-align: left;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.text p{
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
+
+.date {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    color: rgba(0, 0, 0, 0.6);
+    margin-bottom: 0;
+    font-weight: 400;
+}
+
+
+.dropdown-notification:hover .dropbtn-notification {
+    background-color: #fff;
+}
+
+
+/*Style the modal */
+
+.modal-title-self{
+    width: 100%;
+}
+
+.modal-title-text{
+    margin-bottom: 0;
+}
+
+.modal-title-date{
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    color: rgba(0, 0, 0, 0.6);
+    margin-bottom: 0;
+    font-weight: 400;
+    font-size: 16px;
+}
+
+.modal-body-content{
+    font-weight: 400;
+    font-size: 20px;
+}
+
+.modal-link{
+    color: #ec9131;
+    font-weight: 400;
+}
+
+/* Style user management*/
+
+
+.notification-status{
+    display: flex;
+    justify-content: space-between;
+    padding: 0px;
+    margin: 0 0 20px;
+}
+.notification-status p{
+    font-size: 24px;
+    font-weight: 400;
+}
+
+.one-notification{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    margin-bottom: 25px;
+    padding: 5px;
+    border: none;
+    border-radius: 10px;
+}
+
+.one-notification-first-row{
+    width: max-content;
+    display: flex;
+}
+
+.one-notification-first-row img{
+    width: 50px;
+    border-radius: 50%;
+}
+
+.one-notification-first-row p{
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px; /* Adjust this value based on your requirements */   
+    font-size: 28px;
+    font-weight: 500;
+}
+
+.one-text{
+    display: inline-block;
+    font-weight: 400;
+    font-size: 20px;
+    text-align: left;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.one-text p{
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
+
+.one-date {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    color: rgba(0, 0, 0, 0.6);
+    margin-bottom: 0;
+    font-weight: 400;
+    font-size: 18px;
+}

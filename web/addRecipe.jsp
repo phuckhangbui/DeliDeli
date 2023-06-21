@@ -29,7 +29,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
             rel="stylesheet">
         <script src="https://cdn.ckeditor.com/4.16.2/basic/ckeditor.js"></script>
         <script src="./script/ingredientScript.js" defer></script>
-        <script src="./script/directionScript.js" defer></script>
 
     </head>
 
@@ -85,13 +84,46 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                     <div class="add-recipe-info-header-secondary">
                                         Additional Picture <p>(optional)</p>
                                     </div>
-                                    <input type="file" id="image" name="pictures">
+                                    <input type="file" id="image" name="picture">
                                 </div>
 
                             </div>
+
+
+                            <script>
+                                // Get all file input elements
+                                var fileInputs = document.querySelectorAll('input[type="file"]');
+
+                                // Add event listeners for the "change" event
+                                fileInputs.forEach(function (fileInput) {
+                                    fileInput.addEventListener('change', validateFile);
+                                });
+
+                                // File validation function
+                                function validateFile(event) {
+                                    var file = event.target.files[0];
+                                    if (file) {
+                                        if (file.type.startsWith('image/')) {
+                                        } else {
+                                            alert('Please select an image file.');
+                                            event.target.value = ''; // Reset the file input value
+                                        }
+                                    } else {
+                                        alert('Please select a file.');
+                                    }
+                                }
+                            </script>
+
+
                         </div>
                         <div class="row add-recipe-info-number">
                             <div class="add-recipe-info-header">Overview <span>*</span></div>
+                            <div class="col-md-3 add-recipe-info-number-content">
+                                <div>Serving:</div>
+                                <input type="text" name="servings" required
+                                       oninput="this.value=this.value.slice(0,this.maxLength),this.value = this.value.replace(/[^0-9]/g, '')"
+                                       maxlength="3">
+                            </div>
                             <div class="col-md-3 add-recipe-info-number-content">
                                 <div>Prep Time:</div>
                                 <input type="text" id="prepTime" required max="100" min="1"
@@ -218,26 +250,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                     </script>
                                 </div>
                             </div>
-                            <div class="col-md-3 add-recipe-info-number-content">
-                                <div>Serving:</div>
-                                <input type="text" name="servings" required
-                                       oninput="this.value=this.value.slice(0,this.maxLength),this.value = this.value.replace(/[^0-9]/g, '')"
-                                       maxlength="3">
-                            </div>
-                        </div>
+                            
+                        
                         <div class="row add-recipe-info-type">
-                            <div class="col-md-3 add-recipe-info-type-content">
-                                <div>Diet:</div>
-                                <select name="diet">
-                                    <%for (Map.Entry<Integer, String> entry : dietMap.entrySet()) {
-                                            Integer key = entry.getKey();
-                                            String value = entry.getValue();
 
-                                    %>
-                                    <option value="<%=key%>"><%=value%></option>
-                                    <% }%>
-                                </select>
-                            </div>
                             <div class="col-md-3 add-recipe-info-type-content">
                                 <div>Category:</div>
                                 <select name="category">
@@ -264,7 +280,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                             </div>
 
                             <div class="col-md-3 add-recipe-info-type-content">
-                                <div>Difficulties</div>
+                                <div>Difficulties:</div>
                                 <select name="level">
                                     <%for (Map.Entry<Integer, String> entry : levelMap.entrySet()) {
                                             Integer key = entry.getKey();
@@ -275,7 +291,66 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                     <% }%>
                                 </select>
                             </div>
+                                
+
+
+                            <div class="col-md-12 add-recipe-info-type-content">
+                                <div>Diet: <span>(If the diet you're looking for is not here, then no need to tick any of these boxes )</span></div>
+                                
+                                <div class="">
+                                    <% for (Map.Entry<Integer, String> entry : dietMap.entrySet()) {
+                                            Integer key = entry.getKey();
+                                            String value = entry.getValue();
+                                    %>
+                                    <input type="checkbox" name="diet" value="<%= key%>" style="padding-left: 10px;">
+                                    <label for="diet" style="padding-right: 10px;"><%= value%></label>
+                                    <% }%>
+                                </div>
+                            </div>
                         </div>
+                                </div>
+                                
+                        <div class="row add-recipe-info-number">
+                            <div class="add-recipe-info-header">Nutrition <span class="add-recipe-info-header-des">(Per serving)</span> <span>*</span></div>
+                            <div>
+                                For references:
+                                <button>Nutrition Table</button>
+                            </div>
+                            
+
+                            <div class="col-md-3 add-recipe-info-number-content">
+                                <div>Calories:</div>
+                                <input type="text" id="" name="calories" required max="100" min="1"
+                                       oninput="this.value=this.value.slice(0,this.maxLength),this.value = this.value.replace(/[^0-9]/g, '')"
+                                       maxlength="4">
+                            </div>
+
+                            <div class="col-md-3 add-recipe-info-number-content">
+                                <div>Fat (grams):</div>
+                                <input type="text" id="" name="fat" required max="100" min="1"
+                                       oninput="this.value=this.value.slice(0,this.maxLength),this.value = this.value.replace(/[^0-9]/g, '')"
+                                       maxlength="3">
+                            </div>
+
+                            <div class="col-md-3 add-recipe-info-number-content">
+                                <div>Carbs (grams):</div>
+                                <input type="text" id="" name="carbs" required max="100" min="1"
+                                       oninput="this.value=this.value.slice(0,this.maxLength),this.value = this.value.replace(/[^0-9]/g, '')"
+                                       maxlength="3">
+                            </div>
+
+                            <div class="col-md-3 add-recipe-info-number-content">
+                                <div>Protein (grams):</div>
+                                <input type="text" id="" name="protein" required max="100" min="1"
+                                       oninput="this.value=this.value.slice(0,this.maxLength),this.value = this.value.replace(/[^0-9]/g, '')"
+                                       maxlength="3">
+                            </div>
+                        </div>
+
+
+
+
+
                         <div class="row add-recipe-info-ingredient">
                             <div class="draggable-container-ingredient col-md-8 add-recipe-info-ingredient-content">
                                 <div class="add-recipe-info-header">Ingredient <span>*</span></div>
@@ -299,20 +374,23 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                     <img src="assets/drag.svg" alt="">
                                 </button>
                                 <button type="button" id="btnAddIngredient">
-                                    Add Paragraph
+                                    Add Ingredient
                                 </button>
                             </div>
                         </div>
-                        
-                                
-                                
+
+
+
+
+
+
                         <div class="add-recipe-info-header">Direction <span>*</span></div>
                         <p><textarea name="direction" rows="10" cols="10" id="editor" value="<%=user.getId()%>"></textarea></p>
                         <script>
                             CKEDITOR.replace('editor');
                         </script>
 
-                        
+
 
 
 
@@ -321,18 +399,18 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                 Do you want to make this recipe public?
                             </div>
                             <div class="add-recipe-info-status-content">
-                                <div>
+                                <label>
                                     <input type="radio" name="status" value="2" checked>Yes, make it public
                                     <span>(Your recipe will be submitted and will be checked by our moderator. This may take
                                         some time)</span>
 
-                                </div>
-                                <div>
+                                </label>
+                                <label>
                                     <input type="radio" name="status" value="1">No, make it private
                                     <span>(Your recipe won't need to go through our moderator team, but the recipe can
                                         only be view by you)</span>
 
-                                </div>
+                                </label>
                             </div>
                         </div>
                         <input type="text" name="userId" value="<%=user.getId()%>" hidden/>
@@ -342,43 +420,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                             </button>
                         </div>
                     </form>
+
                 </div>
             </div>
         </div>
 
         <!--         Footer       -->
-        <div class="footer">
-            <div class="container">
-                <div class="row">
-                    <div class="website-social-media col-md-6">
-                        <a href="homePage.html" class="website-social-media-logo">
-                            <img src="./assets/Logo2.png" alt="">
-                        </a>
-                        <div class="website-social-media-icons">
-                            <span>Follow us:</span>
-                            <a href="#"><img src="./assets/facebook-icon.svg" alt="Facebook Logo"></a>
-                            <a href="#"><img src="./assets/twitter-icon.svg" alt="Twitter Logo"></a>
-                        </div>
-                    </div>
-                    <nav class="navigation-bar-footer col-md-3">
-                        <ul class="navigation-bar-footer-content">
-                            <li><a href="">CATEGORIES</a></li>
-                            <li><a href="">INGREDIENTS</a></li>
-                            <li><a href="">CUISINES</a></li>
-                            <li><a href="">DIFFICULTIES</a></li>
-                            <li><a href="">NEWS</a></li>
-                        </ul>
-                    </nav>
-                    <nav class="website-infomation-bar col-md-3">
-                        <ul class="website-infomation-bar-content">
-                            <li><a href="">About us</a></li>
-                            <li><a href="">Privacy Policies</a></li>
-                            <li><a href="">Term of Services</a></li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        </div>
+        <%@include file="footer.jsp" %>
     </body>
 
 </html>

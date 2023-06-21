@@ -4,23 +4,19 @@
  */
 package Servlet;
 
-import Direction.DirectionDAO;
-import IngredientDetail.IngredientDetailDAO;
-import Recipe.RecipeDAO;
-import User.UserDTO;
+import Notification.NotificationDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author khang
  */
-public class DeleteRecipeServlet extends HttpServlet {
+public class SetNotificationStatusServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,18 +32,8 @@ public class DeleteRecipeServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            String admin = request.getParameter("admin");
-            HttpSession session = request.getSession();
-            UserDTO user =(UserDTO) session.getAttribute("user");
-            
-            int recipeId = Integer.parseInt(request.getParameter("recipeId"));
-            int userId = Integer.parseInt(request.getParameter("userId"));
-
-            if(admin != null || user != null){
-                DirectionDAO.deleteDirection(recipeId);
-                IngredientDetailDAO.deleteIngredientDetails(recipeId);
-                RecipeDAO.deleteRecipe(recipeId);
-            }
+            int notificationId = Integer.parseInt(request.getParameter("notificationId"));
+            NotificationDAO.setReadNotification(notificationId);
         }
     }
 

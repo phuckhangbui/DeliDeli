@@ -45,6 +45,6 @@ public class NewsDTO {
     }
 
     public String getImage() {
-        return "pictures/News/"+this.id+"/"+this.image;
+        return "News/"+this.id+"/"+this.image;
     }
 }
