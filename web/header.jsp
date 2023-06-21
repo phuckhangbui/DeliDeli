@@ -110,7 +110,7 @@
                                             <% }%>
                                             <div class="notification-first-row"><img
                                                     src="assets/delideli-website-favicon-color.png" alt="img">
-                                                <p><%= type.getTitle()%></p>
+                                                <p><%= type.getSender()%></p>
                                             </div>
                                             <div class="text">
                                                 <p><%= notification.getTitle()%></p>

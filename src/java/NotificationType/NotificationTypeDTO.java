@@ -17,7 +17,7 @@ import lombok.*;
 @ToString
 public class NotificationTypeDTO {
     private int id;
-    private String title;
+    private String sender;
     private String image;
-    private String type;
+    private String cate;
 }

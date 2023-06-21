@@ -455,6 +455,56 @@ public class RecipeDAO {
 
         return result;
     }
+    
+    public static ArrayList<RecipeDTO> getRecipeByUserIdAndType(int userId, int status) {
+        ArrayList<RecipeDTO> result = new ArrayList<RecipeDTO>();
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                String sql = "SELECT *\n"
+                        + "FROM Recipe\n"
+                        + "WHERE user_id = ? AND status = ?\n"
+                        + "ORDER BY COALESCE(update_at, create_at) DESC, create_at DESC";
+
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setInt(1, userId);
+                pst.setInt(2, status);
+                ResultSet rs = pst.executeQuery();
+                if (rs != null) {
+                    while (rs.next()) {
+                        int id = rs.getInt("id");
+                        String title = rs.getString("title");
+                        String description = rs.getString("description");
+                        int prep_time = rs.getInt("prep_time");
+                        int cook_time = rs.getInt("cook_time");
+                        int servings = rs.getInt("servings");
+                        Date create_at = rs.getDate("create_at");
+                        Date update_at = rs.getDate("update_at");
+                        int cuisin_id = rs.getInt("cuisine_id");
+                        int category_id = rs.getInt("category_id");
+                        int user_id = rs.getInt("user_id");
+                        int level_id = rs.getInt("level_id");
+                        status = rs.getInt("status");
+
+                        RecipeDTO recipe = new RecipeDTO(id, title, description, prep_time,
+                                cook_time, servings, create_at, update_at, cuisin_id,
+                                category_id, user_id, level_id, status);
+                        result.add(recipe);
+                    }
+                }
+                rs.close();
+                pst.close();
+                cn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
 
     public static int addRecipe(RecipeDTO recipe) {
         int generatedId = -1; // Default value if ID generation fails

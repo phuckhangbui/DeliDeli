@@ -4,6 +4,13 @@
     Author     : khang
 --%>
 
+<%@page import="java.util.Set"%>
+<%@page import="Nutrition.NutritionDAO"%>
+<%@page import="Nutrition.NutritionDTO"%>
+<%@page import="Nutrition.NutritionDTO"%>
+<%@page import="RecipeDiet.RecipeDietDTO"%>
+<%@page import="RecipeDiet.RecipeDietDTO"%>
+<%@page import="RecipeDiet.RecipeDietDAO"%>
 <%@page import="Direction.DirectionDAO"%>
 <%@page import="IngredientDetail.IngredientDetailDAO"%>
 <%@page import="IngredientDetail.IngredientDetailDTO"%>
@@ -95,22 +102,53 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                 <div class="col-md-6 add-recipe-info-overview-picture-main">
                                     <div class="add-recipe-info-header-secondary">
                                         Thumbnail Picture
-
-                                    </div> 
+                                    </div> <!-- ti chinh lại thành required-->
                                     <input type="file" id="image" name="thumbnail">
                                 </div>
                                 <div class="col-md-6 add-recipe-info-overview-picture-optional">
                                     <div class="add-recipe-info-header-secondary">
                                         Additional Picture <p>(optional)</p>
                                     </div>
-                                    <input type="file" id="image" name="pictures">
+                                    <input type="file" id="image" name="picture">
                                 </div>
+
+                                <script>
+                                    // Get all file input elements
+                                    var fileInputs = document.querySelectorAll('input[type="file"]');
+
+                                    // Add event listeners for the "change" event
+                                    fileInputs.forEach(function (fileInput) {
+                                        fileInput.addEventListener('change', validateFile);
+                                    });
+
+                                    // File validation function
+                                    function validateFile(event) {
+                                        var file = event.target.files[0];
+                                        if (file) {
+                                            if (file.type.startsWith('image/')) {
+                                            } else {
+                                                alert('Please select an image file.');
+                                                event.target.value = ''; // Reset the file input value
+                                            }
+                                        } else {
+                                            alert('Please select a file.');
+                                        }
+                                    }
+                                </script>
 
                                 <p>(Add nothing if you want to keep the old one)</p>
                             </div>
                         </div>
                         <div class="row add-recipe-info-number">
                             <div class="add-recipe-info-header">Overview</div>
+
+                            <div class="col-md-3 add-recipe-info-number-content">
+                                <div>Serving:</div>
+                                <input type="text" name="servings" required
+                                       oninput="this.value=this.value.slice(0,this.maxLength),this.value = this.value.replace(/[^0-9]/g, '')"
+                                       maxlength="3" value="<%= recipe.getServings()%>">
+                            </div>
+
                             <div class="col-md-3 add-recipe-info-number-content">
                                 <div>Prep Time:</div>
                                 <input type="text" id="prepTime" required max="100" min="1"
@@ -238,80 +276,142 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                     </script>
                                 </div>
                             </div>
+
+
+                            <div class="row add-recipe-info-type">
+
+                                <div class="col-md-3 add-recipe-info-type-content">
+                                    <div>Category:</div>
+                                    <select name="category">
+                                        <%for (Map.Entry<Integer, String> entry : cateMap.entrySet()) {
+                                                Integer key = entry.getKey();
+                                                String value = entry.getValue();
+                                                if (recipe.getCategory_id() == key) {
+                                        %>
+
+                                        <option value="<%=key%>" selected=""><%=value%></option>
+                                        <% } else {%>
+                                        <option value="<%=key%>"><%=value%></option>
+                                        <% }
+                                            }%>
+                                    </select>
+                                </div>
+                                <div class="col-md-3 add-recipe-info-type-content">
+                                    <div>Cuisine:</div>
+                                    <select name="cuisine">
+                                        <%for (Map.Entry<Integer, String> entry : cuisineMap.entrySet()) {
+                                                Integer key = entry.getKey();
+                                                String value = entry.getValue();
+                                                if (recipe.getCuisine_id() == key) {
+                                        %>
+
+                                        <option value="<%=key%>" selected=""><%=value%></option>
+                                        <% } else {%>
+                                        <option value="<%=key%>"><%=value%></option>
+                                        <% }
+                                            }%>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-3 add-recipe-info-type-content">
+                                    <div>Difficulties</div>
+                                    <select name="level">
+                                        <%for (Map.Entry<Integer, String> entry : levelMap.entrySet()) {
+                                                Integer key = entry.getKey();
+                                                String value = entry.getValue();
+                                                if (recipe.getLevel_id() == key) {
+                                        %>
+
+                                        <option value="<%=key%>" selected=""><%=value%></option>
+                                        <% } else {%>
+                                        <option value="<%=key%>"><%=value%></option>
+                                        <% }
+                                            }%>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-12 add-recipe-info-type-content">
+                                    <div>Diet: <span>(If the diet you're looking for is not here, then no need to tick any of these boxes )</span></div>
+                                    <%
+                                        Set<Integer> dietSet = RecipeDietDAO.getDietSetByRecipeId(recipeId);
+                                        if (dietSet.size() == 0) { %>
+                                    <div class="">
+                                        <% for (Map.Entry<Integer, String> entry : dietMap.entrySet()) {
+                                                Integer key = entry.getKey();
+                                                String value = entry.getValue();
+                                        %>
+                                        <input type="checkbox" name="diet" value="<%= key%>" style="padding-left: 10px;">
+                                        <label for="diet" style="padding-right: 10px;"><%= value%></label>
+                                        <%}%>
+                                    </div>
+                                    <% } else {
+
+                                    %>
+
+
+                                    <div class="">
+                                        <%  for (Map.Entry<Integer, String> entry : dietMap.entrySet()) {
+                                                Integer key = entry.getKey();
+                                                String value = entry.getValue();
+                                                if (dietSet.contains(key)) {
+                                        %>
+                                        <input type="checkbox" name="diet" value="<%= key%>" checked="" style="padding-left: 10px;">
+                                        <label for="diet" style="padding-right: 10px;"><%= value%></label>
+                                        <% } else {%>
+                                        <input type="checkbox" name="diet" value="<%= key%>" style="padding-left: 10px;">
+                                        <label for="diet" style="padding-right: 10px;"><%= value%></label>
+                                        <% }
+                                            }%>
+                                    </div>
+
+                                    <%
+                                        } %>
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row add-recipe-info-number">
+                            <div class="add-recipe-info-header">Nutrition <span class="add-recipe-info-header-des">(Per serving)</span> <span>*</span></div>
+                            <div>
+                                For references:
+                                <button>Nutrition Table</button>
+                            </div>
+                            <% NutritionDTO nutrition = NutritionDAO.getNutrition(recipeId);%>
+
                             <div class="col-md-3 add-recipe-info-number-content">
-                                <div>Serving:</div>
-                                <input type="text" name="servings" required
+                                <div>Calories:</div>
+                                <input type="text" id="" name="calories" required max="100" min="1"
+                                       value="<%= nutrition.getCalories()%>"
                                        oninput="this.value=this.value.slice(0,this.maxLength),this.value = this.value.replace(/[^0-9]/g, '')"
-                                       maxlength="3" value="<%= recipe.getServings()%>">
+                                       maxlength="4">
+                            </div>
+
+                            <div class="col-md-3 add-recipe-info-number-content">
+                                <div>Fat (grams):</div>
+                                <input type="text" id="" name="fat" required max="100" min="1"
+                                       value="<%= nutrition.getFat()%>"
+                                       oninput="this.value=this.value.slice(0,this.maxLength),this.value = this.value.replace(/[^0-9]/g, '')"
+                                       maxlength="3">
+                            </div>
+
+                            <div class="col-md-3 add-recipe-info-number-content">
+                                <div>Carbs (grams):</div>
+                                <input type="text" id="" name="carbs" required max="100" min="1"
+                                       value="<%= nutrition.getCarbs()%>"
+                                       oninput="this.value=this.value.slice(0,this.maxLength),this.value = this.value.replace(/[^0-9]/g, '')"
+                                       maxlength="3">
+                            </div>
+
+                            <div class="col-md-3 add-recipe-info-number-content">
+                                <div>Protein (grams):</div>
+                                <input type="text" id="" name="protein" required max="100" min="1"
+                                       value="<%= nutrition.getProtein()%>"
+                                       oninput="this.value=this.value.slice(0,this.maxLength),this.value = this.value.replace(/[^0-9]/g, '')"
+                                       maxlength="3">
                             </div>
                         </div>
-                        <div class="row add-recipe-info-type">
-                            <div class="col-md-3 add-recipe-info-type-content">
-                                <div>Diet:</div>
-                                <select name="diet">
-                                    <%for (Map.Entry<Integer, String> entry : dietMap.entrySet()) {
-                                            Integer key = entry.getKey();
-                                            String value = entry.getValue();
-                                            if (recipe.getDiet_id() == key) {
-                                    %>
 
-                                    <option value="<%=key%>" selected=""><%=value%></option>
-                                    <% } else {%>
-                                    <option value="<%=key%>"><%=value%></option>
-                                    <% }
-                                        }%>
-                                </select>
-                            </div>
-                            <div class="col-md-3 add-recipe-info-type-content">
-                                <div>Category:</div>
-                                <select name="category">
-                                    <%for (Map.Entry<Integer, String> entry : cateMap.entrySet()) {
-                                            Integer key = entry.getKey();
-                                            String value = entry.getValue();
-                                            if (recipe.getCategory_id() == key) {
-                                    %>
-
-                                    <option value="<%=key%>" selected=""><%=value%></option>
-                                    <% } else {%>
-                                    <option value="<%=key%>"><%=value%></option>
-                                    <% }
-                                        }%>
-                                </select>
-                            </div>
-                            <div class="col-md-3 add-recipe-info-type-content">
-                                <div>Cuisine:</div>
-                                <select name="cuisine">
-                                    <%for (Map.Entry<Integer, String> entry : cuisineMap.entrySet()) {
-                                            Integer key = entry.getKey();
-                                            String value = entry.getValue();
-                                            if (recipe.getCuisine_id() == key) {
-                                    %>
-
-                                    <option value="<%=key%>" selected=""><%=value%></option>
-                                    <% } else {%>
-                                    <option value="<%=key%>"><%=value%></option>
-                                    <% }
-                                        }%>
-                                </select>
-                            </div>
-
-                            <div class="col-md-3 add-recipe-info-type-content">
-                                <div>Difficulties</div>
-                                <select name="level">
-                                    <%for (Map.Entry<Integer, String> entry : levelMap.entrySet()) {
-                                            Integer key = entry.getKey();
-                                            String value = entry.getValue();
-                                            if (recipe.getLevel_id() == key) {
-                                    %>
-
-                                    <option value="<%=key%>" selected=""><%=value%></option>
-                                    <% } else {%>
-                                    <option value="<%=key%>"><%=value%></option>
-                                    <% }
-                                        }%>
-                                </select>
-                            </div>
-                        </div>
                         <div class="row add-recipe-info-ingredient">
                             <div class="draggable-container-ingredient col-md-8 add-recipe-info-ingredient-content">
                                 <div class="add-recipe-info-header">Ingredient</div>
@@ -406,11 +506,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                             </button>
                             <span></span>
                             <!--Goi MainController?action=deleteRecipe  -->
-                            <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#deleteModal">
                                 DELETE
                             </button>
                         </div>
-                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        
+                        <!-- modal -->
+                        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="popup-confirm">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
@@ -422,12 +524,43 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, I changed my mind</button>
-                                            <button type="button" class="btn popup-confirm-btn">Yes, delete it</button>
+                                            <button type="button" class="btn btn-danger" id="deleteButton">Yes, delete it</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+                        <script>
+                            var deleteButton = document.getElementById("deleteButton");
+                            deleteButton.addEventListener("click", function () {
+                                // Perform your deletion logic here
+                                var recipeId = '<%= recipe.getId()%>'; // Replace with the actual recipe ID
+                                var userId = '<%= user.getId()%>'; // Replace with the actual user ID
+
+                                // Send an AJAX request to the servlet for handling the deletion
+                                var xhr = new XMLHttpRequest();
+                                xhr.open("POST", "MainController", true);
+                                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                                xhr.onreadystatechange = function () {
+                                    if (xhr.readyState === 4 && xhr.status === 200) {
+                                        // Handle the response from the server
+                                        console.log(xhr.responseText);
+
+                                        // Hide the modal
+                                        var modal = document.getElementById("deleteModal");
+                                        var modalInstance = bootstrap.Modal.getInstance(modal);
+                                        modalInstance.hide();
+
+                                        // Redirect to home.jsp
+                                        window.location.href = "home.jsp";
+                                    }
+                                };
+                                xhr.send("action=deleteRecipe&recipeId=" + recipeId + "&userId=" + userId);
+                            });
+
+                        </script>
+
                     </form>
                 </div>
             </div>
