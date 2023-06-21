@@ -19,7 +19,7 @@ import java.util.TreeMap;
  * @author Admin
  */
 public class AdminDAO {
-    
+
     public static String getRoleByRoleId(int id) {
         String result = "";
         Connection cn = null;
@@ -252,7 +252,7 @@ public class AdminDAO {
         }
         return result;
     }
-    
+
     public static int getTop1NewsId() {
         int result = 0;
         Connection cn = null;
@@ -352,7 +352,7 @@ public class AdminDAO {
 
         return result;
     }
-    
+
     public static int rejectRecipe(int id) {
         int result = 0;
         Connection cn = null;
@@ -394,6 +394,83 @@ public class AdminDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return result;
+    }
+
+    public static ArrayList<Integer> getAllRecipeStatus() {
+        ArrayList<Integer> result = new ArrayList<>();
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                String sql = "SELECT status FROM Recipe \n"
+                        + "GROUP BY status";
+
+                PreparedStatement pst = cn.prepareStatement(sql);
+                ResultSet rs = pst.executeQuery();
+                if (rs != null) {
+                    while (rs.next()) {
+                        int status = rs.getInt("status");
+
+                        result.add(status);
+                    }
+                }
+                rs.close();
+                pst.close();
+                cn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+    
+    public static ArrayList<RecipeDTO> getAllRecipesByStatus(int status) {
+        ArrayList<RecipeDTO> result = new ArrayList<RecipeDTO>();
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                String sql = "SELECT * FROM Recipe WHERE status = ?\n";
+
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setInt(1, status);
+                ResultSet rs = pst.executeQuery();
+                if (rs != null) {
+                    while (rs.next()) {
+                        int id = rs.getInt("id");
+                        String title = rs.getString("title");
+                        String description = rs.getString("description");
+                        int prep_time = rs.getInt("prep_time");
+                        int cook_time = rs.getInt("cook_time");
+                        int servings = rs.getInt("servings");
+                        Date create_at = rs.getDate("create_at");
+                        Date update_at = rs.getDate("update_at");
+                        int cuisin_id = rs.getInt("cuisine_id");
+                        int category_id = rs.getInt("category_id");
+                        int user_id = rs.getInt("user_id");
+                        int level_id = rs.getInt("level_id");
+                        status = rs.getInt("status");
+
+                        RecipeDTO recipe = new RecipeDTO(id, title, description, prep_time,
+                                cook_time, servings, create_at, update_at, cuisin_id,
+                                category_id, user_id, level_id, status);
+                        result.add(recipe);
+                    }
+                }
+                rs.close();
+                pst.close();
+                cn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return result;
     }
 
@@ -439,6 +516,98 @@ public class AdminDAO {
             e.printStackTrace();
         }
 
+        return result;
+    }
+    
+    public static ArrayList<RecipeDTO> pagingRecipe(int index, String statusTag) {
+        ArrayList<RecipeDTO> result = new ArrayList<>();
+        Connection cn = null;
+        String sql = "";
+        PreparedStatement pst = null;
+
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                if (statusTag.equals("")) {
+                    sql = "SELECT * FROM [Recipe]\n"
+                            + "ORDER BY id \n"
+                            + "OFFSET ? ROWS FETCH NEXT 3 ROWS ONLY";
+                    pst = cn.prepareStatement(sql);
+                    pst.setInt(1, Math.max((index - 1) * 3, 0));
+                } else {
+                    sql = "SELECT * FROM [Recipe]\n"
+                            + "WHERE status = ?\n"
+                            + "ORDER BY id \n"
+                            + "OFFSET ? ROWS FETCH NEXT 3 ROWS ONLY";
+                    pst = cn.prepareStatement(sql);
+                    pst.setInt(1, new Integer(statusTag));
+                    pst.setInt(2, Math.max((index - 1) * 3, 0));
+                }
+                ResultSet rs = pst.executeQuery();
+                if (rs != null) {
+                    while (rs.next()) {
+                        int id = rs.getInt("id");
+                        String title = rs.getString("title");
+                        String description = rs.getString("description");
+                        int prep_time = rs.getInt("prep_time");
+                        int cook_time = rs.getInt("cook_time");
+                        int servings = rs.getInt("servings");
+                        Date create_at = rs.getDate("create_at");
+                        Date update_at = rs.getDate("update_at");
+                        int cuisin_id = rs.getInt("cuisine_id");
+                        int category_id = rs.getInt("category_id");
+                        int user_id = rs.getInt("user_id");
+                        int level_id = rs.getInt("level_id");
+                        int status = rs.getInt("status");
+
+                        RecipeDTO recipe = new RecipeDTO(id, title, description, prep_time,
+                                cook_time, servings, create_at, update_at, cuisin_id,
+                                category_id, user_id, level_id, status);
+                        result.add(recipe);
+                    }
+                }
+                rs.close();
+                pst.close();
+                cn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+    
+    public static int getTotalRecipesBasedOnStatus(String status) {
+        int result = 0;
+        String sql = "";
+        Connection cn = null;
+        PreparedStatement pst = null;
+
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                if (status.equals("")) {
+                    sql = "SELECT COUNT(id) as total FROM [Recipe]";
+                    pst = cn.prepareStatement(sql);
+                } else {
+                    sql = "SELECT COUNT(id) as total FROM [Recipe] WHERE status = ?";
+                    pst = cn.prepareStatement(sql);
+                    pst.setInt(1, new Integer(status));
+                }
+                ResultSet rs = pst.executeQuery();
+                if (rs != null) {
+                    while (rs.next()) {
+                        result = rs.getInt("total");
+                    }
+                }
+                rs.close();
+                pst.close();
+                cn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return result;
     }
 
@@ -636,7 +805,7 @@ public class AdminDAO {
 //        for (UserDTO o : list) {
 //            System.out.println(o);
 //        }
-        System.out.println(AdminDAO.getTotalRecipe());
+        System.out.println(AdminDAO.getTotalRecipesBasedOnStatus("2"));
     }
 
 }

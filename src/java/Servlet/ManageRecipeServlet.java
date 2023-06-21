@@ -26,9 +26,43 @@ public class ManageRecipeServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
+            String index = request.getParameter("index");
+            String status = request.getParameter("status");
+            
+            ArrayList<RecipeDTO> listRecipe;
+            
+            if (index == null) {
+                index = "1";
+            }
 
-            ArrayList<RecipeDTO> listRecipe = AdminDAO.getAllRecipes();
+            int total = 0;
+            int endPage = 0;
+            
+            if (status != null && !status.equals("all")) {
+                listRecipe = AdminDAO.pagingRecipe(new Integer(index), status);
+                total = AdminDAO.getTotalRecipesBasedOnStatus(status);
+                endPage = total / 3;
+                if (total % 3 != 0) {
+                    endPage++;
+                }
+            } else {
+                listRecipe = AdminDAO.pagingRecipe(new Integer(index), "");
+                total = AdminDAO.getTotalRecipesBasedOnStatus("");
+                endPage = total / 3;
+                if (total % 3 != 0) {
+                    endPage++;
+                }
+            }
+            
+            ArrayList<Integer> listRecipeStatus = AdminDAO.getAllRecipeStatus();
+
             request.setAttribute("listRecipe", listRecipe);
+            request.setAttribute("listRecipeStatus", listRecipeStatus);
+            
+            request.setAttribute("tag", index);
+            request.setAttribute("endPage", endPage);
+            request.setAttribute("status", status);
+
             request.getRequestDispatcher("manageRecipe.jsp").forward(request, response);
         }
     }

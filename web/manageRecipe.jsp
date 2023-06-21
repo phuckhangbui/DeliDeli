@@ -185,24 +185,50 @@
                         </div>
 
                         <%
-                            String[] tmp = {"", "", "Pending", "Approved", "Rejected"};
-                        %>
-
-                        <%
                             ArrayList<RecipeDTO> listRecipe = (ArrayList) request.getAttribute("listRecipe");
+                            ArrayList<Integer> listRecipeStatus = (ArrayList) request.getAttribute("listRecipeStatus");
+
+                            int endPage = (Integer) request.getAttribute("endPage");
+                            String tag = (String) request.getAttribute("tag");
+                            if (tag.equals("")) {
+                                tag = "0";
+                            }
+                            String currentStatus = request.getParameter("status");
+                            if (currentStatus == null) {
+                                currentStatus = "all";
+                            }
+
+                            String[] tmp = {"", "", "Pending", "Approved", "Rejected"};
+
                             if (listRecipe != null && listRecipe.size() > 0) {
                         %>
 
                         <div class="nav-top-bar-search">
-                            <form action="MainController" method="post" class="nav-top-bar-search-user">
-                                <button type="submit" name="action" value="search"><img src="assets/search2.svg" alt=""></button>
-                                <input type="hidden" name="admin" value="admin"> 
-                                <input type="text" name="txtsearch">
-                                <select name="searchBy" id="">
-                                    <option value="Title" selected="selected">TITLE</option>
-                                    <option value="Category">CATEGORY</option>
-                                    <option value="Cuisine">CUISINES</option>
+                            <!--                            <form action="MainController" method="post" class="nav-top-bar-search-user">
+                                                            <button type="submit" name="action" value="search"><img src="assets/search2.svg" alt=""></button>
+                                                            <input type="hidden" name="admin" value="admin"> 
+                                                            <input type="text" name="txtsearch">
+                                                            <select name="searchBy" id="">
+                                                                <option value="Title" selected="selected">TITLE</option>
+                                                                <option value="Category">CATEGORY</option>
+                                                                <option value="Cuisine">CUISINES</option>
+                                                            </select>
+                                                        </form>
+                            -->
+                            <form action="MainController" method="post" class="nav-top-bar-search-filter">
+                                <select name="status">
+                                    <option value="all">All</option>
+                                    <%
+                                        if (listRecipeStatus != null && listRecipeStatus.size() > 0) {
+                                            for (Integer status : listRecipeStatus) {
+                                    %>
+                                    <option value="<%= status%>"><%= tmp[status]%></option>
+                                    <%
+                                            }
+                                        }
+                                    %>
                                 </select>
+                                <button type="submit" value="manageRecipe" class="filter-table-button" name="action">Filter</button>
                             </form>
                         </div>
                         <table class="table table-striped table-hover">
@@ -242,6 +268,15 @@
                             </tbody>
                         </table>
 
+                        <div class="table-redirect">
+                            <%
+                                for (int i = 1; i <= endPage; i++) {
+                            %>
+                            <a class="<%= (new Integer(tag) == i) ? "table-redirect-active-link" : ""%>" href="MainController?action=manageRecipe&index=<%= i%>&status=<%= currentStatus%>"><%= i%></a>
+                            <%
+                                }
+                            %>
+                        </div>
 
                         <%
                             ArrayList<RecipeDTO> listSearch = (ArrayList) request.getAttribute("searchRecipesList");
