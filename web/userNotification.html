@@ -10,6 +10,8 @@
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <!--      CSS         -->
     <link rel="stylesheet" href="./styles/userStyle.css">
+    <link rel="stylesheet" href="./styles/notificationStyle.css">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -138,36 +140,75 @@
                             See your how long?
                         </p>
                     </div>
-                    <div class="user-profile-public-content">
-                        <div class="user-profile-public-content-name">
-                            <div>
-                                <p>First Name</p>
-                                <input type="text" placeholder="Enter your first name">
+
+                    <div class="content-notification container" id="content">
+                        <div class="notification-status">
+                            <p>Total: 43</p>
+                            <p>Unread: 17</p>
+                        </div>
+                        <button type="button" class="one-notification notification-disable" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal">
+                            <div class="one-notification-first-row"><img src="assets/delideli-website-favicon-color.png"
+                                    alt="img">
+                                <p>Delideli</p>
                             </div>
-                            <div>
-                                <p>Last Name</p>
-                                <input type="text" placeholder="Enter your last name">
+                            <div class="one-text">
+                                <p>Your recipe is not suitable for publicizing thag tri cho dien hahahahah
+                                </p>
                             </div>
-                        </div>
-                        <div class="user-profile-public-content-birth">
-                            <p>Birthday</p>
-                            <input type="date">
-                        </div>
-                        <div class="user-profile-public-content-special">
-                            <p>Specialties</p>
-                            <textarea name="" id="" cols="30" rows="3"
-                                placeholder="What are your specialties ? (Max: 100)"></textarea>
-                        </div>
-                        <div class="user-profile-public-content-bio">
-                            <p>Bio</p>
-                            <textarea name="" id="" cols="30" rows="5"
-                                placeholder="Write something about yourself (Max: 500)" maxlength="500"></textarea>
-                        </div>
+                            <p class="one-date">
+                                2 hour ago
+                            </p>
+                        </button>
+
+                        <button type="button" class="one-notification notification-disable" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal">
+                            <div class="one-notification-first-row"><img src="assets/delideli-website-favicon-color.png"
+                                    alt="img">
+                                <p>Delideli</p>
+                            </div>
+                            <div class="one-text">
+                                <p>Your recipe is not suitable for publicizing thag tri cho dien hahahahah
+                                </p>
+                            </div>
+                            <p class="one-date">
+                                2 hour ago
+                            </p>
+                        </button>
+
+                        <button type="button" class="one-notification notification-disable" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal">
+                            <div class="one-notification-first-row"><img src="assets/delideli-website-favicon-color.png"
+                                    alt="img">
+                                <p>Delideli</p>
+                            </div>
+                            <div class="one-text">
+                                <p>Your recipe is not suitable for publicizing thag tri cho dien hahahahah
+                                </p>
+                            </div>
+                            <p class="one-date">
+                                2 hour ago
+                            </p>
+                        </button>
+
+                        <button type="button" class="one-notification notification-disable" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal">
+                            <div class="one-notification-first-row"><img src="assets/delideli-website-favicon-color.png"
+                                    alt="img">
+                                <p>Delideli</p>
+                            </div>
+                            <div class="one-text">
+                                <p>Your recipe is not suitable for publicizing thag tri cho dien hahahahah
+                                </p>
+                            </div>
+                            <p class="one-date">
+                                2 hour ago
+                            </p>
+                        </button>
+
                     </div>
-                    <div class="user-profile-save-button">
-                        <p>Save Changes ?</p>
-                        <button>SAVE</button>
-                    </div>
+
+
                 </div>
                 <div class="col-md-3 user-profile-column-3 ">
                     <div class="user-profile-header">
@@ -187,6 +228,35 @@
                 </div>
 
             </form>
+        </div>
+    </div>
+
+    <div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="deletePlanModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title fs-5" id="exampleModalLabel">
+                        <p class="modal-title-text">Thang tri cho dien haha haha aha a ha aha ah
+                            aha
+                            ah a aha a aha ha</p>
+                        <p class="modal-title-date">2 hour ago</p>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-body-content">content content content content content content content content
+                        content
+                        content
+                        content content content content
+                        content content content content
+                    </div>
+
+                    <a href="link.html" class="modal-link">Click here</a>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
         </div>
     </div>
 

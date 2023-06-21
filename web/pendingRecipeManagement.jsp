@@ -80,6 +80,8 @@
                                     <a href="privateRecipeManagement.jsp?userId=<%= userId%>" >Private Recipes</a>
                                     <a href="pendingRecipeManagement.jsp?userId=<%= userId%>">Pending Recipes</a>
                                     <a href="publicRecipeManagement.jsp?userId=<%= userId%>">Public Recipes</a>
+                                    <a href="rejectedRecipeManagement.jsp?userId=<%= userId%>">Rejected Recipes</a>
+
                                 </div>
                             </div>
                             <a href="userReviewManagement.jsp?userId=<%= userId%>">
@@ -90,7 +92,7 @@
                     </div>
 
                     <%
-                        ArrayList<RecipeDTO> recipeList = RecipeDAO.getPendingRecipeByUserId(user.getId());
+                        ArrayList<RecipeDTO> recipeList = RecipeDAO.getRecipeByUserIdAndType(user.getId(),2);
                     %>
 
                     <div class="col-md-5 user-profile-column-2">

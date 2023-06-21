@@ -4,15 +4,9 @@
  */
 package Servlet;
 
-import Admin.AdminDAO;
-import Recipe.RecipeDAO;
-import Recipe.RecipeDTO;
-import User.UserDTO;
-import User.UserDetailDAO;
-import User.UserDetailDTO;
+import Notification.NotificationDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -20,9 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author Admin
+ * @author khang
  */
-public class ShowUserDetailServlet extends HttpServlet {
+public class DeleteNotificationServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,18 +32,8 @@ public class ShowUserDetailServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            String userName = request.getParameter("username");
-
-            UserDTO user = AdminDAO.getAccountByUserName(userName);
-            UserDetailDTO userDetail = UserDetailDAO.getUserDetailByUserId(user.getId());
-            
-            ArrayList<RecipeDTO> userRecipe = RecipeDAO.getRecipeByUserIdAndType(user.getId(), 3);
-            
-            request.setAttribute("user", user);
-            request.setAttribute("userDetail", userDetail);
-            request.setAttribute("userRecipe", userRecipe);
-            request.getRequestDispatcher("showUserDetail.jsp").forward(request, response);
-            
+            int notificationId = Integer.parseInt(request.getParameter("notificationId"));
+            NotificationDAO.deleteNotification(notificationId);
         }
     }
 

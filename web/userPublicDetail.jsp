@@ -74,15 +74,16 @@
                                     <a href="privateRecipeManagement.jsp?userId=<%= userId%>">Private Recipes</a>
                                     <a href="pendingRecipeManagement.jsp?userId=<%= userId%>">Pending Recipes</a>
                                     <a href="publicRecipeManagement.jsp?userId=<%= userId%>">Public Recipes</a>
+                                    <a href="rejectedRecipeManagement.jsp?userId=<%= userId%>">Rejected Recipes</a>
                                 </div>
                             </div>
                             <a href="userReviewManagement.jsp?userId=<%= userId%>">
                                 <img src="./assets/review-unchose.svg" alt="">
                                 My Reviews
                             </a>
-                                <a href="">
-                                    
-                                </a>
+<!--                            <a href="userNotification.jsp?userId=<%= userId%>">
+                                My Notifications
+                            </a>-->
                         </div>
                     </div>
 
@@ -176,8 +177,8 @@
                     </div>
                     <button type="submit" value="saveUserPublicDetail" name="action">SAVE</button>
                 </form>-->
-        
+
         <%@include file="footer.jsp" %>
-        
+
     </body>
 </html>

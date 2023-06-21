@@ -90,8 +90,8 @@
                                  id="dropdownContent">
                                 <div>
                                     <div class="status-bar-notification">
-                                        <p>Total: <%= count[0]%></p>
-                                        <p>Unread: <%= count[2]%></p>
+                                        <p id="totalCount">Total: <%= count[0]%></p>
+                                        <p id="unreadCount">Unread: <%= count[2]%></p>
                                     </div>
                                 </div>
                                 <div class="notification-content">
@@ -99,52 +99,62 @@
                                         ArrayList<NotificationDTO> list = NotificationDAO.getNotificationList(user.getId());
                                         for (NotificationDTO notification : list) {
                                             NotificationTypeDTO type = NotificationTypeDAO.getNotificationType(notification.getNotification_type());
-                                            if(notification.is_read()){
-                                            
+                                            if (notification.is_read()) {
+
                                     %>
                                     <button type="button" class="a-notification " data-bs-toggle="modal"
                                             data-bs-target="#<%= notification.getId()%>">
-                                        <% }else{ %>
+                                        <% } else {%>
                                         <button type="button" class="a-notification notification-disable" data-bs-toggle="modal"
-                                            data-bs-target="#<%= notification.getId()%>">
+                                                data-bs-target="#<%= notification.getId()%>">
+                                            <% }%>
+                                            <div class="notification-first-row"><img
+                                                    src="assets/delideli-website-favicon-color.png" alt="img">
+                                                <p><%= type.getTitle()%></p>
+                                            </div>
+                                            <div class="text">
+                                                <p><%= notification.getTitle()%></p>
+                                            </div>
+                                            <p class="date">
+                                                <%
+                                                    Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
+                                                    Timestamp sendTimestamp = notification.getSend_date(); // Replace "notification" with your actual object
+
+                                                    LocalDateTime currentDateTime = currentTimestamp.toLocalDateTime();
+                                                    LocalDateTime sendDateTime = sendTimestamp.toLocalDateTime();
+
+                                                    Duration duration = Duration.between(sendDateTime, currentDateTime);
+
+                                                    if (duration.toDays() > 0) {
+                                                        // Format the sendDateTime in the desired format
+                                                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd yyyy", Locale.ENGLISH);
+                                                        String formattedDateTime = sendDateTime.format(formatter);
+                                                %> 
+                                                <%= formattedDateTime%>
+                                                <%
+                                                } else {
+                                                    long minutesDiff = Math.abs(duration.toMinutes());
+
+                                                    if (minutesDiff < 60) {
+                                                        // Display the difference in minutes
+                                                        String minuteString = (minutesDiff == 1) ? "minute" : "minutes";
+                                                %>
+                                                <%= minutesDiff%> <%= minuteString%> ago
+                                                <%
+                                                } else {
+                                                    long hoursDiff = Math.abs(duration.toHours());
+                                                    String hourString = (hoursDiff == 1) ? "hour" : "hours";
+                                                %>
+                                                <%= hoursDiff%> <%= hourString%> ago
+                                                <%
+                                                        }
+                                                    }
+                                                %>
+                                            </p>
+
+
+                                        </button> <!-- Add closing tag for <a> element -->
                                         <% }%>
-                                        <div class="notification-first-row"><img
-                                                src="assets/delideli-website-favicon-color.png" alt="img">
-                                            <p><%= type.getTitle()%></p>
-                                        </div>
-                                        <div class="text">
-                                            <p><%= notification.getTitle()%></p>
-                                        </div>
-                                        <p class="date">
-                                            <%
-                                                Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
-
-                                                Timestamp sendTimestamp = notification.getSend_date(); // Replace "notification" with your actual object
-
-                                                LocalDateTime currentDateTime = currentTimestamp.toLocalDateTime();
-                                                LocalDateTime sendDateTime = sendTimestamp.toLocalDateTime();
-
-                                                Duration duration = Duration.between(sendDateTime, currentDateTime);
-
-                                                if (duration.toDays() > 0) {
-                                                    // Format the sendDateTime in the desired format
-                                                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd yyyy", Locale.ENGLISH);
-                                                    String formattedDateTime = sendDateTime.format(formatter);
-                                            %> 
-                                            <%= formattedDateTime%>
-                                            <%
-                                            } else {
-                                                // Get the difference in hours
-                                                long hoursDiff = Math.abs(duration.toHours());
-                                            %>
-                                            <%= hoursDiff%> hours ago
-                                            <%
-                                                }
-                                            %>
-
-                                        </p>
-                                    </button> <!-- Add closing tag for <a> element -->
-                                    <% }%>
 
 
                                 </div>
@@ -176,19 +186,47 @@
                     <script>
                         var dropdownContent = document.getElementById("dropdownContent");
                         var dropbtnNotification = document.querySelector(".dropbtn-notification");
-                        var notificationButton = document.querySelector(".a-notification");
+                        var notificationButtons = document.querySelectorAll(".a-notification");
+                        var unreadCountElement = document.getElementById("unreadCount");
 
-                        // Toggle dropdown content
+// Toggle dropdown content
                         function toggleDropdown() {
                             dropdownContent.style.display = dropdownContent.style.display === "block" ? "none" : "block";
                         }
 
-                        // Open modal and prevent closing the dropdown
-                        notificationButton.addEventListener("click", function (event) {
-                            event.stopPropagation(); // Prevent the click event from bubbling up to the dropdown container
+// Open modal and prevent closing the dropdown
+                        notificationButtons.forEach(function (button) {
+                            button.addEventListener("click", function (event) {
+                                event.stopPropagation(); // Prevent the click event from bubbling up to the dropdown container
+
+                                // Update the unread count based on the appearance of notification-disable class
+                                if (this.classList.contains("notification-disable")) {
+                                    // Update the unread count
+                                    this.classList.remove("notification-disable");
+                                    var unreadCount = parseInt(unreadCountElement.textContent.split(":")[1].trim());
+                                    unreadCount--;
+                                    unreadCountElement.textContent = "Unread: " + unreadCount;
+
+                                    // Get the notification id from the data-bs-target attribute
+                                    var notificationId = this.getAttribute("data-bs-target").substring(1);
+
+                                    // Call the SetNotificationStatusServlet
+                                    var xhr = new XMLHttpRequest();
+                                    xhr.open("POST", "SetNotificationStatusServlet");
+                                    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                                    xhr.onreadystatechange = function () {
+                                        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                                            console.log("Notification status updated successfully");
+                                        }
+                                    };
+                                    xhr.send("notificationId=" + encodeURIComponent(notificationId));
+                                } else {
+                                    return; // Exit the event listener without further processing
+                                }
+                            });
                         });
 
-                        // Close dropdown content when clicking outside, unless a modal is open
+// Close dropdown content when clicking outside, unless a modal is open
                         document.addEventListener("mousedown", function (event) {
                             var targetElement = event.target;
                             var modals = document.querySelectorAll(".modal");
@@ -208,6 +246,7 @@
                                 }
                             }
                         });
+
                     </script>
 
                     <%} else { %>
@@ -348,31 +387,43 @@
                     <div class="modal-header">
                         <div class="modal-title fs-5 modal-title-self" id="exampleModalLabel">
                             <p class="modal-title-text"><%= notification.getTitle()%></p>
-                            <p class="modal-title-date"><%
-                                Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
+                            <p class="modal-title-date">
+                                <%
+                                    Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
+                                    Timestamp sendTimestamp = notification.getSend_date(); // Replace "notification" with your actual object
 
-                                Timestamp sendTimestamp = notification.getSend_date(); // Replace "notification" with your actual object
+                                    LocalDateTime currentDateTime = currentTimestamp.toLocalDateTime();
+                                    LocalDateTime sendDateTime = sendTimestamp.toLocalDateTime();
 
-                                LocalDateTime currentDateTime = currentTimestamp.toLocalDateTime();
-                                LocalDateTime sendDateTime = sendTimestamp.toLocalDateTime();
+                                    Duration duration = Duration.between(sendDateTime, currentDateTime);
 
-                                Duration duration = Duration.between(sendDateTime, currentDateTime);
-
-                                if (duration.toDays() > 0) {
-                                    // Format the sendDateTime in the desired format
-                                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd yyyy", Locale.ENGLISH);
-                                    String formattedDateTime = sendDateTime.format(formatter);
+                                    if (duration.toDays() > 0) {
+                                        // Format the sendDateTime in the desired format
+                                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd yyyy", Locale.ENGLISH);
+                                        String formattedDateTime = sendDateTime.format(formatter);
                                 %> 
                                 <%= formattedDateTime%>
                                 <%
                                 } else {
-                                    // Get the difference in hours
-                                    long hoursDiff = Math.abs(duration.toHours());
+                                    long minutesDiff = Math.abs(duration.toMinutes());
+
+                                    if (minutesDiff < 60) {
+                                        // Display the difference in minutes
+                                        String minuteString = (minutesDiff == 1) ? "minute" : "minutes";
                                 %>
-                                <%= hoursDiff%> hours ago
+                                <%= minutesDiff%> <%= minuteString%> ago
                                 <%
+                                } else {
+                                    long hoursDiff = Math.abs(duration.toHours());
+                                    String hourString = (hoursDiff == 1) ? "hour" : "hours";
+                                %>
+                                <%= hoursDiff%> <%= hourString%> ago
+                                <%
+                                        }
                                     }
-                                %></p>
+                                %>
+                            </p>
+
                         </div>
                     </div>
                     <div class="modal-body">
@@ -383,32 +434,90 @@
                         <a href="editRecipe.jsp?recipeId=<%=notification.getRecipe_id()%>" class="modal-link">Edit recipe</a>
 
                         <%          break;
-                                case 2:%>
+                            case 2:%>
                         <a href="MainController?action=getRecipeDetailById&id=<%=notification.getRecipe_id()%>" class="modal-link">View recipe</a>
 
                         <%          break;
-                                case 3: %>
+                            case 3:%>
                         <a href="MainController?action=getRecipeDetailById&id=<%=notification.getRecipe_id()%>" class="modal-link">View recipe</a>
 
                         <%          break;
-                                case 4: %> 
+                            case 4: %> 
                         <a href="#" class="modal-link">View plan</a>
                         <%
-                                break;
+                                    break;
                                 case 5:
-                                break;
-                                
+                                    break;
+
                             }
                         %>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-success" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-danger deleteBtn" data-bs-dismiss="modal">Delete</button>
+                        <button type="button" class="btn btn-success closeBtn" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
         </div>
+
+
         <% }
-            }%>
+        %>
+        <script>
+
+            // Get all delete buttons on the page
+            const deleteButtons = document.querySelectorAll('.deleteBtn');
+            const totalCountElement = document.getElementById('totalCount');
+
+// Iterate over each delete button and add the event listener
+            deleteButtons.forEach((button) => {
+                button.addEventListener('click', () => {
+                    // Get the id of the parent modal
+                    const notificationId = button.closest('.modal').id;
+                    // Find the corresponding delete notification button
+                    let selector = 'button[data-bs-target="#' + notificationId + '"]';
+                    console.log(selector);
+
+                    let deleteNotificationButton = document.querySelector(selector);
+
+                    if (deleteNotificationButton.classList.contains("notification-disable")) {
+                        // Update the unread count
+
+                        var unreadCount = parseInt(unreadCountElement.textContent.split(":")[1].trim());
+                        unreadCount--;
+                        unreadCountElement.textContent = "Unread: " + unreadCount;
+                    }
+
+                    var totalCount = parseInt(totalCountElement.textContent.split(":")[1].trim());
+                    totalCount--;
+                    totalCountElement.textContent = "Total: " + totalCount;
+
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("POST", "DeleteNotificationServlet");
+                    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                            console.log("Delete notification sucessfully");
+                        }
+                    };
+                    xhr.send("notificationId=" + encodeURIComponent(notificationId));
+
+                    deleteNotificationButton.remove();
+
+
+
+
+                    // Find the modal element and close it
+                    const modalElement = document.getElementById(notificationId);
+                    const bootstrapModal = new bootstrap.Modal(modalElement);
+                    bootstrapModal.hide();
+                });
+            });
+
+
+        </script>
+
+        <%           }%>
 
 
         <!--      Bootstrap for JS         -->

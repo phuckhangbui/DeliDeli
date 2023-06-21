@@ -1,15 +1,15 @@
 <%-- 
-    Document   : userReviewManagement
-    Created on : Jun 8, 2023, 10:51:24 PM
+    Document   : rejectedRecipeManagement
+    Created on : Jun 21, 2023, 8:11:18 AM
     Author     : khang
 --%>
+
 
 <%@page import="User.UserDetailDTO"%>
 <%@page import="User.UserDetailDAO"%>
 <%@page import="Recipe.RecipeDAO"%>
 <%@page import="Recipe.RecipeDTO"%>
-<%@page import="Review.ReviewDAO"%>
-<%@page import="Review.ReviewDTO"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -45,7 +45,6 @@
         <div class="blank-background">
             <div class="container ">
                 <form class="row user-profile">
-
                     <input type="hidden" name="userId" value="<%= userId%>">
                     <div class="col-md-3 user-profile-column-1">
                         <div class="user-profile-header">
@@ -73,9 +72,9 @@
                                 <img src="./assets/favorite-unchose.svg" alt="">
                                 Saved Recipes
                             </a>
-                            <div class="dropdown" id="dropdownUserRecipe">
-                                <a href="#" class="dropbtn">
-                                    <img src="./assets/my-recipe-unchose.svg" alt="">
+                            <div class="dropdown" id="dropdownUserRecipe" >
+                                <a href="#" class="active-link" >
+                                    <img src="./assets/my-recipe.svg" alt="">
                                     My Own Recipes
                                 </a>
                                 <div class="dropdown-content-right">
@@ -85,53 +84,77 @@
                                     <a href="rejectedRecipeManagement.jsp?userId=<%= userId%>">Rejected Recipes</a>
                                 </div>
                             </div>
-                            <a href="userReviewManagement.jsp?userId=<%= userId%>" class="active-link">
-                                <img src="./assets/full-star.png" alt="">
+                            <a href="userReviewManagement.jsp?userId=<%= userId%>">
+                                <img src="./assets/review-unchose.svg" alt="">
                                 My Reviews
                             </a>
                         </div>
                     </div>
 
+                    <%
+                        ArrayList<RecipeDTO> recipeList = RecipeDAO.getRecipeByUserIdAndType(user.getId(), 4);
+                    %>
+
                     <div class="col-md-5 user-profile-column-2">
                         <div class="user-profile-header">
                             <div>
-                                Personal Ratings
+                                Rejected Recipes
                             </div>
                             <p>
-                                View your personal ratings on others recipes
+                                View and edit the recipes that are not fit for publication
                             </p>
                         </div>
                         <div class="row user-profile-recipes">
                             <%
-                                ArrayList<ReviewDTO> reviewList = ReviewDAO.getReviewByUserId(user.getId());
-                                for (ReviewDTO review : reviewList) {
-                                    RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(review.getRecipe_id());
+                                for (RecipeDTO r : recipeList) {
                             %>
-                            <a href="MainController?action=getRecipeDetailById&id=<%= recipe.getId()%>&activeScroll=true" class="col-md-6 user-profile-recipe-review">
-                                <div class="user-profile-recipe-post-picture">
-                                    <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
-                                </div>
-                                <div class="user-profile-recipe-review-title">
-                                    <p><%= recipe.getTitle()%></p>
+                            <div  class="col-md-6 user-profile-recipe-post">
+                                <a href="MainController?action=getRecipeDetailById&id=<%= r.getId()%>"
+                                   class="user-profile-recipe-post-picture" data-page="editRecipe.jsp?recipeId=<%=r.getId()%>">
+                                    <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath()%>" alt="">
+                                </a>
+
+                                <div>
+                                    <div class="user-profile-recipe-post-description">
+                                        <p><%= RecipeDAO.getCategoryByRecipeId(r.getId())%></p>
+                                        <a href="editRecipe.jsp?recipeId=<%=r.getId()%>">
+                                            <img src="./assets/edit.svg"/>
+                                        </a>
+                                    </div>
+                                    <a href="MainController?action=getRecipeDetailById&id=<%= r.getId()%>"><%= r.getTitle()%></a>
                                 </div>
                                 <div class="recommendation-content-reciew">
                                     <%
-                                        for (int i = 0; i < review.getRating(); i++) {
+                                        for (int i = 0; i < RecipeDAO.getRatingByRecipeId(r.getId()); i++) {
                                     %>
                                     <img src="./assets/full-star.png" alt="">
                                     <%
                                         }
                                     %>
-
+                                    <p class="recommendation-content-reciew-rating"><%= RecipeDAO.getRatingByRecipeId(r.getId())%></p>
                                 </div>
-                                <div class="user-profile-recipe-review-content">
-                                    <p><%=review.getContent()%></p>
-                                </div>
-                            </a>
-                            <%
-                                }%>
+                            </div>
+                            <% }%>
 
+                            <script>
+                                document.addEventListener('DOMContentLoaded', function () {
+                                    // Get references to all edit buttons
+                                    var editButtons = document.querySelectorAll('.editButton');
 
+                                    editButtons.forEach(function (editButton) {
+                                        editButton.addEventListener('click', function () {
+                                            // Find the parent recipe element
+                                            var recipe = editButton.closest('.user-profile-recipe-post-picture');
+
+                                            // Get the data-page attribute value from the recipe element
+                                            var page = recipe.getAttribute('data-page');
+
+                                            // Navigate to the corresponding page
+                                            window.location.href = page;
+                                        });
+                                    });
+                                });
+                            </script>
                         </div>
                     </div>
                     <div class="col-md-3 user-profile-column-3 ">
@@ -163,3 +186,4 @@
                 integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
         crossorigin="anonymous"></script>
     </body>
+

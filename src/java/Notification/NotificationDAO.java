@@ -98,17 +98,108 @@ public class NotificationDAO {
                         int recipe_id = rs.getInt("recipe_id");
                         int plan_id = rs.getInt("plan_id");
                         String link = rs.getString("link");
-                        
-                        NotificationDTO notification = new NotificationDTO(id, title, description, 
-                                send_date,is_read, userId, notification_type_id, recipe_id, plan_id, link);
+
+                        NotificationDTO notification = new NotificationDTO(id, title, description,
+                                send_date, is_read, userId, notification_type_id, recipe_id, plan_id, link);
                         list.add(notification);
                     }
                 }
+                rs.close();
+                pst.close();
+                cn.close();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return list;
+    }
+
+    public static NotificationDTO getNotificationById(int id) {
+        NotificationDTO notification = null;
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                String sql = "SELECT * \n"
+                        + "FROM [dbo].[Notification]\n"
+                        + "WHERE [id] = ?\n";
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setInt(1, id);
+                ResultSet rs = pst.executeQuery();
+                if (rs != null) {
+                    while (rs.next()) {
+                        String title = rs.getString("title");
+                        String description = rs.getString("description");
+                        Timestamp send_date = rs.getTimestamp("send_date");
+                        boolean is_read = rs.getBoolean("is_read");
+                        int notification_type_id = rs.getInt("notification_type_id");
+                        int recipe_id = rs.getInt("recipe_id");
+                        int plan_id = rs.getInt("plan_id");
+                        String link = rs.getString("link");
+                        int userId = rs.getInt("user_id");
+
+                        notification = new NotificationDTO(id, title, description,
+                                send_date, is_read, userId, notification_type_id, recipe_id, plan_id, link);
+                    }
+
+                }
+                rs.close();
+                pst.close();
+                cn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return notification;
+    }
+
+    public static void setReadNotification(int id) {
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                String sql = "UPDATE [dbo].[Notification]\n"
+                        + "SET [is_read] = 1\n"
+                        + "WHERE id = ?";
+
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setInt(1, id);
+                pst.executeUpdate();
+
+                pst.close();
+                cn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static void deleteNotification(int id) {
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                String sql = "DELETE FROM Notification\n"
+                        + "WHERE id = ?";
+
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setInt(1, id);
+                pst.executeUpdate();
+
+                pst.close();
+                cn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     public static void main(String[] args) {
@@ -119,8 +210,11 @@ public class NotificationDAO {
 
         ArrayList<NotificationDTO> list = getNotificationList(3);
         System.out.println(list.size());
-        for(NotificationDTO notification : list){
+        for (NotificationDTO notification : list) {
             System.out.println(notification.toString());
         }
+
+        System.out.println(getNotificationById(1));
+
     }
 }
