@@ -36,6 +36,7 @@ public class ShowNewsDetailServlet extends HttpServlet {
             String newsId = request.getParameter("newsId");
             
             NewsDTO news = NewsDAO.getNewsByNewsId(new Integer(newsId));
+            request.setCharacterEncoding("UTF-8");
             request.setAttribute("news", news);
             
             String author = NewsDAO.getNewsAuthorByNewsId(new Integer(newsId));
