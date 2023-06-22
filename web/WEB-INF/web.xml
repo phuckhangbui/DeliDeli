@@ -176,6 +176,10 @@
         <servlet-name>AddRecipeToPlan</servlet-name>
         <servlet-class>AddRecipeToPlan</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>PlanDetailServlet</servlet-name>
+        <servlet-class>Servlet.PlanDetailServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Example</servlet-name>
         <url-pattern>/Example</url-pattern>
@@ -327,6 +331,10 @@
     <servlet-mapping>
         <servlet-name>AddRecipeToPlanServlet</servlet-name>
         <url-pattern>/AddRecipeToPlanServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PlanDetailServlet</servlet-name>
+        <url-pattern>/PlanDetailServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

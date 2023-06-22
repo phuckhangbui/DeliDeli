@@ -67,7 +67,7 @@
                                     if (planList != null && planList.size() != 0) {
                                         for (PlanDTO list : planList) {
                                 %>
-                                <a href="userViewPlan.jsp" class="weekly-plans-plan-content ">
+                                <a href="MainController?action=getPlanDetailById&id=<%= list.getId() %>" class="weekly-plans-plan-content ">
                                     <div class="weekly-plans-plan-content-thumbnail">
                                         <img src="./pictures/plan1.jpg" alt="">
                                     </div>

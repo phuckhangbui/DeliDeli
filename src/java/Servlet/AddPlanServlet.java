@@ -62,11 +62,10 @@ public class AddPlanServlet extends HttpServlet {
             checkAddDate = PlanDAO.insertAllDatesWithinAWeek(start_date, end_date, weekId, id);
         } catch (Exception ex) {
             System.out.println("[addPlanServlet - ERROR]: " + ex.getMessage());
-
         }
 
         if (result) {
-            request.setAttribute("USER_PLAN", userPlan);
+            request.setAttribute("USER_PLAN", result);
             RequestDispatcher rq = request.getRequestDispatcher("addRecipeToPlan.jsp");
             rq.forward(request, response);
         } else {

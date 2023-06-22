@@ -59,4 +59,48 @@ public class DietDAO {
         }
         return result;
     }
+
+    public static DietDTO getTypeById(int id){
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        DietDTO result = new DietDTO();
+
+        String sql = "SELECT * FROM [Diet]\n"
+                + "WHERE id = ?";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, id);
+                rs = stm.executeQuery();
+
+                while (rs.next()) {
+                    id = rs.getInt("id");
+                    String title = rs.getString("title");
+                    result = new DietDTO(id, title);
+                    return result;
+                }
+
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return result;
+    }
 }

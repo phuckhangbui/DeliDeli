@@ -4,6 +4,11 @@
     Author     : Walking Bag
 --%>
 
+<%@page import="Diet.DietDTO"%>
+<%@page import="DateFormat.DateNameChanger"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="Plan.PlanDAO"%>
+<%@page import="Plan.PlanDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -33,29 +38,36 @@
         <div class="blank-background">
             <div class="container">
                 <%
-                    
+                    PlanDTO plan = (PlanDTO) request.getAttribute("plan");
+                    DietDTO diet = (DietDTO) request.getAttribute("diet");
                 %>
                 <div class="row plan">
                     <div class="plan-header">
-                        This Week's Plan
+                        <%= plan.getName()%>
                     </div>
                     <div class="plan-info">
                         <div class="row">
                             <div class="plan-info-period col-md-6">
-                                <p><span>Period:</span>June 18th - June 24th</p>
+                                <%
+                                    Date start_date = plan.getStart_at();
+                                    Date end_date = plan.getEnd_at();
+                                    SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM d", Locale.ENGLISH);
+                                    String formattedStartDate = DateNameChanger.formatDateWithOrdinalIndicator(start_date, dateFormat);
+                                    String formattedEndDate = DateNameChanger.formatDateWithOrdinalIndicator(end_date, dateFormat);
+                                %>
+                                <p><span>Period:</span> <%= formattedStartDate %> - <%= formattedEndDate %> </p>
                             </div>
                             <div class="plan-info-type col-md-6">
-                                <p><span>Type:</span>Healthy</p>
+                                <p><span>Type:</span><%= diet.getTitle() %> </p>
                             </div>
                         </div>
                         <div class="plan-info-description">
-                            <p><span>Description:</span>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean
-                                commodo ligula eget dolor. Aenean m</p>
+                            <p><span>Description:</span> <%= plan.getDescription() %></p>
                         </div>
                     </div>
                     <div class="plan-navbar">
                         <button class="plan-navbar-edit">
-                            <a href="addRecipesToPlan.html"><img src="./assets/edit.svg" alt=""></a>
+                            <a href="addRecipesToPlan.jsp"><img src="./assets/edit.svg" alt=""></a>
                         </button>
                     </div>
                     <div class="col-md-12 plan-table ">
@@ -172,8 +184,8 @@
                                 </div>
                             </div>
                         </div>
-                        
-                        
+
+
                         <!-- BREAKFAST -->
                         <div class="plan-table-row plan-table-recipe">
                             <div class="plan-table-content-header">
@@ -191,7 +203,7 @@
                                     <p><span class="plan-table-fat">F</span> 434g</p>
                                 </div>
                             </a>
-                            
+
                             <a href="" class="plan-table-recipe-content">
                                 <div class="plan-table-recipe-content-image">
                                     <img src="./pictures/egg1.jpeg" alt="">

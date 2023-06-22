@@ -134,8 +134,8 @@ public class MainController extends HttpServlet {
                     case "addPlan":
                         url = "AddPlanServlet";
                         break;
-                    case "Search recipes":
-                        url = "AddRecipeToPlanServlet";
+                    case "getPlanDetailById":
+                        url = "PlanDetailServlet";
                         break;
                 }
             }

@@ -5,6 +5,7 @@
 package Meal;
 
 import java.sql.Date;
+import java.sql.Time;
 
 /**
  *
@@ -14,13 +15,13 @@ public class MealDTO {
     private int id;
     private int date_id;
     private int recipe_id;
-    private Date start_time; 
-    private Date end_time; 
+    private Time start_time; 
+    private Time end_time; 
 
     public MealDTO() {
     }
 
-    public MealDTO(int id, int date_id, int recipe_id, Date start_time, Date end_time) {
+    public MealDTO(int id, int date_id, int recipe_id, Time start_time, Time end_time) {
         this.id = id;
         this.date_id = date_id;
         this.recipe_id = recipe_id;
@@ -52,19 +53,21 @@ public class MealDTO {
         this.recipe_id = recipe_id;
     }
 
-    public Date getStart_time() {
+    public Time getStart_time() {
         return start_time;
     }
 
-    public void setStart_time(Date start_time) {
+    public void setStart_time(Time start_time) {
         this.start_time = start_time;
     }
 
-    public Date getEnd_time() {
+    public Time getEnd_time() {
         return end_time;
     }
 
-    public void setEnd_time(Date end_time) {
+    public void setEnd_time(Time end_time) {
         this.end_time = end_time;
     }
+
+    
 }

@@ -2,9 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Meal;
+package PlanDate;
 
-import Plan.PlanDTO;
+import Meal.MealDTO;
 import Utils.DBUtils;
 import java.sql.Connection;
 import java.sql.Date;
@@ -18,33 +18,32 @@ import java.util.ArrayList;
  *
  * @author Daiisuke
  */
-public class MealDAO {
+public class PlanDateDAO {
 
-    public static ArrayList<MealDTO> getAllMealByDateId(int DateId) {
+    public static ArrayList<PlanDateDTO> getAllDateByPlanId(int plan_id) {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
-        ArrayList<MealDTO> result = new ArrayList<>();
+        ArrayList<PlanDateDTO> result = new ArrayList<>();
 
-        String sql = "SELECT * FROM [Meal]\n"
-                + "WHERE date_id = ?";
+        String sql = "SELECT * FROM [Date]\n"
+                + "WHERE plan_id = ?";
 
         try {
             con = DBUtils.getConnection();
             if (con != null) {
                 stm = con.prepareStatement(sql);
-                stm.setInt(1, DateId);
+                stm.setInt(1, plan_id);
                 rs = stm.executeQuery();
                 while (rs.next()) {
 
                     int id = rs.getInt("id");
-                    int date_id = rs.getInt("date_id");
-                    int recipe_id = rs.getInt("recipe_id");
-                    Time start_time = rs.getTime("start_time");
-                    Time end_time = rs.getTime("end_time");
+                    Date date = rs.getDate("date");
+                    int week_id = rs.getInt("week_id");
+                    plan_id = rs.getInt("plan_id");
 
-                    MealDTO meal = new MealDTO(id, date_id, recipe_id, start_time, end_time);
-                    result.add(meal);
+                    PlanDateDTO planDate = new PlanDateDTO(id, date, week_id, plan_id);
+                    result.add(planDate);
                 }
             }
         } catch (SQLException ex) {
@@ -66,4 +65,5 @@ public class MealDAO {
         }
         return result;
     }
+
 }
