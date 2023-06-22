@@ -107,6 +107,9 @@ public class MainController extends HttpServlet {
                     case "confirmRecipe":
                         url = "ConfirmRecipeServlet";
                         break;
+                    case "rejectRecipe":
+                        url = "RejectRecipeServlet";
+                        break;
                     case "searchAccount":
                         url = "SearchAccountServlet";
                         break;
@@ -130,6 +133,30 @@ public class MainController extends HttpServlet {
                         break;
                     case "deleteNews":
                         url = "DeleteNewsServlet";
+                        break;
+                    case "suggestionRecipe":
+                        url = "SuggestionRecipeServlet";
+                        break;
+                    case "addSuggestion":
+                        url = "AddSuggestionSerlvet";
+                        break;
+                    case "createSuggestion":
+                        url = "CreateSuggestionSerlvet";
+                        break;
+                    case "filterSuggestion":
+                        url = "FilterSuggestionServlet";
+                        break;
+                    case "removeSuggestion":
+                        url = "RemoveSuggestionServlet";
+                        break;
+                    case "manageSuggestion":
+                        url = "ManageSuggestionServlet";
+                        break;
+                    case "updateSuggestion":
+                        url = "UpdateSuggestionServlet";
+                        break;
+                    case "deleteSuggestion":
+                        url = "DeleteSuggestionServlet";
                         break;
                 }
             }
