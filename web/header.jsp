@@ -118,8 +118,7 @@
                             </select>
                         </form>
                     </div>
-                    <%if (user
-                                != null) {%>
+                    <%if (user!= null) {%>
                     <% int[] count = NotificationDAO.getNotificationCount(user.getId());
                     %>
                     <div
@@ -152,8 +151,7 @@
                                     <%
                                         ArrayList<NotificationDTO> list
                                                 = NotificationDAO.getNotificationList(user.getId());
-                                        for (NotificationDTO notification
-                                                : list) {
+                                        for (NotificationDTO notification: list) {
                                             NotificationTypeDTO type
                                                     = NotificationTypeDAO.getNotificationType(notification.getNotification_type());
                                             if (notification.is_read()) {
@@ -200,7 +198,7 @@
                                                 %>
                                                 now
                                                 <%
-                                                    if (duration.toDays()
+                                                    }if (duration.toDays()
                                                             > 0) {
                                                         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd yyyy", Locale.ENGLISH);
                                                         String formattedDateTime
@@ -337,7 +335,7 @@
 
                     </script>
 
-                    <%}else {
+                    <% }else {
                     %>
                     <div
                         class="account col-md-2">
@@ -506,8 +504,7 @@
 
         <% if (user
                     != null) {
-                ArrayList<NotificationDTO> list
-                        = NotificationDAO.getNotificationList(user.getId());
+                ArrayList<NotificationDTO> list = NotificationDAO.getNotificationList(user.getId());
                 for (NotificationDTO notification
                         : list) {
                     NotificationTypeDTO type
@@ -547,7 +544,7 @@
                                 %>
                                 now
                                 <%
-                                    if (duration.toDays()
+                                    }if (duration.toDays()
                                             > 0) {
                                         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd yyyy", Locale.ENGLISH);
                                         String formattedDateTime
