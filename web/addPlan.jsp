@@ -4,6 +4,8 @@
     Author     : Walking Bag
 --%>
 
+<%@page import="Diet.DietDAO"%>
+<%@page import="Diet.DietDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -29,12 +31,15 @@
         <div class="a1">
             <!--         The navigation bar       -->
             <%@include file="header.jsp" %>
+            <%
+                ArrayList<DietDTO> dietList = DietDAO.getAllDietType();
+            %>
 
             <!--         Recipe Plan       -->
             <div class="blank-background">
                 <div class="container">
                     <div class="row add-plan">
-                        <form action="">
+                        <form action="MainController" method="POST">
                             <div class="add-plan-header">
                                 <p>Add a Plan</p>
                                 <p>
@@ -48,7 +53,7 @@
                                 <div class="col-md-6 add-plan-info-date">
                                     Starting Date: <span>*</span>
                                     <div>
-                                        <input type="date" id="startingDate" onchange="calculateNewDate()">
+                                        <input type="date" id="startingDate" name="start_date" onchange="calculateNewDate()">
                                     </div>
                                 </div>
                                 <div class="col-md-6 add-plan-info-date">
@@ -56,17 +61,9 @@
                                     <script>
                                         function calculateNewDate() {
                                             const inputDate = document.getElementById("startingDate").value;
-
-                                            // Convert the input date to a JavaScript Date object
                                             const dateObj = new Date(inputDate);
-
-                                            // Add 7 days to the input date
-                                            dateObj.setDate(dateObj.getDate() + 7);
-
-                                            // Format the new date as "YYYY-MM-DD"
+                                            dateObj.setDate(dateObj.getDate() + 6);
                                             const newDate = dateObj.toISOString().split('T')[0];
-
-                                            // Display the new date
                                             document.getElementById("endingDate").textContent = newDate;
                                         }
                                     </script>
@@ -77,15 +74,21 @@
                             <div class="add-plan-info-header add-plan-info">
                                 Plan Title <span>*</span>
                                 <div>
-                                    <input type="text" class="input-full" placeholder="What's your plan called ?">
+                                    <input type="text" name="name" class="input-full" placeholder="What's your plan called ?">
                                 </div>
                             </div>
                             <div class="add-plan-info-header add-plan-info">
                                 Plan Type <span>*</span>
-                                <select name="" id="" class="add-plan-info-header-type">
-                                    <option value="">Healthy</option>
-                                    <option value="">Diet</option>
-                                    <option value="">Weight Gaining</option>
+                                <select name="recipeDietId" id="" class="add-plan-info-header-type" required>
+                                    <%
+                                        if (dietList != null && dietList.size() != 0) {
+                                            for (DietDTO list : dietList) {
+                                    %>
+                                    <option value="<%= list.getId()%>"> <%= list.getTitle()%> </option>
+                                    <%
+                                            }
+                                        }
+                                    %>
                                 </select>
                             </div>
                             <div class="add-plan-info-header add-plan-info">
@@ -94,8 +97,11 @@
                                           placeholder="Give a small description of your plan" maxlength="200"></textarea>
                             </div>
 
+                            <!-- Hidden Attributes -->
+                            <input type="hidden" name="userId" value="<%= user.getId()%>" />
+
                             <div class=" add-recipe-info-submit">
-                                <button type="submit" name="action" value="addRecipe">
+                                <button type="submit" name="action" value="addPlan">
                                     CREATE
                                 </button>
                             </div>
