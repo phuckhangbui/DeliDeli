@@ -23,9 +23,11 @@
         <!--      Bootstrap         -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
               integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
         <!--      CSS         -->
         <link rel="stylesheet" href="./styles/userStyle.css">
         <link rel="stylesheet" href="./styles/adminStyle.css">
+        <link rel="stylesheet" href="./styles/notificationStyle.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link
@@ -241,7 +243,7 @@
                                                 %>
                                                 <p><%= recipe.getPrep_time()%> min(s)</p>
                                                 <%
-                                                }%>
+                                                    }%>
                                             </div>
                                             <div class="col-md-3">
                                                 <p>Cook time:</p>
@@ -253,7 +255,7 @@
                                                 %>
                                                 <p><%= recipe.getCook_time()%> min(s)</p>
                                                 <%
-                                                }%>
+                                                    }%>
                                             </div>
                                             <div class="col-md-3">
                                                 <p>Total time:</p>
@@ -265,7 +267,7 @@
                                                 %>
                                                 <p><%= (recipe.getPrep_time() + recipe.getCook_time())%> min(s)</p>
                                                 <%
-                                                }%>
+                                                    }%>
                                             </div>
                                             <div class="col-md-3">
                                                 <p>Serving:</p>
@@ -328,8 +330,9 @@
                                 <div class="recipe-detail-admin-action">
                                     <form action="MainController" method="post" class="recipe-table-button">
                                         <input type="hidden" value="<%= recipe.getId()%>" name="recipeId">
+                                        <input type="text" name="userId" value="<%= ownerId%>" hidden>
                                         <input type="hidden" name="admin" value="admin">
-                                        <button type="submit" value="rejectRecipe" name="action" class="recipe-table-button-delete">Reject</button>
+                                        <button type="button" value="rejectRecipe" name="action" class="recipe-table-button-delete btn-disapprove" data-bs-toggle="modal" data-bs-target="#disapprove">Reject</button>
                                         <%
                                             if (recipe.getStatus() == 2) {
                                         %>
@@ -342,6 +345,38 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="disapprove" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                 aria-labelledby="deletePlanModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <form action="MainController" class="modal-content modal-content-self">
+                        <div class="modal-header form-header">
+                            <div class="form-title disapprove-style" id="exampleModalLabel">
+                                Reject Recipe
+                            </div>
+                        </div>
+                        <div class="modal-body">
+
+                            <p class="title-text">Message Title:<br><input type="text" class="title" maxlength="100" name="txtTitle">
+                            </p>
+                            <p>Message body: </p>
+                            <textarea rows="4" class="form-body-content" name="txtDesc">
+                            </textarea>
+                            <!-- Here to store hidden input base on the type of the notification-->
+                            <!-- Should always have userId, except system notification-->
+                            <input type="text" name="userId" value="<%= ownerId%>" hidden>
+                            <input type="text" name="notificationType" value="1" hidden>
+                            <!-- For example, when accept or reject a recipe, pass recipeId here-->
+                            <input type="text" name="recipeId" value="<%= recipe.getId()%>" hidden>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-danger" data-bs-dismiss="modal" name="action"
+                                    value="rejectRecipe">Reject</button>
+                        </div>
+                    </form>
                 </div>
             </div>
     </body>

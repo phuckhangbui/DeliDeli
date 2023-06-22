@@ -5,6 +5,8 @@
 package Servlet;
 
 import Admin.AdminDAO;
+import Notification.NotificationDAO;
+import Notification.NotificationDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -32,12 +34,33 @@ public class RejectRecipeServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            String id = request.getParameter("recipeId");
+            String title = request.getParameter("txtTitle");
+            String desc = request.getParameter("txtDesc");
+            java.sql.Timestamp sendDate = new java.sql.Timestamp(System.currentTimeMillis());
+            String userId = request.getParameter("userId");
+            String notificationType = request.getParameter("notificationType");
+            String recipeId = request.getParameter("recipeId");
+
             
-            int result = AdminDAO.rejectRecipe(new Integer(id));
-            if(result > 0) {
-                request.getRequestDispatcher("ManageRecipeServlet").forward(request, response);
-            }
+            NotificationDTO notification = new NotificationDTO(0, title, desc, sendDate, false, new Integer(userId), 
+                                                                new Integer(notificationType), new Integer(recipeId), 0, "");
+            NotificationDAO.addNotification(notification);
+            
+            AdminDAO.rejectRecipe(new Integer(recipeId));
+            
+            request.getRequestDispatcher("ManageRecipeServlet").forward(request, response);
+            
+//            out.println(title);
+//            out.println(desc);
+//            out.println(sendDate);
+//            out.println(userId);
+//            out.println(notificationType);
+//            out.println(recipeId);
+
+//            int result = AdminDAO.rejectRecipe(new Integer(id));
+//            if(result > 0) {
+//                request.getRequestDispatcher("ManageRecipeServlet").forward(request, response);
+//            }
         }
     }
 
