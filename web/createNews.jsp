@@ -27,8 +27,8 @@
         <link
             href="https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed:wght@300;400;500;600;700&display=swap"
             rel="stylesheet">
-        <!--<script src="https://cdn.ckeditor.com/4.16.2/standard-all/ckeditor.js"></script>-->
-        <script type="text/javascript" src="<%= request.getContextPath()%>/libraries/ckeditor/ckeditor.js"></script>
+        <script src="https://cdn.ckeditor.com/4.16.2/standard-all/ckeditor.js"></script>
+        <!--<script type="text/javascript" src="<%= request.getContextPath()%>/libraries/ckeditor/ckeditor.js"></script>-->
     </head>
     <body>
 
