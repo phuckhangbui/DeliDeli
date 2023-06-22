@@ -47,33 +47,18 @@ public class AddPlanServlet extends HttpServlet {
 
         PlanDTO userPlan = new PlanDTO(name, description, note, start_date, end_date, userID, userID);
 
-        //Get the planID
-        try {
-            id = PlanDAO.getPlanIdByUserIdAndDate(userID, start_date);
-        } catch (Exception ex) {
-            System.out.println("[addPlanServlet - ERROR]: " + ex.getMessage());
-        }
-
-        System.out.println("[addPlanServlet - Name]: " + name);
-        System.out.println("[addPlanServlet - Desc]: " + description);
-        System.out.println("[addPlanServlet - Note]: " + note);
-        System.out.println("[addPlanServlet - start_date]: " + start_date);
-        System.out.println("[addPlanServlet - end_date]: " + end_date);
-        System.out.println("[addPlanServlet - RecipeDietID]: " + recipeDietID);
-        System.out.println("[addPlanServlet - userID]: " + userID);
-
         // Adding plan
         try {
             result = PlanDAO.insertPlan(name, description, note, start_date, end_date, userID, userID);
+            id = PlanDAO.getPlanByUserIdAndName(userID, name);
         } catch (Exception ex) {
             System.out.println("[addPlanServlet - ERROR]: " + ex.getMessage());
         }
 
         // Creating each day in that particular week.
         try {
-            checkAddWeek = PlanDAO.insertWeek(userID, start_date);
+            checkAddWeek = PlanDAO.insertWeek(id, start_date);
             int weekId = PlanDAO.getWeekIDByPlanId(id);
-            System.out.println("[addPlanServlet - WeekID]: " + weekId);
             checkAddDate = PlanDAO.insertAllDatesWithinAWeek(start_date, end_date, weekId, id);
         } catch (Exception ex) {
             System.out.println("[addPlanServlet - ERROR]: " + ex.getMessage());

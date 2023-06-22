@@ -68,137 +68,6 @@ public class PlanDAO {
         return false;
     }
 
-    public static ArrayList<PlanDTO> getAllUserPlanByUserID(int userId) throws Exception {
-        Connection con = null;
-        PreparedStatement stm = null;
-        ResultSet rs = null;
-        ArrayList<PlanDTO> result = new ArrayList<>();
-
-        String sql = "SELECT * FROM [Plan]\n"
-                + "WHERE user_id = ?";
-
-        try {
-            con = DBUtils.getConnection();
-            if (con != null) {
-                stm = con.prepareStatement(sql);
-                stm.setInt(1, userId);
-                rs = stm.executeQuery();
-                while (rs.next()) {
-
-                    int id = rs.getInt("id");
-                    String name = rs.getString("name");
-                    String description = rs.getString("description");
-                    String note = rs.getString("note");
-                    Date start_at = rs.getDate("start_at");
-                    Date end_at = rs.getDate("end_at");
-                    int user_id = rs.getInt("user_id");
-                    int diet_id = rs.getInt("diet_id");
-
-                    PlanDTO userPlan = new PlanDTO(id, name, description, note, start_at, end_at, user_id, diet_id);
-                    result.add(userPlan);
-                }
-            }
-        } catch (SQLException ex) {
-            System.out.println("Query error - getAllUserPlanByUserID: " + ex.getMessage());
-        } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (stm != null) {
-                    stm.close();
-                }
-                if (con != null) {
-                    con.close();
-                }
-            } catch (SQLException ex) {
-                System.out.println("Error closing database resources: " + ex.getMessage());
-            }
-        }
-        return result;
-    }
-
-    public static int getPlanIdByUserIdAndDate(int userId, Date start_date) throws Exception {
-        Connection con = null;
-        PreparedStatement stm = null;
-        ResultSet rs = null;
-
-        String sql = "SELECT * FROM [Plan]\n"
-                + "WHERE user_id = ? and start_at like ?";
-
-        try {
-            con = DBUtils.getConnection();
-            if (con != null) {
-                stm = con.prepareStatement(sql);
-                stm.setInt(1, userId);
-                stm.setDate(2, start_date);
-
-                rs = stm.executeQuery();
-                while (rs.next()) {
-                    int id = rs.getInt("id");
-                    return id;
-                }
-            }
-        } catch (SQLException ex) {
-            System.out.println("Query error - getPlanIdByUserIdAndDate: " + ex.getMessage());
-        } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (stm != null) {
-                    stm.close();
-                }
-                if (con != null) {
-                    con.close();
-                }
-            } catch (SQLException ex) {
-                System.out.println("Error closing database resources: " + ex.getMessage());
-            }
-        }
-        return 0;
-    }
-
-    public static int getWeekIDByPlanId(int plan_id) throws Exception {
-        Connection con = null;
-        PreparedStatement stm = null;
-        ResultSet rs = null;
-
-        String sql = "SELECT * FROM [Week]\n"
-                + "WHERE plan_id = ?";
-
-        try {
-            con = DBUtils.getConnection();
-            if (con != null) {
-                stm = con.prepareStatement(sql);
-                stm.setInt(1, plan_id);
-
-                rs = stm.executeQuery();
-                while (rs.next()) {
-                    int id = rs.getInt("id");
-                    return id;
-                }
-            }
-        } catch (SQLException ex) {
-            System.out.println("Query error - getWeekIDByPlanId: " + ex.getMessage());
-        } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (stm != null) {
-                    stm.close();
-                }
-                if (con != null) {
-                    con.close();
-                }
-            } catch (SQLException ex) {
-                System.out.println("Error closing database resources: " + ex.getMessage());
-            }
-        }
-        return 0;
-    }
-
     public static boolean insertWeek(int plan_id, Date start_at) {
         Connection con = null;
         PreparedStatement stm = null;
@@ -267,7 +136,7 @@ public class PlanDAO {
 
                 // Insert each date into the database
                 for (Date date : dates) {
-                    stm = con.prepareStatement(sql);                    
+                    stm = con.prepareStatement(sql);
                     stm.setDate(1, date);
                     stm.setInt(2, week_id);
                     stm.setInt(3, plan_id);
@@ -296,5 +165,136 @@ public class PlanDAO {
             }
         }
         return false;
+    }
+
+    public static ArrayList<PlanDTO> getAllUserPlanByUserID(int userId) throws Exception {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        ArrayList<PlanDTO> result = new ArrayList<>();
+
+        String sql = "SELECT * FROM [Plan]\n"
+                + "WHERE user_id = ?";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, userId);
+                rs = stm.executeQuery();
+                while (rs.next()) {
+
+                    int id = rs.getInt("id");
+                    String name = rs.getString("name");
+                    String description = rs.getString("description");
+                    String note = rs.getString("note");
+                    Date start_at = rs.getDate("start_at");
+                    Date end_at = rs.getDate("end_at");
+                    int user_id = rs.getInt("user_id");
+                    int diet_id = rs.getInt("diet_id");
+
+                    PlanDTO userPlan = new PlanDTO(id, name, description, note, start_at, end_at, user_id, diet_id);
+                    result.add(userPlan);
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error - getAllUserPlanByUserID: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return result;
+    }
+
+    public static int getPlanByUserIdAndName(int userId, String name) throws Exception {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+
+        String sql = "SELECT * FROM [Plan]\n"
+                + "WHERE [user_id] = ? and [name] like ?";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, userId);
+                stm.setString(2, name);
+
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    return id;
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error - getPlanIdByUserIdAndDate: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return 0;
+    }
+
+    public static int getWeekIDByPlanId(int plan_id) throws Exception {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+
+        String sql = "SELECT * FROM [Week]\n"
+                + "WHERE plan_id = ?";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, plan_id);
+
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    return id;
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error - getWeekIDByPlanId: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return 0;
     }
 }
