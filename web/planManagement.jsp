@@ -4,7 +4,7 @@
     Author     : Walking Bag
 --%>
 
-<%@page import="Date.DateNameChanger"%>
+<%@page import="DateFormat.DateNameChanger"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="Plan.PlanDAO"%>
 <%@page import="Plan.PlanDTO"%>

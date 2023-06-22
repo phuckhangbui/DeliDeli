@@ -32,6 +32,9 @@
         <!--         Recipe Plan       -->
         <div class="blank-background">
             <div class="container">
+                <%
+                    
+                %>
                 <div class="row plan">
                     <div class="plan-header">
                         This Week's Plan
@@ -169,6 +172,9 @@
                                 </div>
                             </div>
                         </div>
+                        
+                        
+                        <!-- BREAKFAST -->
                         <div class="plan-table-row plan-table-recipe">
                             <div class="plan-table-content-header">
                                 Breakfast
@@ -185,6 +191,7 @@
                                     <p><span class="plan-table-fat">F</span> 434g</p>
                                 </div>
                             </a>
+                            
                             <a href="" class="plan-table-recipe-content">
                                 <div class="plan-table-recipe-content-image">
                                     <img src="./pictures/egg1.jpeg" alt="">

@@ -52,7 +52,6 @@ public class RecipeDetailServlet extends HttpServlet {
             ArrayList<IngredientDetailDTO> ingredientDetailList = IngredientDetailDAO.getIngredientDetailByRecipeId(new Integer(id));
             request.setAttribute("ingredientDetailList", ingredientDetailList);
 
-
             //REVIEW----------------------------------------------------------------------------------
             ArrayList<ReviewDTO> reviewList = ReviewDAO.getReviewByRecipeId(new Integer(id));
             request.setAttribute("reviewList", reviewList);
