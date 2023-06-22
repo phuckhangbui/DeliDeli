@@ -66,10 +66,10 @@
                 </a>
             </div>
         </div>
-        
-        
-        
-        
+
+
+
+
 
         <%  ArrayList<RecipeDTO> list = (ArrayList<RecipeDTO>) session.getAttribute("searchRecipesList");
             session.setAttribute("searchRecipesList", null);
@@ -106,6 +106,9 @@
                     case "Cuisine":
                         typeName = cuisineMap.get(id);
                         break;
+                    case "Diet":
+                        typeName = dietMap.get(id);
+                        break;
                 }
                 SUCCESS_MSG = "Result of " + type + ": " + typeName;
             }
@@ -124,6 +127,9 @@
                     case "Cuisine":
                         typeName = cuisineMap.get(id);
                         break;
+                    case "Diet":
+                        typeName = dietMap.get(id);
+                        break;
                 }
                 ERROR_MSG = typeName + " " + type + " is not available";
             }
@@ -135,7 +141,7 @@
             <div class="container ">
                 <div class="row">
                     <header class="search-result-header">
-                            <p><%= ERROR_MSG%></p>
+                        <p><%= ERROR_MSG%></p>
                     </header>
                 </div>
             </div>
@@ -146,7 +152,7 @@
             <div class="container ">
                 <div class="row">
                     <header class="search-result-header">
-                            <p><%= SUCCESS_MSG%></p>
+                        <p><%= SUCCESS_MSG%></p>
                     </header>
                 </div>
 

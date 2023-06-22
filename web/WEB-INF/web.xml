@@ -157,6 +157,14 @@
         <servlet-class>Servlet.ServletImageLoader</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>SetNotificationStatusServlet</servlet-name>
+        <servlet-class>Servlet.SetNotificationStatusServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteNotificationServlet</servlet-name>
+        <servlet-class>Servlet.DeleteNotificationServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>SuggestionRecipeServlet</servlet-name>
         <servlet-class>Servlet.SuggestionRecipeServlet</servlet-class>
     </servlet>
@@ -327,6 +335,14 @@
     <servlet-mapping>
         <servlet-name>ServletImageLoader</servlet-name>
         <url-pattern>/ServletImageLoader</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SetNotificationStatusServlet</servlet-name>
+        <url-pattern>/SetNotificationStatusServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteNotificationServlet</servlet-name>
+        <url-pattern>/DeleteNotificationServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>SuggestionRecipeServlet</servlet-name>

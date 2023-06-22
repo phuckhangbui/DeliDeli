@@ -309,153 +309,6 @@ public class RecipeDAO {
         return result;
     }
 
-    public static ArrayList<RecipeDTO> getPublicRecipeByUserId(int userId) {
-        ArrayList<RecipeDTO> result = new ArrayList<RecipeDTO>();
-        Connection cn = null;
-
-        try {
-            cn = DBUtils.getConnection();
-
-            if (cn != null) {
-                String sql = "SELECT *\n"
-                        + "FROM Recipe\n"
-                        + "WHERE user_id = ? AND status = 3\n"
-                        + "ORDER BY COALESCE(update_at, create_at) DESC, create_at DESC";
-
-                PreparedStatement pst = cn.prepareStatement(sql);
-                pst.setInt(1, userId);
-                ResultSet rs = pst.executeQuery();
-                if (rs != null) {
-                    while (rs.next()) {
-                        int id = rs.getInt("id");
-                        String title = rs.getString("title");
-                        String description = rs.getString("description");
-                        int prep_time = rs.getInt("prep_time");
-                        int cook_time = rs.getInt("cook_time");
-                        int servings = rs.getInt("servings");
-                        Date create_at = rs.getDate("create_at");
-                        Date update_at = rs.getDate("update_at");
-                        int cuisin_id = rs.getInt("cuisine_id");
-                        int category_id = rs.getInt("category_id");
-                        int user_id = rs.getInt("user_id");
-                        int level_id = rs.getInt("level_id");
-                        int status = rs.getInt("status");
-
-                        RecipeDTO recipe = new RecipeDTO(id, title, description, prep_time,
-                                cook_time, servings, create_at, update_at, cuisin_id,
-                                category_id, user_id, level_id, status);
-                        result.add(recipe);
-                    }
-                }
-                rs.close();
-                pst.close();
-                cn.close();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return result;
-    }
-
-    public static ArrayList<RecipeDTO> getPendingRecipeByUserId(int userId) {
-        ArrayList<RecipeDTO> result = new ArrayList<RecipeDTO>();
-        Connection cn = null;
-
-        try {
-            cn = DBUtils.getConnection();
-
-            if (cn != null) {
-                String sql = "SELECT *\n"
-                        + "FROM Recipe\n"
-                        + "WHERE user_id = ? AND status = 2\n"
-                        + "ORDER BY COALESCE(update_at, create_at) DESC, create_at DESC";
-
-                PreparedStatement pst = cn.prepareStatement(sql);
-                pst.setInt(1, userId);
-                ResultSet rs = pst.executeQuery();
-                if (rs != null) {
-                    while (rs.next()) {
-                        int id = rs.getInt("id");
-                        String title = rs.getString("title");
-                        String description = rs.getString("description");
-                        int prep_time = rs.getInt("prep_time");
-                        int cook_time = rs.getInt("cook_time");
-                        int servings = rs.getInt("servings");
-                        Date create_at = rs.getDate("create_at");
-                        Date update_at = rs.getDate("update_at");
-                        int cuisin_id = rs.getInt("cuisine_id");
-                        int category_id = rs.getInt("category_id");
-                        int user_id = rs.getInt("user_id");
-                        int level_id = rs.getInt("level_id");
-                        int status = rs.getInt("status");
-
-                        RecipeDTO recipe = new RecipeDTO(id, title, description, prep_time,
-                                cook_time, servings, create_at, update_at, cuisin_id,
-                                category_id, user_id, level_id, status);
-                        result.add(recipe);
-                    }
-                }
-                rs.close();
-                pst.close();
-                cn.close();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return result;
-    }
-
-    public static ArrayList<RecipeDTO> getPrivateRecipeByUserId(int userId) {
-        ArrayList<RecipeDTO> result = new ArrayList<RecipeDTO>();
-        Connection cn = null;
-
-        try {
-            cn = DBUtils.getConnection();
-
-            if (cn != null) {
-                String sql = "SELECT *\n"
-                        + "FROM Recipe\n"
-                        + "WHERE user_id = ? AND status = 1\n"
-                        + "ORDER BY COALESCE(update_at, create_at) DESC, create_at DESC";
-
-                PreparedStatement pst = cn.prepareStatement(sql);
-                pst.setInt(1, userId);
-                ResultSet rs = pst.executeQuery();
-                if (rs != null) {
-                    while (rs.next()) {
-                        int id = rs.getInt("id");
-                        String title = rs.getString("title");
-                        String description = rs.getString("description");
-                        int prep_time = rs.getInt("prep_time");
-                        int cook_time = rs.getInt("cook_time");
-                        int servings = rs.getInt("servings");
-                        Date create_at = rs.getDate("create_at");
-                        Date update_at = rs.getDate("update_at");
-                        int cuisin_id = rs.getInt("cuisine_id");
-                        int category_id = rs.getInt("category_id");
-                        int user_id = rs.getInt("user_id");
-                        int level_id = rs.getInt("level_id");
-                        int status = rs.getInt("status");
-
-                        RecipeDTO recipe = new RecipeDTO(id, title, description, prep_time,
-                                cook_time, servings, create_at, update_at, cuisin_id,
-                                category_id, user_id, level_id, status);
-                        result.add(recipe);
-                    }
-                }
-                rs.close();
-                pst.close();
-                cn.close();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return result;
-    }
-    
     public static ArrayList<RecipeDTO> getRecipeByUserIdAndType(int userId, int status) {
         ArrayList<RecipeDTO> result = new ArrayList<RecipeDTO>();
         Connection cn = null;
@@ -505,6 +358,8 @@ public class RecipeDAO {
 
         return result;
     }
+    
+   
 
     public static int addRecipe(RecipeDTO recipe) {
         int generatedId = -1; // Default value if ID generation fails
@@ -565,7 +420,6 @@ public class RecipeDAO {
                     + "    prep_time = ?, \n"
                     + "    cook_time = ?, \n"
                     + "    servings = ?, \n"
-                    + "    create_at = ?, \n"
                     + "    update_at = ?, \n"
                     + "    cuisine_id = ?, \n"
                     + "    category_id = ?, \n"
@@ -581,14 +435,13 @@ public class RecipeDAO {
             pst.setInt(3, recipe.getPrep_time());
             pst.setInt(4, recipe.getCook_time());
             pst.setInt(5, recipe.getServings());
-            pst.setDate(6, recipe.getCreate_at());
-            pst.setDate(7, recipe.getUpdate_at());
-            pst.setInt(8, recipe.getCuisine_id());
-            pst.setInt(9, recipe.getCategory_id());
-            pst.setInt(10, recipe.getUser_id());
-            pst.setInt(11, recipe.getLevel_id());
-            pst.setInt(12, recipe.getStatus());
-            pst.setInt(13, recipe.getId());
+            pst.setDate(6, recipe.getUpdate_at());
+            pst.setInt(7, recipe.getCuisine_id());
+            pst.setInt(8, recipe.getCategory_id());
+            pst.setInt(9, recipe.getUser_id());
+            pst.setInt(10, recipe.getLevel_id());
+            pst.setInt(11, recipe.getStatus());
+            pst.setInt(12, recipe.getId());
 
             // Step 3: Execute the prepared statement and retrieve the generated keys
             pst.executeUpdate();

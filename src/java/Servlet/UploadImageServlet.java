@@ -63,83 +63,88 @@ public class UploadImageServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
-        try{
-        //DAO/DTO
-        RecipeImageDAO recipeImageDAO = new RecipeImageDAO();
-        RecipeImageDTO recipeImage = null;
+        try {
+            //DAO/DTO
+            RecipeImageDAO recipeImageDAO = new RecipeImageDAO();
+            RecipeImageDTO recipeImage = null;
 
-        //Param
-        int recipeId = (Integer) request.getAttribute("recipeId");
+            //Param
+            int recipeId = (Integer) request.getAttribute("recipeId");
 
-        System.out.println("[UploadImage - ID]: " + recipeId);
-        recipeImage = recipeImageDAO.checkRecipeImageByID(recipeId);
+            System.out.println("[UploadImage - ID]: " + recipeId);
+            recipeImage = recipeImageDAO.checkRecipeImageByID(recipeId);
 
-        //Path
-        String uploadPath = "C:/project-swp/pictures/Recipe/" + recipeId;
-        String uploadPathThumbnail = uploadPath + "/Thumbnail"; //.../Recipe/[ID]/ImageThumbnail
-        String uploadPathDetail = uploadPath + "/Detail";
+            //Path
+            String uploadPath = "C:/project-swp/pictures/Recipe/" + recipeId;
+            String uploadPathThumbnail = uploadPath + "/Thumbnail"; //.../Recipe/[ID]/ImageThumbnail
+            String uploadPathDetail = uploadPath + "/Detail";
 
-        //Upload
-        File uploadDir = new File(uploadPath);
-        File uploadDirThumbnail = new File(uploadPathThumbnail);
-        File uploadDirDetail = new File(uploadPathDetail);
+            //Upload
+            File uploadDir = new File(uploadPath);
+            File uploadDirThumbnail = new File(uploadPathThumbnail);
+            File uploadDirDetail = new File(uploadPathDetail);
 
-        if (!uploadDir.exists()) {
-            uploadDir.mkdir(); //mkdir = make directory if not exist.
-        }
-
-        if (!uploadDirThumbnail.exists()) {
-            uploadDirThumbnail.mkdir();
-        }
-
-        if (!uploadDirDetail.exists()) {
-            uploadDirDetail.mkdir();
-        }
-
-        //Simple patch for now...
-        Part thumbnailPart = request.getPart("thumbnail"); // Get thumbnail image file
-        String thumbnailName = getFileName(thumbnailPart); // Get thumbnail image name
-        String thumbnailPath = uploadPathThumbnail + File.separator + thumbnailName;
-        thumbnailPart.write(thumbnailPath); // Upload to disk
-
-        // Detail
-//        List<String> detailPaths = new ArrayList<>();
-//        Collection<Part> detailParts = request.getParts();
-//        String detailName = "";
-//        String detailPath;
-//
-//        //Allow multiple selection (in testing)
-//        for (Part part : detailParts) {
-//            if (part.getName().equals("detail")) {
-//                detailName = setUniqueFileName(part, 0); //Starts with index 0.
-//                detailPath = uploadPathDetail + File.separator + detailName;
-//                part.write(detailPath);
-//                detailPaths.add(detailPath);
-//            }
-//        }
-        if (recipeImage != null) {
-            if (recipeImage.getId() > 0) {
-                // Exist
-                System.out.println("Exist: ThumbnailName = " + thumbnailName);
-                recipeImageDAO.updateRecipeThumbnailImageByID(thumbnailName, recipeId);
-
-//            System.out.println("Exist: detailName = " + detailName);
-//            recipeImageDAO.updateRecipeDetailedImageByID(detailName, ID);
-            } else {
-                // Not exist
-                System.out.println("Non-Exist: ThumbnailName = " + thumbnailName);
-                recipeImageDAO.insertRecipeImageByID(true, thumbnailName, recipeId); //Do updateDAO like this
-
-//            System.out.println("Non-Exist: detailName = " + detailName);
-//            recipeImageDAO.insertRecipeImageByID(false, detailName, ID);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdir(); //mkdir = make directory if not exist.
             }
-        } else {
-            recipeImageDAO.insertRecipeImageByID(true, thumbnailName, recipeId); //Do updateDAO like this
-        }
-//        request.setAttribute("THUMB_IMAGE", thumbnailName);
-//        request.setAttribute("DETAIL_IMAGE", detailName);
-        response.sendRedirect("home.jsp");
-        }catch(Exception e){
+
+            if (!uploadDirThumbnail.exists()) {
+                uploadDirThumbnail.mkdir();
+            }
+
+            if (!uploadDirDetail.exists()) {
+                uploadDirDetail.mkdir();
+            }
+
+            //Simple patch for now...
+            Part thumbnailPart = request.getPart("thumbnail"); // Get thumbnail image file
+            System.out.println(thumbnailPart);
+            if (thumbnailPart.getInputStream().available() != 0) {
+                String thumbnailName = getFileName(thumbnailPart); // Get thumbnail image name
+                String thumbnailPath = uploadPathThumbnail + File.separator + thumbnailName;
+                thumbnailPart.write(thumbnailPath); // Upload to disk
+
+                if (recipeImage != null) {
+                    if (recipeImage.getId() > 0) {
+                        // Exist
+                        System.out.println("Exist: ThumbnailName = " + thumbnailName);
+                        recipeImageDAO.updateRecipeThumbnailImageByID(thumbnailName, recipeId);
+
+                    } else {
+                        // Not exist
+                        System.out.println("Non-Exist: ThumbnailName = " + thumbnailName);
+                        recipeImageDAO.insertRecipeImageByID(true, thumbnailName, recipeId); //Do updateDAO like this
+
+                    }
+                } else {
+                    recipeImageDAO.insertRecipeImageByID(true, thumbnailName, recipeId); //Do updateDAO like this
+                }
+            }
+
+            Part detailPart = request.getPart("picture");
+            if (detailPart != null) {
+                String detailName = getFileName(detailPart);
+                String detailPath = uploadPathDetail + File.separator + detailName;
+                detailPart.write(detailPath); // Upload to disk
+
+                if (recipeImage != null) {
+                    if (recipeImage.getId() > 0) {
+                        // Exist
+                        System.out.println("Exist: detailName = " + detailName);
+                        recipeImageDAO.updateRecipeDetailedImageByID(detailName, recipeId);
+                    } else {
+                        // Not exist
+
+                        System.out.println("Non-Exist: detailName = " + detailName);
+                        recipeImageDAO.insertRecipeImageByID(false, detailName, recipeId);
+                    }
+                } else {
+                    recipeImageDAO.insertRecipeImageByID(false, detailName, recipeId); //Do updateDAO like this
+                }
+
+            }
+            response.sendRedirect("home.jsp");
+        } catch (Exception e) {
             response.sendRedirect("home.jsp");
         }
     }

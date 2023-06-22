@@ -1,8 +1,4 @@
-<%-- 
-    Document   : showRecipeDetail
-    Created on : Jun 10, 2023, 9:04:47 AM
-    Author     : Admin
---%>
+<%-- Document : showRecipeDetail Created on : Jun 10, 2023, 9:04:47 AM Author : Admin --%>
 
 <%@page import="User.UserDTO"%>
 <%@page import="Direction.DirectionDAO"%>
@@ -351,7 +347,7 @@
             <div class="modal fade" id="disapprove" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
                  aria-labelledby="deletePlanModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
-                    <form action="MainController" class="modal-content modal-content-self">
+                    <form action="MainController" method="post"class="modal-content modal-content-self">
                         <div class="modal-header form-header">
                             <div class="form-title disapprove-style" id="exampleModalLabel">
                                 Reject Recipe
