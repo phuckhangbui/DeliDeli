@@ -82,15 +82,17 @@ public class PlanDAO {
                 stm.setInt(1, userId);
                 rs = stm.executeQuery();
                 while (rs.next()) {
+                    
+                    int id = rs.getInt("id");
                     String name = rs.getString("name");
                     String description = rs.getString("description");
+                    String note = rs.getString("note");
                     Date start_at = rs.getDate("start_at");
                     Date end_at = rs.getDate("end_at");
-                    String note = rs.getString("note");
                     int user_id = rs.getInt("user_id");
                     int diet_id = rs.getInt("diet_id");
 
-                    PlanDTO userPlan = new PlanDTO(userId, name, description, note, start_at, end_at, user_id, diet_id);
+                    PlanDTO userPlan = new PlanDTO(id, name, description, note, start_at, end_at, user_id, diet_id);
                     result.add(userPlan);
                 }
             }

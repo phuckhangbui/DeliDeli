@@ -4,6 +4,10 @@
     Author     : Walking Bag
 --%>
 
+<%@page import="Date.DateNameChanger"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="Plan.PlanDAO"%>
+<%@page import="Plan.PlanDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <!DOCTYPE html>
@@ -58,17 +62,29 @@
                         </div>
                         <div class="col-md-6 ">
                             <div class="weekly-plans-plan active-plan">
+                                <%
+                                    ArrayList<PlanDTO> planList = PlanDAO.getAllUserPlanByUserID(user.getId());
+                                    if (planList != null && planList.size() != 0) {
+                                        for (PlanDTO list : planList) {
+                                %>
                                 <a href="userViewPlan.jsp" class="weekly-plans-plan-content ">
                                     <div class="weekly-plans-plan-content-thumbnail">
                                         <img src="./pictures/plan1.jpg" alt="">
                                     </div>
                                     <div class="weekly-plans-plan-content-des">
-                                        <p class="active-plan-content">This Week's Plan</p>
-                                        <p><span>Description:</span>Lorem ipsum dolor sit amet, consectetuer adipiscing
-                                            elit. Aenean
-                                            commodo
-                                            ligula eget dolor. Aenean m</p>
-                                        <p><span>Period Date:</span>June 18th - June 24th</p>
+                                        <p class="active-plan-content"><%= list.getName()%></p>
+                                        <p><span>Description:</span> <%= list.getDescription()%></p>
+                                        <%
+                                            // Simple date format converter -> 06-23 => June 23rd
+                                            Date start_date = list.getStart_at();
+                                            Date end_date = list.getEnd_at();
+                                            SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM d", Locale.ENGLISH);
+                                            String formattedStartDate = DateNameChanger.formatDateWithOrdinalIndicator(start_date, dateFormat);
+                                            String formattedEndDate = DateNameChanger.formatDateWithOrdinalIndicator(end_date, dateFormat);
+                                        %>
+                                        <p><span>Period Date:</span>
+                                            <%= formattedStartDate %> - <%= formattedEndDate %>
+                                        </p>
                                     </div>
                                 </a>
                                 <form class="weekly-plans-plan-content-delete">
@@ -98,98 +114,11 @@
                                     </div>
                                 </div>
                             </div>
+                            <%
+                                    }
+                                }
+                            %>
                         </div>
-                        <div class="col-md-6 ">
-                            <div class="weekly-plans-plan">
-                                <a href="userViewPlan.jsp" class="weekly-plans-plan-content">
-                                    <div class="weekly-plans-plan-content-thumbnail">
-                                        <img src="./pictures/plan1.jpg" alt="">
-                                    </div>
-                                    <div class="weekly-plans-plan-content-des">
-                                        <p>This Week's Plan</p>
-                                        <p><span>Description:</span>Lorem ipsum dolor sit amet, consectetuer adipiscing
-                                            elit. Aenean
-                                            commodo
-                                            ligula eget dolor. Aenean m</p>
-                                        <p><span>Period Date:</span>June 18th - June 24th</p>
-                                    </div>
-                                </a>
-                                <form class="weekly-plans-plan-content-delete">
-                                    <button type="button" data-bs-toggle="modal" data-bs-target="#deletePlanModal">
-                                        <img src="assets/close-inactive.svg" alt="">
-                                    </button>
-                                </form>
-                                <!-- Modal -->
-                                <div class="modal fade" id="deletePlanModal" tabindex="-1"
-                                     aria-labelledby="deletePlanModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                ...
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary"
-                                                        data-bs-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-primary">Save changes</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 ">
-                            <div class="weekly-plans-plan">
-                                <a href="userViewPlan.jsp" class="weekly-plans-plan-content">
-                                    <div class="weekly-plans-plan-content-thumbnail">
-                                        <img src="./pictures/plan1.jpg" alt="">
-                                    </div>
-                                    <div class="weekly-plans-plan-content-des">
-                                        <p>This Week's Plan</p>
-                                        <p><span>Description:</span>Lorem ipsum dolor sit amet, consectetuer adipiscing
-                                            elit. Aenean commodo ligula eget dolor. Aenean m</p>
-                                        <p><span>Period Date:</span>June 18th - June 24th</p>
-                                    </div>
-                                </a>
-                                <form class="weekly-plans-plan-content-delete">
-                                    <button type="button" data-bs-toggle="modal" data-bs-target="#deletePlanModal">
-                                        <img src="assets/close-inactive.svg" alt="">
-                                    </button>
-                                </form>
-                                <!-- Modal -->
-                                <div class="modal fade" id="deletePlanModal" tabindex="-1"
-                                     aria-labelledby="deletePlanModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                ...
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary"
-                                                        data-bs-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-primary">Save changes</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-
-                    </div>
-                </div>
-            </div>
-
-
 
 
             <!--         Footer       -->
