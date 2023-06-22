@@ -204,16 +204,15 @@ public class PlanDAO {
         PreparedStatement stm = null;
         ResultSet rs = null;
 
-        String sql = "INSERT INTO [Week](week_num, plan_id, start_at)\n"
-                + "VALUES (?, ?, ?)";
+        String sql = "INSERT INTO [Week](plan_id, start_at)\n"
+                + "VALUES (?, ?)";
 
         try {
             con = DBUtils.getConnection();
             if (con != null) {
                 stm = con.prepareStatement(sql);
-                stm.setInt(1, 0);
-                stm.setInt(2, plan_id);
-                stm.setDate(3, start_at);
+                stm.setInt(1, plan_id);
+                stm.setDate(2, start_at);
 
                 int effectRows = stm.executeUpdate();
                 if (effectRows > 0) {
@@ -268,16 +267,11 @@ public class PlanDAO {
 
                 // Insert each date into the database
                 for (Date date : dates) {
-                    stm = con.prepareStatement(sql);
-                    
-                    System.out.println("PlanDAO - Date");
-                    
+                    stm = con.prepareStatement(sql);                    
                     stm.setDate(1, date);
                     stm.setInt(2, week_id);
                     stm.setInt(3, plan_id);
                     effectRows = stm.executeUpdate();
-
-                    System.out.println("[PlanDAO - Date]: " + date);
                 }
 
                 if (effectRows > 0) {
