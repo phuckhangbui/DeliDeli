@@ -29,8 +29,6 @@
     <body>
 
         <div class="container-fluid">
-
-
             <%
                 ArrayList<UserDTO> listAcc = (ArrayList) request.getAttribute("listAcc");
                 ArrayList<UserDTO> listAccSearched = (ArrayList) request.getAttribute("listAccSearched");
@@ -47,19 +45,26 @@
             %>
 
             <div class="row">
+                <%
+                    UserDTO user = (UserDTO) session.getAttribute("user");
+                    if (user == null || user.getRole() == 1) {
+                        response.sendRedirect("error.jsp");
+                    } else if (user.getRole() == 2) {
+                %>
+
                 <nav class="nav-left-bar col-md-2">
                     <a class="logo" href="">
                         <img src="assets/Logo3.svg" alt="">
                     </a>
                     <div>
                         <a href="admin.jsp">
-                            <img src="./assets/public-unchose.svg" alt="">
+                            <img src="./assets/public.svg" alt="">
                             Dashboard
                         </a>
                     </div>
                     <div>
                         <a href="MainController?action=manageAccount" class="active">
-                            <img src="./assets/personal.png" alt="">
+                            <img src="./assets/user-unchose.svg" alt="">
                             User
                         </a>
                     </div>
@@ -70,7 +75,7 @@
                         </a>
                     </div>
                     <div>
-                        <a href="#">
+                        <a href="MainController?action=manageSuggestion">
                             <img src="./assets/content-unchose.svg" alt="">
                             Content
                         </a>
@@ -99,18 +104,10 @@
                             Report
                         </a>
                     </div>
-
-
                 </nav>
 
+                <div class="col-md-10 recipe">
 
-                <div class="col-md-10 user-list">
-                    <%
-                        UserDTO user = (UserDTO) session.getAttribute("user");
-                        if (user == null || user.getRole() != 2) {
-                            response.sendRedirect("error.jsp");
-                        } else {
-                    %>
                     <nav class="navbar">
                         <div class="nav-top-bar">
                             <div class="nav-top-bar-account dropdown">
@@ -124,217 +121,284 @@
                     </nav>
 
                     <%
-                        }
+                    } else if (user.getRole() == 3) {
                     %>
-                    <div class="user-header">
-                        Users List
-                    </div>
-                    <div class="nav-top-bar-search">
-                        <form action="MainController" method="post" class="nav-top-bar-search-user">
-                            <button type="submit" name="action" value="searchAccount"><img src="assets/search2.svg" alt=""></button>
-                            <input type="text" name="txtSearch" placeholder="Who are you searching for ?">
-                            <input type="hidden" value="<%= currentRole%>" name="currentRole">
-                            <input type="hidden" value="<%= tag%>" name="tag">
-                        </form>
-                        <form action="MainController?action=manageAccount" method="post" class="nav-top-bar-search-filter">
-                            <select name="role">
-                                <option value="user">User</option>
-                                <option value="admin">Admin</option>
-                                <option value="all">All</option>
-                            </select>
-                            <button type="submit" value="Filter" class="filter-table-button">Filter</button>
-                        </form>
-                    </div>
+                    <nav class="nav-left-bar col-md-2">
+                        <a class="logo" href="">
+                            <img src="assets/Logo3.svg" alt="">
+                        </a>
+                        <!--                        <div>
+                                                    <a href="admin.jsp">
+                                                        <img src="./assets/public-unchose.svg" alt="">
+                                                        Dashboard
+                                                    </a>
+                                                </div>-->
+                        <div>
+                            <a href="MainController?action=manageAccount" class="active">
+                                <img src="./assets/user-unchose.svg" alt="">
+                                User
+                            </a>
+                        </div>
+                        <div>
+                            <a href="MainController?action=manageRecipe">
+                                <img src="./assets/post-unchose.svg" alt="">
+                                Posts
+                            </a>
+                        </div>
+                        <div>
+                            <a href="MainController?action=manageSuggestion">
+                                <img src="./assets/content-unchose.svg" alt="">
+                                Content
+                            </a>
+                        </div>
+                        <div>
+                            <a href="MainController?action=manageNews">
+                                <img src="./assets/news.svg" alt="">
+                                News
+                            </a>
+                        </div>
+                        <!--                        <div>
+                                                    <a href="#">
+                                                        <img src="./assets/policies-unchose.svg" alt="">
+                                                        Policies
+                                                    </a>
+                                                </div>-->
+                        <div>
+                            <a href="#">
+                                <img src="./assets/broadcast-unchose.svg" alt="">
+                                Broadcast
+                            </a>
+                        </div>
+                        <!--                        <div>
+                                                    <a href="#">
+                                                        <img src="./assets/bug-report-unchose.svg" alt="">
+                                                        Report
+                                                    </a>
+                                                </div>-->
+                    </nav>
 
-                    <!--      User List         -->
+                    <div class="col-md-10 recipe">
+                        <nav class="navbar">
+                            <div class="nav-top-bar">
+                                <div class="nav-top-bar-account dropdown">
+                                    <img src="./assets/profile-pic.svg" alt="">
+                                    <div>
+                                        <p><%= user.getUserName()%></p>
+                                        <p>Moderator</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </nav>
+                        <%
+                            }
+                        %>
+                        
+                        <div class="user-header">
+                            Users List
+                        </div>
+                        <div class="nav-top-bar-search">
+                            <form action="MainController" method="post" class="nav-top-bar-search-user">
+                                <button type="submit" name="action" value="searchAccount"><img src="assets/search2.svg" alt=""></button>
+                                <input type="text" name="txtSearch" placeholder="Who are you searching for ?">
+                                <input type="hidden" value="<%= currentRole%>" name="currentRole">
+                                <input type="hidden" value="<%= tag%>" name="tag">
+                            </form>
+                            <form action="MainController?action=manageAccount" method="post" class="nav-top-bar-search-filter">
+                                <select name="role">
+                                    <option value="user">User</option>
+                                    <option value="admin">Admin</option>
+                                    <option value="moderator">Moderator</option>
+                                    <option value="all">All</option>
+                                </select>
+                                <button type="submit" value="Filter" class="filter-table-button">Filter</button>
+                            </form>
+                        </div>
 
+                        <!--      User List         -->
+                        <%
+                            int currentPage = 1;
 
+                            String currentPageParam = request.getParameter("page");
+                            if (currentPageParam != null && !currentPageParam.isEmpty()) {
+                                currentPage = Integer.parseInt(currentPageParam);
+                            }
+                        %>
 
-                    <%
-                        int currentPage = 1;
-
-                        String currentPageParam = request.getParameter("page");
-                        if (currentPageParam != null && !currentPageParam.isEmpty()) {
-                            currentPage = Integer.parseInt(currentPageParam);
-                        }
-                    %>
-
-                    <%
-                        if (listAccSearched != null && !listAccSearched.isEmpty()) {
-                    %>
-                    <table class="table table-striped table-hover">
-                        <thead>
-                            <tr>
-                                <th>No.</th>
-                                <th>User name</th>
-                                <th>Role</th>
-                                <th>Email</th>
-                                <th>Created</th>
-                                <th>Status</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody class="table-group-divider">
-                            <%
-                                for (UserDTO u : listAccSearched) {
-                            %>
-                            <tr>
-                                <td><%= u.getId()%></td>
-                                <td><a href="MainController?action=showUserDetail&username=<%= u.getUserName()%>"><%= u.getUserName()%></a></td>
-                                <td><%= AdminDAO.getRoleByRoleId(u.getRole())%></td>
-                                <td><%= u.getEmail()%></td>
-                                <td><%= u.getCreateAt()%></td>
-                                <td><%= tmp[u.getStatus()]%></td>
-                                <td class="user-action-button">
-                                    <form action="MainController?username=<%= u.getUserName()%>" method="post" class="activate-acc-button">
-                                        <input type="hidden" value="<%= currentRole%>" name="currentRole">
-                                        <input type="hidden" value="<%= tag%>" name="tag">
-                                        <%
-                                            if (tmp[u.getStatus()].equals("Deactivated")) {
-                                        %>
-                                        <button type="submit" value="activateAcc" name="action" >Activate</button>
-                                        <%
-                                        } else {
-                                        %>
-                                        <button type="submit" value="deactivateAcc" name="action">Deactivate</button>
-                                        <%
-                                            }
-                                        %>
-                                    </form>
-                                    <form action="MainController?username=<%= u.getUserName()%>" method="post" class="delete-acc-button">
-                                        <input type="hidden" value="<%= currentRole%>" name="currentRole">
-                                        <input type="hidden" value="<%= tag%>" name="tag">
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#userListModal">Delete</button>
-                                        <div class="modal fade" id="userListModal" tabindex="-1" aria-labelledby="userListModalLabel" aria-hidden="true">
-                                            <div class="popup-confirm">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h1 class="modal-title fs-5" id="exampleModalLabel">CONFIRMATION</h1>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            Pressing delete will remove this user from this site forever, are you sure you still want to delete them ?
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, I changed my mind</button>
-                                                            <button type="button" class="btn popup-confirm-btn">Yes, delete them</button>
+                        <%
+                            if (listAcc != null && !listAcc.isEmpty()) {
+                        %>
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>User name</th>
+                                    <th>Role</th>
+                                    <th>Email</th>
+                                    <th>Created</th>
+                                    <th>Status</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-group-divider">
+                                <%
+                                    int count = 1;
+                                    for (UserDTO u : listAcc) {
+                                %>
+                                <tr>
+                                    <td><%= count%></td>
+                                    <td><a href="MainController?action=showUserDetail&username=<%= u.getUserName()%>"><%= u.getUserName()%></a></td>
+                                    <td><%= AdminDAO.getRoleByRoleId(u.getRole())%></td>
+                                    <td><%= u.getEmail()%></td>
+                                    <td><%= u.getCreateAt()%></td>
+                                    <td><%= tmp[u.getStatus()]%></td>
+                                    <td class="user-action-button">
+                                        <form action="MainController?username=<%= u.getUserName()%>" method="post" class="activate-acc-button">
+                                            <input type="hidden" value="<%= currentRole%>" name="currentRole">
+                                            <input type="hidden" value="<%= tag%>" name="tag">
+                                            <%
+                                                if (tmp[u.getStatus()].equals("Deactivated") && user.getRole() != 1 && u.getRole() != 2) {
+                                            %>
+                                            <button type="submit" value="activateAcc" name="action" >Activate</button>
+                                            <%
+                                            } else if (user.getRole() != 1 && u.getRole() != 2) {
+                                            %>
+                                            <button type="submit" value="deactivateAcc" name="action">Deactivate</button>
+                                            <%
+                                                }
+                                            %>
+                                        </form>
+    <!--                                    <form action="MainController?username=<%= u.getUserName()%>" method="post" class="delete-acc-button">
+                                            <input type="hidden" value="<%= currentRole%>" name="currentRole">
+                                            <input type="hidden" value="<%= tag%>" name="tag">
+                                            <button type="submit" data-bs-toggle="modal" data-bs-target="#userListModal" name="action" value="deleteAcc">Delete</button>
+                                            <div class="modal fade" id="userListModal" tabindex="-1" aria-labelledby="userListModalLabel" aria-hidden="true">
+                                                <div class="popup-confirm">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h1 class="modal-title fs-5" id="exampleModalLabel">CONFIRMATION</h1>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                Pressing delete will remove this user from this site forever, are you sure you still want to delete them ?
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, I changed my mind</button>
+                                                                <button type="button" class="btn popup-confirm-btn">Yes, delete them</button>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </form>
-                                </td>
-                            </tr>
+                                        </form>-->
+                                    </td>
+                                </tr>
+                                <%
+                                        count++;
+                                    }
+                                %>
+                            </tbody>
+                        </table>
+
+                        <div class="table-redirect">
+                            <%
+                                for (int i = 1; i <= endPage; i++) {
+                            %>
+                            <a class="<%= (new Integer(tag) == i) ? "table-redirect-active-link" : ""%>" href="MainController?action=manageAccount&index=<%= i%>&role=<%= currentRole%>"><%= i%></a>
                             <%
                                 }
                             %>
-                        </tbody>
-                    </table>
-
-                    <div class="table-redirect">
-                        <%
-                            for (int i = 1; i <= endPage; i++) {
-                                String pageUrl = "MainController?action=manageAccount&page=" + i + "&role=" + currentRole;
+                        </div>
+                        <% } else if (listAccSearched
+                                != null && listAccSearched.size()
+                                > 0) {
                         %>
-                        <a class="<%= (currentPage == i) ? "table-redirect-active-link" : ""%>" href="<%= pageUrl%>"><%= i%></a>
-                        <%
-                            }
-                        %>
-                    </div>
-
-                    <% } else if (listAcc != null && listAcc.size() > 0) {
-                    %>
-                    <table class="table table-striped table-hover">
-                        <thead>
-                            <tr>
-                                <th>No.</th>
-                                <th>User name</th>
-                                <th>Role</th>
-                                <th>Email</th>
-                                <th>Created</th>
-                                <th>Status</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody class="table-group-divider">
-                            <%
-                                for (UserDTO u : listAcc) {
-                            %>
-                            <tr>
-                                <td><%= u.getId()%></td>
-                                <td><a href="MainController?action=showUserDetail&username=<%= u.getUserName()%>"><%= u.getUserName()%></a></td>
-                                <td><%= AdminDAO.getRoleByRoleId(u.getRole())%></td>
-                                <td><%= u.getEmail()%></td>
-                                <td><%= u.getCreateAt()%></td>
-                                <td><%= tmp[u.getStatus()]%></td>
-                                <td class="user-action-button">
-                                    <form action="MainController?username=<%= u.getUserName()%>" method="post" class="activate-acc-button">
-                                        <input type="hidden" value="<%= currentRole%>" name="currentRole">
-                                        <input type="hidden" value="<%= tag%>" name="tag">
-                                        <%
-                                            if (tmp[u.getStatus()].equals("Deactivated")) {
-                                        %>
-                                        <button type="submit" value="activateAcc" name="action">Activate</button>
-                                        <%
-                                        } else {
-                                        %>
-                                        <button type="submit" value="deactivateAcc" name="action">Deactivate</button>
-                                        <%
-                                            }
-                                        %>
-                                    </form>
-                                    <form action="MainController?username=<%= u.getUserName()%>" method="post" class="delete-acc-button">
-                                        <input type="hidden" value="<%= currentRole%>" name="currentRole">
-                                        <input type="hidden" value="<%= tag%>" name="tag">
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#userListModal">Delete</button>
-                                        <div class="modal fade" id="userListModal" tabindex="-1" aria-labelledby="userListModalLabel" aria-hidden="true">
-                                            <div class="popup-confirm">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h1 class="modal-title fs-5" id="exampleModalLabel">CONFIRMATION</h1>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            Pressing delete will remove this user from this site forever, are you sure you still want to delete them ?
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, I changed my mind</button>
-                                                            <button type="button" class="btn popup-confirm-btn">Yes, delete them</button>
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>User name</th>
+                                    <th>Role</th>
+                                    <th>Email</th>
+                                    <th>Created</th>
+                                    <th>Status</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-group-divider">
+                                <%
+                                    int count = 1;
+                                    for (UserDTO u : listAccSearched) {
+                                %>
+                                <tr>
+                                    <td><%= count%></td>
+                                    <td><a href="MainController?action=showUserDetail&username=<%= u.getUserName()%>"><%= u.getUserName()%></a></td>
+                                    <td><%= AdminDAO.getRoleByRoleId(u.getRole())%></td>
+                                    <td><%= u.getEmail()%></td>
+                                    <td><%= u.getCreateAt()%></td>
+                                    <td><%= tmp[u.getStatus()]%></td>
+                                    <td class="user-action-button">
+                                        <form action="MainController?username=<%= u.getUserName()%>" method="post" class="activate-acc-button">
+                                            <input type="hidden" value="<%= currentRole%>" name="currentRole">
+                                            <input type="hidden" value="<%= tag%>" name="tag">
+                                            <%
+                                                if (tmp[u.getStatus()].equals("Deactivated")) {
+                                            %>
+                                            <button type="submit" value="activateAcc" name="action">Activate</button>
+                                            <%
+                                            } else {
+                                            %>
+                                            <button type="submit" value="deactivateAcc" name="action">Deactivate</button>
+                                            <%
+                                                }
+                                            %>
+                                        </form>
+    <!--                                    <form action="MainController?username=<%= u.getUserName()%>" method="post" class="delete-acc-button">
+                                            <input type="hidden" value="<%= currentRole%>" name="currentRole">
+                                            <input type="hidden" value="<%= tag%>" name="tag">
+                                            <button type="submit" data-bs-toggle="modal" data-bs-target="#userListModal" name="action" value="deleteAcc">Delete</button>
+                                            <div class="modal fade" id="userListModal" tabindex="-1" aria-labelledby="userListModalLabel" aria-hidden="true">
+                                                <div class="popup-confirm">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h1 class="modal-title fs-5" id="exampleModalLabel">CONFIRMATION</h1>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                Pressing delete will remove this user from this site forever, are you sure you still want to delete them ?
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, I changed my mind</button>
+                                                                <button type="button" class="btn popup-confirm-btn">Yes, delete them</button>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </form>
-                                </td>
-                            </tr>
+                                        </form>-->
+                                    </td>
+                                </tr>
+                                <%
+                                        count++;
+                                    }
+                                %>
+                            </tbody>
+                        </table>
+                        <div class="table-redirect">
                             <%
+                                for (int i = 1; i <= endPage; i++) {
+                                    String pageUrl = "MainController?action=manageAccount&page=" + i + "&role=" + currentRole;
+                            %>
+                            <a class="<%= (currentPage == i) ? "table-redirect-active-link" : ""%>" href="<%= pageUrl%>"><%= i%></a>
+                            <%
+                                    }
                                 }
                             %>
-                        </tbody>
-                    </table>
+                        </div>
 
-
-
-                    <div class="table-redirect">
-                        <%
-                            for (int i = 1; i <= endPage; i++) {
-                        %>
-                        <a class="<%= (new Integer(tag) == i) ? "table-redirect-active-link" : ""%>" href="MainController?action=manageAccount&index=<%= i%>&role=<%= currentRole%>"><%= i%></a>
-                        <%
-                            }
-                        %>
-                        <%
-                            }
-                        %>
                     </div>
-
                 </div>
             </div>
-        </div>
 
-        <script src="./script/userListScript.js"></script>
-        <!--<a href="admin.jsp">Back to daskboard</a>-->
+            <script src="./script/userListScript.js"></script>
     </body>
 </html>

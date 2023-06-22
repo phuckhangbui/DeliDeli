@@ -5,6 +5,8 @@
 package Servlet;
 
 import Admin.AdminDAO;
+import Notification.NotificationDAO;
+import Notification.NotificationDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -32,13 +34,19 @@ public class ConfirmRecipeServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            String id = request.getParameter("recipeId");
+            String recipeId = request.getParameter("recipeId");
+            String userId = request.getParameter("userId");
+            java.sql.Timestamp sendDate = new java.sql.Timestamp(System.currentTimeMillis());
+
+            NotificationDTO notification = new NotificationDTO(0, "Your recipe have been accepted", 
+                    "Thank you for sharing your recipe with us. We appreciate your contribution and are excited "
+                            + "to bring your delicious creation to our community.", sendDate, false, new Integer(userId),
+                    2, new Integer(recipeId), 0, "");
+            NotificationDAO.addNotification(notification);
+
+            AdminDAO.confirmRecipe(new Integer(recipeId));
             
-            int result = AdminDAO.confirmRecipe(new Integer(id));
-            if(result > 0) {
-                request.getRequestDispatcher("ManageRecipeServlet").forward(request, response);
-            }
-            
+            request.getRequestDispatcher("ManageRecipeServlet").forward(request, response);
         }
     }
 

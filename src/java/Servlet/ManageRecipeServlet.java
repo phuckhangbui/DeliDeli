@@ -5,6 +5,7 @@
 package Servlet;
 
 import Admin.AdminDAO;
+import Recipe.RecipeDAO;
 import Recipe.RecipeDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -20,19 +21,48 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ManageRecipeServlet extends HttpServlet {
 
-    private static final int COMFIRMED = 3;
-    private static final int UNCOMFIRMED = 2;
-    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            ArrayList<RecipeDTO> listRecipeConfirmed = AdminDAO.getRecipesByStatus(COMFIRMED);
-            ArrayList<RecipeDTO> listRecipeUnConfirmed = AdminDAO.getRecipesByStatus(UNCOMFIRMED);
+            String index = request.getParameter("index");
+            String status = request.getParameter("status");
             
-            request.setAttribute("listRecipeConfirmed", listRecipeConfirmed);
-            request.setAttribute("listRecipeUnConfirmed", listRecipeUnConfirmed);
+            ArrayList<RecipeDTO> listRecipe;
+            
+            if (index == null) {
+                index = "1";
+            }
+
+            int total = 0;
+            int endPage = 0;
+            
+            if (status != null && !status.equals("all")) {
+                listRecipe = AdminDAO.pagingRecipe(new Integer(index), status);
+                total = AdminDAO.getTotalRecipesBasedOnStatus(status);
+                endPage = total / 3;
+                if (total % 3 != 0) {
+                    endPage++;
+                }
+            } else {
+                listRecipe = AdminDAO.pagingRecipe(new Integer(index), "");
+                total = AdminDAO.getTotalRecipesBasedOnStatus("");
+                endPage = total / 3;
+                if (total % 3 != 0) {
+                    endPage++;
+                }
+            }
+            
+            ArrayList<Integer> listRecipeStatus = AdminDAO.getAllRecipeStatus();
+
+            request.setAttribute("listRecipe", listRecipe);
+            request.setAttribute("listRecipeStatus", listRecipeStatus);
+            
+            request.setAttribute("tag", index);
+            request.setAttribute("endPage", endPage);
+            request.setAttribute("status", status);
+
             request.getRequestDispatcher("manageRecipe.jsp").forward(request, response);
         }
     }

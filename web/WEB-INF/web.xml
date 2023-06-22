@@ -164,6 +164,42 @@
         <servlet-name>DeleteNotificationServlet</servlet-name>
         <servlet-class>Servlet.DeleteNotificationServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SuggestionRecipeServlet</servlet-name>
+        <servlet-class>Servlet.SuggestionRecipeServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddSuggestionSerlvet</servlet-name>
+        <servlet-class>Servlet.AddSuggestionSerlvet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateSuggestionSerlvet</servlet-name>
+        <servlet-class>Servlet.CreateSuggestionSerlvet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FilterSuggestionServlet</servlet-name>
+        <servlet-class>Servlet.FilterSuggestionServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RemoveSuggestionServlet</servlet-name>
+        <servlet-class>Servlet.RemoveSuggestionServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ManageSuggestionServlet</servlet-name>
+        <servlet-class>Servlet.ManageSuggestionServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateSuggestionServlet</servlet-name>
+        <servlet-class>Servlet.UpdateSuggestionServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteSuggestionServlet</servlet-name>
+        <servlet-class>Servlet.DeleteSuggestionServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RejectRecipeServlet</servlet-name>
+        <servlet-class>Servlet.RejectRecipeServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Example</servlet-name>
         <url-pattern>/Example</url-pattern>
@@ -307,6 +343,42 @@
     <servlet-mapping>
         <servlet-name>DeleteNotificationServlet</servlet-name>
         <url-pattern>/DeleteNotificationServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SuggestionRecipeServlet</servlet-name>
+        <url-pattern>/SuggestionRecipeServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddSuggestionSerlvet</servlet-name>
+        <url-pattern>/AddSuggestionSerlvet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateSuggestionSerlvet</servlet-name>
+        <url-pattern>/CreateSuggestionSerlvet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FilterSuggestionServlet</servlet-name>
+        <url-pattern>/FilterSuggestionServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RemoveSuggestionServlet</servlet-name>
+        <url-pattern>/RemoveSuggestionServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageSuggestionServlet</servlet-name>
+        <url-pattern>/ManageSuggestionServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateSuggestionServlet</servlet-name>
+        <url-pattern>/UpdateSuggestionServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteSuggestionServlet</servlet-name>
+        <url-pattern>/DeleteSuggestionServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RejectRecipeServlet</servlet-name>
+        <url-pattern>/RejectRecipeServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

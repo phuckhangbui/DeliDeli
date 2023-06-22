@@ -61,7 +61,7 @@
                         </a>
                     </div>
                     <div>
-                        <a href="#">
+                        <a href="MainController?action=manageSuggestion">
                             <img src="./assets/content-unchose.svg" alt="">
                             Content
                         </a>
@@ -298,48 +298,6 @@
             </div>
         </div>
 
-        <%            //UserDTO user = (UserDTO) session.getAttribute("user");
-            //if (user == null || user.getRole() != 2) {
-            //response.sendRedirect("error.jsp");
-            //} else {
-        %>
-
-<!--        <h1>Welcome ${user.getUserName()}</h1>
-        <p>Today is: <%= LocalDate.now()%></p>
-        <p>Total account: <%= AdminDAO.getTotalAccount()%></p>
-        <p>Total recipe: <%= AdminDAO.getTotalRecipe()%></p>
-        <a href="MainController?action=logout" >Logout</a>
-
-        <h1>Latest Recipes</h1>
-
-        <p><a href="MainController?action=manageRecipe">View more</a></p>
-
-        <div style="width: 500px;"><canvas id="recipeChart"></canvas></div>
-
-
-        <hr>
-        <h1>Latest Users</h1>
-        <%
-            //ArrayList<UserDTO> listUser = AdminDAO.getTop5LatestUser();
-        %>
-        <table border="1">
-            <tr>
-                <th>ID</th>
-                <th>User name</th>
-                <th>Email</th>
-                <th>Create at</th>
-            </tr>
-
-        </table>
-        <p><a href="MainController?action=manageAccount">View more</a></p>
-
-        <div style="width: 500px;"><canvas id="accountChart"></canvas></div>-->
-
-        <%
-            //}
-        %>
-
-
         <%            TreeMap<Date, Integer> mapRecipe = (TreeMap) AdminDAO.getRecipeMap();
             TreeMap<Date, Integer> mapAccount = (TreeMap) AdminDAO.getAccountMap();
         %>
@@ -431,10 +389,5 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
                 integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
         crossorigin="anonymous"></script>
-
-        <!--        <p><a href="MainController?action=manageAccount">Manage Account</a></p>
-                <p><a href="MainController?action=manageRecipe">Manage Recipe</a></p>
-                <p><a href="MainController?action=manageNews">Manage News</a></p>-->
-
     </body>
 </html>

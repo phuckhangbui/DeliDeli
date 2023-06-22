@@ -33,10 +33,10 @@ public class NotificationTypeDAO {
                 ResultSet rs = pst.executeQuery();
                 if (rs != null) {
                     while (rs.next()) {
-                        String title = rs.getString("title");
+                        String sender = rs.getString("sender");
                         String image = rs.getString("image");
-                        String type_name = rs.getString("type");
-                        type = new NotificationTypeDTO(typeId, title, image, type_name);
+                        String cate = rs.getString("cate");
+                        type = new NotificationTypeDTO(typeId, sender, image, cate);
                     }
                 }
                 rs.close();
