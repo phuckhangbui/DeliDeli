@@ -69,31 +69,21 @@ ul {
     flex-direction: column;
     align-items: flex-end;
 }
-.nav-top-bar-search-user button{
+.nav-top-bar-search form button{
     border: none;
     background-color: transparent;
     position: absolute;
     padding: 3px 5px 0 10px;
 }
-.nav-top-bar-search-user button img{
+.nav-top-bar-search form button img{
     width: 20px;
 }
 .nav-top-bar-search{
     display: flex;
-    justify-content: space-between;
     align-items: center;
     font-size: 18px;
-    margin:0 30px;
+    margin-left: 30px;
 }
-/*.nav-top-bar-search-filter button{
-    display: inline-block;
-    border-radius: 20px;
-    color: rgba(0, 0, 0, 0.5);
-    background-color: rgba(0, 0, 0, 0.05);
-    border: none;
-    padding: 5px 20px;
-    font-weight: 600;
-}*/
 .nav-top-bar-search form input{
     width: 300px;
     padding: 5px 5px 5px 40px;
@@ -260,7 +250,7 @@ ul {
     width: 90%;
 }
 .active{
-    background-color: rgba(236, 146, 49, 0.3);
+    background-color: rgba(236, 146, 49, 0.5);
     color: #ec9131;
     border-radius: 0 50px 50px 0;
 }
@@ -338,221 +328,4 @@ thead{
 .table-redirect div {
     display: flex;
     align-self: center;
-}
-.filter-table-button {
-    display: inline-block;
-    border-radius: 20px;
-    color: white;
-    background-color: #ec9131;
-    border: none;
-    padding: 0 10px;
-    width: 85px;
-}
-
-
-
-
-/*    Confirm Popup      */
-.popup-confirm{
-    display: flex;
-    height: 100%;
-    align-items: center;
-}
-.popup-confirm-btn{
-    background-color: #ec9131;
-    border-color: #ec9131;
-    color: white;
-}
-.popup-confirm-btn:hover{
-    background-color: #da8100;
-    border-color: #da8100;
-    color: white;
-}
-
-/* News */
-.news {
-    margin-left: auto;
-    padding: 0;
-}
-
-
-
-.news-create-button button{
-    background-color: #ec9131;
-    border-radius: 100rem;
-    padding: 5px 20px;
-    border: none;
-    color: #fff;
-}
-
-.news-create-button {
-    padding: 0;
-}
-
-.news-detail-admin-button a,
-.news-create-button a {
-    color: #fff;
-}
-.blank-background {
-    background-color: rgb(0, 0, 0, 0.05);
-    height: initial;
-    padding: 80px  50px;
-}
-.add-news-header p:first-child {
-    font-size: 48px;
-    text-align: center;
-    margin: 0px;
-}
-.news-content-info-header{
-    font-size: 24px;
-    margin-bottom: 20px;
-}
-.news-content-info{
-    font-size: 24px;
-    margin-bottom: 20px;
-}
-.news-content-info-header span:first-child {
-    color: red;
-}
-.add-news-create{
-    display: flex;
-    justify-content: center;
-}
-.news-content-info-header input {
-    font-size: 20px;
-    padding: 5px;
-    border-radius: 10px;
-    background-color: #f8f8f8;
-    width: 50%;
-}
-
-.news-content-info-white-background input {
-    background-color: #fff;
-}
-
-.news-content-info select, option {
-    margin-left: 5px;
-    border-radius: 5px;
-    padding: 5px;
-    font-size: 20px;
-    background-color: #f8f8f8;
-}
-
-.news-detail-admin {
-    margin-left: auto;
-    padding: 0;
-}
-
-.news-detail-admin-action {
-    margin-top: 20px;
-    display: flex;
-    justify-content: end;
-}
-
-.news-detail-admin-button button{
-    background-color: #ec9131;
-    border-radius: 100rem;
-    padding: 5px 20px;
-    border: none;
-}
-
-.news-detail-admin-button > .news-detail-admin-button-delete {
-    background-color: rgb(200, 0, 0);
-    color: #fff;
-    margin-left: 5px;
-}
-
-.news-table-button button,
-.user-detail-admin-button button,
-.recipe-table-button button {
-    display: inline-block;
-    border-radius: 20px;
-    color: white;
-    background-color: #ec9131;
-    border: none;
-    padding: 0 10px;
-    width: 85px;
-}
-.news-action-button form{
-    display: inline-block;
-}
-.news-content {
-    background-color: white;
-    height: 100%;
-    padding: 30px 30px;
-    margin: 0 50px;
-}
-
-.news-content-info-header span{
-    color: red;
-}
-.new-result{
-    background-color: white;
-}
-
-
-
-
-
-
-
-/* Recipe */
-.recipe {
-    margin-left: auto;
-    padding: 0;
-}
-
-.recipe-table {
-    margin: 0 auto;
-    padding: 25px;
-}
-
-.recipe-table-title {
-    text-align: center;
-    font-size: 36px;
-}
-
-.recipe-table-form form {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 20px;
-}
-
-.recipe-detail-admin {
-    margin-left: auto;
-    padding: 0;
-}
-
-.recipe-detail-admin-action {
-    margin-top: 20px;
-    display: flex;
-    justify-content: end;
-}
-
-.recipe-table-button > .recipe-table-button-delete{
-    background-color: rgb(200, 0, 0);
-    color: #fff;
-    margin-left: 5px;
-}
-
-/* User */
-.user {
-    margin-left: auto;
-    padding: 0;
-}
-
-.user-detail-admin {
-    margin-left: auto;
-    padding: 25px;
-}
-
-.user-detail-admin-heading {
-    display: flex;
-    align-items: center;
-    min-height: 80px;
-}
-
-.user-detail-admin-title {
-    color: #ec9131;
 }

@@ -176,6 +176,8 @@
                                     <a
                                         href="userPublicDetail.jsp?userId=<%=user.getId()%>">Management</a>
                                     <a href="addRecipe.jsp">Add Recipe</a>
+                                    <a href="planManagement.jsp">Plan Management</a>
+
                                     <a
                                         href="MainController?action=logout">Logout</a>
                                 </div>

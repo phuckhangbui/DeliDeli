@@ -16,7 +16,6 @@ import java.sql.Statement;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
-import static org.omg.IOP.TAG_JAVA_CODEBASE.value;
 
 /**
  *
