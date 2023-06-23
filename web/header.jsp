@@ -198,8 +198,7 @@
                                                 %>
                                                 now
                                                 <%
-                                                    }if (duration.toDays()
-                                                            > 0) {
+                                                    }else if (duration.toDays() > 0) {
                                                         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd yyyy", Locale.ENGLISH);
                                                         String formattedDateTime
                                                                 = sendDateTime.format(formatter);
@@ -207,8 +206,7 @@
                                                 <%=formattedDateTime%>
                                                 <% } else {
                                                     long minutesDiff = Math.abs(duration.toMinutes());
-                                                    if (minutesDiff
-                                                            < 60) {
+                                                             if (minutesDiff < 60) {
                                                         String minuteString = (minutesDiff == 1)
                                                                 ? "minute"
                                                                 : "minutes";
@@ -216,7 +214,7 @@
                                                 <%=minutesDiff%>
                                                 <%=minuteString%>
                                                 ago
-                                                <% } else {
+                                                <% }        else {
                                                     long hoursDiff = Math.abs(duration.toHours());
                                                     String hourString = (hoursDiff == 1)
                                                             ? "hour"
@@ -225,7 +223,7 @@
                                                 <%=hoursDiff%>
                                                 <%=hourString%>
                                                 ago
-                                                <% }
+                                                <%      }
                                                     }
                                                 %>
                                             </p>
@@ -259,9 +257,9 @@
                                         Profile</a>
                                     <a
                                         href="userPublicDetail.jsp?userId=<%=user.getId()%>">Management</a>
-                                    <a
-                                        href="addRecipe.jsp">Add
-                                        Recipe</a>
+                                    <a href="addRecipe.jsp">Add Recipe</a>
+                                    <a href="planManagement.jsp">Plan Management</a>
+
                                     <a
                                         href="MainController?action=logout">Logout</a>
                                 </div>
@@ -544,7 +542,7 @@
                                 %>
                                 now
                                 <%
-                                    }if (duration.toDays()
+                                    }else if (duration.toDays()
                                             > 0) {
                                         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd yyyy", Locale.ENGLISH);
                                         String formattedDateTime
