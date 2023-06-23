@@ -39,11 +39,11 @@ public class LoginServlet extends HttpServlet {
             String recipeID = request.getParameter("recipeID"); //Redirect back to page.
             String email = request.getParameter("txtEmail");
             String password = request.getParameter("txtPass");
-            
+
             EncodePass encode = new EncodePass();
             password = encode.toHexString(encode.getSHA(password));
             System.out.println("[DAO - InsertAccount]: Hash generated: " + password);
-            
+
             UserDTO user = UserDAO.getAccount(email, password);
             HttpSession session = request.getSession();
 
