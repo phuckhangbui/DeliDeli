@@ -5,14 +5,18 @@
 package Servlet;
 
 import User.UserDAO;
+import Utils.ValidateEmail;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 
 /**
  *
@@ -39,53 +43,83 @@ public class RegistrationServlet extends HttpServlet {
             String userName = request.getParameter("txtUserName");
             String password = request.getParameter("txtPass");
             String confirmPassword = request.getParameter("txtConfirmPass");
-            
+
+            List<String> errorList = new ArrayList<>();
+
             UserDAO userDAO = new UserDAO();
-            
+
             Pattern regex = Pattern.compile(EMAIL_PATTERN);
-            if (!password.matches(PASS_PATTERN)) {
-                //Incorrect pass pattern
-                request.setAttribute("MSG_INCORRECT_PASSWORD", "Invalid password. Password must have a length of 8-16 "
-                        + "characters and contain at least one special symbol and one uppercase letter.");
-                request.getRequestDispatcher(REGISTRATION_PAGE).forward(request, response);
-            } else if (!password.equals(confirmPassword)) {
-                //Incorrect confirm pass
-                request.setAttribute("MSG_INCORRECT_CONFIRM_PASSWORD", "Confirm password do not match.");
-                request.getRequestDispatcher(REGISTRATION_PAGE).forward(request, response);
-            } else if (!regex.matcher(email).matches()) {
-                //Incorrect email pattern
-                request.setAttribute("MSG_INCORRECT_EMAIL", "Invalid email.");
-                request.getRequestDispatcher(REGISTRATION_PAGE).forward(request, response);
-            } else if (UserDAO.checkEmailExist(email)) {
-                //Check email exist
-                request.setAttribute("MSG_EMAIL_EXIST", "Email already exists.");
-                request.getRequestDispatcher(REGISTRATION_PAGE).forward(request, response);
-            } else if (userName.contains(" ") || userName.matches(".*[^a-zA-Z0-9].*")) {
-                request.setAttribute("MSG_INCORRECT_USERNAME", "Invalid username. Username must not contain whitespace or special symbols.");
-                request.getRequestDispatcher(REGISTRATION_PAGE).forward(request, response);
-            } else if (UserDAO.checkUsernameExist(userName)) {
-                //Check user name exist
-                request.setAttribute("MSG_USERNAME_EXIST", "Username already exists.");
-                request.getRequestDispatcher(REGISTRATION_PAGE).forward(request, response);
-            } else {
-                //Insert account
-                java.util.Date date = new java.util.Date();
-                java.sql.Date sqlDate = new java.sql.Date(date.getTime());
-                boolean check = UserDAO.insertAccount(userName, email, password, sqlDate, STATUS, ROLE, SETTING,DEFAULT_TOKEN);
-                userDAO.updateStatusFalse(userName); //Patched this shit up.
-                if (check) {
-                    UserDAO.insertUserDetailDefault();
-                    request.setAttribute("USER_TYPE", "RegisterUser");
-                    request.setAttribute("MSG_SUCCESS", "You have successfully registered an account!");
-                    request.getRequestDispatcher(CONFIRM_EMAIL).forward(request, response);
+            if (email != null) {
+                ValidateEmail validate = new ValidateEmail();
+                boolean exists = validate.isAddressValid(email);
+                if (exists == false) {
+                    errorList.add("The email address is not exist.");
+                    request.setAttribute("errorList", errorList);
+                    request.getRequestDispatcher(REGISTRATION_PAGE).forward(request, response);
+                    return;
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+            if (!regex.matcher(email).matches()) {
+                //Incorrect email pattern
+                errorList.add("The email address is invalid");
+                request.setAttribute("errorList", errorList);
+                request.getRequestDispatcher(REGISTRATION_PAGE).forward(request, response);
+                return;
+            }
+            if (!password.matches(PASS_PATTERN)) {
+                //Incorrect pass pattern
+                errorList.add("Invalid password. Password must have a length of 8-16 "
+                        + "characters and contain at least one special symbol and one uppercase letter.");
+                request.setAttribute("errorList", errorList);
+                request.getRequestDispatcher(REGISTRATION_PAGE).forward(request, response);
+                return;
+            }
+            if (!password.equals(confirmPassword)) {
+                //Incorrect confirm pass
+                errorList.add("Confirm password do not match.");
+                request.setAttribute("errorList", errorList);
+                request.getRequestDispatcher(REGISTRATION_PAGE).forward(request, response);
+                return;
+            }
+            if (UserDAO.checkEmailExist(email)) {
+                //Check email exist
+                errorList.add("Email already exists.");
+                request.setAttribute("errorList", errorList);
+                request.getRequestDispatcher(REGISTRATION_PAGE).forward(request, response);
+                return;
+            }
+            if (userName.contains(" ") || userName.matches(".*[^a-zA-Z0-9].*")) {
+                errorList.add("Invalid username. Username must not contain whitespace or special symbols.");
+                request.setAttribute("errorList", errorList);
+                request.getRequestDispatcher(REGISTRATION_PAGE).forward(request, response);
+                return;
+            }
+            if (UserDAO.checkUsernameExist(userName)) {
+                //Check user name exist
+                errorList.add("Username already exists.");
+                request.setAttribute("errorList", errorList);
+                request.getRequestDispatcher(REGISTRATION_PAGE).forward(request, response);
+                return;
+            }
+            //Insert account
+            java.util.Date date = new java.util.Date();
+            java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+            boolean check = UserDAO.insertAccount(userName, email, password, sqlDate, STATUS, ROLE, SETTING, DEFAULT_TOKEN);
+            userDAO.updateStatusFalse(userName); //Patched this shit up.
+            if (check) {
+                UserDAO.insertUserDetailDefault();
+                request.setAttribute("USER_TYPE", "RegisterUser");
+                request.setAttribute("MSG_SUCCESS", "You have successfully registered an account!");
+                request.getRequestDispatcher(CONFIRM_EMAIL).forward(request, response);
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(RegistrationServlet.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

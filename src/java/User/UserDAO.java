@@ -206,6 +206,7 @@ public class UserDAO {
     }
 
     public static boolean checkEmailExist(String email) throws Exception {
+        boolean check = false;
         Connection cn = DBUtils.getConnection();
         UserDTO user = null;
         if (cn != null) {
@@ -225,7 +226,10 @@ public class UserDAO {
                 user = new UserDTO(userName, email, password, avatar, createAt, status, role, setting);
             }
         }
-        return user != null;
+        if (user != null){
+            check = true;
+        }
+        return check;
     }
 
     public static boolean checkUsernameExist(String userName) throws Exception {
@@ -615,7 +619,7 @@ public class UserDAO {
     }
 
     public static void main(String[] args) throws Exception {
-        System.out.println(UserDAO.insertUserDetailDefault());
+        System.out.println(UserDAO.checkEmailExist("khoalndse172103@fpt.edu.vn"));
     }
 
 }
