@@ -42,7 +42,7 @@ public class PlanDetailServlet extends HttpServlet {
         ArrayList<PlanDateDTO> planDate = PlanDateDAO.getAllDateByPlanId(plan.getId());
         request.setAttribute("planDate", planDate);
         
-        ArrayList<MealDTO> meal = MealDAO.getAllMealByDateId(planDate);
+        //ArrayList<MealDTO> meal = MealDAO.getAllMealByDateId(planDate);
 
         RequestDispatcher rq = request.getRequestDispatcher("userViewPlan.jsp");
         rq.forward(request, response);
