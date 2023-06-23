@@ -1,14 +1,15 @@
 <%-- 
-    Document   : createNews
-    Created on : Jun 7, 2023, 3:51:24 PM
+    Document   : manageRecipe
+    Created on : Jun 5, 2023, 4:14:27 PM
     Author     : Admin
 --%>
 
-<%@page import="User.UserDTO"%>
 <%@page import="java.util.Map"%>
-<%@page import="java.util.HashMap"%>
-<%@page import="News.NewsDAO"%>
-<%@page import="News.NewsDTO"%>
+<%@page import="java.util.TreeMap"%>
+<%@page import="Suggestion.SuggestionDAO"%>
+<%@page import="User.UserDTO"%>
+<%@page import="Recipe.RecipeDAO"%>
+<%@page import="Recipe.RecipeDTO"%>
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -27,12 +28,11 @@
         <link
             href="https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed:wght@300;400;500;600;700&display=swap"
             rel="stylesheet">
-        <script src="https://cdn.ckeditor.com/4.16.2/standard-all/ckeditor.js"></script>
-        <!--<script type="text/javascript" src="<%= request.getContextPath()%>/libraries/ckeditor/ckeditor.js"></script>-->
     </head>
     <body>
 
         <div class="container-fluid">
+
 
             <div class="row">
                 <%
@@ -65,13 +65,13 @@
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageSuggestion">
+                        <a href="MainController?action=manageSuggestion" class="active">
                             <img src="./assets/content-unchose.svg" alt="">
                             Content
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageNews" class="active">
+                        <a href="MainController?action=manageNews">
                             <img src="./assets/news-unchose.svg" alt="">
                             News
                         </a>
@@ -136,23 +136,17 @@
                             </a>
                         </div>
                         <div>
-                            <a href="MainController?action=manageSuggestion">
+                            <a href="MainController?action=manageSuggestion" class="active">
                                 <img src="./assets/content-unchose.svg" alt="">
                                 Content
                             </a>
                         </div>
                         <div>
-                            <a href="MainController?action=manageNews" class="active">
+                            <a href="MainController?action=manageNews">
                                 <img src="./assets/news.svg" alt="">
                                 News
                             </a>
                         </div>
-                        <!--                        <div>
-                                                    <a href="#">
-                                                        <img src="./assets/policies-unchose.svg" alt="">
-                                                        Policies
-                                                    </a>
-                                                </div>-->
                         <div>
                             <a href="#">
                                 <img src="./assets/broadcast-unchose.svg" alt="">
@@ -183,75 +177,119 @@
                             }
                         %>
 
-                        <div class="blank-background">
-                            <div class="container ">
-                                <div class="row news-content">
-                                    <%
-                                        //UserDTO user = (UserDTO) session.getAttribute("user");
-                                        //String id = request.getParameter("newsId");
-                                    %>
-
-                                    <form action="MainController" method="post" class="news-create-button" enctype="multipart/form-data">
-                                        <div class="add-news-header">
-                                            <p>Add a New</p>
-                                        </div>
-                                        <div class="news-content-info-header">
-                                            Title <span>*</span>
-                                            <div>
-                                                <input type="text" name="txtTitle" placeholder="What's the new called?">
-                                            </div>
-                                        </div>
-                                        <div class="news-content-info-header">
-                                            <p>Category <span>*</span>
-                                                <select name="category">
-                                                    <%                                                HashMap<Integer, String> newsMap = Utils.NavigationBarUtils.getMap("NewsCategory");
-                                                        for (Map.Entry<Integer, String> entry : newsMap.entrySet()) {
-                                                    %>
-                                                    <option value="<%= entry.getKey()%>"><%= entry.getValue()%></option>
-                                                    <%
-                                                        }
-                                                    %>
-                                                </select>
-                                            </p>
-                                        </div>
-                                        <div class="news-content-info-header news-content-info-white-background">
-                                            <p>Image <span>*</span> <input type="file" name="file"></p>
-                                        </div>
-                                        <div class="news-content-info">
-                                            Description
-                                            <textarea rows="10" cols="10" id="editor"></textarea>
-                                        </div>
-                                        <input type="hidden" name="editorContent" id="editorContent" value="">
-                                        <input type="hidden" name="userId" value="<%= user.getId()%>">
-
-                                        <div class="add-news-create">
-                                            <button type="submit" value="createNews" name="action" >CREATE</button>
-                                        </div>
-                                    </form>
-                                </div>
+                        <%
+                            ArrayList<String> suggestionList = SuggestionDAO.getAllSuggestion();
+                        %>
+                        <div class="nav-top-bar-search">
+                            <div class="news-create-button">
+                                <button><a href="createSuggestion.jsp">Create</a></button>
                             </div>
                         </div>
+
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Title</th>
+                                    <th>Total Recipe</th>
+                                    <td>Show</td>
+                                    <td>Action</td>
+                                </tr>
+                            </thead>
+                            <tbody class="table-group-divider">
+                                <%
+                                    TreeMap<String, Integer> map = (TreeMap<String, Integer>) request.getAttribute("suggestionMap");
+                                    if (map != null) {
+                                        int count = 1;
+                                        for (Map.Entry<String, Integer> entry : map.entrySet()) {
+                                            String key = entry.getKey();
+                                            Integer value = entry.getValue();
+                                %>
+                                <tr>
+                                    <td><%= count%></td>
+                                    <td><%= key%></td>
+                                    <td><%= value%></td>
+                                    <td>
+                                        <form action="MainController" method="post" class="recipe-table-button">
+                                            <input type="hidden" name="suggestion" value="<%= key%>">
+                                            <button type="submit" name="action" value="filterSuggestion">Show</button>
+                                        </form>
+                                    </td>
+                                    <td>
+                                        <form action="MainController" method="post" class="recipe-table-button">
+                                            <input type="hidden" name="suggestion" value="<%= key%>">
+                                            <button type="submit" name="action" value="suggestionRecipe">Choose</button>
+                                            <button><a href="updateSuggestion.jsp?suggestion=<%= key%>">Edit</a></button>
+                                            <%
+                                                if (map.size() > 1) {
+                                            %>
+                                            <button type="submit" name="action" value="deleteSuggestion">Delete</button>
+                                            <%
+                                                } else if (map.size() == 1) {
+                                                    session.removeAttribute("selectedSuggestion");
+                                                }
+                                            %>
+                                        </form>
+                                    </td>
+                                </tr>
+                                <%
+                                        count++;
+                                    }
+                                } else {
+                                %>
+                                <tr>
+                                    <td colspan="2">No data available</td>
+                                </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+
+                        <%
+                            ArrayList<RecipeDTO> suggestionRecipeList = (ArrayList) request.getAttribute("suggestionRecipeList");
+                            String selectedSuggestion = (String) request.getAttribute("selectedSuggestion");
+                            if (suggestionRecipeList
+                                    != null && suggestionRecipeList.size()
+                                    > 0) {
+                        %>
+                        <h3><%= selectedSuggestion%></h3>
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Title</th>
+                                    <th>Create at</th>
+                                    <th>Owner</th>
+                                    <th>Show</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-group-divider">
+                                <%
+                                    int count = 1;
+                                    for (RecipeDTO r : suggestionRecipeList) {
+                                %>
+                                <tr>
+                                    <td><%= count%></td>
+                                    <td><%= r.getTitle()%></td>
+                                    <td><%= r.getCreate_at()%></td>
+                                    <td><a href="MainController?action=showUserDetail&username=<%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%>"><%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%></a></td>
+                                    <td>
+                                        <form action="MainController" method="post" class="recipe-table-button">
+                                            <input type="hidden" value="<%= r.getId()%>" name="id">
+                                            <button type="submit" value="showRecipeDetail" name="action">Show</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                <%
+                                            count++;
+                                        }
+                                    }
+                                %>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
+        </div>
 
-
-            <script>
-                CKEDITOR.replace('editor', {
-                    language: 'vi',
-                    entities_latin: false,
-                    entities_greek: false
-                });
-            </script>
-
-            <script>
-                document.querySelector('form').addEventListener('submit', function (event) {
-                    // Get the CKEditor content
-                    var editorContent = CKEDITOR.instances.editor.getData();
-
-                    // Assign the content to a hidden input field
-                    document.getElementById('editorContent').value = editorContent;
-                });
-            </script>
     </body>
 </html>

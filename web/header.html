@@ -212,28 +212,29 @@
     <div class="modal fade" id="disapprove" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="deletePlanModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <form class="modal-content">
-                <div class="modal-header">
-                    <div class="modal-title fs-5" id="exampleModalLabel">
-                        <p class="modal-title-text">Thang tri cho dien haha haha aha a ha aha ah
-                            aha
-                            ah a aha a aha ha</p>
-                        <p class="modal-title-date">2 hour ago</p>
+            <form action="MainController" class="modal-content modal-content-self">
+                <div class="modal-header form-header">
+                    <div class="form-title disapprove-style" id="exampleModalLabel">
+                        Disapprove Recipe
                     </div>
                 </div>
                 <div class="modal-body">
-                    <div class="modal-body-content">content content content content content content content content
-                        content
-                        content
-                        content content content content
-                        content content content content
-                    </div>
 
-                    <a href="link.html" class="modal-link">Click here</a>
+                    <p class="title-text">Message Title:<br><input type="text" class="title" maxlength="100">
+                    </p>
+                    <p>Message body: </p>
+                    <textarea rows="4" class="form-body-content" name="description">
+                    </textarea>
+                    <!-- Here to store hidden input base on the type of the notification-->
+                    <!-- Should always have userId, except system notification-->
+                    <input type="text" name="userId" value="" hidden>
+                    <!-- For example, when accept or reject a recipe, pass recipeId here-->
+                    <input type="text" name="recipeId" value="" hidden>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Disapprove</button>
-                    <button type="button" class="btn btn-success" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger" data-bs-dismiss="modal" name="action"
+                        value="disapprove">Disapprove</button>
                 </div>
             </form>
         </div>

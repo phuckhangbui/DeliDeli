@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Time;
 import java.sql.Timestamp;
+import static java.sql.Types.INTEGER;
 import java.util.ArrayList;
 
 /**
@@ -202,19 +203,56 @@ public class NotificationDAO {
 
     }
 
-    public static void main(String[] args) {
-        int[] count = getNotificationCount(3);
-        System.out.println(count[0]);
-        System.out.println(count[1]);
-        System.out.println(count[2]);
+    public static int addNotification(NotificationDTO notification) {
+        int result = -1;
+        Connection cn = null;
 
-        ArrayList<NotificationDTO> list = getNotificationList(3);
-        System.out.println(list.size());
-        for (NotificationDTO notification : list) {
-            System.out.println(notification.toString());
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                String sql = "INSERT INTO Notification(title, description, send_date\n"
+                        + ", is_read, user_id, notification_type_id, recipe_id, plan_id, link)\n"
+                        + "VALUES\n"
+                        + "(?, ?,?, ?, ?, ?, ?, ?, ?)";
+
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setString(1, notification.getTitle());
+                pst.setString(2, notification.getDescription());
+                pst.setTimestamp(3, notification.getSend_date());
+                pst.setBoolean(4, notification.is_read());
+                pst.setInt(5, notification.getUser_id());
+                pst.setInt(6, notification.getNotification_type());
+
+                if (notification.getRecipe_id() == 0) {
+                    pst.setNull(7, INTEGER);
+                } else {
+                    pst.setInt(7, notification.getRecipe_id());
+                }
+                
+                if (notification.getPlan_id() == 0){
+                    pst.setNull(8, INTEGER);
+                }else{
+                    pst.setInt(8, notification.getRecipe_id());
+                }
+
+                pst.setString(9, notification.getLink());
+
+                result = pst.executeUpdate();
+
+                pst.close();
+                cn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return result;
+    }
 
-        System.out.println(getNotificationById(1));
-
+    public static void main(String[] args) {
+        NotificationDTO n = getNotificationById(4);
+        System.out.println(n);
+        int result = addNotification(n);
+        System.out.println(result);
     }
 }

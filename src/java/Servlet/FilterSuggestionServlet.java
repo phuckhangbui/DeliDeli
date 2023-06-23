@@ -4,20 +4,22 @@
  */
 package Servlet;
 
-import News.NewsDAO;
-import News.NewsDTO;
+import Recipe.RecipeDTO;
+import Suggestion.SuggestionDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author Admin
  */
-public class ShowNewsDetailServlet extends HttpServlet {
+public class FilterSuggestionServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,16 +35,19 @@ public class ShowNewsDetailServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            String newsId = request.getParameter("newsId");
+            HttpSession session = request.getSession();
+            String selectedSuggestion = request.getParameter("suggestion");
             
-            NewsDTO news = NewsDAO.getNewsByNewsId(new Integer(newsId));
-            request.setCharacterEncoding("UTF-8");
-            request.setAttribute("news", news);
+            ArrayList<RecipeDTO> suggestionRecipeList = SuggestionDAO.getAllRecipesBySuggestion(selectedSuggestion);
             
-            String author = NewsDAO.getNewsAuthorByNewsId(new Integer(newsId));
-            request.setAttribute("author", author);
+            session.removeAttribute("customSuggestionList");
+            request.setAttribute("selectedSuggestion", selectedSuggestion);
+            request.setAttribute("suggestionRecipeList", suggestionRecipeList);
+            request.getRequestDispatcher("ManageSuggestionServlet").forward(request, response);
             
-            request.getRequestDispatcher("showNewsDetail.jsp").forward(request, response);
+//            for (RecipeDTO recipeDTO : suggestionRecipeList) {
+//                out.println(recipeDTO);
+//            }
         }
     }
 

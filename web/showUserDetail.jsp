@@ -37,12 +37,19 @@
 
 
             <div class="row">
+                <%
+                    UserDTO user = (UserDTO) session.getAttribute("user");
+                    if (user == null || user.getRole() == 1) {
+                        response.sendRedirect("error.jsp");
+                    } else if (user.getRole() == 2) {
+                %>
+
                 <nav class="nav-left-bar col-md-2">
                     <a class="logo" href="">
                         <img src="assets/Logo3.svg" alt="">
                     </a>
                     <div>
-                        <a href="admin.jsp" >
+                        <a href="admin.jsp">
                             <img src="./assets/public.svg" alt="">
                             Dashboard
                         </a>
@@ -60,7 +67,7 @@
                         </a>
                     </div>
                     <div>
-                        <a href="#">
+                        <a href="MainController?action=manageSuggestion">
                             <img src="./assets/content-unchose.svg" alt="">
                             Content
                         </a>
@@ -89,23 +96,16 @@
                             Report
                         </a>
                     </div>
-
-
                 </nav>
 
-                <div class="col-md-10 user">
-                    <%
-                        UserDTO admin = (UserDTO) session.getAttribute("user");
-                        if (admin == null || admin.getRole() != 2) {
-                            response.sendRedirect("error.jsp");
-                        } else {
-                    %>
+                <div class="col-md-10 recipe">
+
                     <nav class="navbar">
                         <div class="nav-top-bar">
                             <div class="nav-top-bar-account dropdown">
                                 <img src="./assets/profile-pic.svg" alt="">
                                 <div>
-                                    <p><%= admin.getUserName()%></p>
+                                    <p><%= user.getUserName()%></p>
                                     <p>Admin</p>
                                 </div>
                             </div>
@@ -113,149 +113,218 @@
                     </nav>
 
                     <%
-                        }
+                    } else if (user.getRole() == 3) {
                     %>
-                    
-                    <div class="container">
-                        <div class="user-detail-admin">
-                            <div class="user-detail-admin-heading">
-                                <h3 class="">Profile Detail</h3>
-                            </div>
+                    <nav class="nav-left-bar col-md-2">
+                        <a class="logo" href="">
+                            <img src="assets/Logo3.svg" alt="">
+                        </a>
+                        <!--                        <div>
+                                                    <a href="admin.jsp">
+                                                        <img src="./assets/public-unchose.svg" alt="">
+                                                        Dashboard
+                                                    </a>
+                                                </div>-->
+                        <div>
+                            <a href="MainController?action=manageAccount" class="active">
+                                <img src="./assets/user-unchose.svg" alt="">
+                                User
+                            </a>
+                        </div>
+                        <div>
+                            <a href="MainController?action=manageRecipe">
+                                <img src="./assets/post-unchose.svg" alt="">
+                                Posts
+                            </a>
+                        </div>
+                        <div>
+                            <a href="MainController?action=manageSuggestion">
+                                <img src="./assets/content-unchose.svg" alt="">
+                                Content
+                            </a>
+                        </div>
+                        <div>
+                            <a href="MainController?action=manageNews">
+                                <img src="./assets/news.svg" alt="">
+                                News
+                            </a>
+                        </div>
+                        <!--                        <div>
+                                                    <a href="#">
+                                                        <img src="./assets/policies-unchose.svg" alt="">
+                                                        Policies
+                                                    </a>
+                                                </div>-->
+                        <div>
+                            <a href="#">
+                                <img src="./assets/broadcast-unchose.svg" alt="">
+                                Broadcast
+                            </a>
+                        </div>
+                        <!--                        <div>
+                                                    <a href="#">
+                                                        <img src="./assets/bug-report-unchose.svg" alt="">
+                                                        Report
+                                                    </a>
+                                                </div>-->
+                    </nav>
 
-                            <%                            
-                                UserDTO user = (UserDTO) request.getAttribute("user");
-                                UserDetailDTO userDetail = (UserDetailDTO) request.getAttribute("userDetail");
-                                ArrayList<RecipeDTO> userRecipe = (ArrayList) request.getAttribute("userRecipe");
-                            %>
-
-                            <div class="row">
-                                <p class="col-lg-2 user-detail-admin-title">User Name: </p>
-                                <p class="col-lg-10"><%= user.getUserName()%></p>
-                            </div>
-
-                            <div class="row">
-                                <p class="col-lg-2 user-detail-admin-title">Email: </p>
-                                <p class="col-lg-10"><%= user.getEmail()%></p>
-                            </div>
-
-                            <div class="row">
-                                <p class="col-lg-2 user-detail-admin-title">First Name: </p>
-                                <p class="col-lg-10"><%= userDetail.getFirstName()%></p>
-                            </div>
-
-                            <div class="row">
-                                <p class="col-lg-2 user-detail-admin-title">Last Name: </p>
-                                <p class="col-lg-10"><%= userDetail.getLastName()%></p>
-                            </div>
-
-                            <div class="row">
-                                <p class="col-lg-2 user-detail-admin-title">Specialty: </p>
-                                <p class="col-lg-10"><%= userDetail.getSpecialty()%></p>
-                            </div>
-
-                            <div class="row">
-                                <p class="col-lg-2 user-detail-admin-title">Bio: </p>
-                                <p class="col-lg-10"><%= userDetail.getBio()%></p>
-                            </div>
-
-                            <%                if (userRecipe != null && userRecipe.size() > 0) {
-                            %>
-
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="user-detail-admin-heading">
-                                        <h3 class="">User's Recipe(s)</h3>
+                    <div class="col-md-10 recipe">
+                        <nav class="navbar">
+                            <div class="nav-top-bar">
+                                <div class="nav-top-bar-account dropdown">
+                                    <img src="./assets/profile-pic.svg" alt="">
+                                    <div>
+                                        <p><%= user.getUserName()%></p>
+                                        <p>Moderator</p>
                                     </div>
-                                    <table class="table table-striped table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>ID</th>
-                                                <th>Title</th>
-                                                <th>Create at</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="table-group-divider">
-                                            <%
-                                                for (RecipeDTO r : userRecipe) {
-                                            %>
-                                            <tr>
-                                                <td><%= r.getId()%></td>
-                                                <td><%= r.getTitle()%></td>
-                                                <td><%= r.getCreate_at()%></td>
-                                                <td>
-                                                    <form action="MainController" method="post" class="user-detail-admin-button">
-                                                        <input type="hidden" value="<%= r.getId()%>" name="id">
-                                                        <button type="submit" value="showRecipeDetail" name="action">Show</button>
-                                                    </form>
-                                                </td>
-                                            </tr>
-                                            <% }
-                                            %>
-                                        </tbody>
-                                    </table>
-                                    <%
-                                    } else {
-                                    %>
-                                    <div class="user-detail-admin-heading">
-                                        <h3>User does not have any recipe yet.</h3>
-                                    </div>
-                                    <%
-                                        }
-                                    %>
+                                </div>
+                            </div>
+                        </nav>
+                        <%
+                            }
+                        %>
+
+                        <div class="container">
+                            <div class="user-detail-admin">
+                                <div class="user-detail-admin-heading">
+                                    <h3 class="">Profile Detail</h3>
                                 </div>
 
-                                <div class="col-md-6">
-                                    <%
-                                        TreeMap<Integer, Integer> mapRating = (TreeMap) AdminDAO.getRatingAllRecipesOfOwnerMap(user.getId());
-                                        if (mapRating.size() != 0) {
-                                    %>
-                                    <div><canvas id="myChart"></canvas></div>
-                                    <%
-                                    }
-                                    %>
+                                <%
+                                    UserDTO account = (UserDTO) request.getAttribute("user");
+                                    UserDetailDTO userDetail = (UserDetailDTO) request.getAttribute("userDetail");
+                                    ArrayList<RecipeDTO> userRecipe = (ArrayList) request.getAttribute("userRecipe");
+                                %>
+
+                                <div class="row">
+                                    <p class="col-lg-2 user-detail-admin-title">User Name: </p>
+                                    <p class="col-lg-10"><%= account.getUserName()%></p>
+                                </div>
+
+                                <div class="row">
+                                    <p class="col-lg-2 user-detail-admin-title">Email: </p>
+                                    <p class="col-lg-10"><%= account.getEmail()%></p>
+                                </div>
+
+                                <div class="row">
+                                    <p class="col-lg-2 user-detail-admin-title">First Name: </p>
+                                    <p class="col-lg-10"><%= userDetail.getFirstName()%></p>
+                                </div>
+
+                                <div class="row">
+                                    <p class="col-lg-2 user-detail-admin-title">Last Name: </p>
+                                    <p class="col-lg-10"><%= userDetail.getLastName()%></p>
+                                </div>
+
+                                <div class="row">
+                                    <p class="col-lg-2 user-detail-admin-title">Specialty: </p>
+                                    <p class="col-lg-10"><%= userDetail.getSpecialty()%></p>
+                                </div>
+
+                                <div class="row">
+                                    <p class="col-lg-2 user-detail-admin-title">Bio: </p>
+                                    <p class="col-lg-10"><%= userDetail.getBio()%></p>
+                                </div>
+
+                                <%                if (userRecipe != null && userRecipe.size() > 0) {
+                                %>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="user-detail-admin-heading">
+                                            <h3 class="">User's Recipe(s)</h3>
+                                        </div>
+                                        <table class="table table-striped table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Title</th>
+                                                    <th>Create at</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="table-group-divider">
+                                                <%
+                                                    for (RecipeDTO r : userRecipe) {
+                                                %>
+                                                <tr>
+                                                    <td><%= r.getId()%></td>
+                                                    <td><%= r.getTitle()%></td>
+                                                    <td><%= r.getCreate_at()%></td>
+                                                    <td>
+                                                        <form action="MainController" method="post" class="user-detail-admin-button">
+                                                            <input type="hidden" value="<%= r.getId()%>" name="id">
+                                                            <button type="submit" value="showRecipeDetail" name="action">Show</button>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                                <% }
+                                                %>
+                                            </tbody>
+                                        </table>
+                                        <%
+                                        } else {
+                                        %>
+                                        <div class="user-detail-admin-heading">
+                                            <h3>User does not have any recipe yet.</h3>
+                                        </div>
+                                        <%
+                                            }
+                                        %>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <%
+                                            TreeMap<Integer, Integer> mapRating = (TreeMap) AdminDAO.getRatingAllRecipesOfOwnerMap(account.getId());
+                                            if (mapRating.size() != 0) {
+                                        %>
+                                        <div><canvas id="myChart"></canvas></div>
+                                                <%
+                                                    }
+                                                %>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script>
-            const myChart = document.getElementById('myChart');
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script>
+                const myChart = document.getElementById('myChart');
 
-            (async function () {
-                const data = [
-            <% for (Map.Entry<Integer, Integer> entry : mapRating.entrySet()) {
-                    Integer key = entry.getKey();
-                    Integer value = entry.getValue();
-            %>
-                    {rating: '<%= key%>', count: <%= value%>},
-            <% }%>
-                ];
+                (async function () {
+                    const data = [
+                <% for (Map.Entry<Integer, Integer> entry : mapRating.entrySet()) {
+                        Integer key = entry.getKey();
+                        Integer value = entry.getValue();
+                %>
+                        {rating: '<%= key%>', count: <%= value%>},
+                <% }%>
+                    ];
 
-                const labels = data.map(row => row.rating);
-                const counts = data.map(row => row.count);
+                    const labels = data.map(row => row.rating);
+                    const counts = data.map(row => row.count);
 
-                new Chart(
-                        document.getElementById('myChart'),
-                        {
-                            type: 'bar',
-                            data: {
-                                labels: labels,
-                                datasets: [
-                                    {
-                                        label: 'All ratings of recipes',
-                                        data: counts,
-                                        backgroundColor: '#ec9131'
-                                    }
-                                ]
-                            },
-                        }
-                );
-            })();
-        </script>
+                    new Chart(
+                            document.getElementById('myChart'),
+                            {
+                                type: 'bar',
+                                data: {
+                                    labels: labels,
+                                    datasets: [
+                                        {
+                                            label: 'All ratings of recipes',
+                                            data: counts,
+                                            backgroundColor: '#ec9131'
+                                        }
+                                    ]
+                                },
+                            }
+                    );
+                })();
+            </script>
 
     </body>
 </html>

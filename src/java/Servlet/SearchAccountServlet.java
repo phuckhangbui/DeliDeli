@@ -39,7 +39,7 @@ public class SearchAccountServlet extends HttpServlet {
 
             ArrayList<UserDTO> listAccSearched = AdminDAO.searchAccount(keyword);
             int totalResults = listAccSearched.size();
-            int resultsPerPage = 5;
+            int resultsPerPage = 10;
             int totalPage = (int) Math.ceil((double) totalResults / resultsPerPage);
             int currentPage = 1;
 
