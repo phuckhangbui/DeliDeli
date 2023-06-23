@@ -30,6 +30,8 @@ public class MainController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
+            request.setCharacterEncoding ("UTF-8"); 
+            
             String action = request.getParameter("action");
             if (action == null || action.equals("")) {
                 url = "error.jsp";
