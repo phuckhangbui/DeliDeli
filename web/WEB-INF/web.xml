@@ -165,6 +165,22 @@
         <servlet-class>Servlet.DeleteNotificationServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>AddPlanServlet</servlet-name>
+        <servlet-class>Servlet.AddPlanServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddRecipeToPlanServlet</servlet-name>
+        <servlet-class>Servlet.AddRecipeToPlanServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddRecipeToPlan</servlet-name>
+        <servlet-class>AddRecipeToPlan</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PlanDetailServlet</servlet-name>
+        <servlet-class>Servlet.PlanDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>SuggestionRecipeServlet</servlet-name>
         <servlet-class>Servlet.SuggestionRecipeServlet</servlet-class>
     </servlet>
@@ -343,6 +359,18 @@
     <servlet-mapping>
         <servlet-name>DeleteNotificationServlet</servlet-name>
         <url-pattern>/DeleteNotificationServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddPlanServlet</servlet-name>
+        <url-pattern>/AddPlanServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddRecipeToPlanServlet</servlet-name>
+        <url-pattern>/AddRecipeToPlanServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PlanDetailServlet</servlet-name>
+        <url-pattern>/PlanDetailServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>SuggestionRecipeServlet</servlet-name>
