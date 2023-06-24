@@ -131,9 +131,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                        oninput="this.value=this.value.slice(0,this.maxLength),this.value = this.value.replace(/[^0-9]/g, '')"
                                        maxlength="5">
                                 <select id="prepTimeUnit">
-                                    <option value="minutes">minutes</option>
-                                    <option value="hours">hours</option>
-                                    <option value="days">days</option>
+                                    <option value="minutes">minute(s)</option>
+                                    <option value="hours">hour(s)</option>
+                                    <option value="days">day(s)</option>
                                 </select>
                             </div>
 
@@ -143,9 +143,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                        oninput="this.value=this.value.slice(0,this.maxLength),this.value = this.value.replace(/[^0-9]/g, '')"
                                        maxlength="5">
                                 <select id="cookTimeUnit">
-                                    <option value="minutes">minutes</option>
-                                    <option value="hours">hours</option>
-                                    <option value="days">days</option>
+                                    <option value="minutes">minute(s)</option>
+                                    <option value="hours">hour(s)</option>
+                                    <option value="days">day(s)</option>
                                 </select>
                             </div>
                             <div class="col-md-3 add-recipe-info-number-content">
@@ -231,13 +231,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                             // Display the total time
                                             var totalTimeText = "";
                                             if (days > 0) {
-                                                totalTimeText += days + " day ";
+                                                totalTimeText += days + " day(s) ";
                                             }
                                             if (hours > 0) {
-                                                totalTimeText += hours + " hour ";
+                                                totalTimeText += hours + " hour(s) ";
                                             }
                                             if (minutes > 0) {
-                                                totalTimeText += minutes + " mins";
+                                                totalTimeText += minutes + " min(s)";
                                             }
                                             document.getElementById("totalTime").textContent = totalTimeText.trim();
                                         }
@@ -298,13 +298,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                             <div class="col-md-12 add-recipe-info-type-content">
                                 <div>Diet: <span>(If the diet you're looking for is not here, then no need to tick any of these boxes )</span></div>
                                 
-                                <div class="">
+                                <div class="add-recipe-info-type-content-checkbox">
                                     <% for (Map.Entry<Integer, String> entry : dietMap.entrySet()) {
                                             Integer key = entry.getKey();
                                             String value = entry.getValue();
                                     %>
-                                    <input type="checkbox" name="diet" value="<%= key%>" style="padding-left: 10px;">
-                                    <label for="diet" style="padding-right: 10px;"><%= value%></label>
+                                    <input type="checkbox" name="diet" id="<%= value%>" value="<%= key%>" style="padding-left: 10px;">
+                                    <label for="<%= value%>" style="padding-right: 10px;"><%= value%></label>
                                     <% }%>
                                 </div>
                             </div>
@@ -323,28 +323,28 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                 <div>Calories:</div>
                                 <input type="text" id="" name="calories" required max="100" min="1"
                                        oninput="this.value=this.value.slice(0,this.maxLength),this.value = this.value.replace(/[^0-9]/g, '')"
-                                       maxlength="4">
+                                       maxlength="5">
                             </div>
 
                             <div class="col-md-3 add-recipe-info-number-content">
                                 <div>Fat (grams):</div>
                                 <input type="text" id="" name="fat" required max="100" min="1"
                                        oninput="this.value=this.value.slice(0,this.maxLength),this.value = this.value.replace(/[^0-9]/g, '')"
-                                       maxlength="3">
+                                       maxlength="5">
                             </div>
 
                             <div class="col-md-3 add-recipe-info-number-content">
                                 <div>Carbs (grams):</div>
                                 <input type="text" id="" name="carbs" required max="100" min="1"
                                        oninput="this.value=this.value.slice(0,this.maxLength),this.value = this.value.replace(/[^0-9]/g, '')"
-                                       maxlength="3">
+                                       maxlength="5">
                             </div>
 
                             <div class="col-md-3 add-recipe-info-number-content">
                                 <div>Protein (grams):</div>
                                 <input type="text" id="" name="protein" required max="100" min="1"
                                        oninput="this.value=this.value.slice(0,this.maxLength),this.value = this.value.replace(/[^0-9]/g, '')"
-                                       maxlength="3">
+                                       maxlength="5">
                             </div>
                         </div>
 
@@ -359,20 +359,20 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                     <input type="text" class="input" name="ingredientDesc" required="">
                                     <select class="ingredientList" name="ingredientId"></select>
                                     <button type="button" class="btnDeleteIngredient">
-                                        <img src="assets/close.svg" alt="">
+                                        <img src="assets/close-icon.svg" alt="">
                                     </button>
                                 </p>
                                 <p class="draggable-ingredient draggable" draggable="false">
                                     <input type="text" class="input" name="ingredientDesc" required="">
                                     <select class="ingredientList" name="ingredientId"></select>
                                     <button type="button" class="btnDeleteIngredient">
-                                        <img src="assets/close.svg" alt="">
+                                        <img src="assets/close-icon.svg" alt="">
                                     </button>
                                 </p>
                             </div>
                             <div class="col-md-4 add-recipe-info-ingredient-button">
                                 <button type="button" id="btnToggleIngredient">
-                                    <img src="assets/drag.svg" alt="">
+                                    <img src="assets/drag-icon.svg" alt="">
                                 </button>
                                 <button type="button" id="btnAddIngredient">
                                     Add Ingredient

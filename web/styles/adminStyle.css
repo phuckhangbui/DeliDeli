@@ -107,10 +107,11 @@ ul {
     border-radius: 20px;
     outline: none;
     border: none;
-    color: #ec9131;
     text-align: center;
 }
-
+.dropdown{
+    background-color: white;
+}
 .user-dropbtn {
 	background-color: #fff;
 	font-size: 18px;
@@ -214,6 +215,10 @@ ul {
     align-items: center;
     color: white;
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+.card-total-content img{
+    width: 75px;
+    height: 75px;
 }
 .card-total-content h4{
     font-weight: normal;
@@ -329,7 +334,6 @@ ul {
     display: flex;
     font-size: 48px;
     justify-content: center;
-    margin-top: 20px;
 }
 thead{
     font-size: 20px;

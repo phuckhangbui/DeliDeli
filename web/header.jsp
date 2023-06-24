@@ -114,7 +114,7 @@
                             </select>
                         </form>
                     </div>
-                    <%if (user!= null) {%>
+                    <%if (user != null) {%>
                     <% int[] count = NotificationDAO.getNotificationCount(user.getId());
                     %>
                     <div
@@ -123,8 +123,9 @@
                             class="dropdown-notification">
                             <button
                                 class="dropbtn-notification"
-                                onclick="toggleDropdown()"><img
-                                    src="assets/notification.svg"></button>
+                                onclick="toggleDropdown()">
+                                <img src="assets/notification-icon.svg">
+                            </button>
                             <div class="dropdown-content-notification"
                                  id="dropdownContent">
                                 <div>
@@ -147,7 +148,7 @@
                                     <%
                                         ArrayList<NotificationDTO> list
                                                 = NotificationDAO.getNotificationList(user.getId());
-                                        for (NotificationDTO notification: list) {
+                                        for (NotificationDTO notification : list) {
                                             NotificationTypeDTO type
                                                     = NotificationTypeDAO.getNotificationType(notification.getNotification_type());
                                             if (notification.is_read()) {
@@ -194,15 +195,15 @@
                                                 %>
                                                 now
                                                 <%
-                                                    }else if (duration.toDays() > 0) {
-                                                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd yyyy", Locale.ENGLISH);
-                                                        String formattedDateTime
-                                                                = sendDateTime.format(formatter);
+                                                } else if (duration.toDays() > 0) {
+                                                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd yyyy", Locale.ENGLISH);
+                                                    String formattedDateTime
+                                                            = sendDateTime.format(formatter);
                                                 %>
                                                 <%=formattedDateTime%>
                                                 <% } else {
                                                     long minutesDiff = Math.abs(duration.toMinutes());
-                                                             if (minutesDiff < 60) {
+                                                    if (minutesDiff < 60) {
                                                         String minuteString = (minutesDiff == 1)
                                                                 ? "minute"
                                                                 : "minutes";
@@ -210,7 +211,7 @@
                                                 <%=minutesDiff%>
                                                 <%=minuteString%>
                                                 ago
-                                                <% }        else {
+                                                <% } else {
                                                     long hoursDiff = Math.abs(duration.toHours());
                                                     String hourString = (hoursDiff == 1)
                                                             ? "hour"
@@ -329,7 +330,7 @@
 
                     </script>
 
-                    <% }else {
+                    <% } else {
                     %>
                     <div
                         class="account col-md-2">
@@ -366,19 +367,13 @@
                                         <%=value%>
                                     </a>
                                     <%}%>
-                                    <a
-                                        href="">View
-                                        more</a>
                                 </div>
                             </div>
                         </li>
                         <li>
-                            <div
-                                class="dropdown">
-                                <button
-                                    class="dropbtn">CATEGORIES</button>
-                                <div
-                                    class="dropdown-content">
+                            <div class="dropdown">
+                                <button class="dropbtn">CATEGORIES</button>
+                                <div class="dropdown-content">
                                     <% for (Map.Entry<Integer, String> entry
                                                 : cateMap.entrySet()) {
                                             Integer key
@@ -386,8 +381,7 @@
                                             String value
                                                     = entry.getValue();
                                     %>
-                                    <a
-                                        href="searchResultPage.jsp?type=Category&id=<%=key%>">
+                                    <a href="searchResultPage.jsp?type=Category&id=<%=key%>">
                                         <%=value%>
                                     </a>
 
@@ -484,10 +478,6 @@
                                 </div>
                             </div>
                         </li>
-                        <li><a
-                                href="#">ABOUT
-                                US</a>
-                        </li>
                     </ul>
                 </div>
             </div>
@@ -538,11 +528,11 @@
                                 %>
                                 now
                                 <%
-                                    }else if (duration.toDays()
-                                            > 0) {
-                                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd yyyy", Locale.ENGLISH);
-                                        String formattedDateTime
-                                                = sendDateTime.format(formatter);
+                                } else if (duration.toDays()
+                                        > 0) {
+                                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd yyyy", Locale.ENGLISH);
+                                    String formattedDateTime
+                                            = sendDateTime.format(formatter);
                                 %>
                                 <%=formattedDateTime%>
                                 <% } else {

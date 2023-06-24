@@ -55,7 +55,7 @@
                         <div class="col-md-6 weekly-plans-add">
                             <a class="weekly-plans-add-content" href="addPlan.jsp">
                                 <div>
-                                    <img src="assets/add-black.svg" alt="">
+                                    <img src="assets/add-icon-black.svg" alt="">
                                 </div>
                             </a>
                         </div>

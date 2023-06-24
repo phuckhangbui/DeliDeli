@@ -69,26 +69,26 @@
                                 double avaRating = (Double) request.getAttribute("avgRating");
                                 for (double i = 0; i < avaRating; i++) {
                             %>
-                            <img src="./assets/full-star.png" alt="">
+                            <img src="./assets/full-star-icon.svg" alt="">
                             <%
                                 }
                             %>
                             <p><%= request.getAttribute("avgRating")%></p>
                             <p>|</p>
-                            <p class=""><%= request.getAttribute("totalReview")%> ratings</p>
+                            <p class=""><%= request.getAttribute("totalReview")%> rating(s)</p>
                         </div>
                         <form action="" class="recipe-detail-info-button-add">
                             <input type="text" hidden="">
                             <div>
 
                                 <button type="submit" class="like-button">
-                                    <img src="./assets/favorite.svg" alt="">
+                                    <img src="./assets/favorite-icon.svg" alt="">
                                     Save
                                 </button>
                             </div>
                         </form>
                         <button class="share-button">
-                            <img src="./assets/share.svg" alt="">
+                            <img src="./assets/share-icon.svg" alt="">
                             Share
                         </button>
                     </div>

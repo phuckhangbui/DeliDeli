@@ -75,11 +75,8 @@
         <div class="recommendation-1">
             <div class="container ">
                 <div class="row">
-                    <header>
-                        <a href="" class="header">
-                            <p>Mr. Worldwide</p>
-                            <img src="./assets/arrow.svg" alt="">
-                        </a>
+                    <header class="search-result-header">
+                        <p>Mr. Worldwide</p>
                     </header>
                 </div>
                 <div class="row recommendation-content">
@@ -107,7 +104,7 @@
                             <% for (int i = 0; i
                                         < RecipeDAO.getRatingByRecipeId(r.getId());
                                         i++) { %>
-                            <img src="./assets/full-star.png"
+                                        <img src="./assets/full-star-icon.svg"
                                  alt="">
                             <% }%>
                             <p
@@ -157,11 +154,8 @@
                             );
                             time = "midnight snacks";
                         }%>
-                    <header>
-                        <a href="" class="header">
-                            <p>What's for <%= time%> today? </p>
-                            <img src="./assets/arrow.svg" alt="">
-                        </a>
+                    <header class="search-result-header">
+                        <p>What's for <%= time%> today? </p>
                     </header>
                 </div>
                 <div class="row recommendation-content">
@@ -185,8 +179,7 @@
                             <% for (int i = 0; i
                                         < RecipeDAO.getRatingByRecipeId(list.getId());
                                         i++) { %>
-                            <img src="./assets/full-star.png"
-                                 alt="">
+                                        <img src="./assets/full-star-icon.svg">
                             <% }%>
                             <p
                                 class="recommendation-content-reciew-rating">
@@ -218,13 +211,10 @@
                     }
                 %>
                 <div class="row">
-                    <header>
-                        <a href="" class="header">
+                    <header class="search-result-header">
                             <p>
                                 <%= selectedSuggestion%> Recipe(s)
                             </p>
-                            <img src="./assets/arrow.svg" alt="">
-                        </a>
                     </header>
                 </div>
                 <div class="row recommendation-content">
@@ -251,8 +241,7 @@
                             <% for (int i = 0; i
                                         < RecipeDAO.getRatingByRecipeId(r.getId());
                                         i++) { %>
-                            <img src="./assets/full-star.png"
-                                 alt="">
+                                        <img src="./assets/full-star-icon.svg">
                             <% }%>
                             <p
                                 class="recommendation-content-reciew-rating">

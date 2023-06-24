@@ -43,49 +43,49 @@
                     </a>
                     <div>
                         <a href="admin.jsp" class="active">
-                            <img src="./assets/public.svg" alt="">
+                            <img src="./assets/public-icon.svg" alt="">
                             Dashboard
                         </a>
                     </div>
                     <div>
                         <a href="MainController?action=manageAccount">
-                            <img src="./assets/user-unchose.svg" alt="">
+                            <img src="./assets/user-unchosen-icon.svg" alt="">
                             User
                         </a>
                     </div>
                     <div>
                         <a href="MainController?action=manageRecipe">
-                            <img src="./assets/post-unchose.svg" alt="">
+                            <img src="./assets/post-unchosen-icon.svg" alt="">
                             Posts
                         </a>
                     </div>
                     <div>
                         <a href="MainController?action=manageSuggestion">
-                            <img src="./assets/content-unchose.svg" alt="">
+                            <img src="./assets/content-unchosen-icon.svg" alt="">
                             Content
                         </a>
                     </div>
                     <div>
                         <a href="MainController?action=manageNews">
-                            <img src="./assets/news-unchose.svg" alt="">
+                            <img src="./assets/news-unchosen-icon.svg" alt="">
                             News
                         </a>
                     </div>
                     <div>
                         <a href="#">
-                            <img src="./assets/policies-unchose.svg" alt="">
+                            <img src="./assets/policies-unchosen-icon.svg" alt="">
                             Policies
                         </a>
                     </div>
                     <div>
                         <a href="#">
-                            <img src="./assets/broadcast-unchose.svg" alt="">
+                            <img src="./assets/broadcast-unchosen-icon.svg" alt="">
                             Broadcast
                         </a>
                     </div>
                     <div>
                         <a href="#">
-                            <img src="./assets/bug-report-unchose.svg" alt="">
+                            <img src="./assets/bug-report-unchosen-icon.svg" alt="">
                             Report
                         </a>
                     </div>
@@ -137,7 +137,7 @@
                                                     <h2 class=""><%= AdminDAO.getTotalRecipe()%></h2>
                                                 </div>
                                                 <div>
-                                                    <img src="assets/total-post.svg" alt="">
+                                                    <img src="assets/total-post-icon.svg" alt="">
                                                 </div>
                                             </div>
                                             <a class="card-total-see-more" href="MainController?action=manageRecipe">
@@ -157,7 +157,7 @@
                                                     <h2 class=""><%= AdminDAO.getTotalAccount()%></h2>
                                                 </div>
                                                 <div>
-                                                    <img src="assets/total-user.svg" alt="">
+                                                    <img src="assets/total-user-icon.svg" alt="">
                                                 </div>
                                             </div>
                                             <a class="card-total-see-more" href="MainController?action=manageAccount">
@@ -177,7 +177,7 @@
                                                     <h2 class=""><%= LocalDate.now()%></h2>
                                                 </div>
                                                 <div>
-                                                    <img src="assets/calendar-date.svg" alt="">
+                                                    <img src="assets/calendar-date-icon.svg" alt="">
                                                 </div>
                                             </div>
                                         </div>

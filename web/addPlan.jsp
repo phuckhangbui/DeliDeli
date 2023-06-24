@@ -76,6 +76,12 @@
                                     <input type="text" name="name" class="input-full" placeholder="What's your plan called ?">
                                 </div>
                             </div>
+                            <div class="add-plan-info-header-picture add-plan-info">
+                                Thumbnail Picture <span>*</span>
+                                <div>
+                                    <input type="file" id="image" name="thumbnail" required>
+                                </div>    
+                            </div>
                             <div class="add-plan-info-header add-plan-info">
                                 Plan Type <span>*</span>
                                 <select name="recipeDietId" id="" class="add-plan-info-header-type" required>
@@ -113,50 +119,8 @@
 
 
             <!--         Footer       -->
-            <div class="footer">
-                <div class="container">
-                    <div class="row">
-                        <div class="website-social-media col-md-4">
-                            <div class="footer-header">
-                                <p>We Are</p>
-                            </div>
-                            <a href="homePage.html" class="website-social-media-logo">
-                                <img src="./assets/Logo2.png" alt="">
-                            </a>
-                            <div class="website-social-media-icons">
-                                <span>Follow us:</span>
-                                <a href="#"><img src="./assets/facebook-icon.svg" alt="Facebook Logo"></a>
-                                <a href="#"><img src="./assets/twitter-icon.svg" alt="Twitter Logo"></a>
-                            </div>
-                        </div>
-                        <nav class="navigation-bar-footer col-md-4">
-                            <div class="footer-header">
-                                <p>Explore</p>
-                            </div>
-                            <ul class="navigation-bar-footer-content">
-                                <li><a href="">INGREDIENTS</a></li>
-                                <li><a href="">CATEGORIES</a></li>
-                                <li><a href="">INGREDIENTS</a></li>
-                                <li><a href="">CUISINES</a></li>
-                                <li><a href="">DIFFICULTIES</a></li>
-                                <li><a href="">NEWS</a></li>
-                            </ul>
-                        </nav>
-                        <nav class="website-infomation-bar col-md-4">
-                            <div class="footer-header">
-                                <p>Know More</p>
-                            </div>
-                            <ul class="website-infomation-bar-content">
-                                <li><a href="">About us</a></li>
-                                <li><a href="">Privacy Policies</a></li>
-                                <li><a href="">Term of Services</a></li>
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
-            </div>
-        </div>
+            <%@include file="footer.jsp" %>
 
-        <script src="bootstrap/js/bootstrap.min.js" ></script>
+            <script src="bootstrap/js/bootstrap.min.js" ></script>
     </body>
 </html>

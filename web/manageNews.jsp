@@ -42,50 +42,50 @@
                         <img src="assets/Logo3.svg" alt="">
                     </a>
                     <div>
-                        <a href="admin.jsp">
-                            <img src="./assets/public.svg" alt="">
+                        <a href="admin.jsp" >
+                            <img src="./assets/public-unchosen-icon.svg" alt="">
                             Dashboard
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageAccount">
-                            <img src="./assets/user-unchose.svg" alt="">
+                        <a href="MainController?action=manageAccount" >
+                            <img src="./assets/user-unchosen-icon.svg" alt="">
                             User
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageRecipe">
-                            <img src="./assets/post-unchose.svg" alt="">
+                        <a href="MainController?action=manageRecipe" >
+                            <img src="./assets/post-unchosen-icon.svg" alt="">
                             Posts
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageSuggestion">
-                            <img src="./assets/content-unchose.svg" alt="">
+                        <a href="MainController?action=manageSuggestion" >
+                            <img src="./assets/content-unchosen-icon.svg" alt="">
                             Content
                         </a>
                     </div>
                     <div>
                         <a href="MainController?action=manageNews" class="active">
-                            <img src="./assets/news-unchose.svg" alt="">
+                            <img src="./assets/news-icon.svg" alt="">
                             News
                         </a>
                     </div>
                     <div>
                         <a href="#">
-                            <img src="./assets/policies-unchose.svg" alt="">
+                            <img src="./assets/policies-unchosen-icon.svg" alt="">
                             Policies
                         </a>
                     </div>
                     <div>
                         <a href="#">
-                            <img src="./assets/broadcast-unchose.svg" alt="">
+                            <img src="./assets/broadcast-unchosen-icon.svg" alt="">
                             Broadcast
                         </a>
                     </div>
                     <div>
                         <a href="#">
-                            <img src="./assets/bug-report-unchose.svg" alt="">
+                            <img src="./assets/bug-report-unchosen-icon.svg" alt="">
                             Report
                         </a>
                     </div>
@@ -119,26 +119,26 @@
                                                     </a>
                                                 </div>-->
                         <div>
-                            <a href="MainController?action=manageAccount">
-                                <img src="./assets/user-unchose.svg" alt="">
+                            <a href="MainController?action=manageAccount" >
+                                <img src="./assets/user-unchosen-icon.svg" alt="">
                                 User
                             </a>
                         </div>
                         <div>
-                            <a href="MainController?action=manageRecipe">
-                                <img src="./assets/post-unchose.svg" alt="">
+                            <a href="MainController?action=manageRecipe" >
+                                <img src="./assets/post-unchosen-icon.svg" alt="">
                                 Posts
                             </a>
                         </div>
                         <div>
-                            <a href="MainController?action=manageSuggestion">
-                                <img src="./assets/content-unchose.svg" alt="">
+                            <a href="MainController?action=manageSuggestion" >
+                                <img src="./assets/content-unchosen-icon.svg" alt="">
                                 Content
                             </a>
                         </div>
                         <div>
                             <a href="MainController?action=manageNews" class="active">
-                                <img src="./assets/news.svg" alt="">
+                                <img src="./assets/news-icon.svg" alt="">
                                 News
                             </a>
                         </div>
@@ -148,12 +148,12 @@
                                                         Policies
                                                     </a>
                                                 </div>-->
-                        <div>
+<!--                        <div>
                             <a href="#">
                                 <img src="./assets/broadcast-unchose.svg" alt="">
                                 Broadcast
                             </a>
-                        </div>
+                        </div>-->
                         <!--                        <div>
                                                     <a href="#">
                                                         <img src="./assets/bug-report-unchose.svg" alt="">

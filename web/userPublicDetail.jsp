@@ -49,24 +49,24 @@
                         </div>
                         <div class="user-profile-option">
                             <a href="userPublicDetail.jsp?userId=<%= user.getId()%>" class="active-link">
-                                <img src="./assets/public.svg" alt="">
+                                <img src="./assets/public-icon.svg" alt="">
                                 Public Profile
                             </a>
                             <a href="userEmailSetting.jsp?userId=<%= user.getId()%>">
-                                <img src="./assets/user-unchose.svg" alt="">
+                                <img src="./assets/user-unchosen-icon.svg" alt="">
                                 Personal Setting
                             </a>
                             <a href="userPasswordSetting.jsp?userId=<%= user.getId()%>">
-                                <img src="./assets/Password-unchose.svg" alt="">
+                                <img src="./assets/password-unchosen-icon.svg" alt="">
                                 Change Password
                             </a>
                             <a href="userSavedRecipes.html">
-                                <img src="./assets/favorite-unchose.svg" alt="">
+                                <img src="./assets/favorite-unchosen-icon.svg" alt="">
                                 Saved Recipes
                             </a>
                             <div class="dropdown" id="dropdownUserRecipe">
                                 <a href="#" class="dropbtn">
-                                    <img src="./assets/my-recipe-unchose.svg" alt="">
+                                    <img src="./assets/my-recipe-unchosen-icon.svg" alt="">
                                     My Own Recipes
                                 </a>
                                 <div class="dropdown-content-right">
@@ -77,7 +77,7 @@
                                 </div>
                             </div>
                             <a href="userReviewManagement.jsp?userId=<%= userId%>">
-                                <img src="./assets/review-unchose.svg" alt="">
+                                <img src="./assets/full-star-unchosen-icon.svg" alt="">
                                 My Reviews
                             </a>
 <!--                            <a href="userNotification.jsp?userId=<%= userId%>">
