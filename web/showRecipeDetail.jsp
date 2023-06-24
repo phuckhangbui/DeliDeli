@@ -191,7 +191,14 @@
                         %>
 
                         <div class="container ">
+
                             <div class="row recipe-detail-info">
+                                <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item"><a href="#">Recipes List</a></li>
+                                        <li class="breadcrumb-item current-link" aria-current="page">Recipe</li>
+                                    </ol>
+                                </nav>
                                 <header class="recipe-detail-info-main-header">
                                     <%= recipe.getTitle()%>
                                 </header>

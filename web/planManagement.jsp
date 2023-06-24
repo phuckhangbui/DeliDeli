@@ -33,12 +33,17 @@
 
         <!--         The navigation bar       -->
         <%@include file="header.jsp" %>
-
         <div class="a1">
             <!--         Recipe Plan       -->
             <div class="blank-background">
                 <div class="container">
                     <div class="row weekly-plans ">
+                        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item current-link" aria-current="page">Plan List</li>
+                            </ol>
+                        </nav>
                         <div class="weekly-plans-header">
                             Plans Management
                         </div>

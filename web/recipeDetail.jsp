@@ -52,6 +52,13 @@
         <div class="blank-background">
             <div class="container ">
                 <div class="row recipe-detail-info">
+                    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item"><a href="#"> Recipe Type</a></li> 
+                            <li class="breadcrumb-item current-link" aria-current="page">Recipe Name</li>
+                        </ol>
+                    </nav>
                     <header class="recipe-detail-info-main-header">
                         <%= recipe.getTitle()%>
                     </header>

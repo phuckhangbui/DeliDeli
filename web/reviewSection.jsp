@@ -189,7 +189,7 @@
                             <%
                                 for (int i = 0; i < o.getRating(); i++) {
                             %>
-                            <img src="./assets/full-star.png" alt="">
+                            <img src="./assets/full-star-icon.svg" alt="">
                             <%
                                 }
                             %>

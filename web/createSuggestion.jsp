@@ -185,7 +185,12 @@
                             ArrayList<RecipeDTO> listRecipe = (ArrayList) RecipeDAO.getAllRecipes();
                             if (listRecipe != null && listRecipe.size() > 0) {
                         %>
-
+                        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="#">Content List</a></li>
+                                <li class="breadcrumb-item current-link" aria-current="page">Add Content</li>
+                            </ol>
+                        </nav>
                         <div class="nav-top-bar-search">
                             <form action="MainController" method="post" class="nav-top-bar-search-user">
                                 <button type="submit" name="action" value="search"><img src="assets/search2.svg" alt=""></button>
@@ -300,8 +305,8 @@
                 </div>
             </div>
         </div>
-                        
-                        
+
+
         <script src="bootstrap/js/bootstrap.min.js" ></script>
     </body>
 </html>

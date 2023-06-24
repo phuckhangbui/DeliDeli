@@ -24,6 +24,10 @@ ul {
     list-style: none;
 }
 
+.current-link {
+    color: #ec9131;
+}
+
 /* The nav bar */
 .search-bar-content button {
     border: none;

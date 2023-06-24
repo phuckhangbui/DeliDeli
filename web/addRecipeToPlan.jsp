@@ -32,6 +32,13 @@
         <div class="blank-background">
             <div class="container">
                 <div class="row plan">
+                    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item"><a href="#"> Plan</a></li> 
+                            <li class="breadcrumb-item current-link" aria-current="page">Edit Plan</li>
+                        </ol>
+                    </nav>
                     <div class="edit-plan-header">
                         <p>Edit Plan</p>
                         <p>Edit, add or remove recipes from your plan to fit more with your eating schedule</p>

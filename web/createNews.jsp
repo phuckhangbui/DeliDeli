@@ -189,7 +189,12 @@
                                         //UserDTO user = (UserDTO) session.getAttribute("user");
                                         //String id = request.getParameter("newsId");
                                     %>
-
+                                    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                                        <ol class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="#">News List</a></li>
+                                            <li class="breadcrumb-item current-link" aria-current="page">Add News</li>
+                                        </ol>
+                                    </nav>
                                     <form action="MainController" method="post" class="news-create-button" enctype="multipart/form-data">
                                         <div class="add-news-header">
                                             <p>Add a New</p>

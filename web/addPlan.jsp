@@ -38,6 +38,13 @@
             <div class="blank-background">
                 <div class="container">
                     <div class="row add-plan">
+                        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item"><a href="#"> Plan</a></li> 
+                                <li class="breadcrumb-item current-link" aria-current="page">Add Plan</li>
+                            </ol>
+                        </nav>
                         <form action="MainController" method="POST">
                             <div class="add-plan-header">
                                 <p>Add a Plan</p>

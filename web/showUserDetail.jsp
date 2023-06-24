@@ -186,6 +186,12 @@
 
                         <div class="container">
                             <div class="user-detail-admin">
+                                <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item"><a href="#">User List</a></li>
+                                        <li class="breadcrumb-item current-link" aria-current="page">User</li>
+                                    </ol>
+                                </nav>
                                 <div class="user-detail-admin-heading">
                                     <h3 class="">Profile Detail</h3>
                                 </div>
