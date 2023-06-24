@@ -83,7 +83,7 @@
                                 type="submit"
                                 name="action"
                                 value="search"><img
-                                    src="assets/search2.svg"
+                                    src="assets/search-icon.svg"
                                     alt=""></button>
                             <input
                                 type="text"

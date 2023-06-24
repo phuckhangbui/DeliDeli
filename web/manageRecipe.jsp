@@ -57,7 +57,7 @@
                     <div>
                         <a href="MainController?action=manageRecipe" class="active">
                             <img src="./assets/post-icon.svg" alt="">
-                            Posts
+                            Recipe
                         </a>
                     </div>
                     <div>

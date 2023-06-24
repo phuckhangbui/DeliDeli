@@ -60,7 +60,7 @@
                     <div>
                         <a href="MainController?action=manageRecipe" >
                             <img src="./assets/post-unchosen-icon.svg" alt="">
-                            Posts
+                            Recipe
                         </a>
                     </div>
                     <div>
@@ -131,7 +131,7 @@
                         <div>
                             <a href="MainController?action=manageRecipe" >
                                 <img src="./assets/post-unchosen-icon.svg" alt="">
-                                Posts
+                                Recipe
                             </a>
                         </div>
                         <div>

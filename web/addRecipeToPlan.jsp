@@ -527,7 +527,7 @@
                         </div>
                         <div class="add-recipe-to-plan-search-bar">
                             <form action="MainController" method="post">
-                                <button type="submit" name="action" value="search"><img src="assets/search2.svg"
+                                <button type="submit" name="action" value="search"><img src="assets/search-icon.svg"
                                                                                         alt=""></button>
                                 <input type="text" name="txtsearch" placeholder="What recipes are you searching for ?">
                                 <select name="searchBy" id="" class="">

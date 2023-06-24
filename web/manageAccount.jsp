@@ -70,7 +70,7 @@
                     <div>
                         <a href="MainController?action=manageRecipe">
                             <img src="./assets/post-unchosen-icon.svg" alt="">
-                            Posts
+                            Recipe
                         </a>
                     </div>
                     <div>
@@ -197,7 +197,7 @@
                         </div>
                         <div class="nav-top-bar-search">
                             <form action="MainController" method="post" class="nav-top-bar-search-user">
-                                <button type="submit" name="action" value="searchAccount"><img src="assets/search2.svg" alt=""></button>
+                                <button type="submit" name="action" value="searchAccount"><img src="assets/search-icon.svg" alt=""></button>
                                 <input type="text" name="txtSearch" placeholder="Who are you searching for ?">
                                 <input type="hidden" value="<%= currentRole%>" name="currentRole">
                                 <input type="hidden" value="<%= tag%>" name="tag">
