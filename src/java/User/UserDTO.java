@@ -130,7 +130,7 @@ public class UserDTO {
     }
 
     public String getAvatar() {
-        return avatar;
+        return "User/"+this.id+"/"+this.avatar;
     }
 
     public void setAvatar(String avatar) {

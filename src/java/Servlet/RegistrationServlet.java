@@ -6,7 +6,12 @@ package Servlet;
 
 import User.UserDAO;
 import Utils.ValidateEmail;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +33,7 @@ public class RegistrationServlet extends HttpServlet {
     private static final String REGISTRATION_PAGE = "registration.jsp";
     private final static String PASS_PATTERN = "^(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,16}$";
     private final static String EMAIL_PATTERN = "\\b[\\w.%-]+@[-.\\w]+\\.[A-Za-z]{2,4}\\b";
+    private final static String AVATAR = "profile-pic.svg";
     private final static int STATUS = 1;
     private final static int ROLE = 1;
     private final static int SETTING = 1;
@@ -104,14 +110,38 @@ public class RegistrationServlet extends HttpServlet {
             //Insert account
             java.util.Date date = new java.util.Date();
             java.sql.Date sqlDate = new java.sql.Date(date.getTime());
-            boolean check = UserDAO.insertAccount(userName, email, password, sqlDate, STATUS, ROLE, SETTING, DEFAULT_TOKEN);
-            userDAO.updateStatusFalse(userName); //Patched this shit up.
-            if (check) {
-                UserDAO.insertUserDetailDefault();
-                request.setAttribute("USER_TYPE", "RegisterUser");
-                request.setAttribute("MSG_SUCCESS", "You have successfully registered an account!");
-                request.getRequestDispatcher(CONFIRM_EMAIL).forward(request, response);
+            int userId = UserDAO.insertAccount(userName, email, password, AVATAR, sqlDate, STATUS, ROLE, SETTING, DEFAULT_TOKEN);
+            String uploadPath = "C:/project-swp/pictures/user/" + userId;
+            File uploadDir = new File(uploadPath);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdirs();
             }
+
+            String defaultAvatarFilePath = "C:/project-swp/pictures/user/0/profile-pic.svg";
+            File defaultAvatarFile = new File(defaultAvatarFilePath);
+
+            String userAvatarFileName = AVATAR; 
+            File userAvatarFile = new File(uploadPath, userAvatarFileName);
+
+            try ( InputStream inputStream = new FileInputStream(defaultAvatarFile);  OutputStream outputStream = new FileOutputStream(userAvatarFile)) {
+
+                byte[] buffer = new byte[4096];
+                int bytesRead;
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, bytesRead);
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                
+            }
+
+            userDAO.updateStatusFalse(userName); //Patched this shit up.
+
+            UserDAO.insertUserDetailDefault();
+            request.setAttribute("USER_TYPE", "RegisterUser");
+            request.setAttribute("MSG_SUCCESS", "You have successfully registered an account!");
+            request.getRequestDispatcher(CONFIRM_EMAIL).forward(request, response);
 
         } catch (Exception ex) {
             Logger.getLogger(RegistrationServlet.class
