@@ -497,7 +497,6 @@
         <!-- Modal -->
         <div class="modal fade"
              id="<%= notification.getId()%>"
-             data-bs-backdrop="static"
              data-bs-keyboard="false"
              tabindex="-1"
              aria-labelledby="deletePlanModalLabel"
@@ -514,8 +513,7 @@
                                 class="modal-title-text">
                                 <%=notification.getTitle()%>
                             </p>
-                            <p
-                                class="modal-title-date">
+                            <p class="modal-title-date">
                                 <% Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
                                     Timestamp sendTimestamp = notification.getSend_date();
 
@@ -598,15 +596,14 @@
                                 }
                             %>
                     </div>
-                    <div
-                        class="modal-footer">
+                    <div class="modal-footer">
                         <button
                             type="button"
                             class="btn btn-danger deleteBtn"
                             data-bs-dismiss="modal">Delete</button>
                         <button
                             type="button"
-                            class="btn btn-success closeBtn"
+                            class="btn btn-secondary"
                             data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>

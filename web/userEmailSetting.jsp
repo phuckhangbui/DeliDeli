@@ -38,9 +38,9 @@
             <div class="container ">
                 <form action="MainController" method="post" class="row user-profile">
                     <input type="hidden" name="userId" value="<%= userId%>">
-                    
 
-                                
+
+
                     <div class="col-md-3 user-profile-column-1">
                         <div class="user-profile-header">
                             <div>
@@ -88,9 +88,9 @@
                             </a>-->
                         </div>
                     </div>           
-                                
-                                
-                                
+
+
+
                     <div class="col-md-5 user-profile-column-2">
                         <div class="user-profile-header">
                             <div>
@@ -103,17 +103,17 @@
                         <div class="user-profile-personal-content">
                             <div class="user-profile-personal-content-readonly">
                                 <p>User Name</p>
-                                <input type="text" placeholder="<%= user.getUserName()%>" readonly>
+                                <input type="text" placeholder="<%= user.getUserName()%>" readonly class="enable">
                             </div>
                             <div>
                                 <p>Email</p>
-                                <input type="text" name="txtEmail" value="<%= user.getEmail()%>" >
+                                <input type="text" name="txtEmail" value="<%= user.getEmail()%>" class="enable">
                             </div>
                         </div>
                         <div class="user-profile-save-button">
                             <p class='error-popup'>${requestScope.errorList[0]}</p>
                             <p>Save Changes ?</p>
-                            <button type="submit" value="changeUserEmail" name="action">SAVE</button>
+                            <button type="submit" value="changeUserEmail" name="action" id="save">SAVE</button>
                         </div>
                     </div>
                     <div class="col-md-3 user-profile-column-3 ">
@@ -136,31 +136,11 @@
         </div>
 
 
-<!--        <a href="userPublicDetail.jsp?userId=<%= userId%>">Public</a>
-
-        <form action="MainController" method="post" class="">
-            <input type="hidden" name="userId" value="<%= userId%>">
-            <div>
-                <p>Old Password</p>
-                <input type="password" name="txtOldPassword" required="">
-            </div>
-            <div>
-                <p>New Password</p>
-                <input type="password" name="txtNewPassword" required="">
-            </div>
-            <div>
-                <p>Re-enter New Password</p>
-                <input type="password" name="txtConfirmNewPassword" required="">
-            </div>
-            <div class='error-popup'>
-                <p>${requestScope.errorList[0]}</p>
-            </div>
-            <button type="submit" value="saveUserPrivateDetail" name="action">SAVE</button>
-        </form>-->
 
 
         <%@include file="footer.jsp" %>
-        
+
+        <script src="script/DisabledButton.js"></script>
         <script src="bootstrap/js/bootstrap.min.js" ></script>
     </body>
 </html>

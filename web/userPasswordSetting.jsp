@@ -101,24 +101,24 @@
                                 <p>Old Password</p>
                                 <p>*</p>
                             </div>
-                            <input type="password" name="txtOldPassword" placeholder="Enter old password" required="">
+                            <input type="password" name="txtOldPassword" placeholder="Enter old password" required="" class="password">
                             <div class="user-profile-personal-content-password">
                                 <p>New Password</p>
                                 <p>*</p>
 
                             </div>
-                            <input type="password" name="txtNewPassword" placeholder="Enter new password" required="">
+                            <input type="password" name="txtNewPassword" placeholder="Enter new password" required="" class="password">
                             <div class="user-profile-personal-content-password">
                                 <p>Re-enter New Password</p>
                                 <p>*</p>
                             </div>
-                            <input type="password" name="txtConfirmNewPassword" placeholder="Re-enter new password" required="">
+                            <input type="password" name="txtConfirmNewPassword" placeholder="Re-enter new password" required="" class="password">
                         </div>
 
                         <div class="user-profile-save-button">
                             <p class='error-popup'>${requestScope.errorList[0]}</p>
                             <p>Save Changes ?</p>
-                            <button type="submit" value="changeUserPassword" name="action">SAVE</button>
+                            <button type="submit" value="changeUserPassword" name="action" id="save">SAVE</button>
                         </div>
                     </div>
                     <div class="col-md-3 user-profile-column-3 ">
@@ -141,30 +141,10 @@
         </div>
 
 
-<!--        <a href="userPublicDetail.jsp?userId=<%= userId%>">Public</a>
-
-        <form action="MainController" method="post" class="">
-            <input type="hidden" name="userId" value="<%= userId%>">
-            <div>
-                <p>Old Password</p>
-                <input type="password" name="txtOldPassword" required="">
-            </div>
-            <div>
-                <p>New Password</p>
-                <input type="password" name="txtNewPassword" required="">
-            </div>
-            <div>
-                <p>Re-enter New Password</p>
-                <input type="password" name="txtConfirmNewPassword" required="">
-            </div>
-            <div class='error-popup'>
-                <p>${requestScope.errorList[0]}</p>
-            </div>
-            <button type="submit" value="saveUserPrivateDetail" name="action">SAVE</button>
-        </form>-->
 
         <%@include file="footer.jsp" %>
 
+        <script src="script/DisabledButton.js"></script>
         <script src="bootstrap/js/bootstrap.min.js" ></script>
     </body>
 </html>

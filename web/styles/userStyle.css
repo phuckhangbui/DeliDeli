@@ -1278,7 +1278,9 @@ span {
     background: #e87e0c;
     padding: 5px 20px;
 }
-
+.user-profile-save-button button:disabled, .user-profile-save-button button[disabled=disabled]{
+    background-color: rgb(0,0,0,0.5);
+}
 .user-profile-personal-content div p {
     font-size: 20px;
     margin: 20px 0 0;

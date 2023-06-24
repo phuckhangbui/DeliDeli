@@ -27,7 +27,7 @@
 
         <%@include file="header.jsp" %>
 
-        <%
+        <%            
             String userId = request.getParameter("userId");
             UserDetailDTO userDetail = UserDetailDAO.getUserDetailByUserId(new Integer(userId));
         %>
@@ -100,30 +100,30 @@
                             <div class="user-profile-public-content-name">
                                 <div>
                                     <p>First Name</p>
-                                    <input type="text" name="txtFirstName" value="<%= userDetail.getFirstName()%>">
+                                    <input type="text" class="enable" name="txtFirstName" value="<%= userDetail.getFirstName()%>">
                                 </div>
                                 <div>
                                     <p>Last Name</p>
-                                    <input type="text" name="txtLastName" value="<%= userDetail.getLastName()%>" >
+                                    <input type="text" class="enable" name="txtLastName" value="<%= userDetail.getLastName()%>" >
                                 </div>
                             </div>
                             <div class="user-profile-public-content-birth">
                                 <p>Birthday</p>
-                                <input type="date" name="txtBirthDate" value="<%= userDetail.getBirthdate()%>">
+                                <input type="date" class="enable" name="txtBirthDate" value="<%= userDetail.getBirthdate()%>">
                             </div>
                             <div class="user-profile-public-content-special">
                                 <p>Specialties</p>
-                                <textarea name="txtSpecialty" id="" cols="30" rows="3"><%= userDetail.getSpecialty()%></textarea>
+                                <textarea name="txtSpecialty" class="enable" cols="30" rows="3" placeholder="What are your specialties ?"><%= userDetail.getSpecialty()%></textarea>
                             </div>
                             <div class="user-profile-public-content-bio">
                                 <p>Bio</p>
-                                <textarea name="txtBio" id="" cols="30" rows="5"><%= userDetail.getBio()%></textarea>
+                                <textarea name="txtBio" class="enable" cols="30" rows="5" placeholder="Write something about yourself"><%= userDetail.getBio()%></textarea>
                             </div>
                         </div>
                         <div class="user-profile-save-button">
                             <p class="error-popup">${requestScope.errorList[0]}</p>
                             <p>Save Changes?</p>
-                            <button type="submit" value="saveUserPublicDetail" name="action">SAVE</button>
+                            <button type="submit" value="saveUserPublicDetail" name="action" id="save" >SAVE</button>
                         </div>
                     </div>
                     <div class="col-md-3 user-profile-column-3 ">
@@ -147,39 +147,10 @@
         </div>
 
 
-<!--        <a href="userPrivateDetail.jsp?userId=<%= userId%>">Private</a>-->
-
-        <!--        <form action="MainController" method="post" class="">
-                    <input type="hidden" name="userId" value="<%= userId%>">
-                    <div>
-                        <p>First Name</p>
-                        <input type="text" name="txtFirstName" placeholder="<%= userDetail.getFirstName()%>" required="">
-                    </div>
-                    <div>
-                        <p>Last Name</p>
-                        <input type="text" name="txtLastName" placeholder="<%= userDetail.getLastName()%>" required="">
-                    </div>
-                    <div>
-                        <p>Specialty</p>
-                        <input type="text" name="txtSpecialty" placeholder="<%= userDetail.getSpecialty()%>" required="">
-                    </div>
-                    <div>
-                        <p>Bio</p>
-                        <input type="text" name="txtBio" placeholder="<%= userDetail.getBio()%>" required="">
-                    </div>
-                    <div>
-                        <p>Birth date</p>
-                        <input type="text" name="txtBirthDate" placeholder="<%= userDetail.getBirthdate()%>" required="">
-                    </div>
-                    <div class='error-popup'>
-                        <p>${requestScope.errorList[0]}</p>
-                    </div>
-                    <button type="submit" value="saveUserPublicDetail" name="action">SAVE</button>
-                </form>-->
 
         <%@include file="footer.jsp" %>
-        
-        
+
+        <script src="script/DisabledButton.js"></script>
         <script src="bootstrap/js/bootstrap.min.js" ></script>
     </body>
 </html>
