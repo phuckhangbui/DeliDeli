@@ -34,9 +34,7 @@
                 <div class="row plan">
                     <div class="edit-plan-header">
                         <p>Edit Plan</p>
-                        <p>
-                            Edit, add or remove recipes from your plan to fit more with your eating schedule
-                        </p>
+                        <p>Edit, add or remove recipes from your plan to fit more with your eating schedule</p>
                     </div>
 
 
@@ -48,23 +46,21 @@
                         <!-- Modal -->
                         <div class="modal fade" id="removeAllRecipes" tabindex="-1"
                              aria-labelledby="removeAllRecipesModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
+                            <form class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
+                                        <h1 class="modal-title fs-5" id="removeAllRecipesModalLabel">Remove All Recipes</h1>
                                     </div>
                                     <div class="modal-body">
-                                        ...
+                                        Are you sure you want to remove all recipes in this plan ?
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
-                                                data-bs-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary">Save changes</button>
+                                                data-bs-dismiss="modal">No, I changed my mind</button>
+                                        <button type="button" class="remove-recipe-from-plan-button">Yes, remove all of them</button>
                                     </div>
                                 </div>
-                            </div>
+                            </form>
                         </div>
 
 
@@ -75,23 +71,21 @@
                         <!-- Modal -->
                         <div class="modal fade" id="deletePlanConfirm" tabindex="-1"
                              aria-labelledby="deletePlanConfirmModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
+                            <form class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
+                                        <h1 class="modal-title fs-5" id="removeAllRecipesModalLabel">Delete Plan</h1>
                                     </div>
                                     <div class="modal-body">
-                                        ...
+                                        Are you sure you want to delete this plan ?
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
-                                                data-bs-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary">Save changes</button>
+                                                data-bs-dismiss="modal">No, I changed my mind</button>
+                                        <button type="button" class="remove-recipe-from-plan-button">Yes, delete it</button>
                                     </div>
                                 </div>
-                            </div>
+                            </form>
                         </div>
 
 
@@ -141,7 +135,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn remove-recipe-from-plan-button">Remove</button>
+                                                    <button type="button" class="remove-recipe-from-plan-button">Remove</button>
                                                 </div>
                                             </div>
                                         </form>

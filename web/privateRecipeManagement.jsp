@@ -119,7 +119,7 @@
                                     <div class="user-profile-recipe-post-description">
                                         <p><%= RecipeDAO.getCategoryByRecipeId(r.getId())%></p>
                                         <a href="editRecipe.jsp?recipeId=<%=r.getId()%>">
-                                            <img src="./assets/edit.svg"/>
+                                            <img src="./assets/edit-icon.svg"/>
                                         </a>
                                     </div>
                                     <a href="MainController?action=getRecipeDetailById&id=<%= r.getId()%>"><%= r.getTitle()%></a>
@@ -128,7 +128,7 @@
                                     <%
                                         for (int i = 0; i < RecipeDAO.getRatingByRecipeId(r.getId()); i++) {
                                     %>
-                                    <img src="./assets/full-star.png" alt="">
+                                    <img src="./assets/full-star-icon.svg" alt="">
                                     <%
                                         }
                                     %>

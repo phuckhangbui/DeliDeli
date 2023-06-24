@@ -83,7 +83,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                         <input name="recipeId" value="<%=recipe.getId()%>" type="text" hidden=""/>
                         <div class="add-recipe-info-overview">
                             <div class="add-recipe-info-header">
-                                Recipe Title
+                                Recipe Title <span>*</span>
                                 <div>
                                     <input class="input-full" type="text" name="title" required
                                            placeholder="What's your recipe called ?" maxlength="100"
@@ -91,7 +91,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                 </div>
                             </div>
                             <div class="add-recipe-info-header">
-                                Description
+                                Description <span>*</span>
                                 <textarea class="input-full" rows="5" name="description" required
                                           placeholder="Give us a summary of your recipe" maxlength="500"><%= recipe.getDescription()%>
                                 </textarea>
@@ -101,7 +101,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                             <div class="row add-recipe-info-overview-picture">
                                 <div class="col-md-6 add-recipe-info-overview-picture-main">
                                     <div class="add-recipe-info-header-secondary">
-                                        Thumbnail Picture
+                                        Thumbnail Picture <p>*</p>
                                     </div> <!-- ti chinh lại thành required-->
                                     <input type="file" id="image" name="thumbnail">
                                 </div>
@@ -140,7 +140,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                             </div>
                         </div>
                         <div class="row add-recipe-info-number">
-                            <div class="add-recipe-info-header">Overview</div>
+                            <div class="add-recipe-info-header">Overview <span>*</span></div>
 
                             <div class="col-md-3 add-recipe-info-number-content">
                                 <div>Serving:</div>
@@ -414,7 +414,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
 
                         <div class="row add-recipe-info-ingredient">
                             <div class="draggable-container-ingredient col-md-8 add-recipe-info-ingredient-content">
-                                <div class="add-recipe-info-header">Ingredient</div>
+                                <div class="add-recipe-info-header">Ingredient <span>*</span></div>
                                 <%
                                     ArrayList<IngredientDetailDTO> ingredientList = IngredientDetailDAO.getIngredientDetailByRecipeId(recipe.getId());
                                     for (IngredientDetailDTO i : ingredientList) {
@@ -439,14 +439,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                             }%>
                                     </select>
                                     <button type="button" class="btnDeleteIngredient">
-                                        <img src="assets/close.svg" alt="">
+                                        <img src="assets/close-icon.svg" alt="">
                                     </button>
                                 </p>
                                 <%}%>
                             </div>
                             <div class="col-md-4 add-recipe-info-ingredient-button">
                                 <button type="button" id="btnToggleIngredient">
-                                    <img src="assets/drag.svg" alt="">
+                                    <img src="assets/drag-icon.svg" alt="">
                                 </button>
                                 <button type="button" id="btnAddIngredient">
                                     Add Paragraph
@@ -456,7 +456,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
 
 
 
-                        <div class="add-recipe-info-header">Direction:</div>
+                        <div class="add-recipe-info-header">Direction <span>*</span></div>
                         <p><textarea name="direction" rows="10" cols="10" id="editor" 
                                      value="<%=user.getId()%>"><%= DirectionDAO.getDirectionByRecipeId(recipe.getId()).getDesc()%></textarea></p>
                         <script>

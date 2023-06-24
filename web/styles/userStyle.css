@@ -1623,12 +1623,12 @@ span {
 
 .add-recipe-info-type-content {
     margin-top: 12px;
+    
 }
 .add-recipe-info-type-content-checkbox{
     accent-color: #ec9131;
 }
 .add-recipe-info-type-content select {
-    margin-left: 5px;
     min-width: 60px;
     max-width: 150px;
     border-radius: 5px;
