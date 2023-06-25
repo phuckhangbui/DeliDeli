@@ -83,12 +83,16 @@
                                     <input type="text" name="name" class="input-full" placeholder="What's your plan called ?">
                                 </div>
                             </div>
-                            <div class="add-plan-info-header-picture add-plan-info">
+                            
+                            
+<!--                            <div class="add-plan-info-header-picture add-plan-info">
                                 Thumbnail Picture <span>*</span>
                                 <div>
                                     <input type="file" id="image" name="thumbnail" required>
                                 </div>    
-                            </div>
+                            </div>-->
+
+
                             <div class="add-plan-info-header add-plan-info">
                                 Plan Type <span>*</span>
                                 <select name="recipeDietId" id="" class="add-plan-info-header-type" required>

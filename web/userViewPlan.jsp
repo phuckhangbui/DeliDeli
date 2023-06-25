@@ -4,6 +4,12 @@
     Author     : Walking Bag
 --%>
 
+<%@page import="PlanDate.PlanDateDTO"%>
+<%@page import="java.sql.Time"%>
+<%@page import="Recipe.RecipeDAO"%>
+<%@page import="Recipe.RecipeDTO"%>
+<%@page import="Meal.MealDAO"%>
+<%@page import="Meal.MealDTO"%>
 <%@page import="Diet.DietDTO"%>
 <%@page import="DateFormat.DateNameChanger"%>
 <%@page import="java.text.SimpleDateFormat"%>
@@ -27,6 +33,11 @@
             href="https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed:wght@300;400;500;600;700&display=swap"
             rel="stylesheet">
 
+        <script>
+            function redirectToEditPlan() {
+                window.location.href = "addRecipeToPlan.jsp";
+            }
+        </script>
     </head>
 
     <body>
@@ -36,451 +47,212 @@
         <!--         Recipe Plan       -->
         <div class="blank-background">
             <div class="container">
-                <%
-                    PlanDTO plan = (PlanDTO) request.getAttribute("plan");
-                    DietDTO diet = (DietDTO) request.getAttribute("diet");
-                %>
                 <div class="row plan">
-                    <div class="plan-header">
-                        <%= plan.getName()%>
+                    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="home.jsp">Home</a></li>
+                            <li class="breadcrumb-item"><a href="planManagement.jsp"> Plan Management </a></li> 
+                            <li class="breadcrumb-item current-link" aria-current="page">Current Plan Name Insert Here</li>
+                        </ol>
+                    </nav>
+                    <div class="edit-plan-header">
+                        <p>Title insert here</p>
+                        <p>Description insert here</p>
                     </div>
-                    <div class="plan-info">
-                        <div class="row">
-                            <div class="plan-info-period col-md-6">
-                                <%
-                                    Date start_date = plan.getStart_at();
-                                    Date end_date = plan.getEnd_at();
-                                    SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM d", Locale.ENGLISH);
-                                    String formattedStartDate = DateNameChanger.formatDateWithOrdinalIndicator(start_date, dateFormat);
-                                    String formattedEndDate = DateNameChanger.formatDateWithOrdinalIndicator(end_date, dateFormat);
-                                %>
-                                <p><span>Period:</span> <%= formattedStartDate %> - <%= formattedEndDate %> </p>
-                            </div>
-                            <div class="plan-info-type col-md-6">
-                                <p><span>Type:</span><%= diet.getTitle() %> </p>
-                            </div>
-                        </div>
-                        <div class="plan-info-description">
-                            <p><span>Description:</span> <%= plan.getDescription() %></p>
-                        </div>
-                    </div>
+
+
                     <div class="plan-navbar">
-                        <button class="plan-navbar-edit">
-                            <a href="addRecipesToPlan.jsp"><img src="./assets/edit.svg" alt=""></a>
+                        <button type="button" class="plan-navbar-remove" data-bs-toggle="modal"
+                                data-bs-target="#removeAllRecipes" onclick="redirectToEditPlan()">
+                            Edit Plan
                         </button>
-                    </div>
-                    <div class="col-md-12 plan-table ">
-                        <div class="plan-table-header plan-table-row">
-                            <div></div>
-                            <div>Monday</div>
-                            <div>Tuesday</div>
-                            <div>Wednesday</div>
-                            <div>Thursday</div>
-                            <div>Friday</div>
-                            <div>Saturday</div>
-                            <div>Sunday</div>
-                        </div>
-                        <div class="plan-table-row plan-table-nutrition">
-                            <div class="plan-table-content-header">
-                                Nutrition
-                            </div>
-                            <div class="plan-table-nutrition-content">
-                                <div>
-                                    <p><span class="plan-table-calories">Cals</span>(Calories): </p>
-                                    <p><span class="plan-table-protein">P</span>(Protein): </p>
-                                    <p><span class="plan-table-carb">C</span>(Carb): </p>
-                                    <p><span class="plan-table-fat">F</span>(Fat): </p>
-                                </div>
-                                <div>
-                                    <p>20</p>
-                                    <p>20g</p>
-                                    <p>20g</p>
-                                    <p>20g</p>
-                                </div>
-                            </div>
-                            <div class="plan-table-nutrition-content">
-                                <div>
-                                    <p><span class="plan-table-calories">Cals</span>(Calories): </p>
-                                    <p><span class="plan-table-protein">P</span>(Protein): </p>
-                                    <p><span class="plan-table-carb">C</span>(Carb): </p>
-                                    <p><span class="plan-table-fat">F</span>(Fat): </p>
-                                </div>
-                                <div>
-                                    <p>20</p>
-                                    <p>20g</p>
-                                    <p>20g</p>
-                                    <p>20g</p>
-                                </div>
-                            </div>
-                            <div class="plan-table-nutrition-content">
-                                <div>
-                                    <p><span class="plan-table-calories">Cals</span>(Calories): </p>
-                                    <p><span class="plan-table-protein">P</span>(Protein): </p>
-                                    <p><span class="plan-table-carb">C</span>(Carb): </p>
-                                    <p><span class="plan-table-fat">F</span>(Fat): </p>
-                                </div>
-                                <div>
-                                    <p>20</p>
-                                    <p>20g</p>
-                                    <p>20g</p>
-                                    <p>20g</p>
-                                </div>
-                            </div>
-                            <div class="plan-table-nutrition-content">
-                                <div>
-                                    <p><span class="plan-table-calories">Cals</span>(Calories): </p>
-                                    <p><span class="plan-table-protein">P</span>(Protein): </p>
-                                    <p><span class="plan-table-carb">C</span>(Carb): </p>
-                                    <p><span class="plan-table-fat">F</span>(Fat): </p>
-                                </div>
-                                <div>
-                                    <p>20</p>
-                                    <p>20g</p>
-                                    <p>20g</p>
-                                    <p>20g</p>
-                                </div>
-                            </div>
-                            <div class="plan-table-nutrition-content">
-                                <div>
-                                    <p><span class="plan-table-calories">Cals</span>(Calories): </p>
-                                    <p><span class="plan-table-protein">P</span>(Protein): </p>
-                                    <p><span class="plan-table-carb">C</span>(Carb): </p>
-                                    <p><span class="plan-table-fat">F</span>(Fat): </p>
-                                </div>
-                                <div>
-                                    <p>20</p>
-                                    <p>20g</p>
-                                    <p>20g</p>
-                                    <p>20g</p>
-                                </div>
-                            </div>
-                            <div class="plan-table-nutrition-content">
-                                <div>
-                                    <p><span class="plan-table-calories">Cals</span>(Calories): </p>
-                                    <p><span class="plan-table-protein">P</span>(Protein): </p>
-                                    <p><span class="plan-table-carb">C</span>(Carb): </p>
-                                    <p><span class="plan-table-fat">F</span>(Fat): </p>
-                                </div>
-                                <div>
-                                    <p>20</p>
-                                    <p>20g</p>
-                                    <p>20g</p>
-                                    <p>20g</p>
-                                </div>
-                            </div>
-                            <div class="plan-table-nutrition-content">
-                                <div>
-                                    <p><span class="plan-table-calories">Cals</span>(Calories): </p>
-                                    <p><span class="plan-table-protein">P</span>(Protein): </p>
-                                    <p><span class="plan-table-carb">C</span>(Carb): </p>
-                                    <p><span class="plan-table-fat">F</span>(Fat): </p>
-                                </div>
-                                <div>
-                                    <p>20</p>
-                                    <p>20g</p>
-                                    <p>20g</p>
-                                    <p>20g</p>
-                                </div>
-                            </div>
-                        </div>
 
 
-                        <!-- BREAKFAST -->
-                        <div class="plan-table-row plan-table-recipe">
-                            <div class="plan-table-content-header">
-                                Breakfast
-                            </div>
-                            <a href="" class="plan-table-recipe-content">
-                                <div class="plan-table-recipe-content-image">
-                                    <img src="./pictures/egg1.jpeg" alt="">
-                                </div>
-                                <div class="plan-table-recipe-content-title">Chicken Curry</div>
-                                <div class="plan-table-recipe-content-nutrients">
-                                    <p><span class="plan-table-calories">Cals</span>20</p>
-                                    <p><span class="plan-table-protein">P</span> 29g</p>
-                                    <p><span class="plan-table-carb">C</span> 24g</p>
-                                    <p><span class="plan-table-fat">F</span> 434g</p>
-                                </div>
-                            </a>
-
-                            <a href="" class="plan-table-recipe-content">
-                                <div class="plan-table-recipe-content-image">
-                                    <img src="./pictures/egg1.jpeg" alt="">
-                                </div>
-                                <div class="plan-table-recipe-content-title">Chicken Curry sda asd</div>
-                                <div class="plan-table-recipe-content-nutrients">
-                                    <p><span class="plan-table-calories">Cals</span>20</p>
-                                    <p><span class="plan-table-protein">P</span> 29g</p>
-                                    <p><span class="plan-table-carb">C</span> 24g</p>
-                                    <p><span class="plan-table-fat">F</span> 434g</p>
-                                </div>
-                            </a>
-                            <a href="" class="plan-table-recipe-content">
-                                <div class="plan-table-recipe-content-image">
-                                    <img src="./pictures/egg1.jpeg" alt="">
-                                </div>
-                                <div class="plan-table-recipe-content-title">Chicken Curry</div>
-                                <div class="plan-table-recipe-content-nutrients">
-                                    <p><span class="plan-table-calories">Cals</span>20</p>
-                                    <p><span class="plan-table-protein">P</span> 29g</p>
-                                    <p><span class="plan-table-carb">C</span> 24g</p>
-                                    <p><span class="plan-table-fat">F</span> 434g</p>
-                                </div>
-                            </a>
-                            <a href="" class="plan-table-recipe-content">
-                                <div class="plan-table-recipe-content-image">
-                                    <img src="./pictures/egg1.jpeg" alt="">
-                                </div>
-                                <div class="plan-table-recipe-content-title">Chicken Curry</div>
-                                <div class="plan-table-recipe-content-nutrients">
-                                    <p><span class="plan-table-calories">Cals</span>20</p>
-                                    <p><span class="plan-table-protein">P</span> 29g</p>
-                                    <p><span class="plan-table-carb">C</span> 24g</p>
-                                    <p><span class="plan-table-fat">F</span> 434g</p>
-                                </div>
-                            </a>
-                            <a href="" class="plan-table-recipe-content">
-                                <div class="plan-table-recipe-content-image">
-                                    <img src="./pictures/egg1.jpeg" alt="">
-                                </div>
-                                <div class="plan-table-recipe-content-title">Chicken Curry</div>
-                                <div class="plan-table-recipe-content-nutrients">
-                                    <p><span class="plan-table-calories">Cals</span>20</p>
-                                    <p><span class="plan-table-protein">P</span> 29g</p>
-                                    <p><span class="plan-table-carb">C</span> 24g</p>
-                                    <p><span class="plan-table-fat">F</span> 434g</p>
-                                </div>
-                            </a>
-                            <a href="" class="plan-table-recipe-content">
-                                <div class="plan-table-recipe-content-image">
-                                    <img src="./pictures/egg1.jpeg" alt="">
-                                </div>
-                                <div class="plan-table-recipe-content-title">Chicken Curry</div>
-                                <div class="plan-table-recipe-content-nutrients">
-                                    <p><span class="plan-table-calories">Cals</span>20</p>
-                                    <p><span class="plan-table-protein">P</span> 29g</p>
-                                    <p><span class="plan-table-carb">C</span> 24g</p>
-                                    <p><span class="plan-table-fat">F</span> 434g</p>
-                                </div>
-                            </a>
-                            <a href="" class="plan-table-recipe-content">
-                                <div class="plan-table-recipe-content-image">
-                                    <img src="./pictures/egg1.jpeg" alt="">
-                                </div>
-                                <div class="plan-table-recipe-content-title">Chicken Curry</div>
-                                <div class="plan-table-recipe-content-nutrients">
-                                    <p><span class="plan-table-calories">Cals</span>20</p>
-                                    <p><span class="plan-table-protein">P</span> 29g</p>
-                                    <p><span class="plan-table-carb">C</span> 24g</p>
-                                    <p><span class="plan-table-fat">F</span> 434g</p>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="plan-table-row">
-                            <div class="plan-table-content-header">
-                                Lunch
-                            </div>
-                            <a href="" class="plan-table-recipe-content">
-                                <div class="plan-table-recipe-content-image">
-                                    <img src="./pictures/egg1.jpeg" alt="">
-                                </div>
-                                <div class="plan-table-recipe-content-title">Chicken Curry</div>
-                                <div class="plan-table-recipe-content-nutrients">
-                                    <p><span class="plan-table-calories">Cals</span>20</p>
-                                    <p><span class="plan-table-protein">P</span> 29g</p>
-                                    <p><span class="plan-table-carb">C</span> 24g</p>
-                                    <p><span class="plan-table-fat">F</span> 434g</p>
-                                </div>
-                            </a>
-                            <a href="" class="plan-table-recipe-content">
-                                <div class="plan-table-recipe-content-image">
-                                    <img src="./pictures/egg1.jpeg" alt="">
-                                </div>
-                                <div class="plan-table-recipe-content-title">Chicken Curry</div>
-                                <div class="plan-table-recipe-content-nutrients">
-                                    <p><span class="plan-table-calories">Cals</span>20</p>
-                                    <p><span class="plan-table-protein">P</span> 29g</p>
-                                    <p><span class="plan-table-carb">C</span> 24g</p>
-                                    <p><span class="plan-table-fat">F</span> 434g</p>
-                                </div>
-                            </a>
-                            <a href="" class="plan-table-recipe-content">
-                                <div class="plan-table-recipe-content-image">
-                                    <img src="./pictures/egg1.jpeg" alt="">
-                                </div>
-                                <div class="plan-table-recipe-content-title">Chicken Curry</div>
-                                <div class="plan-table-recipe-content-nutrients">
-                                    <p><span class="plan-table-calories">Cals</span>20</p>
-                                    <p><span class="plan-table-protein">P</span> 29g</p>
-                                    <p><span class="plan-table-carb">C</span> 24g</p>
-                                    <p><span class="plan-table-fat">F</span> 434g</p>
-                                </div>
-                            </a>
-                            <a href="" class="plan-table-recipe-content">
-                                <div class="plan-table-recipe-content-image">
-                                    <img src="./pictures/egg1.jpeg" alt="">
-                                </div>
-                                <div class="plan-table-recipe-content-title">Chicken Curry</div>
-                                <div class="plan-table-recipe-content-nutrients">
-                                    <p><span class="plan-table-calories">Cals</span>20</p>
-                                    <p><span class="plan-table-protein">P</span> 29g</p>
-                                    <p><span class="plan-table-carb">C</span> 24g</p>
-                                    <p><span class="plan-table-fat">F</span> 434g</p>
-                                </div>
-                            </a>
-                            <a href="" class="plan-table-recipe-content">
-                                <div class="plan-table-recipe-content-image">
-                                    <img src="./pictures/egg1.jpeg" alt="">
-                                </div>
-                                <div class="plan-table-recipe-content-title">Chicken Curry</div>
-                                <div class="plan-table-recipe-content-nutrients">
-                                    <p><span class="plan-table-calories">Cals</span>20</p>
-                                    <p><span class="plan-table-protein">P</span> 29g</p>
-                                    <p><span class="plan-table-carb">C</span> 24g</p>
-                                    <p><span class="plan-table-fat">F</span> 434g</p>
-                                </div>
-                            </a>
-                            <a href="" class="plan-table-recipe-content">
-                                <div class="plan-table-recipe-content-image">
-                                    <img src="./pictures/egg1.jpeg" alt="">
-                                </div>
-                                <div class="plan-table-recipe-content-title">Chicken Curry</div>
-                                <div class="plan-table-recipe-content-nutrients">
-                                    <p><span class="plan-table-calories">Cals</span>20</p>
-                                    <p><span class="plan-table-protein">P</span> 29g</p>
-                                    <p><span class="plan-table-carb">C</span> 24g</p>
-                                    <p><span class="plan-table-fat">F</span> 434g</p>
-                                </div>
-                            </a>
-                            <a href="" class="plan-table-recipe-content">
-                                <div class="plan-table-recipe-content-image">
-                                    <img src="./pictures/egg1.jpeg" alt="">
-                                </div>
-                                <div class="plan-table-recipe-content-title">Chicken Curry</div>
-                                <div class="plan-table-recipe-content-nutrients">
-                                    <p><span class="plan-table-calories">Cals</span>20</p>
-                                    <p><span class="plan-table-protein">P</span> 29g</p>
-                                    <p><span class="plan-table-carb">C</span> 24g</p>
-                                    <p><span class="plan-table-fat">F</span> 434g</p>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="plan-table-row">
-                            <div class="plan-table-content-header">
-                                Dinner
-                            </div>
-                            <a href="" class="plan-table-recipe-content">
-                                <div class="plan-table-recipe-content-image">
-                                    <img src="./pictures/egg1.jpeg" alt="">
-                                </div>
-                                <div class="plan-table-recipe-content-title">Chicken Curry</div>
-                                <div class="plan-table-recipe-content-nutrients">
-                                    <p><span class="plan-table-calories">Cals</span>20</p>
-                                    <p><span class="plan-table-protein">P</span> 29g</p>
-                                    <p><span class="plan-table-carb">C</span> 24g</p>
-                                    <p><span class="plan-table-fat">F</span> 434g</p>
-                                </div>
-                            </a>
-                            <a href="" class="plan-table-recipe-content">
-                                <div class="plan-table-recipe-content-image">
-                                    <img src="./pictures/egg1.jpeg" alt="">
-                                </div>
-                                <div class="plan-table-recipe-content-title">Chicken Curry</div>
-                                <div class="plan-table-recipe-content-nutrients">
-                                    <p><span class="plan-table-calories">Cals</span>20</p>
-                                    <p><span class="plan-table-protein">P</span> 29g</p>
-                                    <p><span class="plan-table-carb">C</span> 24g</p>
-                                    <p><span class="plan-table-fat">F</span> 434g</p>
-                                </div>
-                            </a>
-                            <a href="" class="plan-table-recipe-content">
-                                <div class="plan-table-recipe-content-image">
-                                    <img src="./pictures/egg1.jpeg" alt="">
-                                </div>
-                                <div class="plan-table-recipe-content-title">Chicken Curry</div>
-                                <div class="plan-table-recipe-content-nutrients">
-                                    <p><span class="plan-table-calories">Cals</span>20</p>
-                                    <p><span class="plan-table-protein">P</span> 29g</p>
-                                    <p><span class="plan-table-carb">C</span> 24g</p>
-                                    <p><span class="plan-table-fat">F</span> 434g</p>
-                                </div>
-                            </a>
-                            <a href="" class="plan-table-recipe-content">
-                                <div class="plan-table-recipe-content-image">
-                                    <img src="./pictures/egg1.jpeg" alt="">
-                                </div>
-                                <div class="plan-table-recipe-content-title">Chicken Curry</div>
-                                <div class="plan-table-recipe-content-nutrients">
-                                    <p><span class="plan-table-calories">Cals</span>20</p>
-                                    <p><span class="plan-table-protein">P</span> 29g</p>
-                                    <p><span class="plan-table-carb">C</span> 24g</p>
-                                    <p><span class="plan-table-fat">F</span> 434g</p>
-                                </div>
-                            </a>
-                            <a href="" class="plan-table-recipe-content">
-                                <div class="plan-table-recipe-content-image">
-                                    <img src="./pictures/egg1.jpeg" alt="">
-                                </div>
-                                <div class="plan-table-recipe-content-title">Chicken Curry</div>
-                                <div class="plan-table-recipe-content-nutrients">
-                                    <p><span class="plan-table-calories">Cals</span>20</p>
-                                    <p><span class="plan-table-protein">P</span> 29g</p>
-                                    <p><span class="plan-table-carb">C</span> 24g</p>
-                                    <p><span class="plan-table-fat">F</span> 434g</p>
-                                </div>
-                            </a>
-                            <a href="" class="plan-table-recipe-content">
-                                <div class="plan-table-recipe-content-image">
-                                    <img src="./pictures/egg1.jpeg" alt="">
-                                </div>
-                                <div class="plan-table-recipe-content-title">Chicken Curry</div>
-                                <div class="plan-table-recipe-content-nutrients">
-                                    <p><span class="plan-table-calories">Cals</span>20</p>
-                                    <p><span class="plan-table-protein">P</span> 29g</p>
-                                    <p><span class="plan-table-carb">C</span> 24g</p>
-                                    <p><span class="plan-table-fat">F</span> 434g</p>
-                                </div>
-                            </a>
-                            <a href="" class="plan-table-recipe-content">
-                                <div class="plan-table-recipe-content-image">
-                                    <img src="./pictures/egg1.jpeg" alt="">
-                                </div>
-                                <div class="plan-table-recipe-content-title">Chicken Curry</div>
-                                <div class="plan-table-recipe-content-nutrients">
-                                    <p><span class="plan-table-calories">Cals</span>20</p>
-                                    <p><span class="plan-table-protein">P</span> 29g</p>
-                                    <p><span class="plan-table-carb">C</span> 24g</p>
-                                    <p><span class="plan-table-fat">F</span> 434g</p>
-                                </div>
-                            </a>
-                        </div>
+                        <!-- <button class="plan-navbar-edit">
+                                <a href="userViewPlan.html"><img src="./assets/leave.svg" alt=""></a>
+                            </button> -->
                     </div>
 
-                    <div class="plan-note">
-                        <p>Note:</p>
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula
-                            eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur
-                            ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla
-                            consequat massa quis enim. Donec.
-                        </p>
+
+
+                    <div class=" plan-table">
+                        <%
+                            ArrayList<PlanDateDTO> planDate = (ArrayList<PlanDateDTO>) request.getAttribute("planDate");
+                            for (PlanDateDTO dateList : planDate) {
+
+                                ArrayList<MealDTO> breakfastMeals = MealDAO.getAllMealsTimeBased(dateList.getId(), true, false, false);
+                                ArrayList<MealDTO> lunchMeals = MealDAO.getAllMealsTimeBased(dateList.getId(), false, true, false);
+                                ArrayList<MealDTO> dinnerMeals = MealDAO.getAllMealsTimeBased(dateList.getId(), false, false, true);
+                        %>
+                        <div class="row plan-table-week">
+                            <div class="col-md-12 plan-table-week-day">
+                                <%
+                                    SimpleDateFormat dayOfWeekFormat = new SimpleDateFormat("EEEE");
+                                    String dayOfWeek = dayOfWeekFormat.format(dateList.getDate());
+                                %>
+                                <%= dayOfWeek%>
+                            </div>
+                            <div class="col-md-3 plan-table-week-column">
+                                <div class="plan-table-week-nutrition-header">Total Nutrition</div>
+                                <div class="plan-table-week-nutrition">
+                                    <p class="plan-table-calories">Calories: 12312</p>
+                                    <p class="plan-table-protein">Protein: 232g</p>
+                                    <p class="plan-table-carb">Carbs: 236g</p>
+                                    <p class="plan-table-fat">Fat: 643g</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3 plan-table-week-column">
+                                <div class="plan-table-week-header">Breakfast</div>
+                                <%
+                                    if (breakfastMeals != null && breakfastMeals.size() != 0) {
+                                        for (MealDTO list : breakfastMeals) {
+                                            RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(list.getRecipe_id());
+                                %>
+                                <div class="plan-table-week-recipe">
+                                    <button class="plan-table-week-recipe-content" type="button" data-bs-toggle="modal" data-bs-target="#recipeNutritionModal">
+                                        <div class="plan-table-week-recipe-content-image">
+                                            <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
+                                        </div>
+                                        <div class="plan-table-week-recipe-content-des">
+                                            <p class="plan-table-week-recipe-content-des-title"><%= recipe.getTitle()%></p>
+                                            <%
+                                                SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
+                                                String formattedTime = timeFormat.format(list.getStart_time());
+                                            %>
+                                            <p class="plan-table-week-recipe-content-des-time"><%= formattedTime%></p>
+                                        </div>
+                                    </button>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="recipeNutritionModal" tabindex="-1" aria-labelledby="recipeNutritionModalLabel" aria-hidden="true">
+                                        <form class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="exampleModalLabel"><%= recipe.getTitle()%></h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body recipe-nutriton-modal">
+                                                    <div class="recipe-nutriton-modal-image">
+                                                        <img src="./pictures/egg1.jpeg" alt="">
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="remove-recipe-from-plan-button">Remove</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <%                                            }
+                                    }
+                                %>
+                            </div>
+
+                            <div class="col-md-3 plan-table-week-column">
+                                <div class="plan-table-week-header">Lunch</div>
+                                <%
+                                    if (lunchMeals != null && lunchMeals.size() != 0) {
+                                        for (MealDTO list : lunchMeals) {
+                                            RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(list.getRecipe_id());
+                                %>
+                                <div class="plan-table-week-recipe">
+                                    <button class="plan-table-week-recipe-content" type="button" data-bs-toggle="modal" data-bs-target="#recipeNutritionModal">
+                                        <div class="plan-table-week-recipe-content-image">
+                                            <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
+                                        </div>
+                                        <div class="plan-table-week-recipe-content-des">
+                                            <p class="plan-table-week-recipe-content-des-title"><%= recipe.getTitle()%></p>
+                                            <%
+                                                SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
+                                                String formattedTime = timeFormat.format(list.getStart_time());
+                                            %>
+                                            <p class="plan-table-week-recipe-content-des-time"><%= formattedTime%></p>
+                                        </div>
+                                    </button>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="recipeNutritionModal" tabindex="-1" aria-labelledby="recipeNutritionModalLabel" aria-hidden="true">
+                                        <form class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="exampleModalLabel"><%= recipe.getTitle()%></h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body recipe-nutriton-modal">
+                                                    <div class="recipe-nutriton-modal-image">
+                                                        <img src="./pictures/egg1.jpeg" alt="">
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="remove-recipe-from-plan-button">Remove</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <%                                            }
+                                    }
+                                %>
+                            </div>
+
+                            <div class="col-md-3 plan-table-week-column">
+                                <div class="plan-table-week-header">Dinner</div>
+                                <%
+                                    if (dinnerMeals != null && dinnerMeals.size() != 0) {
+                                        for (MealDTO list : dinnerMeals) {
+                                            RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(list.getRecipe_id());
+                                %>
+                                <div class="plan-table-week-recipe">
+                                    <button class="plan-table-week-recipe-content" type="button" data-bs-toggle="modal" data-bs-target="#recipeNutritionModal">
+                                        <div class="plan-table-week-recipe-content-image">
+                                            <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
+                                        </div>
+                                        <div class="plan-table-week-recipe-content-des">
+                                            <p class="plan-table-week-recipe-content-des-title"><%= recipe.getTitle()%></p>
+                                            <%
+                                                SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
+                                                String formattedTime = timeFormat.format(list.getStart_time());
+                                            %>
+                                            <p class="plan-table-week-recipe-content-des-time"><%= formattedTime%></p>
+                                        </div>
+                                    </button>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="recipeNutritionModal" tabindex="-1" aria-labelledby="recipeNutritionModalLabel" aria-hidden="true">
+                                        <form class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="exampleModalLabel"><%= recipe.getTitle()%></h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body recipe-nutriton-modal">
+                                                    <div class="recipe-nutriton-modal-image">
+                                                        <img src="./pictures/egg1.jpeg" alt="">
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="remove-recipe-from-plan-button">Remove</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <%                                            }
+                                    }
+                                %>
+                            </div>
+                        </div>
+                        <%
+                            }
+                        %>
                     </div>
-                    <!-- <div class="plan-navbar">
-                        <button class="plan-navbar-delete">
-                            Delete
-                        </button>
-                    </div> -->
                 </div>
             </div>
         </div>
 
 
 
-
         <!--         Footer       -->
         <%@include file="footer.jsp" %>
 
-        <!--      Bootstrap for JS         -->
+
         <script src="bootstrap/js/bootstrap.min.js" ></script>
     </body>
 </html>

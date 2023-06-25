@@ -104,7 +104,7 @@
                             <% for (int i = 0; i
                                         < RecipeDAO.getRatingByRecipeId(r.getId());
                                         i++) { %>
-                                        <img src="./assets/full-star-icon.svg"
+                            <img src="./assets/full-star-icon.svg"
                                  alt="">
                             <% }%>
                             <p
@@ -179,7 +179,7 @@
                             <% for (int i = 0; i
                                         < RecipeDAO.getRatingByRecipeId(list.getId());
                                         i++) { %>
-                                        <img src="./assets/full-star-icon.svg">
+                            <img src="./assets/full-star-icon.svg">
                             <% }%>
                             <p
                                 class="recommendation-content-reciew-rating">
@@ -212,9 +212,9 @@
                 %>
                 <div class="row">
                     <header class="search-result-header">
-                            <p>
-                                <%= selectedSuggestion%> Recipe(s)
-                            </p>
+                        <p>
+                            <%= selectedSuggestion%> Recipe(s)
+                        </p>
                     </header>
                 </div>
                 <div class="row recommendation-content">
@@ -241,7 +241,7 @@
                             <% for (int i = 0; i
                                         < RecipeDAO.getRatingByRecipeId(r.getId());
                                         i++) { %>
-                                        <img src="./assets/full-star-icon.svg">
+                            <img src="./assets/full-star-icon.svg">
                             <% }%>
                             <p
                                 class="recommendation-content-reciew-rating">
