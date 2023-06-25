@@ -16,8 +16,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!--      Bootstrap         -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
-              integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+        <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css"/>
         <!--      CSS         -->
         <link rel="stylesheet" href="./styles/userStyle.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -39,35 +38,38 @@
             <div class="container ">
                 <form action="MainController" method="post" class="row user-profile">
                     <input type="hidden" name="userId" value="<%= userId%>">
+
+
+
                     <div class="col-md-3 user-profile-column-1">
                         <div class="user-profile-header">
                             <div>
-                                Setting
+                                Management
                             </div>
                             <p>
-                                Customize your profile
+                                Manage your account
                             </p>
                         </div>
                         <div class="user-profile-option">
-                            <a href="userPublicDetail.jsp?userId=<%= userId%>">
-                                <img src="./assets/public-unchose.svg" alt="">
+                            <a href="userPublicDetail.jsp?userId=<%= user.getId()%>" >
+                                <img src="./assets/public-unchosen-icon.svg" alt="">
                                 Public Profile
                             </a>
-                            <a href="userEmailSetting.jsp?userId=<%= userId%>" class="active-link">
-                                <img src="./assets/personal.png" alt="">
+                            <a href="userEmailSetting.jsp?userId=<%= user.getId()%>" class="active-link">
+                                <img src="./assets/user-icon.svg" alt="">
                                 Personal Setting
                             </a>
                             <a href="userPasswordSetting.jsp?userId=<%= user.getId()%>">
-                                <img src="./assets/Password-unchose.svg" alt="">
+                                <img src="./assets/password-unchosen-icon.svg" alt="">
                                 Change Password
                             </a>
                             <a href="userSavedRecipes.html">
-                                <img src="./assets/favorite-unchose.svg" alt="">
+                                <img src="./assets/favorite-unchosen-icon.svg" alt="">
                                 Saved Recipes
                             </a>
                             <div class="dropdown" id="dropdownUserRecipe">
                                 <a href="#" class="dropbtn">
-                                    <img src="./assets/my-recipe-unchose.svg" alt="">
+                                    <img src="./assets/my-recipe-unchosen-icon.svg" alt="">
                                     My Own Recipes
                                 </a>
                                 <div class="dropdown-content-right">
@@ -78,15 +80,21 @@
                                 </div>
                             </div>
                             <a href="userReviewManagement.jsp?userId=<%= userId%>">
-                                <img src="./assets/review-unchose.svg" alt="">
+                                <img src="./assets/full-star-unchosen-icon.svg" alt="">
                                 My Reviews
                             </a>
+<!--                            <a href="userNotification.jsp?userId=<%= userId%>">
+                                My Notifications
+                            </a>-->
                         </div>
-                    </div>
+                    </div>           
+
+
+
                     <div class="col-md-5 user-profile-column-2">
                         <div class="user-profile-header">
                             <div>
-                                Personal Profile
+                                Personal Setting
                             </div>
                             <p>
                                 View your personal account information here
@@ -95,17 +103,17 @@
                         <div class="user-profile-personal-content">
                             <div class="user-profile-personal-content-readonly">
                                 <p>User Name</p>
-                                <input type="text" placeholder="<%= user.getUserName()%>" readonly>
+                                <input type="text" placeholder="<%= user.getUserName()%>" readonly class="enable">
                             </div>
                             <div>
                                 <p>Email</p>
-                                <input type="text" name="txtEmail" value="<%= user.getEmail()%>" >
+                                <input type="text" name="txtEmail" value="<%= user.getEmail()%>" class="enable">
                             </div>
                         </div>
                         <div class="user-profile-save-button">
                             <p class='error-popup'>${requestScope.errorList[0]}</p>
                             <p>Save Changes ?</p>
-                            <button type="submit" value="changeUserEmail" name="action">SAVE</button>
+                            <button type="submit" value="changeUserEmail" name="action" id="save">SAVE</button>
                         </div>
                     </div>
                     <div class="col-md-3 user-profile-column-3 ">
@@ -121,7 +129,6 @@
                             <div>
                                 <img id="preview-image" src="./assets/profile-pic.svg" alt="">
                             </div>
-                            <input type="file" id="image-input" accept="image/*" onchange="previewImage(event)">
                         </div>
                     </div>
                 </form>
@@ -129,29 +136,11 @@
         </div>
 
 
-<!--        <a href="userPublicDetail.jsp?userId=<%= userId%>">Public</a>
-
-        <form action="MainController" method="post" class="">
-            <input type="hidden" name="userId" value="<%= userId%>">
-            <div>
-                <p>Old Password</p>
-                <input type="password" name="txtOldPassword" required="">
-            </div>
-            <div>
-                <p>New Password</p>
-                <input type="password" name="txtNewPassword" required="">
-            </div>
-            <div>
-                <p>Re-enter New Password</p>
-                <input type="password" name="txtConfirmNewPassword" required="">
-            </div>
-            <div class='error-popup'>
-                <p>${requestScope.errorList[0]}</p>
-            </div>
-            <button type="submit" value="saveUserPrivateDetail" name="action">SAVE</button>
-        </form>-->
 
 
         <%@include file="footer.jsp" %>
+
+        <script src="script/DisabledButton.js"></script>
+        <script src="bootstrap/js/bootstrap.min.js" ></script>
     </body>
 </html>

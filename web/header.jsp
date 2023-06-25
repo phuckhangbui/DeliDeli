@@ -27,11 +27,7 @@
         <meta name="viewport"
               content="width=device-width, initial-scale=1">
         <!--      Bootstrap         -->
-        <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-            integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
-            crossorigin="anonymous">
+        <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css"/>
         <!--      CSS         -->
         <link rel="stylesheet"
               href="./styles/userStyle.css">
@@ -87,7 +83,7 @@
                                 type="submit"
                                 name="action"
                                 value="search"><img
-                                    src="assets/search2.svg"
+                                    src="assets/search-icon.svg"
                                     alt=""></button>
                             <input
                                 type="text"
@@ -118,7 +114,7 @@
                             </select>
                         </form>
                     </div>
-                    <%if (user!= null) {%>
+                    <%if (user != null) {%>
                     <% int[] count = NotificationDAO.getNotificationCount(user.getId());
                     %>
                     <div
@@ -127,8 +123,9 @@
                             class="dropdown-notification">
                             <button
                                 class="dropbtn-notification"
-                                onclick="toggleDropdown()"><img
-                                    src="assets/notification.svg"></button>
+                                onclick="toggleDropdown()">
+                                <img src="assets/notification-icon.svg">
+                            </button>
                             <div class="dropdown-content-notification"
                                  id="dropdownContent">
                                 <div>
@@ -151,7 +148,7 @@
                                     <%
                                         ArrayList<NotificationDTO> list
                                                 = NotificationDAO.getNotificationList(user.getId());
-                                        for (NotificationDTO notification: list) {
+                                        for (NotificationDTO notification : list) {
                                             NotificationTypeDTO type
                                                     = NotificationTypeDAO.getNotificationType(notification.getNotification_type());
                                             if (notification.is_read()) {
@@ -198,15 +195,15 @@
                                                 %>
                                                 now
                                                 <%
-                                                    }else if (duration.toDays() > 0) {
-                                                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd yyyy", Locale.ENGLISH);
-                                                        String formattedDateTime
-                                                                = sendDateTime.format(formatter);
+                                                } else if (duration.toDays() > 0) {
+                                                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd yyyy", Locale.ENGLISH);
+                                                    String formattedDateTime
+                                                            = sendDateTime.format(formatter);
                                                 %>
                                                 <%=formattedDateTime%>
                                                 <% } else {
                                                     long minutesDiff = Math.abs(duration.toMinutes());
-                                                             if (minutesDiff < 60) {
+                                                    if (minutesDiff < 60) {
                                                         String minuteString = (minutesDiff == 1)
                                                                 ? "minute"
                                                                 : "minutes";
@@ -214,7 +211,7 @@
                                                 <%=minutesDiff%>
                                                 <%=minuteString%>
                                                 ago
-                                                <% }        else {
+                                                <% } else {
                                                     long hoursDiff = Math.abs(duration.toHours());
                                                     String hourString = (hoursDiff == 1)
                                                             ? "hour"
@@ -333,7 +330,7 @@
 
                     </script>
 
-                    <% }else {
+                    <% } else {
                     %>
                     <div
                         class="account col-md-2">
@@ -370,19 +367,13 @@
                                         <%=value%>
                                     </a>
                                     <%}%>
-                                    <a
-                                        href="">View
-                                        more</a>
                                 </div>
                             </div>
                         </li>
                         <li>
-                            <div
-                                class="dropdown">
-                                <button
-                                    class="dropbtn">CATEGORIES</button>
-                                <div
-                                    class="dropdown-content">
+                            <div class="dropdown">
+                                <button class="dropbtn">CATEGORIES</button>
+                                <div class="dropdown-content">
                                     <% for (Map.Entry<Integer, String> entry
                                                 : cateMap.entrySet()) {
                                             Integer key
@@ -390,8 +381,7 @@
                                             String value
                                                     = entry.getValue();
                                     %>
-                                    <a
-                                        href="searchResultPage.jsp?type=Category&id=<%=key%>">
+                                    <a href="searchResultPage.jsp?type=Category&id=<%=key%>">
                                         <%=value%>
                                     </a>
 
@@ -488,10 +478,6 @@
                                 </div>
                             </div>
                         </li>
-                        <li><a
-                                href="#">ABOUT
-                                US</a>
-                        </li>
                     </ul>
                 </div>
             </div>
@@ -511,7 +497,6 @@
         <!-- Modal -->
         <div class="modal fade"
              id="<%= notification.getId()%>"
-             data-bs-backdrop="static"
              data-bs-keyboard="false"
              tabindex="-1"
              aria-labelledby="deletePlanModalLabel"
@@ -528,8 +513,7 @@
                                 class="modal-title-text">
                                 <%=notification.getTitle()%>
                             </p>
-                            <p
-                                class="modal-title-date">
+                            <p class="modal-title-date">
                                 <% Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
                                     Timestamp sendTimestamp = notification.getSend_date();
 
@@ -542,11 +526,11 @@
                                 %>
                                 now
                                 <%
-                                    }else if (duration.toDays()
-                                            > 0) {
-                                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd yyyy", Locale.ENGLISH);
-                                        String formattedDateTime
-                                                = sendDateTime.format(formatter);
+                                } else if (duration.toDays()
+                                        > 0) {
+                                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd yyyy", Locale.ENGLISH);
+                                    String formattedDateTime
+                                            = sendDateTime.format(formatter);
                                 %>
                                 <%=formattedDateTime%>
                                 <% } else {
@@ -612,15 +596,14 @@
                                 }
                             %>
                     </div>
-                    <div
-                        class="modal-footer">
+                    <div class="modal-footer">
                         <button
                             type="button"
                             class="btn btn-danger deleteBtn"
                             data-bs-dismiss="modal">Delete</button>
                         <button
                             type="button"
-                            class="btn btn-success closeBtn"
+                            class="btn btn-secondary"
                             data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
@@ -685,12 +668,7 @@
 
         <% }%>
 
-
-        <!--      Bootstrap for JS         -->
-        <script
-            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
-        crossorigin="anonymous"></script>
+        <script src="bootstrap/js/bootstrap.min.js" ></script>
     </body>
 
 </html>

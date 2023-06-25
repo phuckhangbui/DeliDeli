@@ -22,8 +22,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!--      Bootstrap         -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
-              integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+        <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css"/>
         <!--      CSS         -->
         <link rel="stylesheet" href="./styles/adminStyle.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -44,49 +43,49 @@
                     </a>
                     <div>
                         <a href="admin.jsp" class="active">
-                            <img src="./assets/public.svg" alt="">
+                            <img src="./assets/public-icon.svg" alt="">
                             Dashboard
                         </a>
                     </div>
                     <div>
                         <a href="MainController?action=manageAccount">
-                            <img src="./assets/user-unchose.svg" alt="">
+                            <img src="./assets/user-unchosen-icon.svg" alt="">
                             User
                         </a>
                     </div>
                     <div>
                         <a href="MainController?action=manageRecipe">
-                            <img src="./assets/post-unchose.svg" alt="">
-                            Posts
+                            <img src="./assets/post-unchosen-icon.svg" alt="">
+                            Recipe
                         </a>
                     </div>
                     <div>
                         <a href="MainController?action=manageSuggestion">
-                            <img src="./assets/content-unchose.svg" alt="">
+                            <img src="./assets/content-unchosen-icon.svg" alt="">
                             Content
                         </a>
                     </div>
                     <div>
                         <a href="MainController?action=manageNews">
-                            <img src="./assets/news-unchose.svg" alt="">
+                            <img src="./assets/news-unchosen-icon.svg" alt="">
                             News
                         </a>
                     </div>
                     <div>
                         <a href="#">
-                            <img src="./assets/policies-unchose.svg" alt="">
+                            <img src="./assets/policies-unchosen-icon.svg" alt="">
                             Policies
                         </a>
                     </div>
                     <div>
                         <a href="#">
-                            <img src="./assets/broadcast-unchose.svg" alt="">
+                            <img src="./assets/broadcast-unchosen-icon.svg" alt="">
                             Broadcast
                         </a>
                     </div>
                     <div>
                         <a href="#">
-                            <img src="./assets/bug-report-unchose.svg" alt="">
+                            <img src="./assets/bug-report-unchosen-icon.svg" alt="">
                             Report
                         </a>
                     </div>
@@ -138,7 +137,7 @@
                                                     <h2 class=""><%= AdminDAO.getTotalRecipe()%></h2>
                                                 </div>
                                                 <div>
-                                                    <img src="assets/total-post.svg" alt="">
+                                                    <img src="assets/total-post-icon.svg" alt="">
                                                 </div>
                                             </div>
                                             <a class="card-total-see-more" href="MainController?action=manageRecipe">
@@ -158,7 +157,7 @@
                                                     <h2 class=""><%= AdminDAO.getTotalAccount()%></h2>
                                                 </div>
                                                 <div>
-                                                    <img src="assets/total-user.svg" alt="">
+                                                    <img src="assets/total-user-icon.svg" alt="">
                                                 </div>
                                             </div>
                                             <a class="card-total-see-more" href="MainController?action=manageAccount">
@@ -178,7 +177,7 @@
                                                     <h2 class=""><%= LocalDate.now()%></h2>
                                                 </div>
                                                 <div>
-                                                    <img src="assets/calendar-date.svg" alt="">
+                                                    <img src="assets/calendar-date-icon.svg" alt="">
                                                 </div>
                                             </div>
                                         </div>
@@ -384,10 +383,6 @@
                 );
             })();
         </script>
-
-        <!--      Bootstrap for JS         -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
-                integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
-        crossorigin="anonymous"></script>
+        <script src="bootstrap/js/bootstrap.min.js" ></script>
     </body>
 </html>
