@@ -32,10 +32,13 @@
         <link
             href="https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed:wght@300;400;500;600;700&display=swap"
             rel="stylesheet">
-
+        <%
+            PlanDTO plan = (PlanDTO) request.getAttribute("plan");
+        %>
         <script>
+
             function redirectToEditPlan() {
-                window.location.href = "addRecipeToPlan.jsp";
+                window.location.href = "MainController?action=editPlan&id=<%= plan.getId() %>";
             }
         </script>
     </head>
@@ -77,7 +80,6 @@
 
                     <div class=" plan-table">
                         <%
-                            PlanDTO plan = (PlanDTO) request.getAttribute("plan");
                             ArrayList<PlanDateDTO> planDate = (ArrayList<PlanDateDTO>) request.getAttribute("planDate");
                             for (PlanDateDTO dateList : planDate) {
                                 System.out.println("DateID: " + dateList.getId());
