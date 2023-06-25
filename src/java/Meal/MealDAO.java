@@ -68,25 +68,26 @@ public class MealDAO {
         return result;
     }
 
-    public static ArrayList<MealDTO> getAllMealsTimeBased(int plan_id, boolean breakfast, boolean lunch, boolean dinner) {
+    public static ArrayList<MealDTO> getAllMealsTimeBased(int plan_id, int date_id, boolean breakfast, boolean lunch, boolean dinner) {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
         ArrayList<MealDTO> result = new ArrayList<>();
 
         String sql = "SELECT * FROM [Meal]"
-                + "WHERE plan_id = ?\n";
+                + "WHERE [plan_id] = ? and [date_id] = ?\n";
 
         try {
             con = DBUtils.getConnection();
             if (con != null) {
                 stm = con.prepareStatement(sql);
                 stm.setInt(1, plan_id);
+                stm.setInt(2, date_id);
                 rs = stm.executeQuery();
                 while (rs.next()) {
 
                     int id = rs.getInt("id");
-                    int date_id = rs.getInt("date_id");
+                    date_id = rs.getInt("date_id");
                     int recipe_id = rs.getInt("recipe_id");
                     Time start_time = rs.getTime("start_time");
                     Time end_time = rs.getTime("end_time");

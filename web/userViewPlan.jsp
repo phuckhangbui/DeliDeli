@@ -77,12 +77,13 @@
 
                     <div class=" plan-table">
                         <%
+                            PlanDTO plan = (PlanDTO) request.getAttribute("plan");
                             ArrayList<PlanDateDTO> planDate = (ArrayList<PlanDateDTO>) request.getAttribute("planDate");
                             for (PlanDateDTO dateList : planDate) {
-
-                                ArrayList<MealDTO> breakfastMeals = MealDAO.getAllMealsTimeBased(dateList.getId(), true, false, false);
-                                ArrayList<MealDTO> lunchMeals = MealDAO.getAllMealsTimeBased(dateList.getId(), false, true, false);
-                                ArrayList<MealDTO> dinnerMeals = MealDAO.getAllMealsTimeBased(dateList.getId(), false, false, true);
+                                System.out.println("DateID: " + dateList.getId());
+                                ArrayList<MealDTO> breakfastMeals = MealDAO.getAllMealsTimeBased(plan.getId(), dateList.getId(), true, false, false);
+                                ArrayList<MealDTO> lunchMeals = MealDAO.getAllMealsTimeBased(plan.getId(), dateList.getId(), false, true, false);
+                                ArrayList<MealDTO> dinnerMeals = MealDAO.getAllMealsTimeBased(plan.getId(), dateList.getId(), false, false, true);
                         %>
                         <div class="row plan-table-week">
                             <div class="col-md-12 plan-table-week-day">
@@ -106,6 +107,7 @@
                                 <%
                                     if (breakfastMeals != null && breakfastMeals.size() != 0) {
                                         for (MealDTO list : breakfastMeals) {
+                                            System.out.println("Current date:" + dateList.getDate());
                                             RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(list.getRecipe_id());
                                 %>
                                 <div class="plan-table-week-recipe">
@@ -240,6 +242,7 @@
                             </div>
                         </div>
                         <%
+                                System.out.println("Next day!");
                             }
                         %>
                     </div>
