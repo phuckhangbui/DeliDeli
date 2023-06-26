@@ -111,9 +111,12 @@
                     </div>
 
 
+                    <%
+                        PlanDTO plan = (PlanDTO) request.getAttribute("plan");
+                    %>
+
                     <div class=" plan-table">
                         <%
-                            PlanDTO plan = (PlanDTO) request.getAttribute("plan");
                             ArrayList<PlanDateDTO> planDate = (ArrayList<PlanDateDTO>) request.getAttribute("planDate");
                             for (PlanDateDTO dateList : planDate) {
                                 System.out.println("DateID: " + dateList.getId());
@@ -139,20 +142,20 @@
                                 </div>
                             </div>
 
+
                             <div class="col-md-3 plan-table-week-column">
                                 <div class="plan-table-week-header">Breakfast</div>
-                                <%
-                                    if (breakfastMeals != null && breakfastMeals.size() != 0) {
-                                        for (MealDTO list : breakfastMeals) {
-                                            System.out.println("Current date:" + dateList.getDate());
-                                            RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(list.getRecipe_id());
-                                %>
+
                                 <div class="plan-table-week-recipe">
+                                    <%
+                                        if (breakfastMeals != null && breakfastMeals.size() != 0) {
+                                            for (MealDTO list : breakfastMeals) {
+                                                RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(list.getRecipe_id());
+                                    %>
                                     <button class="plan-table-week-recipe-content" type="button" data-bs-toggle="modal" data-bs-target="#recipeNutritionModal">
                                         <div class="plan-table-week-recipe-content-image">
                                             <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
                                         </div>
-
                                         <div class="plan-table-week-recipe-content-des">
                                             <p class="plan-table-week-recipe-content-des-title"><%= recipe.getTitle()%></p>
                                             <%
@@ -162,6 +165,9 @@
                                             <p class="plan-table-week-recipe-content-des-time"><%= formattedTime%></p>
                                         </div>
                                     </button>
+
+
+
                                     <!-- Modal -->
                                     <div class="modal fade" id="recipeNutritionModal" tabindex="-1" aria-labelledby="recipeNutritionModalLabel" aria-hidden="true">
                                         <form class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -181,34 +187,33 @@
                                             </div>
                                         </form>
                                     </div>
+                                    <%
+                                        }
+                                    } else {
+                                    %>
+                                    <button class="plan-table-week-recipe-add" onclick="scrollToSection('addSection')">
+                                        <div>
+                                            <img src="./assets/add-icon.svg" alt="">
+                                        </div>
+                                    </button>
+                                    <%
+                                        }
+                                    %>
+
                                 </div>
-                                <%
-                                    }
-                                } else {
-                                %>
-                                <!--                                <div class="col-md-3 plan-table-week-column">
-                                                                    <div class="plan-table-week-recipe">
-                                                                        <button class="plan-table-week-recipe-add" onclick="scrollToSection('addSection')">
-                                                                            <div>
-                                                                                <img src="./assets/add-icon.svg" alt="">
-                                                                            </div>
-                                                                        </button>
-                                                                    </div>
-                                                                </div>-->
-                                <%
-                                    }
-                                %>
                             </div>
+
 
 
                             <div class="col-md-3 plan-table-week-column">
                                 <div class="plan-table-week-header">Lunch</div>
-                                <%
-                                    if (lunchMeals != null && lunchMeals.size() != 0) {
-                                        for (MealDTO list : lunchMeals) {
-                                            RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(list.getRecipe_id());
-                                %>
+
                                 <div class="plan-table-week-recipe">
+                                    <%
+                                        if (lunchMeals != null && lunchMeals.size() != 0) {
+                                            for (MealDTO list : lunchMeals) {
+                                                RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(list.getRecipe_id());
+                                    %>
                                     <button class="plan-table-week-recipe-content" type="button" data-bs-toggle="modal" data-bs-target="#recipeNutritionModal">
                                         <div class="plan-table-week-recipe-content-image">
                                             <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
@@ -222,6 +227,9 @@
                                             <p class="plan-table-week-recipe-content-des-time"><%= formattedTime%></p>
                                         </div>
                                     </button>
+
+
+
                                     <!-- Modal -->
                                     <div class="modal fade" id="recipeNutritionModal" tabindex="-1" aria-labelledby="recipeNutritionModalLabel" aria-hidden="true">
                                         <form class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -241,20 +249,32 @@
                                             </div>
                                         </form>
                                     </div>
+                                    <%
+                                        }
+                                    } else {
+                                    %>
+                                    <button class="plan-table-week-recipe-add" onclick="scrollToSection('addSection')">
+                                        <div>
+                                            <img src="./assets/add-icon.svg" alt="">
+                                        </div>
+                                    </button>
+                                    <%
+                                        }
+                                    %>
                                 </div>
-                                <%                                            }
-                                    }
-                                %>
+
                             </div>
+
 
                             <div class="col-md-3 plan-table-week-column">
                                 <div class="plan-table-week-header">Dinner</div>
-                                <%
-                                    if (dinnerMeals != null && dinnerMeals.size() != 0) {
-                                        for (MealDTO list : dinnerMeals) {
-                                            RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(list.getRecipe_id());
-                                %>
+
                                 <div class="plan-table-week-recipe">
+                                    <%
+                                        if (dinnerMeals != null && dinnerMeals.size() != 0) {
+                                            for (MealDTO list : dinnerMeals) {
+                                                RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(list.getRecipe_id());
+                                    %>
                                     <button class="plan-table-week-recipe-content" type="button" data-bs-toggle="modal" data-bs-target="#recipeNutritionModal">
                                         <div class="plan-table-week-recipe-content-image">
                                             <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
@@ -268,6 +288,9 @@
                                             <p class="plan-table-week-recipe-content-des-time"><%= formattedTime%></p>
                                         </div>
                                     </button>
+
+
+
                                     <!-- Modal -->
                                     <div class="modal fade" id="recipeNutritionModal" tabindex="-1" aria-labelledby="recipeNutritionModalLabel" aria-hidden="true">
                                         <form class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -287,14 +310,25 @@
                                             </div>
                                         </form>
                                     </div>
+                                    <%
+                                        }
+                                    } else {
+                                    %>
+                                    <button class="plan-table-week-recipe-add" onclick="scrollToSection('addSection')">
+                                        <div>
+                                            <img src="./assets/add-icon.svg" alt="">
+                                        </div>
+                                    </button>
+                                    <%
+                                        }
+                                    %>
                                 </div>
-                                <%                                            }
-                                    }
-                                %>
+
                             </div>
+
+
                         </div>
                         <%
-                                System.out.println("Next day!");
                             }
                         %>
                     </div>

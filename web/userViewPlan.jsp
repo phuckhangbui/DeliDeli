@@ -265,7 +265,6 @@
 
                         </div>
                         <%
-                                System.out.println("Next day!");
                             }
                         %>
                     </div>
