@@ -17,6 +17,7 @@ import RecipeDiet.RecipeDietDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -50,7 +51,7 @@ public class EditRecipeServlet extends HttpServlet {
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
 
-            Date currentDate = new Date(System.currentTimeMillis());
+            Timestamp currentDate = new Timestamp(System.currentTimeMillis());
             String title = request.getParameter("title");
             String description = request.getParameter("description");
             String thumbnail = request.getParameter("thumbnail");

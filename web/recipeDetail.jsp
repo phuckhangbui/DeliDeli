@@ -69,7 +69,10 @@
                         <div>
                             <span>By</span>
                             <span><a href="<%=link%>"><%= request.getAttribute("owner")%></a></span>
-                            <p>Published on <%= recipe.getCreate_at()%></p>
+                                <% Timestamp timestamp = recipe.getCreate_at();
+                                SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
+                                String date = dateFormat.format(timestamp);%>
+                            <p>Published on <%=date %></p>
                         </div>
                     </div>
                     <div class="recipe-detail-info-interaction">
