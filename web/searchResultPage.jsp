@@ -171,9 +171,27 @@
                         </div>
                         <div class="search-result-content-reciew">
                             <%
-                                for (int i = 0; i < RecipeDAO.getRatingByRecipeId(r.getId()); i++) {
+                                double avaRating = RecipeDAO.getRatingByRecipeId(r.getId());
+                                int fullStars = (int) avaRating; 
+                                boolean hasHalfStar = avaRating - fullStars >= 0.5; 
+
+                                for (int i = 0; i < fullStars; i++) {
                             %>
-                            <img src="./assets/full-star.png" alt="">
+                            <img src="./assets/full-star-icon.svg" alt="">
+                            <%
+                                }
+
+                                if (hasHalfStar) {
+                            %>
+                            <img src="./assets/half-star-icon.svg" alt="" style="width: 17px">
+                            <%
+                                }
+
+                                int remainingStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+                                for (int i = 0; i < remainingStars; i++) {
+                            %>
+                            <img src="./assets/empty-star-icon.svg" alt="">
                             <%
                                 }
                             %>
