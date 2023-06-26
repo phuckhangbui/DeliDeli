@@ -70,18 +70,25 @@
                         <div>
                             <span>By</span>
                             <span><a href="<%=link%>"><%= request.getAttribute("owner")%></a></span>
-                                <% Timestamp timestamp = recipe.getCreate_at();
-                                SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
-                                String date = dateFormat.format(timestamp);%>
-                            <p>Published on <%=date %></p>
+                                <%
+                                    Timestamp timestamp = null;
+                                    if (recipe.getUpdate_at() == null) {
+                                        timestamp = recipe.getCreate_at();
+                                    } else {
+                                        timestamp = recipe.getUpdate_at();
+                                    }
+                                    SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
+                                    String date = dateFormat.format(timestamp);
+                                %>
+                            <p>Published on <%=date%></p>
                         </div>
                     </div>
                     <div class="recipe-detail-info-interaction">
                         <div class="recipe-detail-info-review">
                             <%
                                 double avaRating = (Double) request.getAttribute("avgRating");
-                                int fullStars = (int) avaRating; 
-                                boolean hasHalfStar = avaRating - fullStars >= 0.5; 
+                                int fullStars = (int) avaRating;
+                                boolean hasHalfStar = avaRating - fullStars >= 0.5;
 
                                 for (int i = 0; i < fullStars; i++) {
                             %>
