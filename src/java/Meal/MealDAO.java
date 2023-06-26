@@ -75,7 +75,8 @@ public class MealDAO {
         ArrayList<MealDTO> result = new ArrayList<>();
 
         String sql = "SELECT * FROM [Meal]"
-                + "WHERE [plan_id] = ? and [date_id] = ?\n";
+                + "WHERE [plan_id] = ? and [date_id] = ?\n"
+                + "ORDER BY [start_time]\n";
 
         try {
             con = DBUtils.getConnection();
@@ -93,6 +94,7 @@ public class MealDAO {
                     Time end_time = rs.getTime("end_time");
                     plan_id = rs.getInt("plan_id");
                     
+                    // Time filter
                     if (breakfast) {
                         if (start_time.getHours() >= 5 && start_time.getHours() < 12) {
                             MealDTO meal = new MealDTO(id, date_id, recipe_id, start_time, end_time, plan_id);
