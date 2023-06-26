@@ -38,7 +38,7 @@
         <script>
 
             function redirectToEditPlan() {
-                window.location.href = "MainController?action=editPlan&id=<%= plan.getId()%>";
+                window.location.href = "MainController?action=editPlan&id=<%= plan.getId() %>&isSearch=false";
             }
         </script>
     </head>
@@ -229,7 +229,7 @@
                                                 SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
                                                 String formattedTime = timeFormat.format(list.getStart_time());
                                             %>
-                                            <p class="plan-table-week-recipe-content-des-time"><%= formattedTime%></p>
+                                            <p class="plan-table-week-recipe-content-des-time"><%= formattedTime %></p>
                                         </div>
                                     </button>
 
@@ -259,7 +259,6 @@
                                         }
                                     %>
                                 </div>
-
                             </div>
 
 

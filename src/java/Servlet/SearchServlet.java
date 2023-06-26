@@ -22,15 +22,6 @@ import javax.servlet.http.HttpSession;
  */
 public class SearchServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -49,8 +40,9 @@ public class SearchServlet extends HttpServlet {
             } else if (isPlan != null) {
                 ArrayList<RecipeDTO> list = NavigationBarUtils.searchRecipes(txtsearch, searchBy);
                 request.setAttribute("searchRecipesList", list);
+                String url = "MainController?action=editPlan&id=" + 3 + "&isSearch=true";
                 System.out.println("Searched!");
-                request.getRequestDispatcher("addRecipeToPlan.jsp").forward(request, response);
+                request.getRequestDispatcher(url).forward(request, response);
             } else {
                 HttpSession session = request.getSession();
                 session.setAttribute("searchRecipesList", null);

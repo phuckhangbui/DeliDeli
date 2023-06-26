@@ -31,7 +31,8 @@ public class PlanEditServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String id = request.getParameter("id");
-        System.out.println("PlanDetailServlet - ID: " + id);
+        boolean isSearch = Boolean.parseBoolean(request.getParameter("isSearch"));
+        System.out.println("isSearch result: " + isSearch);
 
         PlanDTO plan = PlanDAO.getUserPlanById(new Integer(id));
         request.setAttribute("plan", plan);
@@ -42,9 +43,17 @@ public class PlanEditServlet extends HttpServlet {
         ArrayList<PlanDateDTO> planDate = PlanDateDAO.getAllDateByPlanId(plan.getId());
         request.setAttribute("planDate", planDate);
 
-        //ArrayList<MealDTO> meal = MealDAO.getAllMealByDateId(planDate);
-        RequestDispatcher rq = request.getRequestDispatcher("addRecipeToPlan.jsp");
-        rq.forward(request, response);
+        if (isSearch) {
+            request.setAttribute("SEARCH_PLAN_REAL", true);
+            RequestDispatcher rq = request.getRequestDispatcher("addRecipeToPlan.jsp");
+            rq.forward(request, response);
+        } else {
+            request.setAttribute("SEARCH_PLAN_REAL", false);
+            RequestDispatcher rq = request.getRequestDispatcher("addRecipeToPlan.jsp");
+            rq.forward(request, response);
+        }
+        
+        response.sendRedirect("error.jsp");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

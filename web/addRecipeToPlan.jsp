@@ -113,6 +113,7 @@
 
                     <%
                         PlanDTO plan = (PlanDTO) request.getAttribute("plan");
+                        boolean SEARCH_PLAN_REAL = (boolean) request.getAttribute("SEARCH_PLAN_REAL");
                     %>
 
                     <div class=" plan-table">
@@ -311,7 +312,7 @@
                                         </form>
                                     </div>
                                     <%
-                                        }   
+                                        }
                                     } else {
                                     %>
                                     <button class="plan-table-week-recipe-add" onclick="scrollToSection('addSection')">
@@ -333,231 +334,254 @@
                         %>
                     </div>
                 </div>
-            </div>
-        </div>
 
 
 
 
-        <form class="plan-edit">
-            <div class="plan-edit-header">
-                Info Section
-            </div>
-            <div class="row add-plan-date ">
-                <div class="add-plan-info-header">
-                    Plan Period <span class="add-plan-info-header-des">(Each plan will have a fixed period of 1
-                        week)</span>
-                </div>
-                <div class="col-md-6 add-plan-info-date">
-                    Starting Date: <span>*</span>
-                    <div>
-                        <input type="date" id="startingDate" value="<%= plan.getStart_at()%>" onchange="calculateNewDate()">
+                <form class="plan-edit">
+                    <div class="plan-edit-header">
+                        Info Section
                     </div>
-                </div>
-                <div class="col-md-6 add-plan-info-date">
-                    Ending Date:
+                    <div class="row add-plan-date ">
+                        <div class="add-plan-info-header">
+                            Plan Period <span class="add-plan-info-header-des">(Each plan will have a fixed period of 1
+                                week)</span>
+                        </div>
+                        <div class="col-md-6 add-plan-info-date">
+                            Starting Date: <span>*</span>
+                            <div>
+                                <input type="date" id="startingDate" value="<%= plan.getStart_at()%>" onchange="calculateNewDate()">
+                            </div>
+                        </div>
+                        <div class="col-md-6 add-plan-info-date">
+                            Ending Date:
+                            <script>
+                                function calculateNewDate() {
+                                    const inputDate = document.getElementById("startingDate").value;
+
+                                    // Convert the input date to a JavaScript Date object
+                                    const dateObj = new Date(inputDate);
+
+                                    // Add 7 days to the input date
+                                    dateObj.setDate(dateObj.getDate() + 7);
+
+                                    // Format the new date as "YYYY-MM-DD"
+                                    const newDate = dateObj.toISOString().split('T')[0];
+
+                                    // Display the new date
+                                    document.getElementById("endingDate").textContent = newDate;
+                                }
+                            </script>
+                            <div class="add-plan-info-header-date" id="endingDate">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="add-plan-info-header add-plan-info">
+                        Plan Title <span>*</span>
+                        <div>
+                            <input type="text" class="input-full" value="<%= plan.getName()%>" placeholder="What's your plan called ?">
+                        </div>
+                    </div>
+
+
+                    <!--            <div class="add-plan-info-header-picture add-plan-info">
+                                    Thumbnail Picture <span>*</span>
+                                    <div>
+                                        <input type="file" id="image" name="thumbnail" required>
+                                    </div>    
+                                </div>-->
+
+
+                    <div class="add-plan-info-header add-plan-info">
+                        Plan Type <span>*</span>
+                        <select name="recipeDietId" id="" class="add-plan-info-header-type" required>
+                            <%
+                                ArrayList<DietDTO> dietList = DietDAO.getAllDietType();
+                                if (dietList != null && dietList.size() != 0) {
+                                    for (DietDTO list : dietList) {
+                            %>
+                            <option value="<%= list.getId()%>"> <%= list.getTitle()%> </option>
+                            <%
+                                    }
+                                }
+                            %>
+                        </select>
+                    </div>
+                    <div class="add-plan-info-header add-plan-info">
+                        Description <span>*</span>
+                        <textarea class="input-full" rows="2" name="description" required
+                                  placeholder="Give a small description of your plan" maxlength="200"><%= plan.getDescription()%></textarea>
+                    </div>
+                    <div class="add-plan-info-header add-plan-info" >
+                        Note <span >*</span>
+                        <textarea class="input-full" rows="2" name="description" required
+                                  placeholder="Anything that needs to note ?" maxlength="200"></textarea>
+
+                    </div>
+                    <div class="plan-edit-button" >
+                        <button>SAVE</button>
+                    </div>
+                </form>   
+
+
+
+
+
+
+
+                <!-- Add recipe -->
+                <div class="row add-recipe-to-plan-section" id="addSection">
+                    <% if (SEARCH_PLAN_REAL) { %>
                     <script>
-                        function calculateNewDate() {
-                            const inputDate = document.getElementById("startingDate").value;
-
-                            // Convert the input date to a JavaScript Date object
-                            const dateObj = new Date(inputDate);
-
-                            // Add 7 days to the input date
-                            dateObj.setDate(dateObj.getDate() + 7);
-
-                            // Format the new date as "YYYY-MM-DD"
-                            const newDate = dateObj.toISOString().split('T')[0];
-
-                            // Display the new date
-                            document.getElementById("endingDate").textContent = newDate;
+                        window.onload = function () {
+                            const scrollTarget = document.getElementById("scrollTarget");
+                            scrollTarget.scrollIntoView({behavior: 'smooth'});
                         }
                     </script>
-                    <div class="add-plan-info-header-date" id="endingDate">
+                    <% } %>
+                    <div class="add-recipe-to-plan">
+                        <div class="add-recipe-to-plan-section-header">
+                            Add Recipes Section
+                        </div>
+                        <div class="add-recipe-to-plan-search-bar">
+                            <form action="MainController" method="post">
+                                <button type="submit" name="action" value="search">
+                                    <img src="assets/search-icon.svg" alt="">
+                                </button>
+                                <input type="text" name="txtsearch" placeholder="What recipes are you searching for ?">
+                                <input type="hidden" name="isPlan" value="true" />
+                                <select name="searchBy" id="">
+                                    <option value="Title" selected="selected">TITLE</option>
+                                    <option value="Category">CATEGORIES</option>
+                                    <option value="Cuisine">CUISINES</option>
+                                    <option value="Diet">DIETS</option>
+                                </select>
+                            </form>
+                        </div>
                     </div>
+                    <div id="scrollTarget"></div> <!-- Added scrollTarget element -->
                 </div>
-            </div>
-            <div class="add-plan-info-header add-plan-info">
-                Plan Title <span>*</span>
-                <div>
-                    <input type="text" class="input-full" value="<%= plan.getName()%>" placeholder="What's your plan called ?">
-                </div>
-            </div>
 
 
-            <!--            <div class="add-plan-info-header-picture add-plan-info">
-                            Thumbnail Picture <span>*</span>
-                            <div>
-                                <input type="file" id="image" name="thumbnail" required>
-                            </div>    
-                        </div>-->
 
 
-            <div class="add-plan-info-header add-plan-info">
-                Plan Type <span>*</span>
-                <select name="recipeDietId" id="" class="add-plan-info-header-type" required>
+                <div class="row add-recipe-to-plan-content">
                     <%
-                        ArrayList<DietDTO> dietList = DietDAO.getAllDietType();
-                        if (dietList != null && dietList.size() != 0) {
-                            for (DietDTO list : dietList) {
+                        ArrayList<RecipeDTO> searchRecipesList = (ArrayList<RecipeDTO>) request.getAttribute("searchRecipesList");
+                        if (searchRecipesList != null && !searchRecipesList.isEmpty()) {
+                            for (RecipeDTO list : searchRecipesList) {
                     %>
-                    <option value="<%= list.getId()%>"> <%= list.getTitle()%> </option>
+                    <div class="col-md-3">
+                        <div href="" class="add-recipe-to-plan-content-recipe">
+                            <div class="add-recipe-to-plan-content-recipe-image">
+                                <img src="./pictures/egg1.jpeg" alt="">
+                            </div>
+                            <div class="add-recipe-to-plan-content-recipe-title"><%= list.getTitle()%></div>
+                            <div class="add-recipe-to-plan-content-recipe-nutrients">
+                                <p><span class="plan-table-calories">Cals</span>20</p>
+                                <p><span class="plan-table-protein">P</span> 29g</p>
+                                <p><span class="plan-table-carb">C</span> 24g</p>
+                                <p><span class="plan-table-fat">F</span> 434g</p>
+                            </div>
+                            <div class="add-recipe-to-plan-content-recipe-button">
+                                <button type="button" class="" data-bs-toggle="modal" data-bs-target="#addRecipeToPlan">
+                                    Add
+                                </button>
+                                <button type="button">
+                                    <a href="https://www.youtube.com/" target="_blank">View</a>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Modal -->
+                    <div class="modal fade" id="addRecipeToPlan" tabindex="-1"
+                         aria-labelledby="addRecipeToPlanModalLabel" aria-hidden="true">
+                        <form class="modal-dialog add-recipe-to-plan-modal">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Adding Recipe To Plan</h1>
+                                </div>
+                                <div class="modal-body">
+                                    <div>
+                                        <div>What day do you want to cook this recipe ?</div>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <input type="checkbox" id="Monday" name="Monday" value="Bike">
+                                                <label for="Monday"> Monday</label>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <input type="checkbox" id="Tuesday" name="Tuesday" value="Car">
+                                                <label for="Tuesday"> Tuesday</label>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <input type="checkbox" id="Wednesday" name="Wednesday" value="Boat">
+                                                <label for="Wednesday"> Wednesday</label>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <input type="checkbox" id="Thursday" name="Thursday" value="Bike">
+                                                <label for="Thursday"> Thursday</label>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <input type="checkbox" id="Friday" name="Friday" value="Boat">
+                                                <label for="Friday"> Friday</label>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <input type="checkbox" id="Saturday" name="Saturday" value="Boat">
+                                                <label for="Saturday"> Saturday</label>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <input type="checkbox" id="Sunday" name="Sunday" value="Boat">
+                                                <label for="Sunday"> Sunday</label>
+                                            </div>
+                                        </div>
+                                        <!--                                                <div>What part of the day do you want to have this meal ?</div>
+                                                                                        <div class="row">
+                                                                                            <div class="col-md-3">
+                                                                                                <input type="checkbox" id="Breakfast" name="Breakfast" value="Bike">
+                                                                                                <label for="Breakfast"> Breakfast</label>
+                                                                                            </div>
+                                                                                            <div class="col-md-3">
+                                                                                                <input type="checkbox" id="Lunch" name="Lunch" value="Car">
+                                                                                                <label for="Lunch"> Lunch</label>
+                                                                                            </div>
+                                                                                            <div class="col-md-3">
+                                                                                                <input type="checkbox" id="Dinner" name="Dinner" value="Boat">
+                                                                                                <label for="Dinner"> Dinner</label>
+                                                                                            </div>
+                                                                                        </div>-->
+                                        <label for="eating-time">What time of the day do you want to have this meal ?</label>
+                                        <br>
+                                        <input type="time" id="eating-time" name="eating-time">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="add-recipe-to-plan-modal-button">Add</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                     <%
                             }
                         }
                     %>
-                </select>
-            </div>
-            <div class="add-plan-info-header add-plan-info">
-                Description <span>*</span>
-                <textarea class="input-full" rows="2" name="description" required
-                          placeholder="Give a small description of your plan" maxlength="200"><%= plan.getDescription()%></textarea>
-            </div>
-            <div class="add-plan-info-header add-plan-info" >
-                Note <span >*</span>
-                <textarea class="input-full" rows="2" name="description" required
-                          placeholder="Anything that needs to note ?" maxlength="200"></textarea>
-
-            </div>
-            <div class="plan-edit-button" >
-                <button>SAVE</button>
-            </div>
-        </form>   
-    </div>
-
-    
-    
-    
-    
-
-    <!-- Add recipe -->
-    <div class="row add-recipe-to-plan-section" id="addSection">
-        <div class="add-recipe-to-plan">
-            <div class="add-recipe-to-plan-section-header">
-                Add Recipes Section
-            </div>
-            <div class="add-recipe-to-plan-search-bar">
-                <form action="MainController" method="post">
-                    <button type="submit" name="action" value="search"><img src="assets/search-icon.svg"
-                                                                            alt=""></button>
-                    <input type="text" name="txtsearch" placeholder="What recipes are you searching for ?">
-                    <input type="hidden" name="isPlan" value="true" />
-                    <select name="searchBy" id="" class="">
-                        <option value="Title" selected="selected">TITLE</option>
-                        <option value="Category">CATEGORIES</option>
-                        <option value="Cuisine">CUISINES</option>
-                        <option value="Diet">DIETS</option>
-                    </select>
-                </form>
-            </div>
-            <div class="row add-recipe-to-plan-content">
-                <div class="col-md-3">
-                    <div href="" class="add-recipe-to-plan-content-recipe">
-                        <div class="add-recipe-to-plan-content-recipe-image">
-                            <img src="./pictures/egg1.jpeg" alt="">
-                        </div>
-                        <div class="add-recipe-to-plan-content-recipe-title">Chicken Curry</div>
-                        <div class="add-recipe-to-plan-content-recipe-nutrients">
-                            <p><span class="plan-table-calories">Cals</span>20</p>
-                            <p><span class="plan-table-protein">P</span> 29g</p>
-                            <p><span class="plan-table-carb">C</span> 24g</p>
-                            <p><span class="plan-table-fat">F</span> 434g</p>
-                        </div>
-                        <div class="add-recipe-to-plan-content-recipe-button">
-                            <button type="button" class="" data-bs-toggle="modal" data-bs-target="#addRecipeToPlan">
-                                Add
-                            </button>
-                            <button type="button">
-                                <a href="https://www.youtube.com/" target="_blank">View</a>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <!-- Modal -->
-                <div class="modal fade" id="addRecipeToPlan" tabindex="-1"
-                     aria-labelledby="addRecipeToPlanModalLabel" aria-hidden="true">
-                    <form class="modal-dialog add-recipe-to-plan-modal">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="exampleModalLabel">Adding Recipe To Plan</h1>
-                            </div>
-                            <div class="modal-body">
-                                <div>
-                                    <div>What day do you want to cook this recipe ?</div>
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <input type="checkbox" id="Monday" name="Monday" value="Bike">
-                                            <label for="Monday"> Monday</label>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <input type="checkbox" id="Tuesday" name="Tuesday" value="Car">
-                                            <label for="Tuesday"> Tuesday</label>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <input type="checkbox" id="Wednesday" name="Wednesday" value="Boat">
-                                            <label for="Wednesday"> Wednesday</label>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <input type="checkbox" id="Thursday" name="Thursday" value="Bike">
-                                            <label for="Thursday"> Thursday</label>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <input type="checkbox" id="Friday" name="Friday" value="Boat">
-                                            <label for="Friday"> Friday</label>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <input type="checkbox" id="Saturday" name="Saturday" value="Boat">
-                                            <label for="Saturday"> Saturday</label>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <input type="checkbox" id="Sunday" name="Sunday" value="Boat">
-                                            <label for="Sunday"> Sunday</label>
-                                        </div>
-                                    </div>
-                                    <!--                                                <div>What part of the day do you want to have this meal ?</div>
-                                                                                    <div class="row">
-                                                                                        <div class="col-md-3">
-                                                                                            <input type="checkbox" id="Breakfast" name="Breakfast" value="Bike">
-                                                                                            <label for="Breakfast"> Breakfast</label>
-                                                                                        </div>
-                                                                                        <div class="col-md-3">
-                                                                                            <input type="checkbox" id="Lunch" name="Lunch" value="Car">
-                                                                                            <label for="Lunch"> Lunch</label>
-                                                                                        </div>
-                                                                                        <div class="col-md-3">
-                                                                                            <input type="checkbox" id="Dinner" name="Dinner" value="Boat">
-                                                                                            <label for="Dinner"> Dinner</label>
-                                                                                        </div>
-                                                                                    </div>-->
-                                    <label for="eating-time">What time of the day do you want to have this meal ?</label>
-                                    <br>
-                                    <input type="time" id="eating-time" name="eating-time">
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="add-recipe-to-plan-modal-button">Add</button>
-                            </div>
-                        </div>
-                    </form>
                 </div>
             </div>
+
+
+
+
+
+
+
+
+
+
+
+
         </div>
-
-
-
-
-
-
-
-
-
-
-
-
     </div>
-</div>
 </div>
 
 <script>
@@ -567,8 +591,6 @@
         section.scrollIntoView({behavior: 'smooth'});
     }
 </script>
-
-
 
 <!--         Footer       -->
 <%@include file="footer.jsp" %>
