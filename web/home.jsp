@@ -80,8 +80,7 @@
                     </header>
                 </div>
                 <div class="row recommendation-content">
-                    <% ArrayList<RecipeDTO> listRecipe
-                                = RecipeDAO.getAllRecipes();
+                    <% ArrayList<RecipeDTO> listRecipe = RecipeDAO.getAllRecipes();
                         if (listRecipe != null && listRecipe.size() != 0) {
                             for (RecipeDTO r : listRecipe) {
                     %>
@@ -101,12 +100,31 @@
                             </p>
                         </div>
                         <div class="recommendation-content-reciew">
-                            <% for (int i = 0; i
-                                        < RecipeDAO.getRatingByRecipeId(r.getId());
-                                        i++) { %>
-                                        <img src="./assets/full-star-icon.svg"
-                                 alt="">
-                            <% }%>
+                            <%
+                                double avaRating = RecipeDAO.getRatingByRecipeId(r.getId());
+                                int fullStars = (int) avaRating;
+                                boolean hasHalfStar = avaRating - fullStars >= 0.5;
+
+                                for (int i = 0; i < fullStars; i++) {
+                            %>
+                            <img src="./assets/full-star-icon.svg" alt="">
+                            <%
+                                }
+
+                                if (hasHalfStar) {
+                            %>
+                            <img src="./assets/half-star-icon.svg" alt="" style="width: 17px">
+                            <%
+                                }
+
+                                int remainingStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+                                for (int i = 0; i < remainingStars; i++) {
+                            %>
+                            <img src="./assets/empty-star-icon.svg" alt="">
+                            <%
+                                }
+                            %>
                             <p
                                 class="recommendation-content-reciew-rating">
                                 <%=RecipeDAO.getRatingByRecipeId(r.getId())%>
@@ -179,7 +197,7 @@
                             <% for (int i = 0; i
                                         < RecipeDAO.getRatingByRecipeId(list.getId());
                                         i++) { %>
-                                        <img src="./assets/full-star-icon.svg">
+                            <img src="./assets/full-star-icon.svg">
                             <% }%>
                             <p
                                 class="recommendation-content-reciew-rating">
@@ -212,9 +230,9 @@
                 %>
                 <div class="row">
                     <header class="search-result-header">
-                            <p>
-                                <%= selectedSuggestion%> Recipe(s)
-                            </p>
+                        <p>
+                            <%= selectedSuggestion%> Recipe(s)
+                        </p>
                     </header>
                 </div>
                 <div class="row recommendation-content">
@@ -238,11 +256,31 @@
                             </p>
                         </div>
                         <div class="recommendation-content-reciew">
-                            <% for (int i = 0; i
-                                        < RecipeDAO.getRatingByRecipeId(r.getId());
-                                        i++) { %>
-                                        <img src="./assets/full-star-icon.svg">
-                            <% }%>
+                            <%
+                                double avaRating = RecipeDAO.getRatingByRecipeId(r.getId());
+                                int fullStars = (int) avaRating; 
+                                boolean hasHalfStar = avaRating - fullStars >= 0.5; 
+
+                                for (int i = 0; i < fullStars; i++) {
+                            %>
+                            <img src="./assets/full-star-icon.svg" alt="">
+                            <%
+                                }
+
+                                if (hasHalfStar) {
+                            %>
+                            <img src="./assets/half-star-icon.svg" alt="" style="width: 17px">
+                            <%
+                                }
+
+                                int remainingStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+                                for (int i = 0; i < remainingStars; i++) {
+                            %>
+                            <img src="./assets/empty-star-icon.svg" alt="" >
+                            <%
+                                }
+                            %>
                             <p
                                 class="recommendation-content-reciew-rating">
                                 <%=RecipeDAO.getRatingByRecipeId(r.getId())%>

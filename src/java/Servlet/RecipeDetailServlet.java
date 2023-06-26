@@ -8,6 +8,8 @@ import Direction.DirectionDAO;
 import Direction.DirectionDTO;
 import IngredientDetail.IngredientDetailDAO;
 import IngredientDetail.IngredientDetailDTO;
+import Nutrition.NutritionDAO;
+import Nutrition.NutritionDTO;
 import Recipe.RecipeDAO;
 import Recipe.RecipeDTO;
 import RecipeImage.RecipeImageDTO;
@@ -51,7 +53,10 @@ public class RecipeDetailServlet extends HttpServlet {
 
             ArrayList<IngredientDetailDTO> ingredientDetailList = IngredientDetailDAO.getIngredientDetailByRecipeId(new Integer(id));
             request.setAttribute("ingredientDetailList", ingredientDetailList);
-
+            
+            NutritionDTO nutrition = NutritionDAO.getNutrition(new Integer(id));
+            request.setAttribute("nutrition", nutrition);
+            
             //REVIEW----------------------------------------------------------------------------------
             ArrayList<ReviewDTO> reviewList = ReviewDAO.getReviewByRecipeId(new Integer(id));
             request.setAttribute("reviewList", reviewList);

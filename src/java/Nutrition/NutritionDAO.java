@@ -129,5 +129,9 @@ public class NutritionDAO {
 
         return result;
     }
+    
+    public static void main(String[] args) {
+        System.out.println(NutritionDAO.getNutrition(1));
+    }
 
 }
