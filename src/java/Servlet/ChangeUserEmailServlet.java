@@ -6,6 +6,7 @@ package Servlet;
 
 import User.UserDAO;
 import User.UserDetailDAO;
+import Utils.ValidateEmail;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -30,9 +32,20 @@ public class ChangeUserEmailServlet extends HttpServlet {
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             List<String> errorList = new ArrayList<>();
+            HttpSession session = request.getSession();
             
             String userId = request.getParameter("userId");
             String email = request.getParameter("txtEmail");
+            if (email != null) {
+                ValidateEmail validate = new ValidateEmail();
+                boolean exists = validate.isAddressValid(email);
+                if (exists == false) {
+                    errorList.add("The email address is not exist.");
+                    request.setAttribute("errorList", errorList);
+                    request.getRequestDispatcher(USER_EMAIL_SETTING_PAGE).forward(request, response);
+                    return;
+                }
+            }
             
             if (!email.matches(EMAIL_PATTERN)) {
                 errorList.add("Invalid email format. Please enter a valid email address.");
@@ -45,8 +58,8 @@ public class ChangeUserEmailServlet extends HttpServlet {
             } else {
                 int result = UserDetailDAO.updateUserEmail(new Integer(userId), email);
                 if (result > 0) {
-                    request.setAttribute("userId", userId);
-                    request.getRequestDispatcher(USER_EMAIL_SETTING_PAGE).forward(request, response);
+                    session.removeAttribute("user");
+                    request.getRequestDispatcher("login.jsp").forward(request, response);
                 }
             }
         } catch (Exception e) {

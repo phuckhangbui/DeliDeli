@@ -14,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -30,6 +31,7 @@ public class ChangeUserPasswordServlet extends HttpServlet {
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             List<String> errorList = new ArrayList<>();
+            HttpSession session = request.getSession();
 
             String userId = request.getParameter("userId");
             String oldPassword = request.getParameter("txtOldPassword");
@@ -52,22 +54,10 @@ public class ChangeUserPasswordServlet extends HttpServlet {
             } else {
                 int result = UserDetailDAO.updateUserPassword(new Integer(userId), newPassword);
                 if (result > 0) {
-                    request.setAttribute("userId", userId);
-                    request.getRequestDispatcher(USER_PASSWORD_SETTING_PAGE).forward(request, response);
+                    session.removeAttribute("user");
+                    request.getRequestDispatcher("login.jsp").forward(request, response);
                 }
             }
-            
-//            out.println("<!DOCTYPE html>");
-//            out.println("<html>");
-//            out.println("<head>");
-//            out.println("<title>Servlet ChangeUserPasswordServlet</title>");            
-//            out.println("</head>");
-//            out.println("<body>");
-//            out.println("<h1>" + oldPassword + "</h1>");
-//            out.println("<h1>" + newPassword + "</h1>");
-//            out.println("<h1>" + confirmNewPassword + "</h1>");
-//            out.println("</body>");
-//            out.println("</html>");
         } catch (Exception e) {
             e.printStackTrace();
         }
