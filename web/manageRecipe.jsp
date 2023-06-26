@@ -4,6 +4,8 @@
     Author     : Admin
 --%>
 
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.sql.Timestamp"%>
 <%@page import="User.UserDTO"%>
 <%@page import="Recipe.RecipeDAO"%>
 <%@page import="Recipe.RecipeDTO"%>
@@ -236,6 +238,7 @@
                                     <th>No</th>
                                     <th>Title</th>
                                     <th>Create at</th>
+                                    <th>Update at</th>
                                     <th>Owner</th>
                                     <th>Status</th>
                                     <th>Action</th>
@@ -249,7 +252,22 @@
                                 <tr>
                                     <td><%= count%></td>
                                     <td><%= r.getTitle()%></td>
-                                    <td><%= r.getCreate_at()%></td>
+                                    <% Timestamp timestamp = r.getCreate_at();
+                                        SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
+                                        String date = dateFormat.format(timestamp);%>
+                                    <td><%= date%></td>
+                                    <%
+                                        if (r.getUpdate_at() == null) {
+                                    %>
+                                    <td><%= date%></td>
+                                    <%
+                                    } else {
+                                    %>
+                                    <td><%= r.getUpdate_at()%>
+                                    <%
+                                        }
+                                    %>
+                                    </td>
                                     <td><a href="MainController?action=showUserDetail&username=<%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%>"><%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%></a></td>
                                     <td><%= tmp[r.getStatus()]%></td>
                                     <td>
@@ -313,7 +331,10 @@
                                 <tr>
                                     <td><%= count%></td>
                                     <td><%= r.getTitle()%></td>
-                                    <td><%= r.getCreate_at()%></td>
+                                    <% Timestamp timestamp = r.getCreate_at();
+                                        SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
+                                        String date = dateFormat.format(timestamp);%>
+                                    <td><%= date%></td>
                                     <td><a href="MainController?action=showUserDetail&username=<%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%>"><%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%></a></td>
                                     <td><%= tmp[r.getStatus()]%></td>
                                     <td>

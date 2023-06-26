@@ -4,6 +4,8 @@
     Author     : Admin
 --%>
 
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.sql.Timestamp"%>
 <%@page import="java.util.Map"%>
 <%@page import="java.util.TreeMap"%>
 <%@page import="java.sql.Date"%>
@@ -221,7 +223,10 @@
                                                 <tr>
                                                     <td><%= ++i%></td>
                                                     <td><%= r.getTitle()%></td>
-                                                    <td><%= r.getCreate_at()%></td>
+                                                    <% Timestamp timestamp = r.getCreate_at();
+                                                        SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
+                                                        String date = dateFormat.format(timestamp);%>
+                                                    <td><%= date%></td>
                                                     <td><a href="MainController?action=showUserDetail&username=<%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%>"><%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%></a></td>
                                                 </tr>
                                                 <% }
