@@ -506,10 +506,7 @@ public class RecipeDAO {
     }
 
     public static void main(String[] args) {
-        System.out.println(deleteRecipe(1));
-//        List<RecipeDTO> list = RecipeDAO.getAllRecipes();
-//        for (RecipeDTO o : list) {
-//            System.out.println(o);
-//        }
+        RecipeDTO r = getRecipeByRecipeId(1);
+        System.out.println(r.getCreate_at());
     }
 }

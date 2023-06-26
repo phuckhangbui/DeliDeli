@@ -168,6 +168,15 @@
     margin-bottom: 0;
 }
 
+.modal-title-date{
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+    color: rgba(0, 0, 0, 0.6);
+    margin-bottom: 0;
+    font-weight: 400;
+}
+
 
 .modal-body-content{
     font-weight: 400;
