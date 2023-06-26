@@ -35,7 +35,7 @@
         <!--        User Public Info Manage        -->
         <div class="blank-background">
             <div class="container ">
-                <form action="MainController" method="post" class="row user-profile">
+                <form action="MainController" method="post" class="row user-profile" enctype="multipart/form-data">
                     <input type="hidden" name="userId" value="<%= userId%>">
 
 
@@ -138,9 +138,10 @@
                         </div>
                         <div class="user-profile-public-avatar">
                             <div>
-                                <img id="preview-image" src="ServletImageLoader?identifier=<%= user.getAvatar()%>" alt="">
+                                <img src="ServletImageLoader?identifier=<%= user.getAvatar()%>" alt="">
                             </div>
-                            <input type="file" id="image-input" accept="image/*" onchange="previewImage(event)">
+                            <%= user.getAvatar()%>
+                            <input type="file" id="image-input" name="file">
                         </div>
                     </div>
                 </form>

@@ -22,6 +22,29 @@ import java.util.ArrayList;
  * @author Daiisuke
  */
 public class UserDAO {
+    
+    public static int updateAvatarImage(int userId, String image) {
+        int result = 0;
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                String sql = "UPDATE [User] SET avatar = ? WHERE id = ?";
+
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setString(1, image);
+                pst.setInt(2, userId);
+                result = pst.executeUpdate();
+                pst.close();
+                cn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 
     //New
     public static int getTotalAccountsBasedOnRole(String roleTag) {
@@ -112,6 +135,7 @@ public class UserDAO {
                 ResultSet rs = pst.executeQuery();
                 if (rs != null) {
                     while (rs.next()) {
+                        int id = rs.getInt("id");
                         String userName = rs.getString("user_name");
                         String email = rs.getString("email");
                         String password = rs.getString("password");
@@ -121,7 +145,7 @@ public class UserDAO {
                         int status = rs.getInt("status");
                         int role = rs.getInt("role_id");
                         int setting = rs.getInt("user_setting_id");
-                        user = new UserDTO(userName, email, password, avatar, createAt, token, status, role, setting);
+                        user = new UserDTO(id, userName, email, password, avatar, createAt, token, status, role, setting);
                     }
                 }
                 rs.close();
@@ -631,7 +655,7 @@ public class UserDAO {
     }
 
     public static void main(String[] args) throws Exception {
-        System.out.println(UserDAO.checkEmailExist("khoalndse172103@fpt.edu.vn"));
+        System.out.println(UserDAO.updateAvatarImage(3, "image"));
     }
 
 }
