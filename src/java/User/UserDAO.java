@@ -7,14 +7,12 @@ package User;
 
 import PasswordEncode.EncodePass;
 import Utils.DBUtils;
-import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
@@ -191,6 +189,8 @@ public class UserDAO {
     public static boolean checkOldPassword(int userId, String oldPassword) throws Exception {
         Connection cn = DBUtils.getConnection();
         String password = "";
+        EncodePass encode = new EncodePass();
+        oldPassword = encode.toHexString(encode.getSHA(oldPassword));
 
         if (cn != null) {
             String sql = "SELECT password FROM [User] WHERE id = ?";
@@ -655,7 +655,7 @@ public class UserDAO {
     }
 
     public static void main(String[] args) throws Exception {
-        System.out.println(UserDAO.updateAvatarImage(3, "image"));
+        System.out.println(UserDAO.checkOldPassword(3, "123"));
     }
 
 }

@@ -4,6 +4,7 @@
  */
 package User;
 
+import PasswordEncode.EncodePass;
 import Utils.DBUtils;
 import java.sql.Connection;
 import java.sql.Date;
@@ -47,10 +48,12 @@ public class UserDetailDAO {
         return result;
     }
     
-    public static int updateUserPassword(int userId, String password) {
+    public static int updateUserPassword(int userId, String password) throws Exception{
         int result = 0;
         Connection cn = null;
 
+        EncodePass encode = new EncodePass();
+        password = encode.toHexString(encode.getSHA(password));
         try {
             cn = DBUtils.getConnection();
 

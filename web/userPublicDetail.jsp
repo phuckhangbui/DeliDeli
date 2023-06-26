@@ -139,8 +139,7 @@
                             <div>
                                 <img src="ServletImageLoader?identifier=<%= user.getAvatar()%>" alt="">
                             </div>
-                            <%= user.getAvatar()%>
-                            <input type="file" id="image-input" name="file">
+                            <input type="file" id="image-input" name="file" class="enable">
                         </div>
                     </div>
                 </form>
