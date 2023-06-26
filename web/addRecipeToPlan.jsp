@@ -311,7 +311,7 @@
                                         </form>
                                     </div>
                                     <%
-                                        }
+                                        }   
                                     } else {
                                     %>
                                     <button class="plan-table-week-recipe-add" onclick="scrollToSection('addSection')">
@@ -425,8 +425,12 @@
         </form>   
     </div>
 
+    
+    
+    
+    
 
-
+    <!-- Add recipe -->
     <div class="row add-recipe-to-plan-section" id="addSection">
         <div class="add-recipe-to-plan">
             <div class="add-recipe-to-plan-section-header">
@@ -437,6 +441,7 @@
                     <button type="submit" name="action" value="search"><img src="assets/search-icon.svg"
                                                                             alt=""></button>
                     <input type="text" name="txtsearch" placeholder="What recipes are you searching for ?">
+                    <input type="hidden" name="isPlan" value="true" />
                     <select name="searchBy" id="" class="">
                         <option value="Title" selected="selected">TITLE</option>
                         <option value="Category">CATEGORIES</option>
@@ -536,97 +541,6 @@
                             </div>
                         </div>
                     </form>
-                </div>
-
-
-
-                <div class="col-md-3">
-                    <div href="" class="add-recipe-to-plan-content-recipe">
-                        <div class="add-recipe-to-plan-content-recipe-image">
-                            <img src="./pictures/egg1.jpeg" alt="">
-                        </div>
-                        <div class="add-recipe-to-plan-content-recipe-title">Chicken Curry</div>
-                        <div class="add-recipe-to-plan-content-recipe-nutrients">
-                            <p><span class="plan-table-calories">Cals</span>20</p>
-                            <p><span class="plan-table-protein">P</span> 29g</p>
-                            <p><span class="plan-table-carb">C</span> 24g</p>
-                            <p><span class="plan-table-fat">F</span> 434g</p>
-                        </div>
-                        <div class="add-recipe-to-plan-content-recipe-button">
-                            <button type="button" class="" data-bs-toggle="modal" data-bs-target="#addRecipeToPlan">
-                                Add
-                            </button>
-                            <button type="button">
-                                <a href="https://www.youtube.com/" target="_blank">View</a>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div href="" class="add-recipe-to-plan-content-recipe">
-                        <div class="add-recipe-to-plan-content-recipe-image">
-                            <img src="./pictures/egg1.jpeg" alt="">
-                        </div>
-                        <div class="add-recipe-to-plan-content-recipe-title">Chicken Curry</div>
-                        <div class="add-recipe-to-plan-content-recipe-nutrients">
-                            <p><span class="plan-table-calories">Cals</span>20</p>
-                            <p><span class="plan-table-protein">P</span> 29g</p>
-                            <p><span class="plan-table-carb">C</span> 24g</p>
-                            <p><span class="plan-table-fat">F</span> 434g</p>
-                        </div>
-                        <div class="add-recipe-to-plan-content-recipe-button">
-                            <button type="button" class="" data-bs-toggle="modal" data-bs-target="#addRecipeToPlan">
-                                Add
-                            </button>
-                            <button type="button">
-                                <a href="https://www.youtube.com/" target="_blank">View</a>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div href="" class="add-recipe-to-plan-content-recipe">
-                        <div class="add-recipe-to-plan-content-recipe-image">
-                            <img src="./pictures/egg1.jpeg" alt="">
-                        </div>
-                        <div class="add-recipe-to-plan-content-recipe-title">Chicken Curry</div>
-                        <div class="add-recipe-to-plan-content-recipe-nutrients">
-                            <p><span class="plan-table-calories">Cals</span>20</p>
-                            <p><span class="plan-table-protein">P</span> 29g</p>
-                            <p><span class="plan-table-carb">C</span> 24g</p>
-                            <p><span class="plan-table-fat">F</span> 434g</p>
-                        </div>
-                        <div class="add-recipe-to-plan-content-recipe-button">
-                            <button type="button" class="" data-bs-toggle="modal" data-bs-target="#addRecipeToPlan">
-                                Add
-                            </button>
-                            <button type="button">
-                                <a href="https://www.youtube.com/" target="_blank">View</a>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div href="" class="add-recipe-to-plan-content-recipe">
-                        <div class="add-recipe-to-plan-content-recipe-image">
-                            <img src="./pictures/egg1.jpeg" alt="">
-                        </div>
-                        <div class="add-recipe-to-plan-content-recipe-title">Chicken Curry</div>
-                        <div class="add-recipe-to-plan-content-recipe-nutrients">
-                            <p><span class="plan-table-calories">Cals</span>20</p>
-                            <p><span class="plan-table-protein">P</span> 29g</p>
-                            <p><span class="plan-table-carb">C</span> 24g</p>
-                            <p><span class="plan-table-fat">F</span> 434g</p>
-                        </div>
-                        <div class="add-recipe-to-plan-content-recipe-button">
-                            <button type="button" class="" data-bs-toggle="modal" data-bs-target="#addRecipeToPlan">
-                                Add
-                            </button>
-                            <button type="button">
-                                <a href="https://www.youtube.com/" target="_blank">View</a>
-                            </button>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
