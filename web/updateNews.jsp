@@ -18,8 +18,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!--      Bootstrap         -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
-              integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+        <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css"/>
         <!--      CSS         -->
         <link rel="stylesheet" href="./styles/adminStyle.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -46,50 +45,50 @@
                         <img src="assets/Logo3.svg" alt="">
                     </a>
                     <div>
-                        <a href="admin.jsp">
-                            <img src="./assets/public.svg" alt="">
+                        <a href="admin.jsp" >
+                            <img src="./assets/public-unchosen-icon.svg" alt="">
                             Dashboard
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageAccount">
-                            <img src="./assets/user-unchose.svg" alt="">
+                        <a href="MainController?action=manageAccount" >
+                            <img src="./assets/user-unchosen-icon.svg" alt="">
                             User
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageRecipe">
-                            <img src="./assets/post-unchose.svg" alt="">
-                            Posts
+                        <a href="MainController?action=manageRecipe" >
+                            <img src="./assets/post-unchosen-icon.svg" alt="">
+                            Recipe
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageSuggestion">
-                            <img src="./assets/content-unchose.svg" alt="">
+                        <a href="MainController?action=manageSuggestion" >
+                            <img src="./assets/content-unchosen-icon.svg" alt="">
                             Content
                         </a>
                     </div>
                     <div>
                         <a href="MainController?action=manageNews" class="active">
-                            <img src="./assets/news-unchose.svg" alt="">
+                            <img src="./assets/news-icon.svg" alt="">
                             News
                         </a>
                     </div>
                     <div>
                         <a href="#">
-                            <img src="./assets/policies-unchose.svg" alt="">
+                            <img src="./assets/policies-unchosen-icon.svg" alt="">
                             Policies
                         </a>
                     </div>
                     <div>
                         <a href="#">
-                            <img src="./assets/broadcast-unchose.svg" alt="">
+                            <img src="./assets/broadcast-unchosen-icon.svg" alt="">
                             Broadcast
                         </a>
                     </div>
                     <div>
                         <a href="#">
-                            <img src="./assets/bug-report-unchose.svg" alt="">
+                            <img src="./assets/bug-report-unchosen-icon.svg" alt="">
                             Report
                         </a>
                     </div>
@@ -191,7 +190,7 @@
                                     try {
                                         NewsDTO news = NewsDAO.getNewsByNewsId(new Integer(id));
                                         //if (news.getUser_id() == user.getId()) {
-%>
+                                %>
                                 <form action="MainController" method="post" class="news-create-button" enctype="multipart/form-data">
                                     <div class="news-content-info">
                                         <p>Title: <input type="text" name="txtTitle" value="<%= news.getTitle()%>"></p>
@@ -246,5 +245,7 @@
                     document.getElementById('editorContent').value = editorContent;
                 });
             </script>
+        </div>
+        <script src="bootstrap/js/bootstrap.min.js" ></script>
     </body>
 </html>

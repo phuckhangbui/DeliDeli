@@ -19,8 +19,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!--      Bootstrap         -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
-              integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+        <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css"/>
         <!--      CSS         -->
         <link rel="stylesheet" href="./styles/userStyle.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -45,49 +44,53 @@
             <div class="container ">
                 <form class="row user-profile">
                     <input type="hidden" name="userId" value="<%= userId%>">
+
+
                     <div class="col-md-3 user-profile-column-1">
                         <div class="user-profile-header">
                             <div>
-                                Setting
+                                Management
                             </div>
                             <p>
-                                Customize your profile
+                                Manage your account
                             </p>
                         </div>
                         <div class="user-profile-option">
-                            <a href="userPublicDetail.jsp?userId=<%= userId%>">
-                                <img src="./assets/public-unchose.svg" alt="">
+                            <a href="userPublicDetail.jsp?userId=<%= user.getId()%>" >
+                                <img src="./assets/public-unchosen-icon.svg" alt="">
                                 Public Profile
                             </a>
-                            <a href="userEmailSetting.jsp?userId=<%= userId%>" >
-                                <img src="./assets/user-unchose.svg" alt="">
+                            <a href="userEmailSetting.jsp?userId=<%= user.getId()%>" >
+                                <img src="./assets/user-unchosen-icon.svg" alt="">
                                 Personal Setting
                             </a>
-                            <a href="userPasswordSetting.jsp?userId=<%= user.getId()%>" ">
-                                <img src="./assets/Password-unchose.svg" alt="">
+                            <a href="userPasswordSetting.jsp?userId=<%= user.getId()%>" >
+                                <img src="./assets/password-unchosen-icon.svg" alt="">
                                 Change Password
                             </a>
                             <a href="userSavedRecipes.html">
-                                <img src="./assets/favorite-unchose.svg" alt="">
+                                <img src="./assets/favorite-unchosen-icon.svg" alt="">
                                 Saved Recipes
                             </a>
-                            <div class="dropdown" id="dropdownUserRecipe" >
-                                <a href="#" class="active-link" >
-                                    <img src="./assets/my-recipe.svg" alt="">
+                            <div class="dropdown" id="dropdownUserRecipe">
+                                <a href="#" class="active-link">
+                                    <img src="./assets/my-recipe-icon.svg" alt="">
                                     My Own Recipes
                                 </a>
                                 <div class="dropdown-content-right">
-                                    <a href="privateRecipeManagement.jsp?userId=<%= userId%>">Private Recipes</a>
+                                    <a href="privateRecipeManagement.jsp?userId=<%= userId%>" >Private Recipes</a>
                                     <a href="pendingRecipeManagement.jsp?userId=<%= userId%>">Pending Recipes</a>
-                                    <a href="publicRecipeManagement.jsp?userId=<%= userId%>">Public Recipes</a>
+                                    <a href="publicRecipeManagement.jsp?userId=<%= userId%>" class="active-link">Public Recipes</a>
                                     <a href="rejectedRecipeManagement.jsp?userId=<%= userId%>">Rejected Recipes</a>
-
                                 </div>
                             </div>
                             <a href="userReviewManagement.jsp?userId=<%= userId%>">
-                                <img src="./assets/review-unchose.svg" alt="">
+                                <img src="./assets/full-star-unchosen-icon.svg" alt="">
                                 My Reviews
                             </a>
+<!--                            <a href="userNotification.jsp?userId=<%= userId%>">
+                                My Notifications
+                            </a>-->
                         </div>
                     </div>
 
@@ -118,16 +121,34 @@
                                     <div class="user-profile-recipe-post-description">
                                         <p><%= RecipeDAO.getCategoryByRecipeId(r.getId())%></p>
                                         <a href="editRecipe.jsp?recipeId=<%=r.getId()%>">
-                                            <img src="./assets/edit.svg"/>
+                                            <img src="./assets/edit-icon.svg"/>
                                         </a>
                                     </div>
                                     <a href="MainController?action=getRecipeDetailById&id=<%= r.getId()%>"><%= r.getTitle()%></a>
                                 </div>
                                 <div class="recommendation-content-reciew">
                                     <%
-                                        for (int i = 0; i < RecipeDAO.getRatingByRecipeId(r.getId()); i++) {
+                                        double avaRating = RecipeDAO.getRatingByRecipeId(r.getId());
+                                        int fullStars = (int) avaRating;
+                                        boolean hasHalfStar = avaRating - fullStars >= 0.5;
+
+                                        for (int i = 0; i < fullStars; i++) {
                                     %>
-                                    <img src="./assets/full-star.png" alt="">
+                                    <img src="./assets/full-star-icon.svg" alt="">
+                                    <%
+                                        }
+
+                                        if (hasHalfStar) {
+                                    %>
+                                    <img src="./assets/half-star-icon.svg" alt="" style="width: 17px">
+                                    <%
+                                        }
+
+                                        int remainingStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+                                        for (int i = 0; i < remainingStars; i++) {
+                                    %>
+                                    <img src="./assets/empty-star-icon.svg" alt="">
                                     <%
                                         }
                                     %>
@@ -182,7 +203,7 @@
         <%@include file="footer.jsp" %>
 
         <!--      Bootstrap for JS         -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
-                integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
-        crossorigin="anonymous"></script>
+        <script src="bootstrap/js/bootstrap.min.js" ></script>
+
     </body>
+</html>

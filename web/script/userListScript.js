@@ -38,7 +38,7 @@ activeList.forEach( element =>{
 const roleList = document.querySelectorAll("td:nth-child(3)");
 console.log(roleList)
 roleList.forEach ( element =>{
-    if(element.innerHTML == "Admin"){
+    if(element.innerHTML == "Administrator"){
         element.style.color = "#ec9131";
     }else if(element.innerHTML == "Moderator"){
         element.style.color = "#79c141";

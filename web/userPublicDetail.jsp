@@ -14,8 +14,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!--      Bootstrap         -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
-              integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+        <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css"/>
         <!--      CSS         -->
         <link rel="stylesheet" href="./styles/userStyle.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,7 +27,7 @@
 
         <%@include file="header.jsp" %>
 
-        <%
+        <%            
             String userId = request.getParameter("userId");
             UserDetailDTO userDetail = UserDetailDAO.getUserDetailByUserId(new Integer(userId));
         %>
@@ -50,24 +49,24 @@
                         </div>
                         <div class="user-profile-option">
                             <a href="userPublicDetail.jsp?userId=<%= user.getId()%>" class="active-link">
-                                <img src="./assets/public.svg" alt="">
+                                <img src="./assets/public-icon.svg" alt="">
                                 Public Profile
                             </a>
                             <a href="userEmailSetting.jsp?userId=<%= user.getId()%>">
-                                <img src="./assets/user-unchose.svg" alt="">
+                                <img src="./assets/user-unchosen-icon.svg" alt="">
                                 Personal Setting
                             </a>
                             <a href="userPasswordSetting.jsp?userId=<%= user.getId()%>">
-                                <img src="./assets/Password-unchose.svg" alt="">
+                                <img src="./assets/password-unchosen-icon.svg" alt="">
                                 Change Password
                             </a>
                             <a href="userSavedRecipes.html">
-                                <img src="./assets/favorite-unchose.svg" alt="">
+                                <img src="./assets/favorite-unchosen-icon.svg" alt="">
                                 Saved Recipes
                             </a>
                             <div class="dropdown" id="dropdownUserRecipe">
                                 <a href="#" class="dropbtn">
-                                    <img src="./assets/my-recipe-unchose.svg" alt="">
+                                    <img src="./assets/my-recipe-unchosen-icon.svg" alt="">
                                     My Own Recipes
                                 </a>
                                 <div class="dropdown-content-right">
@@ -78,7 +77,7 @@
                                 </div>
                             </div>
                             <a href="userReviewManagement.jsp?userId=<%= userId%>">
-                                <img src="./assets/review-unchose.svg" alt="">
+                                <img src="./assets/full-star-unchosen-icon.svg" alt="">
                                 My Reviews
                             </a>
 <!--                            <a href="userNotification.jsp?userId=<%= userId%>">
@@ -101,30 +100,30 @@
                             <div class="user-profile-public-content-name">
                                 <div>
                                     <p>First Name</p>
-                                    <input type="text" name="txtFirstName" value="<%= userDetail.getFirstName()%>">
+                                    <input type="text" class="enable" name="txtFirstName" value="<%= userDetail.getFirstName()%>">
                                 </div>
                                 <div>
                                     <p>Last Name</p>
-                                    <input type="text" name="txtLastName" value="<%= userDetail.getLastName()%>" >
+                                    <input type="text" class="enable" name="txtLastName" value="<%= userDetail.getLastName()%>" >
                                 </div>
                             </div>
                             <div class="user-profile-public-content-birth">
                                 <p>Birthday</p>
-                                <input type="date" name="txtBirthDate" value="<%= userDetail.getBirthdate()%>">
+                                <input type="date" class="enable" name="txtBirthDate" value="<%= userDetail.getBirthdate()%>">
                             </div>
                             <div class="user-profile-public-content-special">
                                 <p>Specialties</p>
-                                <textarea name="txtSpecialty" id="" cols="30" rows="3"><%= userDetail.getSpecialty()%></textarea>
+                                <textarea name="txtSpecialty" class="enable" cols="30" rows="3" placeholder="What are your specialties ?"><%= userDetail.getSpecialty()%></textarea>
                             </div>
                             <div class="user-profile-public-content-bio">
                                 <p>Bio</p>
-                                <textarea name="txtBio" id="" cols="30" rows="5"><%= userDetail.getBio()%></textarea>
+                                <textarea name="txtBio" class="enable" cols="30" rows="5" placeholder="Write something about yourself"><%= userDetail.getBio()%></textarea>
                             </div>
                         </div>
                         <div class="user-profile-save-button">
                             <p class="error-popup">${requestScope.errorList[0]}</p>
                             <p>Save Changes?</p>
-                            <button type="submit" value="saveUserPublicDetail" name="action">SAVE</button>
+                            <button type="submit" value="saveUserPublicDetail" name="action" id="save" >SAVE</button>
                         </div>
                     </div>
                     <div class="col-md-3 user-profile-column-3 ">
@@ -149,37 +148,10 @@
         </div>
 
 
-<!--        <a href="userPrivateDetail.jsp?userId=<%= userId%>">Private</a>-->
-
-        <!--        <form action="MainController" method="post" class="">
-                    <input type="hidden" name="userId" value="<%= userId%>">
-                    <div>
-                        <p>First Name</p>
-                        <input type="text" name="txtFirstName" placeholder="<%= userDetail.getFirstName()%>" required="">
-                    </div>
-                    <div>
-                        <p>Last Name</p>
-                        <input type="text" name="txtLastName" placeholder="<%= userDetail.getLastName()%>" required="">
-                    </div>
-                    <div>
-                        <p>Specialty</p>
-                        <input type="text" name="txtSpecialty" placeholder="<%= userDetail.getSpecialty()%>" required="">
-                    </div>
-                    <div>
-                        <p>Bio</p>
-                        <input type="text" name="txtBio" placeholder="<%= userDetail.getBio()%>" required="">
-                    </div>
-                    <div>
-                        <p>Birth date</p>
-                        <input type="text" name="txtBirthDate" placeholder="<%= userDetail.getBirthdate()%>" required="">
-                    </div>
-                    <div class='error-popup'>
-                        <p>${requestScope.errorList[0]}</p>
-                    </div>
-                    <button type="submit" value="saveUserPublicDetail" name="action">SAVE</button>
-                </form>-->
 
         <%@include file="footer.jsp" %>
 
+        <script src="script/DisabledButton.js"></script>
+        <script src="bootstrap/js/bootstrap.min.js" ></script>
     </body>
 </html>

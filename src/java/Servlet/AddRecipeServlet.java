@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -54,8 +55,8 @@ public class AddRecipeServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-
-            Date currentDate = new Date(System.currentTimeMillis());
+            request.setCharacterEncoding("UTF-8");
+            Timestamp currentDate = new Timestamp(System.currentTimeMillis());
             String title = request.getParameter("title");
             String description = request.getParameter("description");
             String thumbnail = request.getParameter("thumbnail");

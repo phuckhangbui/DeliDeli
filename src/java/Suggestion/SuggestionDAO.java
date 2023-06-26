@@ -11,6 +11,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
@@ -348,8 +349,8 @@ public class SuggestionDAO {
                         int prep_time = rs.getInt("prep_time");
                         int cook_time = rs.getInt("cook_time");
                         int servings = rs.getInt("servings");
-                        Date create_at = rs.getDate("create_at");
-                        Date update_at = rs.getDate("update_at");
+                        Timestamp create_at = rs.getTimestamp("create_at");
+                        Timestamp update_at = rs.getTimestamp("update_at");
                         int cuisin_id = rs.getInt("cuisine_id");
                         int category_id = rs.getInt("category_id");
                         int user_id = rs.getInt("user_id");
@@ -424,8 +425,8 @@ public class SuggestionDAO {
                         int prep_time = rs.getInt("prep_time");
                         int cook_time = rs.getInt("cook_time");
                         int servings = rs.getInt("servings");
-                        Date create_at = rs.getDate("create_at");
-                        Date update_at = rs.getDate("update_at");
+                        Timestamp create_at = rs.getTimestamp("create_at");
+                        Timestamp update_at = rs.getTimestamp("update_at");
                         int cuisin_id = rs.getInt("cuisine_id");
                         int category_id = rs.getInt("category_id");
                         int user_id = rs.getInt("user_id");

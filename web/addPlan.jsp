@@ -15,8 +15,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!--      Bootstrap         -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
-              integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+        <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css"/>
         <!--      CSS         -->
         <link rel="stylesheet" href="./styles/userStyle.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -39,6 +38,13 @@
             <div class="blank-background">
                 <div class="container">
                     <div class="row add-plan">
+                        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item"><a href="#"> Plan</a></li> 
+                                <li class="breadcrumb-item current-link" aria-current="page">Add Plan</li>
+                            </ol>
+                        </nav>
                         <form action="MainController" method="POST">
                             <div class="add-plan-header">
                                 <p>Add a Plan</p>
@@ -77,6 +83,12 @@
                                     <input type="text" name="name" class="input-full" placeholder="What's your plan called ?">
                                 </div>
                             </div>
+                            <div class="add-plan-info-header-picture add-plan-info">
+                                Thumbnail Picture <span>*</span>
+                                <div>
+                                    <input type="file" id="image" name="thumbnail" required>
+                                </div>    
+                            </div>
                             <div class="add-plan-info-header add-plan-info">
                                 Plan Type <span>*</span>
                                 <select name="recipeDietId" id="" class="add-plan-info-header-type" required>
@@ -114,52 +126,8 @@
 
 
             <!--         Footer       -->
-            <div class="footer">
-                <div class="container">
-                    <div class="row">
-                        <div class="website-social-media col-md-4">
-                            <div class="footer-header">
-                                <p>We Are</p>
-                            </div>
-                            <a href="homePage.html" class="website-social-media-logo">
-                                <img src="./assets/Logo2.png" alt="">
-                            </a>
-                            <div class="website-social-media-icons">
-                                <span>Follow us:</span>
-                                <a href="#"><img src="./assets/facebook-icon.svg" alt="Facebook Logo"></a>
-                                <a href="#"><img src="./assets/twitter-icon.svg" alt="Twitter Logo"></a>
-                            </div>
-                        </div>
-                        <nav class="navigation-bar-footer col-md-4">
-                            <div class="footer-header">
-                                <p>Explore</p>
-                            </div>
-                            <ul class="navigation-bar-footer-content">
-                                <li><a href="">INGREDIENTS</a></li>
-                                <li><a href="">CATEGORIES</a></li>
-                                <li><a href="">INGREDIENTS</a></li>
-                                <li><a href="">CUISINES</a></li>
-                                <li><a href="">DIFFICULTIES</a></li>
-                                <li><a href="">NEWS</a></li>
-                            </ul>
-                        </nav>
-                        <nav class="website-infomation-bar col-md-4">
-                            <div class="footer-header">
-                                <p>Know More</p>
-                            </div>
-                            <ul class="website-infomation-bar-content">
-                                <li><a href="">About us</a></li>
-                                <li><a href="">Privacy Policies</a></li>
-                                <li><a href="">Term of Services</a></li>
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
-            </div>
-        </div>
+            <%@include file="footer.jsp" %>
 
-        <!--      Bootstrap for JS         -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
-                integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
-        crossorigin="anonymous"></script>
+            <script src="bootstrap/js/bootstrap.min.js" ></script>
     </body>
+</html>

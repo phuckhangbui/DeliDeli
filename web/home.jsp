@@ -17,19 +17,13 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!--      Bootstrap         -->
-        <!--        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
-integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">-->
-        <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-            integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
-            crossorigin="anonymous">
+        <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css"/>
         <!--      CSS         -->
         <link rel="stylesheet" href="./styles/userStyle.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link
-            href="https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed:wght@300;400;500&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed:wght@300;400;500;600;700&display=swap"
             rel="stylesheet">
     </head>
 
@@ -38,57 +32,7 @@ integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJ
         <%@include file="header.jsp" %>
 
         <!--         The banner       -->
-        <div id="carouselExampleAutoplaying" class="carousel slide"
-             data-bs-ride="carousel">
-            <div class="carousel-inner">
-                <a class="carousel-item active" href=""
-                   data-bs-interval="4000">
-                    <div class="banner-content">
-                        <p>All new</p>
-                        <p>Perfect Breakfast</p>
-                        <p>Try out our new recipes for an easy and delicious
-                            breakfast
-                            that everybody can enjoy</p>
-                    </div>
-                    <img src="./pictures/banner.svg" class="d-block w-100"
-                         alt="...">
-                </a>
-                <a class="carousel-item" href="" data-bs-interval="4000">
-                    <div class="banner-content ">
-                        <p>All new</p>
-                        <p>It's fry-day!</p>
-                        <p>Get yourself some all new fried recipes so you
-                            can oil up for
-                            your next perfect weekend</p>
-                    </div>
-                    <img src="./pictures/fried-banner.svg"
-                         class="d-block w-100 " alt="...">
-                </a>
-                <a class="carousel-item" href="" data-bs-interval="4000">
-                    <div class="banner-content ">
-                        <p>All new</p>
-                        <p>Pasta La Vista, baby!</p>
-                        <p>Try out these new pasta recipes that are so good
-                            it will make
-                            you pasta way</p>
-                    </div>
-                    <img src="./pictures/pasta-banner.svg"
-                         class="d-block w-100" alt="...">
-                </a>
-                <a class="carousel-item" href="" data-bs-interval="4000">
-                    <div class="banner-content ">
-                        <p>All new</p>
-                        <p>Udon know anything!</p>
-                        <p>That's why we've prepared for you some delicious
-                            Japanese
-                            recipes to try out</p>
-                    </div>
-                    <img src="./pictures/udon-banner.svg"
-                         class="d-block w-100" alt="...">
-                </a>
-            </div>
-        </div>
-
+        <%@include file="banner.jsp" %>
 
         <!--         The news section      -->
         <div class="new">
@@ -131,16 +75,12 @@ integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJ
         <div class="recommendation-1">
             <div class="container ">
                 <div class="row">
-                    <header>
-                        <a href="" class="header">
-                            <p>Mr. Worldwide</p>
-                            <img src="./assets/arrow.svg" alt="">
-                        </a>
+                    <header class="search-result-header">
+                        <p>Mr. Worldwide</p>
                     </header>
                 </div>
                 <div class="row recommendation-content">
-                    <% ArrayList<RecipeDTO> listRecipe
-                                = RecipeDAO.getAllRecipes();
+                    <% ArrayList<RecipeDTO> listRecipe = RecipeDAO.getAllRecipes();
                         if (listRecipe != null && listRecipe.size() != 0) {
                             for (RecipeDTO r : listRecipe) {
                     %>
@@ -160,12 +100,31 @@ integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJ
                             </p>
                         </div>
                         <div class="recommendation-content-reciew">
-                            <% for (int i = 0; i
-                                                                                        < RecipeDAO.getRatingByRecipeId(r.getId());
-                                                                                        i++) { %>
-                            <img src="./assets/full-star.png"
-                                 alt="">
-                            <% }%>
+                            <%
+                                double avaRating = RecipeDAO.getRatingByRecipeId(r.getId());
+                                int fullStars = (int) avaRating;
+                                boolean hasHalfStar = avaRating - fullStars >= 0.5;
+
+                                for (int i = 0; i < fullStars; i++) {
+                            %>
+                            <img src="./assets/full-star-icon.svg" alt="">
+                            <%
+                                }
+
+                                if (hasHalfStar) {
+                            %>
+                            <img src="./assets/half-star-icon.svg" alt="" style="width: 17px">
+                            <%
+                                }
+
+                                int remainingStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+                                for (int i = 0; i < remainingStars; i++) {
+                            %>
+                            <img src="./assets/empty-star-icon.svg" alt="">
+                            <%
+                                }
+                            %>
                             <p
                                 class="recommendation-content-reciew-rating">
                                 <%=RecipeDAO.getRatingByRecipeId(r.getId())%>
@@ -173,7 +132,7 @@ integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJ
                         </div>
                     </a>
                     <% }
-                                                                        } %>
+                        } %>
                 </div>
             </div>
         </div>
@@ -209,20 +168,17 @@ integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJ
                             time = "dinner";
                         } else if (currentTime.isAfter(NightStartTime)
                                 || currentTime.isBefore(MorningStartTime)) {
-                                                                        recommendList = NavigationBarUtils.searchRecipes("Snack", "Category"
-                                                                        );
-                                                                        time = "midnight snacks";
-                                                                    }%>
-                    <header>
-                        <a href="" class="header">
-                            <p>What's for <%= time%> today? </p>
-                            <img src="./assets/arrow.svg" alt="">
-                        </a>
+                            recommendList = NavigationBarUtils.searchRecipes("Snack", "Category"
+                            );
+                            time = "midnight snacks";
+                        }%>
+                    <header class="search-result-header">
+                        <p>What's for <%= time%> today? </p>
                     </header>
                 </div>
                 <div class="row recommendation-content">
                     <% if (recommendList != null && recommendList.size() != 0) {
-                                                                        for (RecipeDTO list : recommendList) {%>
+                            for (RecipeDTO list : recommendList) {%>
                     <a href=""
                        class="col-md-4 recommendation-content-post">
                         <div class="recommendation-content-picture">
@@ -239,10 +195,9 @@ integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJ
                         </div>
                         <div class="recommendation-content-reciew">
                             <% for (int i = 0; i
-                                                                                        < RecipeDAO.getRatingByRecipeId(list.getId());
-                                                                                        i++) { %>
-                            <img src="./assets/full-star.png"
-                                 alt="">
+                                        < RecipeDAO.getRatingByRecipeId(list.getId());
+                                        i++) { %>
+                            <img src="./assets/full-star-icon.svg">
                             <% }%>
                             <p
                                 class="recommendation-content-reciew-rating">
@@ -251,8 +206,9 @@ integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJ
                         </div>
                     </a>
                     <% }
-                    } else {
-                        System.out.println("[TIME BASED RECIPE]: The recipe recieved is null"); } %>
+                        } else {
+                            System.out.println("[TIME BASED RECIPE]: The recipe recieved is null");
+                        } %>
                 </div>
             </div>
         </div>
@@ -273,13 +229,10 @@ integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJ
                     }
                 %>
                 <div class="row">
-                    <header>
-                        <a href="" class="header">
-                            <p>
-                                <%= selectedSuggestion%> Recipe(s)
-                            </p>
-                            <img src="./assets/arrow.svg" alt="">
-                        </a>
+                    <header class="search-result-header">
+                        <p>
+                            <%= selectedSuggestion%> Recipe(s)
+                        </p>
                     </header>
                 </div>
                 <div class="row recommendation-content">
@@ -303,12 +256,31 @@ integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJ
                             </p>
                         </div>
                         <div class="recommendation-content-reciew">
-                            <% for (int i = 0; i
-                                                                                            < RecipeDAO.getRatingByRecipeId(r.getId());
-                                                                                            i++) { %>
-                            <img src="./assets/full-star.png"
-                                 alt="">
-                            <% }%>
+                            <%
+                                double avaRating = RecipeDAO.getRatingByRecipeId(r.getId());
+                                int fullStars = (int) avaRating; 
+                                boolean hasHalfStar = avaRating - fullStars >= 0.5; 
+
+                                for (int i = 0; i < fullStars; i++) {
+                            %>
+                            <img src="./assets/full-star-icon.svg" alt="">
+                            <%
+                                }
+
+                                if (hasHalfStar) {
+                            %>
+                            <img src="./assets/half-star-icon.svg" alt="" style="width: 17px">
+                            <%
+                                }
+
+                                int remainingStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+                                for (int i = 0; i < remainingStars; i++) {
+                            %>
+                            <img src="./assets/empty-star-icon.svg" alt="" >
+                            <%
+                                }
+                            %>
                             <p
                                 class="recommendation-content-reciew-rating">
                                 <%=RecipeDAO.getRatingByRecipeId(r.getId())%>
@@ -316,7 +288,7 @@ integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJ
                         </div>
                     </a>
                     <% }
-                                                                            }%>
+                        }%>
                 </div>
             </div>
         </div>
@@ -324,11 +296,8 @@ integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJ
         <!--         Footer       -->
         <%@include file="footer.jsp" %>
 
-        <!--      Bootstrap for JS         -->
-        <script
-            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
-        crossorigin="anonymous"></script>
+        <script src="bootstrap/js/bootstrap.min.js" ></script>
+
     </body>
 
 </html>

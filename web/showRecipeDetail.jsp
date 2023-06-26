@@ -1,5 +1,8 @@
 <%-- Document : showRecipeDetail Created on : Jun 10, 2023, 9:04:47 AM Author : Admin --%>
 
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.sql.Timestamp"%>
+<%@page import="Nutrition.NutritionDTO"%>
 <%@page import="User.UserDTO"%>
 <%@page import="Direction.DirectionDAO"%>
 <%@page import="Recipe.RecipeDAO"%>
@@ -17,9 +20,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!--      Bootstrap         -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
-              integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+        <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css"/>
         <!--      CSS         -->
         <link rel="stylesheet" href="./styles/userStyle.css">
         <link rel="stylesheet" href="./styles/adminStyle.css">
@@ -37,6 +38,7 @@
             <%
                 ArrayList<IngredientDetailDTO> ingredientDetailList = (ArrayList) request.getAttribute("ingredientDetailList");
                 ArrayList<ReviewDTO> reviewList = (ArrayList) request.getAttribute("reviewList");
+                NutritionDTO nutrition = (NutritionDTO) request.getAttribute("nutrition");
                 RecipeDTO recipe = (RecipeDTO) request.getAttribute("recipe");
                 int ownerId = recipe.getUser_id();
                 UserDTO owner = UserDAO.getUserByUserId(ownerId);
@@ -56,50 +58,50 @@
                         <img src="assets/Logo3.svg" alt="">
                     </a>
                     <div>
-                        <a href="admin.jsp">
-                            <img src="./assets/public.svg" alt="">
+                        <a href="admin.jsp" >
+                            <img src="./assets/public-unchosen-icon.svg" alt="">
                             Dashboard
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageAccount">
-                            <img src="./assets/user-unchose.svg" alt="">
+                        <a href="MainController?action=manageAccount" >
+                            <img src="./assets/user-unchosen-icon.svg" alt="">
                             User
                         </a>
                     </div>
                     <div>
                         <a href="MainController?action=manageRecipe" class="active">
-                            <img src="./assets/post-unchose.svg" alt="">
-                            Posts
+                            <img src="./assets/post-icon.svg" alt="">
+                            Recipe
                         </a>
                     </div>
                     <div>
                         <a href="MainController?action=manageSuggestion">
-                            <img src="./assets/content-unchose.svg" alt="">
+                            <img src="./assets/content-unchosen-icon.svg" alt="">
                             Content
                         </a>
                     </div>
                     <div>
                         <a href="MainController?action=manageNews">
-                            <img src="./assets/news-unchose.svg" alt="">
+                            <img src="./assets/news-unchosen-icon.svg" alt="">
                             News
                         </a>
                     </div>
                     <div>
                         <a href="#">
-                            <img src="./assets/policies-unchose.svg" alt="">
+                            <img src="./assets/policies-unchosen-icon.svg" alt="">
                             Policies
                         </a>
                     </div>
                     <div>
                         <a href="#">
-                            <img src="./assets/broadcast-unchose.svg" alt="">
+                            <img src="./assets/broadcast-unchosen-icon.svg" alt="">
                             Broadcast
                         </a>
                     </div>
                     <div>
                         <a href="#">
-                            <img src="./assets/bug-report-unchose.svg" alt="">
+                            <img src="./assets/bug-report-unchosen-icon.svg" alt="">
                             Report
                         </a>
                     </div>
@@ -193,7 +195,14 @@
                         %>
 
                         <div class="container ">
+
                             <div class="row recipe-detail-info">
+                                <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item"><a href="#">Recipes List</a></li>
+                                        <li class="breadcrumb-item current-link" aria-current="page">Recipe</li>
+                                    </ol>
+                                </nav>
                                 <header class="recipe-detail-info-main-header">
                                     <%= recipe.getTitle()%>
                                 </header>
@@ -202,16 +211,43 @@
                                     <div>
                                         <span>By</span>
                                         <span><a href="<%=link%>"><%= request.getAttribute("owner")%></a></span>
-                                        <p>Published on <%= recipe.getCreate_at()%></p>
+                                            <%
+                                                Timestamp timestamp = null;
+                                                if (recipe.getUpdate_at() == null) {
+                                                    timestamp = recipe.getCreate_at();
+                                                } else {
+                                                    timestamp = recipe.getUpdate_at();
+                                                }
+                                                SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
+                                                String date = dateFormat.format(timestamp);
+                                            %>
+                                        <p>Published on <%= date%></p>
                                     </div>
                                 </div>
                                 <div class="recipe-detail-info-interaction">
                                     <div class="recipe-detail-info-review">
                                         <%
                                             double avaRating = (Double) request.getAttribute("avgRating");
-                                            for (double i = 0; i < avaRating; i++) {
+                                            int fullStars = (int) avaRating;
+                                            boolean hasHalfStar = avaRating - fullStars >= 0.5;
+
+                                            for (int i = 0; i < fullStars; i++) {
                                         %>
-                                        <img src="./assets/full-star.png" alt="">
+                                        <img src="./assets/full-star-icon.svg" alt="">
+                                        <%
+                                            }
+
+                                            if (hasHalfStar) {
+                                        %>
+                                        <img src="./assets/half-star-icon.svg" alt="" style="width: 17px">
+                                        <%
+                                            }
+
+                                            int remainingStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+                                            for (int i = 0; i < remainingStars; i++) {
+                                        %>
+                                        <img src="./assets/empty-star-icon.svg" alt="">
                                         <%
                                             }
                                         %>
@@ -268,6 +304,24 @@
                                             <div class="col-md-3">
                                                 <p>Serving:</p>
                                                 <p><%= recipe.getServings()%></p>
+                                            </div>
+
+                                            <!-- Nutrition Content-->
+                                            <div class="col-md-3">
+                                                <p>Calories</p>
+                                                <p><%= nutrition.getCalories()%></p>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <p>Fat:</p>
+                                                <p><%= nutrition.getFat()%> gram(s)</p>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <p>Carbs: </p>
+                                                <p><%= nutrition.getCarbs()%> gram(s)</p>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <p>Protein:</p>
+                                                <p><%= nutrition.getProtein()%> gram(s)</p>
                                             </div>
                                         </div>
                                     </div>
@@ -375,5 +429,7 @@
                     </form>
                 </div>
             </div>
+        </div>
+        <script src="bootstrap/js/bootstrap.min.js" ></script>
     </body>
 </html>

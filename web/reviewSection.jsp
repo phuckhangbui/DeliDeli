@@ -18,8 +18,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!--      Bootstrap         -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
-              integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+        <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css"/>
         <!--      CSS         -->
         <link rel="stylesheet" href="./styles/userStyle.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -190,7 +189,7 @@
                             <%
                                 for (int i = 0; i < o.getRating(); i++) {
                             %>
-                            <img src="./assets/full-star.png" alt="">
+                            <img src="./assets/full-star-icon.svg" alt="">
                             <%
                                 }
                             %>
@@ -213,5 +212,7 @@
             </div>
         </div>
 
+
+        <script src="bootstrap/js/bootstrap.min.js" ></script>
     </body>
 </html>
