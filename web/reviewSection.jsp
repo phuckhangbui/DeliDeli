@@ -37,8 +37,6 @@
 //                int ownerId = recipe.getUser_id();
 //                UserDTO user = UserDAO.getUserByUserId(ownerId);
 //                ArrayList<ReviewDTO> reviewList = (ArrayList) request.getAttribute("reviewList");
-
-
             %>
 
             <%  String activeScroll = request.getParameter("activeScroll");
@@ -99,7 +97,6 @@
                     scrollTarget.scrollIntoView({behavior: 'smooth'});
                 }
             </script>
-
             <%
                 }
             } else {

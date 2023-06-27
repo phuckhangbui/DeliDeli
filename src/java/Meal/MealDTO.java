@@ -17,16 +17,18 @@ public class MealDTO {
     private int recipe_id;
     private Time start_time; 
     private Time end_time; 
+    private int plan_id;
 
     public MealDTO() {
     }
 
-    public MealDTO(int id, int date_id, int recipe_id, Time start_time, Time end_time) {
+    public MealDTO(int id, int date_id, int recipe_id, Time start_time, Time end_time, int plan_id) {
         this.id = id;
         this.date_id = date_id;
         this.recipe_id = recipe_id;
         this.start_time = start_time;
         this.end_time = end_time;
+        this.plan_id = plan_id;
     }
 
     public int getId() {
@@ -68,6 +70,15 @@ public class MealDTO {
     public void setEnd_time(Time end_time) {
         this.end_time = end_time;
     }
+
+    public int getPlan_id() {
+        return plan_id;
+    }
+
+    public void setPlan_id(int plan_id) {
+        this.plan_id = plan_id;
+    }
+
 
     
 }
