@@ -100,7 +100,7 @@
                         </header>
                     </div>
                     <div class="row user-community-favorite-recipe" id="favoriteRecipe">
-                        <% 
+                        <%
                             int count = 0;
                             for (FavoriteDTO list : favoriteList) {
                                 count++;
@@ -112,8 +112,8 @@
                                 <img src="<%= RecipeDAO.getThumbnailByRecipeId(list.getRecipe_id()).getThumbnailPath()%>" alt="">
                             </div>
                             <div>
-                                <p><%= RecipeDAO.getCategoryByRecipeId(list.getRecipe_id()) %></p>
-                                <p><%= recipe.getTitle() %></p>
+                                <p><%= RecipeDAO.getCategoryByRecipeId(list.getRecipe_id())%></p>
+                                <p><%= recipe.getTitle()%></p>
                             </div>
                             <div class="recommendation-content-reciew">
                                 <%
@@ -124,7 +124,7 @@
                                     }
                                 %>
                                 <p class="recommendation-content-reciew-rating">
-                                    <%= RecipeDAO.getRatingByRecipeId(list.getRecipe_id()) %>
+                                    <%= RecipeDAO.getRatingByRecipeId(list.getRecipe_id())%>
                                 </p>
                             </div>
                         </a>
@@ -223,9 +223,27 @@
                             </div>
                             <div class="recommendation-content-reciew">
                                 <%
-                                    for (int i = 0; i < RecipeDAO.getRatingByRecipeId(r.getId()); i++) {
+                                    double avaRating = RecipeDAO.getRatingByRecipeId(r.getId());
+                                    int fullStars = (int) avaRating;
+                                    boolean hasHalfStar = avaRating - fullStars >= 0.5;
+
+                                    for (int i = 0; i < fullStars; i++) {
                                 %>
-                                <img src="./assets/full-star.png" alt="">
+                                <img src="./assets/full-star-icon.svg" alt="">
+                                <%
+                                    }
+
+                                    if (hasHalfStar) {
+                                %>
+                                <img src="./assets/half-star-icon.svg" alt="" style="width: 17px">
+                                <%
+                                    }
+
+                                    int remainingStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+                                    for (int i = 0; i < remainingStars; i++) {
+                                %>
+                                <img src="./assets/empty-star-icon.svg" alt="">
                                 <%
                                     }
                                 %>
@@ -243,9 +261,27 @@
                             </div>
                             <div class="recommendation-content-reciew">
                                 <%
-                                    for (int i = 0; i < RecipeDAO.getRatingByRecipeId(r.getId()); i++) {
+                                    double avaRating = RecipeDAO.getRatingByRecipeId(r.getId());
+                                    int fullStars = (int) avaRating;
+                                    boolean hasHalfStar = avaRating - fullStars >= 0.5;
+
+                                    for (int i = 0; i < fullStars; i++) {
                                 %>
-                                <img src="./assets/full-star.png" alt="">
+                                <img src="./assets/full-star-icon.svg" alt="">
+                                <%
+                                    }
+
+                                    if (hasHalfStar) {
+                                %>
+                                <img src="./assets/half-star-icon.svg" alt="" style="width: 17px">
+                                <%
+                                    }
+
+                                    int remainingStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+                                    for (int i = 0; i < remainingStars; i++) {
+                                %>
+                                <img src="./assets/empty-star-icon.svg" alt="">
                                 <%
                                     }
                                 %>
@@ -362,12 +398,22 @@
                             </div>
                             <div class="recommendation-content-reciew">
                                 <%
-                                    for (int i = 0; i < review.getRating(); i++) {
+                                    int fullStars = review.getRating();
+                                    for (int i = 0; i < fullStars; i++) {
                                 %>
-                                <img src="./assets/full-star.png" alt="">
+                                <img src="./assets/full-star-icon.svg" alt="">
+                                <%
+                                    }
+                                    int remainingStars = 5 - fullStars;
+
+                                    for (int i = 0; i < remainingStars; i++) {
+                                %>
+                                <img src="./assets/empty-star-icon.svg" alt="">
                                 <%
                                     }
                                 %>
+
+
                             </div>
                             <div class="user-community-recipe-review-card-content">
                                 <p><%=review.getContent()%></p>
@@ -385,9 +431,17 @@
                             </div>
                             <div class="recommendation-content-reciew">
                                 <%
-                                    for (int i = 0; i < review.getRating(); i++) {
+                                    int fullStars = review.getRating();
+                                    for (int i = 0; i < fullStars; i++) {
                                 %>
-                                <img src="./assets/full-star.png" alt="">
+                                <img src="./assets/full-star-icon.svg" alt="">
+                                <%
+                                    }
+                                    int remainingStars = 5 - fullStars;
+
+                                    for (int i = 0; i < remainingStars; i++) {
+                                %>
+                                <img src="./assets/empty-star-icon.svg" alt="">
                                 <%
                                     }
                                 %>
