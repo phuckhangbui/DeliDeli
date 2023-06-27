@@ -4,6 +4,8 @@
     Author     : Admin
 --%>
 
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.sql.Timestamp"%>
 <%@page import="User.UserDTO"%>
 <%@page import="Recipe.RecipeDAO"%>
 <%@page import="Recipe.RecipeDTO"%>
@@ -236,6 +238,7 @@
                                     <th>No</th>
                                     <th>Title</th>
                                     <th>Create at</th>
+                                    <th>Update at</th>
                                     <th>Owner</th>
                                     <th>Status</th>
                                     <th>Action</th>
@@ -249,7 +252,26 @@
                                 <tr>
                                     <td><%= count%></td>
                                     <td><%= r.getTitle()%></td>
-                                    <td><%= r.getCreate_at()%></td>
+                                    <% Timestamp timestamp = r.getCreate_at();
+                                        SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
+                                        String createDate = dateFormat.format(timestamp);
+                                    %>
+                                    <td><%= createDate%></td>
+                                    <%
+                                        if (r.getUpdate_at() == null) {
+                                    %>
+                                    <td><%= createDate%></td>
+                                    <%
+                                    } else {
+                                        timestamp = r.getUpdate_at();
+                                        dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
+                                        String updateDate = dateFormat.format(timestamp);
+                                    %>
+                                    <td><%= updateDate%>
+                                        <%
+                                            }
+                                        %>
+                                    </td>
                                     <td><a href="MainController?action=showUserDetail&username=<%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%>"><%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%></a></td>
                                     <td><%= tmp[r.getStatus()]%></td>
                                     <td>
@@ -277,59 +299,7 @@
                             %>
                         </div>
 
-                        <%
-                            ArrayList<RecipeDTO> listSearch = (ArrayList) request.getAttribute("searchRecipesList");
-                            if (listSearch != null && listSearch.size() > 0) {
-                        %>
 
-                        <div class="nav-top-bar-search">
-                            <form action="MainController" method="post" class="nav-top-bar-search-user">
-                                <button type="submit" name="action" value="search"><img src="assets/search2.svg" alt=""></button>
-                                <input type="hidden" name="admin" value="admin"> 
-                                <input type="text" name="txtsearch">
-                                <select name="searchBy" id="">
-                                    <option value="Title" selected="selected">TITLE</option>
-                                    <option value="Category">CATEGORY</option>
-                                    <option value="Cuisine">CUISINES</option>
-                                </select>
-                            </form>
-                        </div>
-                        <table class="table table-striped table-hover">
-                            <thead>
-                                <tr>
-                                    <th>No</th>
-                                    <th>Title</th>
-                                    <th>Create at</th>
-                                    <th>Owner</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody class="table-group-divider">
-                                <%
-                                    int count = 1;
-                                    for (RecipeDTO r : listSearch) {
-                                %>
-                                <tr>
-                                    <td><%= count%></td>
-                                    <td><%= r.getTitle()%></td>
-                                    <td><%= r.getCreate_at()%></td>
-                                    <td><a href="MainController?action=showUserDetail&username=<%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%>"><%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%></a></td>
-                                    <td><%= tmp[r.getStatus()]%></td>
-                                    <td>
-                                        <form action="MainController" method="post" class="recipe-table-button">
-                                            <input type="hidden" value="<%= r.getId()%>" name="id">
-                                            <button type="submit" value="showRecipeDetail" name="action">Show</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                                <%
-                                            count++;
-                                        }
-                                    }
-                                %>
-                            </tbody>
-                        </table>
                     </div>
                 </div>
             </div>

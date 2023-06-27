@@ -7,13 +7,12 @@ package User;
 
 import PasswordEncode.EncodePass;
 import Utils.DBUtils;
-import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 /**
@@ -21,6 +20,29 @@ import java.util.ArrayList;
  * @author Daiisuke
  */
 public class UserDAO {
+    
+    public static int updateAvatarImage(int userId, String image) {
+        int result = 0;
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                String sql = "UPDATE [User] SET avatar = ? WHERE id = ?";
+
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setString(1, image);
+                pst.setInt(2, userId);
+                result = pst.executeUpdate();
+                pst.close();
+                cn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 
     //New
     public static int getTotalAccountsBasedOnRole(String roleTag) {
@@ -111,6 +133,7 @@ public class UserDAO {
                 ResultSet rs = pst.executeQuery();
                 if (rs != null) {
                     while (rs.next()) {
+                        int id = rs.getInt("id");
                         String userName = rs.getString("user_name");
                         String email = rs.getString("email");
                         String password = rs.getString("password");
@@ -120,7 +143,7 @@ public class UserDAO {
                         int status = rs.getInt("status");
                         int role = rs.getInt("role_id");
                         int setting = rs.getInt("user_setting_id");
-                        user = new UserDTO(userName, email, password, avatar, createAt, token, status, role, setting);
+                        user = new UserDTO(id, userName, email, password, avatar, createAt, token, status, role, setting);
                     }
                 }
                 rs.close();
@@ -166,6 +189,8 @@ public class UserDAO {
     public static boolean checkOldPassword(int userId, String oldPassword) throws Exception {
         Connection cn = DBUtils.getConnection();
         String password = "";
+        EncodePass encode = new EncodePass();
+        oldPassword = encode.toHexString(encode.getSHA(oldPassword));
 
         if (cn != null) {
             String sql = "SELECT password FROM [User] WHERE id = ?";
@@ -206,6 +231,7 @@ public class UserDAO {
     }
 
     public static boolean checkEmailExist(String email) throws Exception {
+        boolean check = false;
         Connection cn = DBUtils.getConnection();
         UserDTO user = null;
         if (cn != null) {
@@ -225,7 +251,10 @@ public class UserDAO {
                 user = new UserDTO(userName, email, password, avatar, createAt, status, role, setting);
             }
         }
-        return user != null;
+        if (user != null){
+            check = true;
+        }
+        return check;
     }
 
     public static boolean checkUsernameExist(String userName) throws Exception {
@@ -281,28 +310,39 @@ public class UserDAO {
         return user;
     }
 
-    public static boolean insertAccount(String username, String email, String password, Date createAt, int status, int role, int setting, String token) throws Exception {
-        boolean check = false;
+    public static int insertAccount(String username, String email, String password, String avatar, Date createAt, int status, int role, int setting, String token) throws Exception {
+        int generatedId = -1;
         Connection cn = DBUtils.getConnection();
         EncodePass encode = new EncodePass();
         password = encode.toHexString(encode.getSHA(password));
         System.out.println("[DAO - InsertAccount]: Hash generated: " + password);
         if (cn != null) {
-            String sql = "INSERT INTO [User](user_name, email, password, create_at, role_id, status, user_setting_id, token) \n"
+            String sql = "INSERT INTO [User](user_name, email, password, avatar, create_at, role_id, status, user_setting_id, token) \n"
                     + "VALUES \n"
-                    + "(?, ?, ?, ?, ?, ?, ?, ?)";
-            PreparedStatement pst = cn.prepareStatement(sql);
+                    + "(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            PreparedStatement pst = cn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             pst.setString(1, username);
             pst.setString(2, email);
             pst.setString(3, password);
-            pst.setDate(4, createAt);
-            pst.setInt(5, status);
-            pst.setInt(6, role);
-            pst.setInt(7, setting);
-            pst.setString(8, token);
-            check = pst.executeUpdate() > 0 ? true : false;
+            pst.setString(4, avatar);
+            pst.setDate(5, createAt);
+            pst.setInt(6, status);
+            pst.setInt(7, role);
+            pst.setInt(8, setting);
+            pst.setString(9, token);
+            // Step 3: Execute the prepared statement and retrieve the generated keys
+            pst.executeUpdate();
+            ResultSet generatedKeys = pst.getGeneratedKeys();
+
+            // Step 4: Retrieve the generated ID
+            if (generatedKeys.next()) {
+                generatedId = generatedKeys.getInt(1);
+            }
+
+            // Step 5: Close the database connection and resources
+            generatedKeys.close();
         }
-        return check;
+        return generatedId;
     }
 
     public static int insertUserDetailDefault() {
@@ -615,7 +655,7 @@ public class UserDAO {
     }
 
     public static void main(String[] args) throws Exception {
-        System.out.println(UserDAO.insertUserDetailDefault());
+        System.out.println(UserDAO.checkOldPassword(3, "123"));
     }
 
 }

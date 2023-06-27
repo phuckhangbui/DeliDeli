@@ -1,5 +1,8 @@
 <%-- Document : showRecipeDetail Created on : Jun 10, 2023, 9:04:47 AM Author : Admin --%>
 
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.sql.Timestamp"%>
+<%@page import="Nutrition.NutritionDTO"%>
 <%@page import="User.UserDTO"%>
 <%@page import="Direction.DirectionDAO"%>
 <%@page import="Recipe.RecipeDAO"%>
@@ -35,6 +38,7 @@
             <%
                 ArrayList<IngredientDetailDTO> ingredientDetailList = (ArrayList) request.getAttribute("ingredientDetailList");
                 ArrayList<ReviewDTO> reviewList = (ArrayList) request.getAttribute("reviewList");
+                NutritionDTO nutrition = (NutritionDTO) request.getAttribute("nutrition");
                 RecipeDTO recipe = (RecipeDTO) request.getAttribute("recipe");
                 int ownerId = recipe.getUser_id();
                 UserDTO owner = UserDAO.getUserByUserId(ownerId);
@@ -207,16 +211,43 @@
                                     <div>
                                         <span>By</span>
                                         <span><a href="<%=link%>"><%= request.getAttribute("owner")%></a></span>
-                                        <p>Published on <%= recipe.getCreate_at()%></p>
+                                            <%
+                                                Timestamp timestamp = null;
+                                                if (recipe.getUpdate_at() == null) {
+                                                    timestamp = recipe.getCreate_at();
+                                                } else {
+                                                    timestamp = recipe.getUpdate_at();
+                                                }
+                                                SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
+                                                String date = dateFormat.format(timestamp);
+                                            %>
+                                        <p>Published on <%= date%></p>
                                     </div>
                                 </div>
                                 <div class="recipe-detail-info-interaction">
                                     <div class="recipe-detail-info-review">
                                         <%
                                             double avaRating = (Double) request.getAttribute("avgRating");
-                                            for (double i = 0; i < avaRating; i++) {
+                                            int fullStars = (int) avaRating;
+                                            boolean hasHalfStar = avaRating - fullStars >= 0.5;
+
+                                            for (int i = 0; i < fullStars; i++) {
                                         %>
                                         <img src="./assets/full-star-icon.svg" alt="">
+                                        <%
+                                            }
+
+                                            if (hasHalfStar) {
+                                        %>
+                                        <img src="./assets/half-star-icon.svg" alt="" style="width: 17px">
+                                        <%
+                                            }
+
+                                            int remainingStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+                                            for (int i = 0; i < remainingStars; i++) {
+                                        %>
+                                        <img src="./assets/empty-star-icon.svg" alt="">
                                         <%
                                             }
                                         %>
@@ -273,6 +304,24 @@
                                             <div class="col-md-3">
                                                 <p>Serving:</p>
                                                 <p><%= recipe.getServings()%></p>
+                                            </div>
+
+                                            <!-- Nutrition Content-->
+                                            <div class="col-md-3">
+                                                <p>Calories</p>
+                                                <p><%= nutrition.getCalories()%></p>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <p>Fat:</p>
+                                                <p><%= nutrition.getFat()%> gram(s)</p>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <p>Carbs: </p>
+                                                <p><%= nutrition.getCarbs()%> gram(s)</p>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <p>Protein:</p>
+                                                <p><%= nutrition.getProtein()%> gram(s)</p>
                                             </div>
                                         </div>
                                     </div>

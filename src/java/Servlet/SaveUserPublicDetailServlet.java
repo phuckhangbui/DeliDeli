@@ -10,14 +10,20 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 /**
  *
  * @author Admin
  */
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB - exceed 2MB => disk, else memory => caching.
+        maxFileSize = 1024 * 1024 * 10, // 10MB => maximum upload to server.
+        maxRequestSize = 1024 * 1024 * 50) // 50MB => maximum request from server.
+
 public class SaveUserPublicDetailServlet extends HttpServlet {
 
     private static final String USER_PUBLIC_DETAIL_PAGE = "userPublicDetail.jsp";
@@ -27,7 +33,9 @@ public class SaveUserPublicDetailServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            List<String> errorList = new ArrayList<>();
+//            Part filePart = request.getPart("file");
+//            
+//            out.println(filePart);
 
             String userId = request.getParameter("userId");
             String firstName = request.getParameter("txtFirstName");
@@ -39,9 +47,9 @@ public class SaveUserPublicDetailServlet extends HttpServlet {
             int result = UserDetailDAO.updateUserPublicDetail(new Integer(userId), firstName, lastName, specialty, bio, birthdate);
             if (result > 0) {
                 request.setAttribute("userId", userId);
-                request.getRequestDispatcher(USER_PUBLIC_DETAIL_PAGE).forward(request, response);
+                //request.getRequestDispatcher(USER_PUBLIC_DETAIL_PAGE).forward(request, response);
+                request.getRequestDispatcher("UploadAvatarImageServlet").forward(request, response);
             }
-            System.out.println(birthdate);
         }
     }
 

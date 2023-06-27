@@ -8,6 +8,8 @@ import Direction.DirectionDAO;
 import Direction.DirectionDTO;
 import IngredientDetail.IngredientDetailDAO;
 import IngredientDetail.IngredientDetailDTO;
+import Nutrition.NutritionDAO;
+import Nutrition.NutritionDTO;
 import Recipe.RecipeDAO;
 import Recipe.RecipeDTO;
 import java.io.IOException;
@@ -60,6 +62,9 @@ public class ShowRecipeDetailServlet extends HttpServlet {
 
             DirectionDTO directionList = DirectionDAO.getDirectionByRecipeId(new Integer(id));
             request.setAttribute("directionList", directionList);
+            
+            NutritionDTO nutrition = NutritionDAO.getNutrition(new Integer(id));
+            request.setAttribute("nutrition", nutrition);
 
             try {
                 String image = RecipeDAO.getImageByRecipeId(new Integer(id)).getImgPath();
