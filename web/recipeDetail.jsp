@@ -4,17 +4,15 @@
     Author     : Admin
 --%>
 
+<%@page import="DTO.DirectionDTO"%>
+<%@page import="DAO.DirectionDAO"%>
+<%@page import="DAO.RecipeDAO"%>
+<%@page import="DAO.UserDAO"%>
+<%@page import="DTO.NutritionDTO"%>
+<%@page import="DTO.RecipeDTO"%>
+<%@page import="DTO.ReviewDTO"%>
+<%@page import="DTO.IngredientDetailDTO"%>
 <%@page import="java.text.SimpleDateFormat"%>
-<%@page import="Nutrition.NutritionDTO"%>
-<%@page import="Recipe.RecipeDAO"%>
-<%@page import="Direction.DirectionDAO"%>
-<%@page import="User.UserDAO"%>
-<%@page import="User.UserDTO"%>
-<%@page import="Review.ReviewDAO"%>
-<%@page import="Review.ReviewDTO"%>
-<%@page import="Recipe.RecipeDTO"%>
-<%@page import="IngredientDetail.IngredientDetailDTO"%>
-<%@page import="Direction.DirectionDTO"%>
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>

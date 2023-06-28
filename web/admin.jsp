@@ -4,18 +4,17 @@
     Author     : Admin
 --%>
 
+<%@page import="DAO.RecipeDAO"%>
+<%@page import="DTO.RecipeDTO"%>
+<%@page import="DAO.AdminDAO"%>
+<%@page import="DTO.UserDTO"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.sql.Timestamp"%>
 <%@page import="java.util.Map"%>
 <%@page import="java.util.TreeMap"%>
 <%@page import="java.sql.Date"%>
-<%@page import="Recipe.RecipeDAO"%>
-<%@page import="Recipe.RecipeDTO"%>
-<%@page import="Admin.AdminDAO"%>
 <%@page import="java.time.LocalDate"%>
-<%@page import="User.UserDAO"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="User.UserDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -35,9 +34,6 @@
     </head>
     <body>
         <div class="container-fluid">
-
-
-
             <div class="row">
                 <nav class="nav-left-bar col-md-2">
                     <a class="logo" href="">
@@ -50,25 +46,25 @@
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageAccount">
+                        <a href="AdminController?action=manageAccount">
                             <img src="./assets/user-unchosen-icon.svg" alt="">
                             User
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageRecipe">
+                        <a href="AdminController?action=manageRecipe">
                             <img src="./assets/post-unchosen-icon.svg" alt="">
                             Recipe
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageSuggestion">
+                        <a href="AdminController?action=manageSuggestion">
                             <img src="./assets/content-unchosen-icon.svg" alt="">
                             Content
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageNews">
+                        <a href="AdminController?action=manageNews">
                             <img src="./assets/news-unchosen-icon.svg" alt="">
                             News
                         </a>
@@ -142,7 +138,7 @@
                                                     <img src="assets/total-post-icon.svg" alt="">
                                                 </div>
                                             </div>
-                                            <a class="card-total-see-more" href="MainController?action=manageRecipe">
+                                            <a class="card-total-see-more" href="AdminController?action=manageRecipe">
                                                 <p>View More</p>
                                                 <p>></p>
                                             </a>
@@ -162,7 +158,7 @@
                                                     <img src="assets/total-user-icon.svg" alt="">
                                                 </div>
                                             </div>
-                                            <a class="card-total-see-more" href="MainController?action=manageAccount">
+                                            <a class="card-total-see-more" href="AdminController?action=manageAccount">
                                                 <p>View More</p>
                                                 <p>></p>
                                             </a>
@@ -227,7 +223,7 @@
                                                         SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
                                                         String date = dateFormat.format(timestamp);%>
                                                     <td><%= date%></td>
-                                                    <td><a href="MainController?action=showUserDetail&username=<%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%>"><%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%></a></td>
+                                                    <td><a href="AdminController?action=showUserDetail&username=<%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%>"><%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%></a></td>
                                                 </tr>
                                                 <% }
                                                     }
@@ -235,7 +231,7 @@
                                             </table>
                                             <div class="latest-table-button">
                                                 <button class="btn-table">
-                                                    <a href="MainController?action=manageRecipe">VIEW MORE</a>
+                                                    <a href="AdminController?action=manageRecipe">VIEW MORE</a>
                                                 </button>
                                             </div>
 
@@ -278,7 +274,7 @@
                                                     %>
                                                     <tr>
                                                         <td><%= ++i%></td>
-                                                        <td><a href="MainController?action=showUserDetail&username=<%= u.getUserName()%>"><%= u.getUserName()%></a></td>
+                                                        <td><a href="AdminController?action=showUserDetail&username=<%= u.getUserName()%>"><%= u.getUserName()%></a></td>
                                                         <td><%= u.getEmail()%></td>
                                                         <td><%= u.getCreateAt()%></td>
                                                     </tr>
@@ -289,7 +285,7 @@
                                             </table>
                                             <div class="latest-table-button">
                                                 <button class="btn-table">
-                                                    <a href="MainController?action=manageAccount">VIEW MORE</a>
+                                                    <a href="AdminController?action=manageAccount">VIEW MORE</a>
                                                 </button>
                                             </div>
                                         </div>

@@ -4,7 +4,7 @@
  */
 package Utils;
 
-import Recipe.RecipeDTO;
+import DTO.RecipeDTO;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;

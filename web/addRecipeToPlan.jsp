@@ -4,15 +4,16 @@
     Author     : Walking Bag
 --%>
 
-<%@page import="Diet.DietDAO"%>
-<%@page import="Diet.DietDTO"%>
-<%@page import="Plan.PlanDTO"%>
-<%@page import="PlanDate.PlanDateDTO"%>
-<%@page import="Meal.MealDAO"%>
+<%@page import="DAO.DietDAO"%>
+<%@page import="DTO.DietDTO"%>
+<%@page import="DAO.RecipeDAO"%>
+<%@page import="DTO.RecipeDTO"%>
+<%@page import="DAO.MealDAO"%>
+<%@page import="DTO.MealDTO"%>
+<%@page import="DTO.PlanDTO"%>
+<%@page import="DTO.PlanDateDTO"%>
+<%@page import="DTO.PlanDateDTO"%>
 <%@page import="java.text.SimpleDateFormat"%>
-<%@page import="Recipe.RecipeDAO"%>
-<%@page import="Recipe.RecipeDTO"%>
-<%@page import="Meal.MealDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -444,7 +445,7 @@
                             Add Recipes Section
                         </div>
                         <div class="add-recipe-to-plan-search-bar">
-                            <form action="MainController" method="post">
+                            <form action="UserController" method="post">
                                 <button type="submit" name="action" value="search">
                                     <img src="assets/search-icon.svg" alt="">
                                 </button>

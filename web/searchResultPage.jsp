@@ -4,8 +4,8 @@
     Author     : khang
 --%>
 
-<%@page import="Recipe.RecipeDAO"%>
-<%@page import="Recipe.RecipeDTO"%>
+<%@page import="DAO.RecipeDAO"%>
+<%@page import="DTO.RecipeDTO"%>
 <%@page import="java.util.ArrayList"%>
 <!DOCTYPE html>
 <html lang="en">

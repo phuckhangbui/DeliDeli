@@ -4,9 +4,9 @@
  */
 package Servlet;
 
-import PasswordEncode.EncodePass;
-import User.UserDAO;
-import User.UserDTO;
+import Utils.EncodePass;
+import DAO.UserDAO;
+import DTO.UserDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;

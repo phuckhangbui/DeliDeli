@@ -4,17 +4,17 @@
  */
 package Servlet;
 
-import Direction.DirectionDAO;
-import Direction.DirectionDTO;
-import IngredientDetail.IngredientDetailDAO;
-import IngredientDetail.IngredientDetailDTO;
-import Nutrition.NutritionDAO;
-import Nutrition.NutritionDTO;
-import Recipe.RecipeDAO;
-import Recipe.RecipeDTO;
-import RecipeImage.RecipeImageDTO;
-import Review.ReviewDAO;
-import Review.ReviewDTO;
+import DAO.DirectionDAO;
+import DTO.DirectionDTO;
+import DAO.IngredientDetailDAO;
+import DTO.IngredientDetailDTO;
+import DAO.NutritionDAO;
+import DTO.NutritionDTO;
+import DAO.RecipeDAO;
+import DTO.RecipeDTO;
+import DTO.RecipeImageDTO;
+import DAO.ReviewDAO;
+import DTO.ReviewDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;

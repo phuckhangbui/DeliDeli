@@ -4,8 +4,8 @@
     Author     : Walking Bag
 --%>
 
-<%@page import="Diet.DietDAO"%>
-<%@page import="Diet.DietDTO"%>
+<%@page import="DAO.DietDAO"%>
+<%@page import="DTO.DietDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -45,7 +45,7 @@
                                 <li class="breadcrumb-item current-link" aria-current="page">Add Plan</li>
                             </ol>
                         </nav>
-                        <form action="MainController" method="POST">
+                        <form action="UserController" method="POST">
                             <div class="add-plan-header">
                                 <p>Add a Plan</p>
                                 <p>

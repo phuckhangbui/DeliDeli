@@ -21,10 +21,6 @@
         <param-value>kdrqzqffvjjmddat</param-value>
     </context-param>
     <servlet>
-        <servlet-name>Example</servlet-name>
-        <servlet-class>Servlet.Example</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>Servlet.LoginServlet</servlet-class>
     </servlet>
@@ -42,15 +38,15 @@
     </servlet>
     <servlet>
         <servlet-name>SaveUserPublicDetailServlet</servlet-name>
-        <servlet-class>Servlet.SaveUserPublicDetailServlet</servlet-class>
+        <servlet-class>Servlet.User.SaveUserPublicDetailServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ChangeUserEmailServlet</servlet-name>
-        <servlet-class>Servlet.ChangeUserEmailServlet</servlet-class>
+        <servlet-class>Servlet.User.ChangeUserEmailServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ChangeUserPasswordServlet</servlet-name>
-        <servlet-class>Servlet.ChangeUserPasswordServlet</servlet-class>
+        <servlet-class>Servlet.User.ChangeUserPasswordServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>RecipeDetailServlet</servlet-name>
@@ -58,7 +54,7 @@
     </servlet>
     <servlet>
         <servlet-name>FeedbackServlet</servlet-name>
-        <servlet-class>Servlet.FeedbackServlet</servlet-class>
+        <servlet-class>Servlet.User.FeedbackServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>NewsDetailServlet</servlet-name>
@@ -70,87 +66,87 @@
     </servlet>
     <servlet>
         <servlet-name>ManageAccountServlet</servlet-name>
-        <servlet-class>Servlet.ManageAccountServlet</servlet-class>
+        <servlet-class>Servlet.Admin.ManageAccountServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>DeactivateAccountServlet</servlet-name>
-        <servlet-class>Servlet.DeactivateAccountServlet</servlet-class>
+        <servlet-class>Servlet.Admin.DeactivateAccountServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ActivateAccountServlet</servlet-name>
-        <servlet-class>Servlet.ActivateAccountServlet</servlet-class>
+        <servlet-class>Servlet.Admin.ActivateAccountServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ManageRecipeServlet</servlet-name>
-        <servlet-class>Servlet.ManageRecipeServlet</servlet-class>
+        <servlet-class>Servlet.Admin.ManageRecipeServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ConfirmRecipeServlet</servlet-name>
-        <servlet-class>Servlet.ConfirmRecipeServlet</servlet-class>
+        <servlet-class>Servlet.Admin.ConfirmRecipeServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>SearchAccountServlet</servlet-name>
-        <servlet-class>Servlet.SearchAccountServlet</servlet-class>
+        <servlet-class>Servlet.Admin.SearchAccountServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ShowUserDetailServlet</servlet-name>
-        <servlet-class>Servlet.ShowUserDetailServlet</servlet-class>
+        <servlet-class>Servlet.Admin.ShowUserDetailServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ShowRecipeDetailServlet</servlet-name>
-        <servlet-class>Servlet.ShowRecipeDetailServlet</servlet-class>
+        <servlet-class>Servlet.Admin.ShowRecipeDetailServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ManageNewsServlet</servlet-name>
-        <servlet-class>Servlet.ManageNewsServlet</servlet-class>
+        <servlet-class>Servlet.Admin.ManageNewsServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ShowNewsDetailServlet</servlet-name>
-        <servlet-class>Servlet.ShowNewsDetailServlet</servlet-class>
+        <servlet-class>Servlet.Admin.ShowNewsDetailServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>CreateNewsServlet</servlet-name>
-        <servlet-class>Servlet.CreateNewsServlet</servlet-class>
+        <servlet-class>Servlet.Admin.CreateNewsServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>UpdateNewsServlet</servlet-name>
-        <servlet-class>Servlet.UpdateNewsServlet</servlet-class>
+        <servlet-class>Servlet.Admin.UpdateNewsServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>DeleteNewsServlet</servlet-name>
-        <servlet-class>Servlet.DeleteNewsServlet</servlet-class>
+        <servlet-class>Servlet.Admin.DeleteNewsServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>DeleteAccountServlet</servlet-name>
-        <servlet-class>Servlet.DeleteAccountServlet</servlet-class>
+        <servlet-class>Servlet.Admin.DeleteAccountServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>EditFeedbackServlet</servlet-name>
-        <servlet-class>Servlet.EditFeedbackServlet</servlet-class>
+        <servlet-class>Servlet.User.EditFeedbackServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>DeleteFeedbackServlet</servlet-name>
-        <servlet-class>Servlet.DeleteFeedbackServlet</servlet-class>
+        <servlet-class>Servlet.User.DeleteFeedbackServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>UploadImageServlet</servlet-name>
-        <servlet-class>Servlet.UploadImageServlet</servlet-class>
+        <servlet-class>Servlet.User.UploadImageServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>EditRecipeServlet</servlet-name>
-        <servlet-class>Servlet.EditRecipeServlet</servlet-class>
+        <servlet-class>Servlet.User.EditRecipeServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>DeleteRecipeServlet</servlet-name>
-        <servlet-class>Servlet.DeleteRecipeServlet</servlet-class>
+        <servlet-class>Servlet.User.DeleteRecipeServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AddRecipeServlet</servlet-name>
-        <servlet-class>Servlet.AddRecipeServlet</servlet-class>
+        <servlet-class>Servlet.User.AddRecipeServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>UploadNewsImageServlet</servlet-name>
-        <servlet-class>Servlet.UploadNewsImageServlet</servlet-class>
+        <servlet-class>Servlet.Admin.UploadNewsImageServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ServletImageLoader</servlet-name>
@@ -158,19 +154,19 @@
     </servlet>
     <servlet>
         <servlet-name>SetNotificationStatusServlet</servlet-name>
-        <servlet-class>Servlet.SetNotificationStatusServlet</servlet-class>
+        <servlet-class>Servlet.User.SetNotificationStatusServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>DeleteNotificationServlet</servlet-name>
-        <servlet-class>Servlet.DeleteNotificationServlet</servlet-class>
+        <servlet-class>Servlet.User.DeleteNotificationServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AddPlanServlet</servlet-name>
-        <servlet-class>Servlet.AddPlanServlet</servlet-class>
+        <servlet-class>Servlet.User.AddPlanServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AddRecipeToPlanServlet</servlet-name>
-        <servlet-class>Servlet.AddRecipeToPlanServlet</servlet-class>
+        <servlet-class>Servlet.User.AddRecipeToPlanServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AddRecipeToPlan</servlet-name>
@@ -178,52 +174,56 @@
     </servlet>
     <servlet>
         <servlet-name>PlanDetailServlet</servlet-name>
-        <servlet-class>Servlet.PlanDetailServlet</servlet-class>
+        <servlet-class>Servlet.User.PlanDetailServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>SuggestionRecipeServlet</servlet-name>
-        <servlet-class>Servlet.SuggestionRecipeServlet</servlet-class>
+        <servlet-class>Servlet.Admin.SuggestionRecipeServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AddSuggestionSerlvet</servlet-name>
-        <servlet-class>Servlet.AddSuggestionSerlvet</servlet-class>
+        <servlet-class>Servlet.Admin.AddSuggestionSerlvet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>CreateSuggestionSerlvet</servlet-name>
-        <servlet-class>Servlet.CreateSuggestionSerlvet</servlet-class>
+        <servlet-class>Servlet.Admin.CreateSuggestionSerlvet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>FilterSuggestionServlet</servlet-name>
-        <servlet-class>Servlet.FilterSuggestionServlet</servlet-class>
+        <servlet-class>Servlet.Admin.FilterSuggestionServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>RemoveSuggestionServlet</servlet-name>
-        <servlet-class>Servlet.RemoveSuggestionServlet</servlet-class>
+        <servlet-class>Servlet.Admin.RemoveSuggestionServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ManageSuggestionServlet</servlet-name>
-        <servlet-class>Servlet.ManageSuggestionServlet</servlet-class>
+        <servlet-class>Servlet.Admin.ManageSuggestionServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>UpdateSuggestionServlet</servlet-name>
-        <servlet-class>Servlet.UpdateSuggestionServlet</servlet-class>
+        <servlet-class>Servlet.Admin.UpdateSuggestionServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>DeleteSuggestionServlet</servlet-name>
-        <servlet-class>Servlet.DeleteSuggestionServlet</servlet-class>
+        <servlet-class>Servlet.Admin.DeleteSuggestionServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>RejectRecipeServlet</servlet-name>
-        <servlet-class>Servlet.RejectRecipeServlet</servlet-class>
+        <servlet-class>Servlet.Admin.RejectRecipeServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>UploadAvatarImageServlet</servlet-name>
-        <servlet-class>Servlet.UploadAvatarImageServlet</servlet-class>
+        <servlet-class>Servlet.User.UploadAvatarImageServlet</servlet-class>
     </servlet>
-    <servlet-mapping>
-        <servlet-name>Example</servlet-name>
-        <url-pattern>/Example</url-pattern>
-    </servlet-mapping>
+    <servlet>
+        <servlet-name>AdminController</servlet-name>
+        <servlet-class>Servlet.Admin.AdminController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UserController</servlet-name>
+        <servlet-class>Servlet.User.UserController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -415,6 +415,14 @@
     <servlet-mapping>
         <servlet-name>UploadAvatarImageServlet</servlet-name>
         <url-pattern>/UploadAvatarImageServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminController</servlet-name>
+        <url-pattern>/AdminController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserController</servlet-name>
+        <url-pattern>/UserController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

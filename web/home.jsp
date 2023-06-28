@@ -1,12 +1,10 @@
 <%-- Document : home Created on : May 23, 2023, 8:09:36 AM Author : Admin --%>
+<%@page import="DAO.SuggestionDAO"%>
+<%@page import="DAO.RecipeDAO"%>
+<%@page import="DTO.RecipeDTO"%>
 <%@page import="Utils.NavigationBarUtils" %>
 <%@page import="java.time.LocalTime" %>
-<%@page import="Suggestion.SuggestionDAO" %>
-<%@page import="RecipeImage.RecipeImageDAO" %>
-<%@page import="User.UserDTO" %>
-<%@page import="Recipe.RecipeDAO" %>
 <%@page import="java.util.ArrayList" %>
-<%@page import="Recipe.RecipeDTO" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>

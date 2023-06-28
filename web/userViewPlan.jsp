@@ -4,17 +4,16 @@
     Author     : Walking Bag
 --%>
 
-<%@page import="PlanDate.PlanDateDTO"%>
+<%@page import="DTO.RecipeDTO"%>
+<%@page import="DAO.RecipeDAO"%>
+<%@page import="DAO.MealDAO"%>
+<%@page import="DTO.MealDTO"%>
+<%@page import="DTO.MealDTO"%>
+<%@page import="DTO.PlanDateDTO"%>
+<%@page import="DTO.PlanDateDTO"%>
+<%@page import="DTO.PlanDTO"%>
 <%@page import="java.sql.Time"%>
-<%@page import="Recipe.RecipeDAO"%>
-<%@page import="Recipe.RecipeDTO"%>
-<%@page import="Meal.MealDAO"%>
-<%@page import="Meal.MealDTO"%>
-<%@page import="Diet.DietDTO"%>
-<%@page import="DateFormat.DateNameChanger"%>
 <%@page import="java.text.SimpleDateFormat"%>
-<%@page import="Plan.PlanDAO"%>
-<%@page import="Plan.PlanDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -38,7 +37,7 @@
         <script>
 
             function redirectToEditPlan() {
-                window.location.href = "MainController?action=editPlan&id=<%= plan.getId() %>&isSearch=false";
+                window.location.href = "UserController?action=editPlan&id=<%= plan.getId() %>&isSearch=false";
             }
         </script>
     </head>

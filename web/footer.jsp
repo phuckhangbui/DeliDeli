@@ -29,7 +29,7 @@
                         <div class="footer-header">
                             <p>We Are</p>
                         </div>
-                        <a href="homePage.html" class="website-social-media-logo">
+                        <a href="home.jsp" class="website-social-media-logo">
                             <img src="./assets/Logo2.png" alt="">
                         </a>
                         <div class="website-social-media-icons">

@@ -4,17 +4,16 @@
     Author     : khang
 --%>
 
-<%@page import="Favorite.FavoriteDAO"%>
-<%@page import="Favorite.FavoriteDTO"%>
-<%@page import="RecipeImage.RecipeImageDAO"%>
-<%@page import="Review.ReviewDAO"%>
-<%@page import="Review.ReviewDTO"%>
-<%@page import="Recipe.RecipeDAO"%>
-<%@page import="Recipe.RecipeDTO"%>
+<%@page import="DAO.FavoriteDAO"%>
+<%@page import="DAO.ReviewDAO"%>
+<%@page import="DAO.RecipeDAO"%>
+<%@page import="DTO.UserDetailDTO"%>
+<%@page import="DAO.UserDetailDAO"%>
+<%@page import="DTO.ReviewDTO"%>
+<%@page import="DTO.FavoriteDTO"%>
+<%@page import="DTO.RecipeDTO"%>
+<%@page import="DAO.UserDAO"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="User.UserDetailDAO"%>
-<%@page import="User.UserDetailDTO"%>
-<%@page import="User.UserDAO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">

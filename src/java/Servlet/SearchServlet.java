@@ -4,8 +4,8 @@
  */
 package Servlet;
 
-import Recipe.RecipeDAO;
-import Recipe.RecipeDTO;
+import DAO.RecipeDAO;
+import DTO.RecipeDTO;
 import Utils.NavigationBarUtils;
 import java.io.IOException;
 import java.io.PrintWriter;

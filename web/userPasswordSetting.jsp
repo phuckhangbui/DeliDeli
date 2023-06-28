@@ -3,11 +3,8 @@
     Created on : May 31, 2023, 10:13:10 AM
     Author     : Admin
 --%>
-
-<%@page import="User.UserDTO"%>
-<%@page import="User.UserDAO"%>
-<%@page import="User.UserDetailDTO"%>
-<%@page import="User.UserDetailDAO"%>
+<%@page import="DTO.UserDetailDTO"%>
+<%@page import="DAO.UserDetailDAO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -38,7 +35,7 @@
         %>
         <div class="blank-background">
             <div class="container ">
-                <form action="MainController" class="row user-profile" method="post">
+                <form action="UserController" class="row user-profile" method="post">
                     <input type="hidden" name="userId" value="<%= userId%>">
 
 

@@ -4,9 +4,9 @@
     Author     : Admin
 --%>
 
-<%@page import="User.UserDTO"%>
-<%@page import="News.NewsDAO"%>
-<%@page import="News.NewsDTO"%>
+<%@page import="DAO.NewsDAO"%>
+<%@page import="DTO.NewsDTO"%>
+<%@page import="DTO.UserDTO"%>
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -48,25 +48,25 @@
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageAccount" >
+                        <a href="AdminController?action=manageAccount" >
                             <img src="./assets/user-unchosen-icon.svg" alt="">
                             User
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageRecipe" >
+                        <a href="AdminController?action=manageRecipe" >
                             <img src="./assets/post-unchosen-icon.svg" alt="">
                             Recipe
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageSuggestion" >
+                        <a href="AdminController?action=manageSuggestion" >
                             <img src="./assets/content-unchosen-icon.svg" alt="">
                             Content
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageNews" class="active">
+                        <a href="AdminController?action=manageNews" class="active">
                             <img src="./assets/news-icon.svg" alt="">
                             News
                         </a>
@@ -119,13 +119,13 @@
                                                     </a>
                                                 </div>-->
                         <div>
-                            <a href="MainController?action=manageAccount" >
+                            <a href="AdminController?action=manageAccount" >
                                 <img src="./assets/user-unchosen-icon.svg" alt="">
                                 User
                             </a>
                         </div>
                         <div>
-                            <a href="MainController?action=manageRecipe" >
+                            <a href="AdminController?action=manageRecipe" >
                                 <img src="./assets/post-unchosen-icon.svg" alt="">
                                 Posts
                             </a>
@@ -148,12 +148,12 @@
                                                         Policies
                                                     </a>
                                                 </div>-->
-<!--                        <div>
-                            <a href="#">
-                                <img src="./assets/broadcast-unchose.svg" alt="">
-                                Broadcast
-                            </a>
-                        </div>-->
+                        <!--                        <div>
+                                                    <a href="#">
+                                                        <img src="./assets/broadcast-unchose.svg" alt="">
+                                                        Broadcast
+                                                    </a>
+                                                </div>-->
                         <!--                        <div>
                                                     <a href="#">
                                                         <img src="./assets/bug-report-unchose.svg" alt="">
@@ -222,7 +222,7 @@
                                         <td><%= NewsDAO.getNewsAuthorByNewsId(n.getId())%></td>
                                         <td><%= NewsDAO.getNewsCategoryByNewsId(n.getId())%></td>
                                         <td class="news-action-button">
-                                            <form action="MainController" method="post" class="news-table-button">
+                                            <form action="AdminController" method="post" class="news-table-button">
                                                 <input type="hidden" value="<%= n.getId()%>" name="newsId">
                                                 <button type="submit" value="showNewsDetail" name="action">Show</button>
                                             </form>

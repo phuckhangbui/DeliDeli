@@ -4,7 +4,7 @@
  */
 package Servlet;
 
-import User.UserDAO;
+import DAO.UserDAO;
 import Utils.ValidateEmail;
 import java.io.File;
 import java.io.FileInputStream;

@@ -4,12 +4,13 @@
     Author     : khang
 --%>
 
-<%@page import="User.UserDetailDTO"%>
-<%@page import="User.UserDetailDAO"%>
-<%@page import="Recipe.RecipeDAO"%>
-<%@page import="Recipe.RecipeDTO"%>
-<%@page import="Review.ReviewDAO"%>
-<%@page import="Review.ReviewDTO"%>
+<%@page import="DAO.ReviewDAO"%>
+<%@page import="DAO.RecipeDAO"%>
+<%@page import="DTO.RecipeDTO"%>
+<%@page import="DTO.ReviewDTO"%>
+<%@page import="DTO.ReviewDTO"%>
+<%@page import="DTO.UserDetailDTO"%>
+<%@page import="DAO.UserDetailDAO"%>
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>

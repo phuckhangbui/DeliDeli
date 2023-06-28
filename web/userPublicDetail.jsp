@@ -4,8 +4,8 @@
     Author     : Admin
 --%>
 
-<%@page import="User.UserDetailDAO"%>
-<%@page import="User.UserDetailDTO"%>
+<%@page import="DTO.UserDetailDTO"%>
+<%@page import="DAO.UserDetailDAO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -34,7 +34,7 @@
         <!--        User Public Info Manage        -->
         <div class="blank-background">
             <div class="container ">
-                <form action="MainController" method="post" class="row user-profile" enctype="multipart/form-data">
+                <form action="UserController" method="post" class="row user-profile" enctype="multipart/form-data">
                     <input type="hidden" name="userId" value="<%= userId%>">
 
 

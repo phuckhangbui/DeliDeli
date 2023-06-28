@@ -4,10 +4,10 @@
     Author     : khang
 --%>
 
-<%@page import="User.UserDetailDTO"%>
-<%@page import="User.UserDetailDAO"%>
-<%@page import="Recipe.RecipeDAO"%>
-<%@page import="Recipe.RecipeDTO"%>
+<%@page import="DAO.RecipeDAO"%>
+<%@page import="DTO.RecipeDTO"%>
+<%@page import="DTO.UserDetailDTO"%>
+<%@page import="DAO.UserDetailDAO"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
