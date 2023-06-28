@@ -20,6 +20,48 @@
         <param-name>pass</param-name>
         <param-value>kdrqzqffvjjmddat</param-value>
     </context-param>
+    <filter>
+        <filter-name>AdminFilter</filter-name>
+        <filter-class>Filter.AdminFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>UserFilter</filter-name>
+        <filter-class>Filter.UserFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>UserFilter</filter-name>
+        <servlet-name>UserController</servlet-name>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AdminFilter</filter-name>
+        <servlet-name>AdminController</servlet-name>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>UserFilter</filter-name>
+        <url-pattern>/addRecipe.jsp</url-pattern>
+        <url-pattern>/addPlan.jsp</url-pattern>
+        <url-pattern>/addRecipeToPlan.jsp</url-pattern>
+        <url-pattern>/editRecipe.jsp</url-pattern>
+        <url-pattern>/pendingRecipeManagement.jsp</url-pattern>
+        <url-pattern>/planManagement.jsp</url-pattern>
+        <url-pattern>/privateRecipeManagement.jsp</url-pattern>
+        <url-pattern>/publicRecipeManagement.jsp</url-pattern>
+        <url-pattern>/rejectedRecipeManagement.jsp</url-pattern>
+        <url-pattern>/userEmailSetting.jsp</url-pattern>
+        <url-pattern>/userPassword.jsp</url-pattern>
+        <url-pattern>/userPublicDetail.jsp</url-pattern>
+        <url-pattern>/userReviewManagement.jsp</url-pattern>
+        <url-pattern>/userViewPlan.jsp</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+    </filter-mapping>
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>Servlet.LoginServlet</servlet-class>
