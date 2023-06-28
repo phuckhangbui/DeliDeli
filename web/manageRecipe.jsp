@@ -4,11 +4,11 @@
     Author     : Admin
 --%>
 
+<%@page import="DAO.RecipeDAO"%>
+<%@page import="DTO.RecipeDTO"%>
+<%@page import="DTO.UserDTO"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.sql.Timestamp"%>
-<%@page import="User.UserDTO"%>
-<%@page import="Recipe.RecipeDAO"%>
-<%@page import="Recipe.RecipeDTO"%>
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -51,25 +51,25 @@
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageAccount" >
+                        <a href="AdminController?action=manageAccount" >
                             <img src="./assets/user-unchosen-icon.svg" alt="">
                             User
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageRecipe" class="active">
+                        <a href="AdminController?action=manageRecipe" class="active">
                             <img src="./assets/post-icon.svg" alt="">
                             Recipe
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageSuggestion">
+                        <a href="AdminController?action=manageSuggestion">
                             <img src="./assets/content-unchosen-icon.svg" alt="">
                             Content
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageNews">
+                        <a href="AdminController?action=manageNews">
                             <img src="./assets/news-unchosen-icon.svg" alt="">
                             News
                         </a>
@@ -122,25 +122,25 @@
                                                     </a>
                                                 </div>-->
                         <div>
-                            <a href="MainController?action=manageAccount" >
+                            <a href="AdminController?action=manageAccount" >
                                 <img src="./assets/user-unchosen-icon.svg" alt="">
                                 User
                             </a>
                         </div>
                         <div>
-                            <a href="MainController?action=manageRecipe" class="active">
+                            <a href="AdminController?action=manageRecipe" class="active">
                                 <img src="./assets/post-icon.svg" alt="">
                                 Posts
                             </a>
                         </div>
                         <div>
-                            <a href="MainController?action=manageSuggestion">
+                            <a href="AdminController?action=manageSuggestion">
                                 <img src="./assets/content-unchosen-icon.svg" alt="">
                                 Content
                             </a>
                         </div>
                         <div>
-                            <a href="MainController?action=manageNews">
+                            <a href="AdminController?action=manageNews">
                                 <img src="./assets/news-unchosen-icon.svg" alt="">
                                 News
                             </a>
@@ -216,7 +216,7 @@
                                                             </select>
                                                         </form>
                             -->
-                            <form action="MainController" method="post" class="nav-top-bar-search-filter">
+                            <form action="AdminController" method="post" class="nav-top-bar-search-filter">
                                 <select name="status">
                                     <option value="all">All</option>
                                     <%
@@ -272,10 +272,10 @@
                                             }
                                         %>
                                     </td>
-                                    <td><a href="MainController?action=showUserDetail&username=<%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%>"><%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%></a></td>
+                                    <td><a href="AdminController?action=showUserDetail&username=<%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%>"><%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%></a></td>
                                     <td><%= tmp[r.getStatus()]%></td>
                                     <td>
-                                        <form action="MainController" method="post" class="recipe-table-button">
+                                        <form action="AdminController" method="post" class="recipe-table-button">
                                             <input type="hidden" value="<%= r.getId()%>" name="id">
                                             <button type="submit" value="showRecipeDetail" name="action">Show</button>
                                         </form>
@@ -293,7 +293,7 @@
                             <%
                                 for (int i = 1; i <= endPage; i++) {
                             %>
-                            <a class="<%= (new Integer(tag) == i) ? "table-redirect-active-link" : ""%>" href="MainController?action=manageRecipe&index=<%= i%>&status=<%= currentStatus%>"><%= i%></a>
+                            <a class="<%= (new Integer(tag) == i) ? "table-redirect-active-link" : ""%>" href="AdminController?action=manageRecipe&index=<%= i%>&status=<%= currentStatus%>"><%= i%></a>
                             <%
                                 }
                             %>

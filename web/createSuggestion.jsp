@@ -4,6 +4,8 @@
     Author     : Admin
 --%>
 
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.sql.Timestamp"%>
 <%@page import="DAO.RecipeDAO"%>
 <%@page import="DTO.RecipeDTO"%>
 <%@page import="DTO.UserDTO"%>
@@ -186,11 +188,11 @@
                         %>
                         <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="#">Content List</a></li>
+                                <li class="breadcrumb-item"><a href="AdminController?action=manageSuggestion">Content List</a></li>
                                 <li class="breadcrumb-item current-link" aria-current="page">Add Content</li>
                             </ol>
                         </nav>
-                        <div class="nav-top-bar-search">
+<!--                        <div class="nav-top-bar-search">
                             <form action="AdminController" method="post" class="nav-top-bar-search-user">
                                 <button type="submit" name="action" value="search"><img src="assets/search2.svg" alt=""></button>
                                 <input type="hidden" name="admin" value="admin"> 
@@ -202,12 +204,14 @@
                                 </select>
                             </form>
                         </div>
+-->
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr>
                                     <th>No</th>
                                     <th>Title</th>
                                     <th>Create at</th>
+                                    <th>Update at</th>
                                     <th>Owner</th>
                                     <th>Show</th>
                                     <th>Add</th>
@@ -221,7 +225,26 @@
                                 <tr>
                                     <td><%= count%></td>
                                     <td><%= r.getTitle()%></td>
-                                    <td><%= r.getCreate_at()%></td>
+                                    <% Timestamp timestamp = r.getCreate_at();
+                                        SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
+                                        String createDate = dateFormat.format(timestamp);
+                                    %>
+                                    <td><%= createDate%></td>
+                                    <%
+                                        if (r.getUpdate_at() == null) {
+                                    %>
+                                    <td><%= createDate%></td>
+                                    <%
+                                    } else {
+                                        timestamp = r.getUpdate_at();
+                                        dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
+                                        String updateDate = dateFormat.format(timestamp);
+                                    %>
+                                    <td><%= updateDate%>
+                                        <%
+                                            }
+                                        %>
+                                    </td>
                                     <td><a href="AdminController?action=showUserDetail&username=<%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%>"><%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%></a></td>
                                     <td>
                                         <form action="AdminController" method="post" class="recipe-table-button">
@@ -255,6 +278,7 @@
                                     <th>No</th>
                                     <th>Title</th>
                                     <th>Create at</th>
+                                    <th>Update at</th>
                                     <th>Owner</th>
                                     <th>Show</th>
                                     <th>Remove</th>
@@ -268,7 +292,26 @@
                                 <tr>
                                     <td><%= count%></td>
                                     <td><%= r.getTitle()%></td>
-                                    <td><%= r.getCreate_at()%></td>
+                                    <% Timestamp timestamp = r.getCreate_at();
+                                        SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
+                                        String createDate = dateFormat.format(timestamp);
+                                    %>
+                                    <td><%= createDate%></td>
+                                    <%
+                                        if (r.getUpdate_at() == null) {
+                                    %>
+                                    <td><%= createDate%></td>
+                                    <%
+                                    } else {
+                                        timestamp = r.getUpdate_at();
+                                        dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
+                                        String updateDate = dateFormat.format(timestamp);
+                                    %>
+                                    <td><%= updateDate%>
+                                        <%
+                                            }
+                                        %>
+                                    </td>
                                     <td><a href="AdminController?action=showUserDetail&username=<%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%>"><%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%></a></td>
                                     <td>
                                         <form action="AdminController" method="post" class="recipe-table-button">

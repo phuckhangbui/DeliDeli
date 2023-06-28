@@ -50,17 +50,6 @@ public class RejectRecipeServlet extends HttpServlet {
             
             request.getRequestDispatcher("ManageRecipeServlet").forward(request, response);
             
-//            out.println(title);
-//            out.println(desc);
-//            out.println(sendDate);
-//            out.println(userId);
-//            out.println(notificationType);
-//            out.println(recipeId);
-
-//            int result = AdminDAO.rejectRecipe(new Integer(id));
-//            if(result > 0) {
-//                request.getRequestDispatcher("ManageRecipeServlet").forward(request, response);
-//            }
         }
     }
 

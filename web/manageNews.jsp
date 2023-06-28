@@ -131,13 +131,13 @@
                             </a>
                         </div>
                         <div>
-                            <a href="MainController?action=manageSuggestion" >
+                            <a href="AdminController?action=manageSuggestion" >
                                 <img src="./assets/content-unchosen-icon.svg" alt="">
                                 Content
                             </a>
                         </div>
                         <div>
-                            <a href="MainController?action=manageNews" class="active">
+                            <a href="AdminController?action=manageNews" class="active">
                                 <img src="./assets/news-icon.svg" alt="">
                                 News
                             </a>

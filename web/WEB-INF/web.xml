@@ -62,6 +62,24 @@
         <dispatcher>FORWARD</dispatcher>
         <dispatcher>INCLUDE</dispatcher>
     </filter-mapping>
+    <filter-mapping>
+        <filter-name>AdminFilter</filter-name>
+        <url-pattern>/admin.jsp</url-pattern>
+        <url-pattern>/createNews.jsp</url-pattern>
+        <url-pattern>/createSuggestion.jsp</url-pattern>
+        <url-pattern>/manageAccount.jsp</url-pattern>
+        <url-pattern>/manageNews.jsp</url-pattern>
+        <url-pattern>/manageRecipe.jsp</url-pattern>
+        <url-pattern>/manageSuggestion.jsp</url-pattern>
+        <url-pattern>/showNewsDetail.jsp</url-pattern>
+        <url-pattern>/showRecipeDetail.jsp</url-pattern>
+        <url-pattern>/showUserDetail.jsp</url-pattern>
+        <url-pattern>/updateNews.jsp</url-pattern>
+        <url-pattern>/updateSuggestion.jsp</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+    </filter-mapping>
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>Servlet.LoginServlet</servlet-class>

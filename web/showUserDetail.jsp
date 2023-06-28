@@ -4,15 +4,14 @@
     Author     : Admin
 --%>
 
+<%@page import="DAO.AdminDAO"%>
+<%@page import="DTO.UserDetailDTO"%>
+<%@page import="DTO.RecipeDTO"%>
+<%@page import="DTO.UserDTO"%>
 <%@page import="java.util.Map"%>
 <%@page import="java.util.TreeMap"%>
-<%@page import="Admin.AdminDAO"%>
 <%@page import="java.sql.Date"%>
-<%@page import="Recipe.RecipeDTO"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="User.UserDetailDTO"%>
-<%@page import="User.UserDTO"%>
-<%@page import="User.UserDAO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -54,25 +53,25 @@
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageAccount" class="active">
+                        <a href="AdminController?action=manageAccount" class="active">
                             <img src="./assets/user-icon.svg" alt="">
                             User
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageRecipe">
+                        <a href="AdminController?action=manageRecipe">
                             <img src="./assets/post-unchosen-icon.svg" alt="">
                             Recipe
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageSuggestion">
+                        <a href="AdminController?action=manageSuggestion">
                             <img src="./assets/content-unchosen-icon.svg" alt="">
                             Content
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageNews">
+                        <a href="AdminController?action=manageNews">
                             <img src="./assets/news-unchosen-icon.svg" alt="">
                             News
                         </a>
@@ -125,25 +124,25 @@
                                                     </a>
                                                 </div>-->
                         <div>
-                            <a href="MainController?action=manageAccount" class="active">
+                            <a href="AdminController?action=manageAccount" class="active">
                                 <img src="./assets/user-unchose.svg" alt="">
                                 User
                             </a>
                         </div>
                         <div>
-                            <a href="MainController?action=manageRecipe">
+                            <a href="AdminController?action=manageRecipe">
                                 <img src="./assets/post-unchose.svg" alt="">
                                 Posts
                             </a>
                         </div>
                         <div>
-                            <a href="MainController?action=manageSuggestion">
+                            <a href="AdminController?action=manageSuggestion">
                                 <img src="./assets/content-unchose.svg" alt="">
                                 Content
                             </a>
                         </div>
                         <div>
-                            <a href="MainController?action=manageNews">
+                            <a href="AdminController?action=manageNews">
                                 <img src="./assets/news.svg" alt="">
                                 News
                             </a>
@@ -184,23 +183,23 @@
                             }
                         %>
 
+                        <%
+                            UserDTO account = (UserDTO) request.getAttribute("user");
+                            UserDetailDTO userDetail = (UserDetailDTO) request.getAttribute("userDetail");
+                            ArrayList<RecipeDTO> userRecipe = (ArrayList) request.getAttribute("userRecipe");
+                        %>
+
                         <div class="container">
                             <div class="user-detail-admin">
                                 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                                     <ol class="breadcrumb">
-                                        <li class="breadcrumb-item"><a href="#">User List</a></li>
-                                        <li class="breadcrumb-item current-link" aria-current="page">User</li>
+                                        <li class="breadcrumb-item"><a href="AdminController?action=manageAccount">User List</a></li>
+                                        <li class="breadcrumb-item current-link" aria-current="page"><%= account.getUserName()%></li>
                                     </ol>
                                 </nav>
                                 <div class="user-detail-admin-heading">
                                     <h3 class="">Profile Detail</h3>
                                 </div>
-
-                                <%
-                                    UserDTO account = (UserDTO) request.getAttribute("user");
-                                    UserDetailDTO userDetail = (UserDetailDTO) request.getAttribute("userDetail");
-                                    ArrayList<RecipeDTO> userRecipe = (ArrayList) request.getAttribute("userRecipe");
-                                %>
 
                                 <div class="row">
                                     <p class="col-lg-2 user-detail-admin-title">User Name: </p>
@@ -258,7 +257,7 @@
                                                     <td><%= r.getTitle()%></td>
                                                     <td><%= r.getCreate_at()%></td>
                                                     <td>
-                                                        <form action="MainController" method="post" class="user-detail-admin-button">
+                                                        <form action="AdminController" method="post" class="user-detail-admin-button">
                                                             <input type="hidden" value="<%= r.getId()%>" name="id">
                                                             <button type="submit" value="showRecipeDetail" name="action">Show</button>
                                                         </form>

@@ -4,12 +4,12 @@
     Author     : Admin
 --%>
 
+<%@page import="DAO.RecipeDAO"%>
+<%@page import="DTO.RecipeDTO"%>
+<%@page import="DAO.SuggestionDAO"%>
+<%@page import="DTO.UserDTO"%>
 <%@page import="java.util.Map"%>
 <%@page import="java.util.TreeMap"%>
-<%@page import="Suggestion.SuggestionDAO"%>
-<%@page import="User.UserDTO"%>
-<%@page import="Recipe.RecipeDAO"%>
-<%@page import="Recipe.RecipeDTO"%>
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -52,25 +52,25 @@
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageAccount" >
+                        <a href="AdminController?action=manageAccount" >
                             <img src="./assets/user-unchosen-icon.svg" alt="">
                             User
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageRecipe" >
+                        <a href="AdminController?action=manageRecipe" >
                             <img src="./assets/post-unchosen-icon.svg" alt="">
                             Recipe
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageSuggestion" class="active">
+                        <a href="AdminController?action=manageSuggestion" class="active">
                             <img src="./assets/content-icon.svg" alt="">
                             Content
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageNews">
+                        <a href="AdminController?action=manageNews">
                             <img src="./assets/news-unchosen-icon.svg" alt="">
                             News
                         </a>
@@ -123,25 +123,25 @@
                                                     </a>
                                                 </div>-->
                         <div>
-                            <a href="MainController?action=manageAccount" >
+                            <a href="AdminController?action=manageAccount" >
                                 <img src="./assets/user-unchosen-icon.svg" alt="">
                                 User
                             </a>
                         </div>
                         <div>
-                            <a href="MainController?action=manageRecipe" >
+                            <a href="AdminController?action=manageRecipe" >
                                 <img src="./assets/post-unchosen-icon.svg" alt="">
                                 Recipe
                             </a>
                         </div>
                         <div>
-                            <a href="MainController?action=manageSuggestion" class="active">
+                            <a href="AdminController?action=manageSuggestion" class="active">
                                 <img src="./assets/content-icon.svg" alt="">
                                 Content
                             </a>
                         </div>
                         <div>
-                            <a href="MainController?action=manageNews">
+                            <a href="AdminController?action=manageNews">
                                 <img src="./assets/news-unchosen-icon.svg" alt="">
                                 News
                             </a>
@@ -209,13 +209,13 @@
                                     <td><%= key%></td>
                                     <td><%= value%></td>
                                     <td>
-                                        <form action="MainController" method="post" class="recipe-table-button">
+                                        <form action="AdminController" method="post" class="recipe-table-button">
                                             <input type="hidden" name="suggestion" value="<%= key%>">
                                             <button type="submit" name="action" value="filterSuggestion">Show</button>
                                         </form>
                                     </td>
                                     <td>
-                                        <form action="MainController" method="post" class="recipe-table-button">
+                                        <form action="AdminController" method="post" class="recipe-table-button">
                                             <input type="hidden" name="suggestion" value="<%= key%>">
                                             <button type="submit" name="action" value="suggestionRecipe">Choose</button>
                                             <button><a href="updateSuggestion.jsp?suggestion=<%= key%>">Edit</a></button>
@@ -270,9 +270,9 @@
                                     <td><%= count%></td>
                                     <td><%= r.getTitle()%></td>
                                     <td><%= r.getCreate_at()%></td>
-                                    <td><a href="MainController?action=showUserDetail&username=<%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%>"><%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%></a></td>
+                                    <td><a href="AdminController?action=showUserDetail&username=<%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%>"><%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%></a></td>
                                     <td>
-                                        <form action="MainController" method="post" class="recipe-table-button">
+                                        <form action="AdminController" method="post" class="recipe-table-button">
                                             <input type="hidden" value="<%= r.getId()%>" name="id">
                                             <button type="submit" value="showRecipeDetail" name="action">Show</button>
                                         </form>

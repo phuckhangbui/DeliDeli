@@ -64,7 +64,7 @@ public class LoginServlet extends HttpServlet {
                     request.getRequestDispatcher(ADMIN_PAGE).forward(request, response);
                 } else {
                     session.setAttribute("user", user);
-                    request.getRequestDispatcher("MainController?action=manageAccount").forward(request, response);
+                    request.getRequestDispatcher("AdminController?action=manageAccount").forward(request, response);
                 }
             } else {
                 //Incorrect email or pass
