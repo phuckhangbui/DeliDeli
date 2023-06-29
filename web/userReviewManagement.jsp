@@ -4,6 +4,7 @@
     Author     : khang
 --%>
 
+<%@page import="DTO.DisplayReviewDTO"%>
 <%@page import="DAO.ReviewDAO"%>
 <%@page import="DAO.RecipeDAO"%>
 <%@page import="DTO.RecipeDTO"%>
@@ -79,14 +80,14 @@
                                     My Own Recipes
                                 </a>
                                 <div class="dropdown-content-right">
-                                    <a href="privateRecipeManagement.jsp?userId=<%= userId%>" >Private Recipes</a>
-                                    <a href="pendingRecipeManagement.jsp?userId=<%= userId%>">Pending Recipes</a>
-                                    <a href="publicRecipeManagement.jsp?userId=<%= userId%>">Public Recipes</a>
-                                    <a href="rejectedRecipeManagement.jsp?userId=<%= userId%>">Rejected Recipes</a>
+                                    <a href="UserController?action=loadRecipeManagement&page=private&userId=<%= userId%>">Private Recipes</a>
+                                    <a href="UserController?action=loadRecipeManagement&page=public&userId=<%= userId%>">Pending Recipes</a>
+                                    <a href="UserController?action=loadRecipeManagement&page=pending&userId=<%= userId%>">Public Recipes</a>
+                                    <a href="UserController?action=loadRecipeManagement&page=rejected&userId=<%= userId%>">Rejected Recipes</a>
                                 </div>
                             </div>
-                            <a href="userReviewManagement.jsp?userId=<%= userId%>" class="active-link">
-                                <img src="./assets/full-star-icon.svg" alt="">
+                            <a href="UserController?action=loadUserReview&userId=<%= userId%>" class="active-link">
+                                <img src="./assets/full-star-unchosen-icon.svg" alt="">
                                 My Reviews
                             </a>
 <!--                            <a href="userNotification.jsp?userId=<%= userId%>">
@@ -106,20 +107,20 @@
                         </div>
                         <div class="row user-profile-recipes">
                             <%
-                                ArrayList<ReviewDTO> reviewList = ReviewDAO.getReviewByUserId(user.getId());
-                                for (ReviewDTO review : reviewList) {
-                                    RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(review.getRecipe_id());
+                                ArrayList<DisplayReviewDTO> displayList = (ArrayList<DisplayReviewDTO>) request.getAttribute("displayList");
+
+                                for (DisplayReviewDTO review : displayList) {
                             %>
-                            <a href="MainController?action=getRecipeDetailById&id=<%= recipe.getId()%>&activeScroll=true" class="col-md-6 user-profile-recipe-review">
+                            <a href="MainController?action=getRecipeDetailById&id=<%= review.getRecipeId()%>&activeScroll=true" class="col-md-6 user-profile-recipe-review">
                                 <div class="user-profile-recipe-post-picture">
-                                    <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
+                                    <img src="ServletImageLoader?identifier=<%= review.getThumbnailPath() %>" alt="">
                                 </div>
                                 <div class="user-profile-recipe-review-title">
-                                    <p><%= recipe.getTitle()%></p>
+                                    <p><%= review.getRecipeTitle() %></p>
                                 </div>
                                 <div class="recommendation-content-reciew">
                                     <%
-                                        for (int i = 0; i < review.getRating(); i++) {
+                                        for (int i = 0; i < review.getReviewRating(); i++) {
                                     %>
                                     <img src="./assets/full-star-icon.svg" alt="">
                                     <%
@@ -128,7 +129,7 @@
 
                                 </div>
                                 <div class="user-profile-recipe-review-content">
-                                    <p><%=review.getContent()%></p>
+                                    <p><%=review.getReviewContent()%></p>
                                 </div>
                             </a>
                             <%

@@ -250,10 +250,10 @@
                                 <div
                                     class="user-dropdown-content">
                                     <a
-                                        href="userCommunityProfile.jsp?accountName=<%= user.getUserName()%>">Your
+                                        href="MainController?action=loadPublicProfile&accountName=<%= user.getUserName()%>">Your
                                         Profile</a>
                                     <a
-                                        href="userPublicDetail.jsp?userId=<%=user.getId()%>">Management</a>
+                                        href="UserController?action=loadRecipeManagement&page=public&userId=<%=user.getId()%>">Management</a>
                                     <a href="addRecipe.jsp">Add Recipe</a>
                                     <a href="planManagement.jsp">Plan Management</a>
 

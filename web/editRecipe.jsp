@@ -4,15 +4,10 @@
     Author     : khang
 --%>
 
-<%@page import="DAO.DirectionDAO"%>
-<%@page import="DAO.NutritionDAO"%>
+
 <%@page import="DTO.IngredientDetailDTO"%>
-<%@page import="DAO.IngredientDetailDAO"%>
-<%@page import="DAO.IngredientDetailDAO"%>
 <%@page import="DTO.NutritionDTO"%>
 <%@page import="DTO.NutritionDTO"%>
-<%@page import="DAO.RecipeDietDAO"%>
-<%@page import="DAO.RecipeDAO"%>
 <%@page import="DTO.RecipeDTO"%>
 <%@page import="java.util.Set"%>
 <%@page import="java.util.ArrayList"%>
@@ -64,7 +59,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
         <%
             int recipeId = Integer.parseInt(request.getParameter("recipeId"));
             try {
-                RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(recipeId);
+                RecipeDTO recipe = (RecipeDTO) request.getAttribute("recipe");
                 if (recipe.getUser_id() == user.getId()) {
 
         %>
@@ -332,7 +327,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                 <div class="col-md-12 add-recipe-info-type-content">
                                     <div>Diet: <span>(If the diet you're looking for is not here, then no need to tick any of these boxes )</span></div>
                                     <%
-                                        Set<Integer> dietSet = RecipeDietDAO.getDietSetByRecipeId(recipeId);
+                                        Set<Integer> dietSet = (Set<Integer>) request.getAttribute("dietSet");
                                         if (dietSet.size() == 0) { %>
                                     <div class="">
                                         <% for (Map.Entry<Integer, String> entry : dietMap.entrySet()) {
@@ -376,7 +371,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                 For references:
                                 <button>Nutrition Table</button>
                             </div>
-                            <% NutritionDTO nutrition = NutritionDAO.getNutrition(recipeId);%>
+                            <% NutritionDTO nutrition = (NutritionDTO) request.getAttribute("nutrition");%>
 
                             <div class="col-md-3 add-recipe-info-number-content">
                                 <div>Calories:</div>
@@ -415,7 +410,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                             <div class="draggable-container-ingredient col-md-8 add-recipe-info-ingredient-content">
                                 <div class="add-recipe-info-header">Ingredient <span>*</span></div>
                                 <%
-                                    ArrayList<IngredientDetailDTO> ingredientList = IngredientDetailDAO.getIngredientDetailByRecipeId(recipe.getId());
+                                    ArrayList<IngredientDetailDTO> ingredientList = (ArrayList<IngredientDetailDTO>)request.getAttribute("ingredientList");
                                     for (IngredientDetailDTO i : ingredientList) {
                                 %>
                                 <p class="draggable-ingredient draggable" draggable="false">
@@ -457,7 +452,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
 
                         <div class="add-recipe-info-header">Direction <span>*</span></div>
                         <p><textarea name="direction" rows="10" cols="10" id="editor" 
-                                     value="<%=user.getId()%>"><%= DirectionDAO.getDirectionByRecipeId(recipe.getId()).getDesc()%></textarea></p>
+                                     value="<%=user.getId()%>"><%= request.getAttribute("direction") %></textarea></p>
                         <script>
                             CKEDITOR.replace('editor');
                         </script>

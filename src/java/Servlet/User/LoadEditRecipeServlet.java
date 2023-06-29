@@ -2,20 +2,20 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package Servlet.Admin;
+package Servlet.User;
 
 import DAO.DirectionDAO;
-import DTO.DirectionDTO;
 import DAO.IngredientDetailDAO;
-import DTO.IngredientDetailDTO;
 import DAO.NutritionDAO;
-import DTO.NutritionDTO;
 import DAO.RecipeDAO;
+import DAO.RecipeDietDAO;
+import DTO.IngredientDetailDTO;
+import DTO.NutritionDTO;
 import DTO.RecipeDTO;
-import DTO.UserDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -23,9 +23,9 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author Admin
+ * @author khang
  */
-public class ShowRecipeDetailServlet extends HttpServlet {
+public class LoadEditRecipeServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,37 +41,21 @@ public class ShowRecipeDetailServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-           String id = request.getParameter("id");
+            int recipeId = Integer.parseInt(request.getParameter("recipeId"));
 
-            RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(new Integer(id));
+            RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(recipeId);
+            Set<Integer> dietSet = RecipeDietDAO.getDietSetByRecipeId(recipeId);
+            NutritionDTO nutrition = NutritionDAO.getNutrition(recipeId);
+            ArrayList<IngredientDetailDTO> ingredientList = IngredientDetailDAO.getIngredientDetailByRecipeId(recipe.getId());
+            String direction = DirectionDAO.getDirectionByRecipeId(recipe.getId()).getDesc();
+            
             request.setAttribute("recipe", recipe);
-
-            String imgPath = RecipeDAO.getImageByRecipeId(new Integer(id)).getImgPath();
-            request.setAttribute("imgPath", imgPath);
-
-            String thumbnailPath = RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath();
-            request.setAttribute("thumbnailPath", thumbnailPath);
-
-            UserDTO owner = RecipeDAO.getRecipeOwnerByRecipeId(new Integer(id));
-            request.setAttribute("owner", owner);
-
-            int totalReview = RecipeDAO.getTotalReviewByRecipeId(new Integer(id));
-            request.setAttribute("totalReview", totalReview);
-
-            double avgRating = RecipeDAO.getRatingByRecipeId(new Integer(id));
-            request.setAttribute("avgRating", avgRating);
-
-            ArrayList<IngredientDetailDTO> ingredientDetailList = IngredientDetailDAO.getIngredientDetailByRecipeId(new Integer(id));
-            request.setAttribute("ingredientDetailList", ingredientDetailList);
-
-            NutritionDTO nutrition = NutritionDAO.getNutrition(new Integer(id));
+            request.setAttribute("dietSet", dietSet);
             request.setAttribute("nutrition", nutrition);
-
-            DirectionDTO direction = DirectionDAO.getDirectionByRecipeId(new Integer(id));
+            request.setAttribute("ingredientList", ingredientList);
             request.setAttribute("direction", direction);
 
-            request.getRequestDispatcher("showRecipeDetail.jsp").forward(request, response);
-
+            request.getRequestDispatcher("editRecipe.jsp").forward(request, response);
         }
     }
 

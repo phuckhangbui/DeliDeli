@@ -45,19 +45,6 @@
     <filter-mapping>
         <filter-name>UserFilter</filter-name>
         <url-pattern>/addRecipe.jsp</url-pattern>
-        <url-pattern>/addPlan.jsp</url-pattern>
-        <url-pattern>/addRecipeToPlan.jsp</url-pattern>
-        <url-pattern>/editRecipe.jsp</url-pattern>
-        <url-pattern>/pendingRecipeManagement.jsp</url-pattern>
-        <url-pattern>/planManagement.jsp</url-pattern>
-        <url-pattern>/privateRecipeManagement.jsp</url-pattern>
-        <url-pattern>/publicRecipeManagement.jsp</url-pattern>
-        <url-pattern>/rejectedRecipeManagement.jsp</url-pattern>
-        <url-pattern>/userEmailSetting.jsp</url-pattern>
-        <url-pattern>/userPassword.jsp</url-pattern>
-        <url-pattern>/userPublicDetail.jsp</url-pattern>
-        <url-pattern>/userReviewManagement.jsp</url-pattern>
-        <url-pattern>/userViewPlan.jsp</url-pattern>
         <dispatcher>REQUEST</dispatcher>
         <dispatcher>FORWARD</dispatcher>
         <dispatcher>INCLUDE</dispatcher>
@@ -284,6 +271,26 @@
         <servlet-name>UserController</servlet-name>
         <servlet-class>Servlet.User.UserController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>LoadEditRecipeServlet</servlet-name>
+        <servlet-class>Servlet.User.LoadEditRecipeServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoadRecipeManagementServlet</servlet-name>
+        <servlet-class>Servlet.User.LoadRecipeManagementServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoadUserReviewServlet</servlet-name>
+        <servlet-class>Servlet.User.LoadUserReviewServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoadPublicDetailServlet</servlet-name>
+        <servlet-class>Servlet.LoadPublicDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoadPublicProfileServlet</servlet-name>
+        <servlet-class>Servlet.LoadPublicProfileServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -483,6 +490,26 @@
     <servlet-mapping>
         <servlet-name>UserController</servlet-name>
         <url-pattern>/UserController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadEditRecipeServlet</servlet-name>
+        <url-pattern>/LoadEditRecipeServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadRecipeManagementServlet</servlet-name>
+        <url-pattern>/LoadRecipeManagementServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadUserReviewServlet</servlet-name>
+        <url-pattern>/LoadUserReviewServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadPublicDetailServlet</servlet-name>
+        <url-pattern>/LoadPublicDetailServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadPublicProfileServlet</servlet-name>
+        <url-pattern>/LoadPublicProfileServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

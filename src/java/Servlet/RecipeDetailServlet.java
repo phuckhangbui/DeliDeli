@@ -15,6 +15,7 @@ import DTO.RecipeDTO;
 import DTO.RecipeImageDTO;
 import DAO.ReviewDAO;
 import DTO.ReviewDTO;
+import DTO.UserDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -42,7 +43,13 @@ public class RecipeDetailServlet extends HttpServlet {
             RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(new Integer(id));
             request.setAttribute("recipe", recipe);
             
-            String owner = RecipeDAO.getRecipeOwnerByRecipeId(new Integer(id));
+            String imgPath = RecipeDAO.getImageByRecipeId(new Integer(id)).getImgPath();
+            request.setAttribute("imgPath", imgPath);
+            
+            String thumbnailPath = RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath();
+            request.setAttribute("thumbnailPath", thumbnailPath);
+            
+            UserDTO owner = RecipeDAO.getRecipeOwnerByRecipeId(new Integer(id));
             request.setAttribute("owner", owner);
             
             int totalReview = RecipeDAO.getTotalReviewByRecipeId(new Integer(id));
@@ -57,11 +64,15 @@ public class RecipeDetailServlet extends HttpServlet {
             NutritionDTO nutrition = NutritionDAO.getNutrition(new Integer(id));
             request.setAttribute("nutrition", nutrition);
             
+            DirectionDTO direction = DirectionDAO.getDirectionByRecipeId(new Integer(id));
+            request.setAttribute("direction", direction);
+            
             //REVIEW----------------------------------------------------------------------------------
             ArrayList<ReviewDTO> reviewList = ReviewDAO.getReviewByRecipeId(new Integer(id));
             request.setAttribute("reviewList", reviewList);
             
             request.getRequestDispatcher("recipeDetail.jsp").forward(request, response);
+
 
 //            out.println("<!DOCTYPE html>");
 //            out.println("<html>");

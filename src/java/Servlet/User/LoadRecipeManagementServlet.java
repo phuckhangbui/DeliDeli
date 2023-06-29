@@ -2,15 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package Servlet.Admin;
+package Servlet.User;
 
-import DAO.DirectionDAO;
-import DTO.DirectionDTO;
-import DAO.IngredientDetailDAO;
-import DTO.IngredientDetailDTO;
-import DAO.NutritionDAO;
-import DTO.NutritionDTO;
 import DAO.RecipeDAO;
+import DTO.DisplayRecipeDTO;
 import DTO.RecipeDTO;
 import DTO.UserDTO;
 import java.io.IOException;
@@ -23,9 +18,9 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author Admin
+ * @author khang
  */
-public class ShowRecipeDetailServlet extends HttpServlet {
+public class LoadRecipeManagementServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,36 +36,44 @@ public class ShowRecipeDetailServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-           String id = request.getParameter("id");
+            int userId = Integer.parseInt(request.getParameter("userId"));
 
-            RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(new Integer(id));
-            request.setAttribute("recipe", recipe);
+            String page = request.getParameter("page");
+            ArrayList<RecipeDTO> recipeList = new ArrayList<>();
+            ArrayList<DisplayRecipeDTO> displayList = new ArrayList<>();
 
-            String imgPath = RecipeDAO.getImageByRecipeId(new Integer(id)).getImgPath();
-            request.setAttribute("imgPath", imgPath);
+            String url = "";
+            switch (page.trim()) {
+                case "private":
+                    url = "privateRecipeManagement.jsp";
+                    recipeList = RecipeDAO.getRecipeByUserIdAndType(userId, 1);
+                    break;
+                case "public":
+                    url = "publicRecipeManagement.jsp";
+                    recipeList = RecipeDAO.getRecipeByUserIdAndType(userId, 2);
+                    break;
+                case "pending":
+                    url = "pendingRecipeManagement.jsp";
+                    recipeList = RecipeDAO.getRecipeByUserIdAndType(userId, 3);
+                    break;
+                case "rejected":
+                    url = "rejectedRecipeManagement.jsp";
+                    recipeList = RecipeDAO.getRecipeByUserIdAndType(userId, 4);
+                    break;
+            }
+            for (RecipeDTO r : recipeList) {
+                String thumbnailPath = RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath();
+                String category = RecipeDAO.getCategoryByRecipeId(r.getId());
+                double rating = RecipeDAO.getRatingByRecipeId(r.getId());
+                UserDTO owner = RecipeDAO.getRecipeOwnerByRecipeId(r.getId());
 
-            String thumbnailPath = RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath();
-            request.setAttribute("thumbnailPath", thumbnailPath);
+                DisplayRecipeDTO d = new DisplayRecipeDTO(r.getId(), r.getTitle(), thumbnailPath, category, rating, owner);
+                displayList.add(d);
+            }
 
-            UserDTO owner = RecipeDAO.getRecipeOwnerByRecipeId(new Integer(id));
-            request.setAttribute("owner", owner);
+            request.setAttribute("displayList", displayList);
 
-            int totalReview = RecipeDAO.getTotalReviewByRecipeId(new Integer(id));
-            request.setAttribute("totalReview", totalReview);
-
-            double avgRating = RecipeDAO.getRatingByRecipeId(new Integer(id));
-            request.setAttribute("avgRating", avgRating);
-
-            ArrayList<IngredientDetailDTO> ingredientDetailList = IngredientDetailDAO.getIngredientDetailByRecipeId(new Integer(id));
-            request.setAttribute("ingredientDetailList", ingredientDetailList);
-
-            NutritionDTO nutrition = NutritionDAO.getNutrition(new Integer(id));
-            request.setAttribute("nutrition", nutrition);
-
-            DirectionDTO direction = DirectionDAO.getDirectionByRecipeId(new Integer(id));
-            request.setAttribute("direction", direction);
-
-            request.getRequestDispatcher("showRecipeDetail.jsp").forward(request, response);
+            request.getRequestDispatcher(url).forward(request, response);
 
         }
     }
