@@ -4,10 +4,10 @@
     Author     : Admin
 --%>
 
-<%@page import="User.UserDTO"%>
+<%@page import="DAO.NewsDAO"%>
+<%@page import="DTO.NewsDTO"%>
+<%@page import="DTO.UserDTO"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="News.NewsDTO"%>
-<%@page import="News.NewsDAO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -49,25 +49,25 @@
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageAccount" >
+                        <a href="AdminController?action=manageAccount" >
                             <img src="./assets/user-unchosen-icon.svg" alt="">
                             User
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageRecipe" >
+                        <a href="AdminController?action=manageRecipe" >
                             <img src="./assets/post-unchosen-icon.svg" alt="">
                             Recipe
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageSuggestion" >
+                        <a href="AdminController?action=manageSuggestion" >
                             <img src="./assets/content-unchosen-icon.svg" alt="">
                             Content
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageNews" class="active">
+                        <a href="AdminController?action=manageNews" class="active">
                             <img src="./assets/news-icon.svg" alt="">
                             News
                         </a>
@@ -120,25 +120,25 @@
                                                     </a>
                                                 </div>-->
                         <div>
-                            <a href="MainController?action=manageAccount">
+                            <a href="AdminController?action=manageAccount">
                                 <img src="./assets/user-unchose.svg" alt="">
                                 User
                             </a>
                         </div>
                         <div>
-                            <a href="MainController?action=manageRecipe">
+                            <a href="AdminController?action=manageRecipe">
                                 <img src="./assets/post-unchose.svg" alt="">
                                 Posts
                             </a>
                         </div>
                         <div>
-                            <a href="suggestionRecipe.jsp">
+                            <a href="AdminController?action=manageSuggestion">
                                 <img src="./assets/content-unchose.svg" alt="">
                                 Content
                             </a>
                         </div>
                         <div>
-                            <a href="MainController?action=manageNews" class="active">
+                            <a href="AdminController?action=manageNews" class="active">
                                 <img src="./assets/news.svg" alt="">
                                 News
                             </a>
@@ -215,7 +215,7 @@
                                     </div>
 
                                     <div class="news-detail-admin-action">
-                                        <form action="MainController" method="post" class="news-detail-admin-button">
+                                        <form action="AdminController" method="post" class="news-detail-admin-button">
                                             <input type="hidden" value="<%= news.getId()%>" name="newsId">
                                             <button><a href="updateNews.jsp?newsId=<%= news.getId()%>">Edit</a></button>
                                             <button type="submit" name="action" value="deleteNews" class="news-detail-admin-button-delete">Delete</a></button>

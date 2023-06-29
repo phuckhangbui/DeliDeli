@@ -4,9 +4,9 @@
     Author     : Admin
 --%>
 
-<%@page import="News.NewsDAO"%>
+<%@page import="DTO.NewsDTO"%>
+<%@page import="DAO.NewsDAO"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="News.NewsDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>

@@ -4,10 +4,8 @@
     Author     : Admin
 --%>
 
-<%@page import="User.UserDTO"%>
-<%@page import="User.UserDAO"%>
-<%@page import="User.UserDetailDTO"%>
-<%@page import="User.UserDetailDAO"%>
+<%@page import="DTO.UserDetailDTO"%>
+<%@page import="DAO.UserDetailDAO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -36,7 +34,7 @@
         %>
         <div class="blank-background">
             <div class="container ">
-                <form action="MainController" method="post" class="row user-profile">
+                <form action="UserController" method="post" class="row user-profile">
                     <input type="hidden" name="userId" value="<%= userId%>">
 
 
@@ -127,7 +125,7 @@
                         </div>
                         <div class="user-profile-public-avatar">
                             <div>
-                                <img id="preview-image" src="./assets/profile-pic.svg" alt="">
+                                <img src="ServletImageLoader?identifier=<%= user.getAvatar()%>" alt="">
                             </div>
                         </div>
                     </div>

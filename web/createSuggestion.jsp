@@ -4,10 +4,11 @@
     Author     : Admin
 --%>
 
-<%@page import="Suggestion.SuggestionDAO"%>
-<%@page import="User.UserDTO"%>
-<%@page import="Recipe.RecipeDAO"%>
-<%@page import="Recipe.RecipeDTO"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.sql.Timestamp"%>
+<%@page import="DAO.RecipeDAO"%>
+<%@page import="DTO.RecipeDTO"%>
+<%@page import="DTO.UserDTO"%>
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -50,25 +51,25 @@
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageAccount" >
+                        <a href="AdminController?action=manageAccount" >
                             <img src="./assets/user-unchosen-icon.svg" alt="">
                             User
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageRecipe" >
+                        <a href="AdminController?action=manageRecipe" >
                             <img src="./assets/post-unchosen-icon.svg" alt="">
                             Recipe
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageSuggestion" class="active">
+                        <a href="AdminController?action=manageSuggestion" class="active">
                             <img src="./assets/content-icon.svg" alt="">
                             Content
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageNews">
+                        <a href="AdminController?action=manageNews">
                             <img src="./assets/news-unchosen-icon.svg" alt="">
                             News
                         </a>
@@ -121,25 +122,25 @@
                                                     </a>
                                                 </div>-->
                         <div>
-                            <a href="MainController?action=manageAccount">
+                            <a href="AdminController?action=manageAccount">
                                 <img src="./assets/user-unchose.svg" alt="">
                                 User
                             </a>
                         </div>
                         <div>
-                            <a href="MainController?action=manageRecipe">
+                            <a href="AdminController?action=manageRecipe">
                                 <img src="./assets/post-unchose.svg" alt="">
                                 Posts
                             </a>
                         </div>
                         <div>
-                            <a href="MainController?action=manageSuggestion" class="active">
+                            <a href="AdminController?action=manageSuggestion" class="active">
                                 <img src="./assets/content-unchose.svg" alt="">
                                 Content
                             </a>
                         </div>
                         <div>
-                            <a href="MainController?action=manageNews">
+                            <a href="AdminController?action=manageNews">
                                 <img src="./assets/news.svg" alt="">
                                 News
                             </a>
@@ -187,12 +188,12 @@
                         %>
                         <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="#">Content List</a></li>
+                                <li class="breadcrumb-item"><a href="AdminController?action=manageSuggestion">Content List</a></li>
                                 <li class="breadcrumb-item current-link" aria-current="page">Add Content</li>
                             </ol>
                         </nav>
-                        <div class="nav-top-bar-search">
-                            <form action="MainController" method="post" class="nav-top-bar-search-user">
+<!--                        <div class="nav-top-bar-search">
+                            <form action="AdminController" method="post" class="nav-top-bar-search-user">
                                 <button type="submit" name="action" value="search"><img src="assets/search2.svg" alt=""></button>
                                 <input type="hidden" name="admin" value="admin"> 
                                 <input type="text" name="txtsearch">
@@ -203,12 +204,14 @@
                                 </select>
                             </form>
                         </div>
+-->
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr>
                                     <th>No</th>
                                     <th>Title</th>
                                     <th>Create at</th>
+                                    <th>Update at</th>
                                     <th>Owner</th>
                                     <th>Show</th>
                                     <th>Add</th>
@@ -222,16 +225,35 @@
                                 <tr>
                                     <td><%= count%></td>
                                     <td><%= r.getTitle()%></td>
-                                    <td><%= r.getCreate_at()%></td>
-                                    <td><a href="MainController?action=showUserDetail&username=<%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%>"><%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%></a></td>
+                                    <% Timestamp timestamp = r.getCreate_at();
+                                        SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
+                                        String createDate = dateFormat.format(timestamp);
+                                    %>
+                                    <td><%= createDate%></td>
+                                    <%
+                                        if (r.getUpdate_at() == null) {
+                                    %>
+                                    <td><%= createDate%></td>
+                                    <%
+                                    } else {
+                                        timestamp = r.getUpdate_at();
+                                        dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
+                                        String updateDate = dateFormat.format(timestamp);
+                                    %>
+                                    <td><%= updateDate%>
+                                        <%
+                                            }
+                                        %>
+                                    </td>
+                                    <td><a href="AdminController?action=showUserDetail&username=<%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%>"><%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%></a></td>
                                     <td>
-                                        <form action="MainController" method="post" class="recipe-table-button">
+                                        <form action="AdminController" method="post" class="recipe-table-button">
                                             <input type="hidden" value="<%= r.getId()%>" name="id">
                                             <button type="submit" value="showRecipeDetail" name="action">Show</button>
                                         </form>
                                     </td>
                                     <td>
-                                        <form action="MainController" method="post" class="recipe-table-button">
+                                        <form action="AdminController" method="post" class="recipe-table-button">
                                             <input type="hidden" value="<%= r.getId()%>" name="id">
                                             <input type="hidden" value="<%= customSuggestionList%>" name="customSuggestionList">
                                             <button type="submit" value="addSuggestion" name="action">Add</button>
@@ -256,6 +278,7 @@
                                     <th>No</th>
                                     <th>Title</th>
                                     <th>Create at</th>
+                                    <th>Update at</th>
                                     <th>Owner</th>
                                     <th>Show</th>
                                     <th>Remove</th>
@@ -269,16 +292,35 @@
                                 <tr>
                                     <td><%= count%></td>
                                     <td><%= r.getTitle()%></td>
-                                    <td><%= r.getCreate_at()%></td>
-                                    <td><a href="MainController?action=showUserDetail&username=<%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%>"><%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%></a></td>
+                                    <% Timestamp timestamp = r.getCreate_at();
+                                        SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
+                                        String createDate = dateFormat.format(timestamp);
+                                    %>
+                                    <td><%= createDate%></td>
+                                    <%
+                                        if (r.getUpdate_at() == null) {
+                                    %>
+                                    <td><%= createDate%></td>
+                                    <%
+                                    } else {
+                                        timestamp = r.getUpdate_at();
+                                        dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
+                                        String updateDate = dateFormat.format(timestamp);
+                                    %>
+                                    <td><%= updateDate%>
+                                        <%
+                                            }
+                                        %>
+                                    </td>
+                                    <td><a href="AdminController?action=showUserDetail&username=<%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%>"><%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%></a></td>
                                     <td>
-                                        <form action="MainController" method="post" class="recipe-table-button">
+                                        <form action="AdminController" method="post" class="recipe-table-button">
                                             <input type="hidden" value="<%= r.getId()%>" name="id">
                                             <button type="submit" value="showRecipeDetail" name="action">Show</button>
                                         </form>
                                     </td>
                                     <td>
-                                        <form action="MainController" method="post" class="recipe-table-button">
+                                        <form action="AdminController" method="post" class="recipe-table-button">
                                             <input type="hidden" value="<%= r.getId()%>" name="id">
                                             <input type="hidden" value="<%= customSuggestionList%>" name="customSuggestionList">
                                             <button type="submit" value="removeSuggestion" name="action">Remove</button>
@@ -293,7 +335,7 @@
                             </tbody>
                         </table>
 
-                        <form action="MainController" method="post">
+                        <form action="AdminController" method="post">
                             <input type="text" name="txtTitle" required="">
                             <input type="hidden" name="txtUserId" value="<%= user.getId()%>">
                             <input type="hidden" value="<%= customSuggestionList%>" name="customSuggestionList">

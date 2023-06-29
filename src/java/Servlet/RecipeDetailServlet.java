@@ -4,15 +4,17 @@
  */
 package Servlet;
 
-import Direction.DirectionDAO;
-import Direction.DirectionDTO;
-import IngredientDetail.IngredientDetailDAO;
-import IngredientDetail.IngredientDetailDTO;
-import Recipe.RecipeDAO;
-import Recipe.RecipeDTO;
-import RecipeImage.RecipeImageDTO;
-import Review.ReviewDAO;
-import Review.ReviewDTO;
+import DAO.DirectionDAO;
+import DTO.DirectionDTO;
+import DAO.IngredientDetailDAO;
+import DTO.IngredientDetailDTO;
+import DAO.NutritionDAO;
+import DTO.NutritionDTO;
+import DAO.RecipeDAO;
+import DTO.RecipeDTO;
+import DTO.RecipeImageDTO;
+import DAO.ReviewDAO;
+import DTO.ReviewDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -51,7 +53,10 @@ public class RecipeDetailServlet extends HttpServlet {
 
             ArrayList<IngredientDetailDTO> ingredientDetailList = IngredientDetailDAO.getIngredientDetailByRecipeId(new Integer(id));
             request.setAttribute("ingredientDetailList", ingredientDetailList);
-
+            
+            NutritionDTO nutrition = NutritionDAO.getNutrition(new Integer(id));
+            request.setAttribute("nutrition", nutrition);
+            
             //REVIEW----------------------------------------------------------------------------------
             ArrayList<ReviewDTO> reviewList = ReviewDAO.getReviewByRecipeId(new Integer(id));
             request.setAttribute("reviewList", reviewList);

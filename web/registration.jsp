@@ -47,22 +47,19 @@
                             <span>User Name</span> <span>*</span>
                             <input type="text" name="txtUserName" placeholder="Enter your username" />
                         </div>
-                        <p class="error-popup">${requestScope.MSG_INCORRECT_USERNAME}${requestScope.MSG_USERNAME_EXIST}</p>
                         <div class="user-form-content-input">
                             <span>Email</span> <span>*</span>
                             <input type="text" name="txtEmail" placeholder="Enter your email" />
                         </div>
-                        <p class="error-popup">${requestScope.MSG_EMAIL_EXIST}${requestScope.MSG_INCORRECT_EMAIL}</p>
                         <div class="user-form-content-input">
                             <span>Password</span> <span>*</span>
                             <input type="password" name="txtPass" value="" placeholder="Must have 1 uppercase and 1 number (Length: 8-16)" />
                         </div>
-                        <p class="error-popup">${requestScope.MSG_INCORRECT_PASSWORD}</p>
                         <div class="user-form-content-input">
                             <span>Re-enter Password</span> <span>*</span>
                             <input type="password" name="txtConfirmPass" value="" placeholder="Re-enter your password" />
                         </div>
-                        <p class="error-popup">${requestScope.MSG_INCORRECT_CONFIRM_PASSWORD}</p>
+                        <p class="error-popup">${requestScope.errorList[0]}</p>
                         <button type="submit" value="signup" name="action" class="user-form-content-button">SIGN UP</button>
                         <a href="forgotPassword.jsp" class="user-form-content-forgot">
                             Forgot password?

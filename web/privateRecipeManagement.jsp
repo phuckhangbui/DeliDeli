@@ -4,10 +4,10 @@
     Author     : khang
 --%>
 
-<%@page import="User.UserDetailDTO"%>
-<%@page import="User.UserDetailDAO"%>
-<%@page import="Recipe.RecipeDAO"%>
-<%@page import="Recipe.RecipeDTO"%>
+<%@page import="DAO.RecipeDAO"%>
+<%@page import="DTO.RecipeDTO"%>
+<%@page import="DTO.UserDetailDTO"%>
+<%@page import="DAO.UserDetailDAO"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -42,7 +42,7 @@
             <div class="container ">
                 <form class="row user-profile">
                     <input type="hidden" name="userId" value="<%= userId%>">
-                    
+
 
                     <div class="col-md-3 user-profile-column-1">
                         <div class="user-profile-header">
@@ -126,9 +126,27 @@
                                 </div>
                                 <div class="recommendation-content-reciew">
                                     <%
-                                        for (int i = 0; i < RecipeDAO.getRatingByRecipeId(r.getId()); i++) {
+                                        double avaRating = RecipeDAO.getRatingByRecipeId(r.getId());
+                                        int fullStars = (int) avaRating;
+                                        boolean hasHalfStar = avaRating - fullStars >= 0.5;
+
+                                        for (int i = 0; i < fullStars; i++) {
                                     %>
                                     <img src="./assets/full-star-icon.svg" alt="">
+                                    <%
+                                        }
+
+                                        if (hasHalfStar) {
+                                    %>
+                                    <img src="./assets/half-star-icon.svg" alt="" style="width: 17px">
+                                    <%
+                                        }
+
+                                        int remainingStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+                                        for (int i = 0; i < remainingStars; i++) {
+                                    %>
+                                    <img src="./assets/empty-star-icon.svg" alt="">
                                     <%
                                         }
                                     %>

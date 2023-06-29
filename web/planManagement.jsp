@@ -4,10 +4,10 @@
     Author     : Walking Bag
 --%>
 
-<%@page import="DateFormat.DateNameChanger"%>
+<%@page import="Utils.DateNameChanger"%>
+<%@page import="DAO.PlanDAO"%>
+<%@page import="DTO.PlanDTO"%>
 <%@page import="java.text.SimpleDateFormat"%>
-<%@page import="Plan.PlanDAO"%>
-<%@page import="Plan.PlanDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <!DOCTYPE html>

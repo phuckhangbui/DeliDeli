@@ -4,7 +4,7 @@
  */
 package Servlet;
 
-import User.UserDAO;
+import DAO.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;

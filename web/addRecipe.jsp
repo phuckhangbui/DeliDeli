@@ -51,7 +51,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
         <div class="blank-background">
             <div class="container">
                 <div class="row add-recipe-info">
-                    <form id="addRecipe" action="MainController" enctype="multipart/form-data" method="post">
+                    <form id="addRecipe" action="UserController" enctype="multipart/form-data" method="post">
                         <div class="add-recipe-header">
                             <p>Add a New Recipe</p>
                             <p>
@@ -78,7 +78,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                     <div class="add-recipe-info-header-secondary">
                                         Thumbnail Picture
                                         <p>*</p>
-                                    </div> <!-- ti chinh lại thành required-->
+                                    </div> 
                                     <input type="file" id="image" name="thumbnail" required>
                                 </div>
                                 <div class="col-md-6 add-recipe-info-overview-picture-optional">

@@ -4,9 +4,9 @@
  */
 package Servlet;
 
-import PasswordEncode.EncodePass;
-import User.UserDAO;
-import User.UserDTO;
+import Utils.EncodePass;
+import DAO.UserDAO;
+import DTO.UserDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -64,7 +64,7 @@ public class LoginServlet extends HttpServlet {
                     request.getRequestDispatcher(ADMIN_PAGE).forward(request, response);
                 } else {
                     session.setAttribute("user", user);
-                    request.getRequestDispatcher(MOD_PAGE).forward(request, response);
+                    request.getRequestDispatcher("AdminController?action=manageAccount").forward(request, response);
                 }
             } else {
                 //Incorrect email or pass

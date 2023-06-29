@@ -4,20 +4,19 @@
     Author     : khang
 --%>
 
+<%@page import="DAO.DirectionDAO"%>
+<%@page import="DAO.NutritionDAO"%>
+<%@page import="DTO.IngredientDetailDTO"%>
+<%@page import="DAO.IngredientDetailDAO"%>
+<%@page import="DAO.IngredientDetailDAO"%>
+<%@page import="DTO.NutritionDTO"%>
+<%@page import="DTO.NutritionDTO"%>
+<%@page import="DAO.RecipeDietDAO"%>
+<%@page import="DAO.RecipeDAO"%>
+<%@page import="DTO.RecipeDTO"%>
 <%@page import="java.util.Set"%>
-<%@page import="Nutrition.NutritionDAO"%>
-<%@page import="Nutrition.NutritionDTO"%>
-<%@page import="Nutrition.NutritionDTO"%>
-<%@page import="RecipeDiet.RecipeDietDTO"%>
-<%@page import="RecipeDiet.RecipeDietDTO"%>
-<%@page import="RecipeDiet.RecipeDietDAO"%>
-<%@page import="Direction.DirectionDAO"%>
-<%@page import="IngredientDetail.IngredientDetailDAO"%>
-<%@page import="IngredientDetail.IngredientDetailDTO"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="Recipe.RecipeDTO"%>
-<%@page import="Recipe.RecipeDAO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="com.google.gson.Gson" %>
 <!DOCTYPE html>
@@ -72,7 +71,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
         <div class="blank-background">
             <div class="container">
                 <div class="row add-recipe-info">
-                    <form id="addRecipe" action="MainController" enctype="multipart/form-data" method="post">
+                    <form id="addRecipe" action="UserController" enctype="multipart/form-data" method="post">
                         <div class="add-recipe-header">
 
                             <p>Edit Recipe</p>

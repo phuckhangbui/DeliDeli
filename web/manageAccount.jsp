@@ -4,11 +4,10 @@
     Author     : Admin
 --%>
 
-<%@page import="Admin.AdminDAO"%>
+<%@page import="DAO.AdminDAO"%>
+<%@page import="DTO.UserDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="User.UserDAO"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="User.UserDTO"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -62,25 +61,25 @@
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageAccount" class="active">
+                        <a href="AdminController?action=manageAccount" class="active">
                             <img src="./assets/user-icon.svg" alt="">
                             User
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageRecipe">
+                        <a href="AdminController?action=manageRecipe">
                             <img src="./assets/post-unchosen-icon.svg" alt="">
                             Recipe
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageSuggestion">
+                        <a href="AdminController?action=manageSuggestion">
                             <img src="./assets/content-unchosen-icon.svg" alt="">
                             Content
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageNews">
+                        <a href="AdminController?action=manageNews">
                             <img src="./assets/news-unchosen-icon.svg" alt="">
                             News
                         </a>
@@ -133,25 +132,25 @@
                                                     </a>
                                                 </div>-->
                         <div>
-                            <a href="MainController?action=manageAccount" class="active">
+                            <a href="AdminController?action=manageAccount" class="active">
                                 <img src="./assets/user-icon.svg" alt="">
                                 User
                             </a>
                         </div>
                         <div>
-                            <a href="MainController?action=manageRecipe">
+                            <a href="AdminController?action=manageRecipe">
                                 <img src="./assets/post-unchosen-icon.svg" alt="">
                                 Posts
                             </a>
                         </div>
                         <div>
-                            <a href="MainController?action=manageSuggestion">
+                            <a href="AdminController?action=manageSuggestion">
                                 <img src="./assets/content-unchosen-icon.svg" alt="">
                                 Content
                             </a>
                         </div>
                         <div>
-                            <a href="MainController?action=manageNews">
+                            <a href="AdminController?action=manageNews">
                                 <img src="./assets/news-unchosen-icon.svg" alt="">
                                 News
                             </a>
@@ -196,13 +195,13 @@
                             Users List
                         </div>
                         <div class="nav-top-bar-search">
-                            <form action="MainController" method="post" class="nav-top-bar-search-user">
+                            <form action="AdminController" method="post" class="nav-top-bar-search-user">
                                 <button type="submit" name="action" value="searchAccount"><img src="assets/search-icon.svg" alt=""></button>
                                 <input type="text" name="txtSearch" placeholder="Who are you searching for ?">
                                 <input type="hidden" value="<%= currentRole%>" name="currentRole">
                                 <input type="hidden" value="<%= tag%>" name="tag">
                             </form>
-                            <form action="MainController?action=manageAccount" method="post" class="nav-top-bar-search-filter">
+                            <form action="AdminController?action=manageAccount" method="post" class="nav-top-bar-search-filter">
                                 <select name="role">
                                     <option value="user">User</option>
                                     <option value="admin">Admin</option>
@@ -245,13 +244,13 @@
                                 %>
                                 <tr>
                                     <td><%= count%></td>
-                                    <td><a href="MainController?action=showUserDetail&username=<%= u.getUserName()%>"><%= u.getUserName()%></a></td>
+                                    <td><a href="AdminController?action=showUserDetail&username=<%= u.getUserName()%>"><%= u.getUserName()%></a></td>
                                     <td><%= AdminDAO.getRoleByRoleId(u.getRole())%></td>
                                     <td><%= u.getEmail()%></td>
                                     <td><%= u.getCreateAt()%></td>
                                     <td><%= tmp[u.getStatus()]%></td>
                                     <td class="user-action-button">
-                                        <form action="MainController?username=<%= u.getUserName()%>" method="post" class="activate-acc-button">
+                                        <form action="AdminController?username=<%= u.getUserName()%>" method="post" class="activate-acc-button">
                                             <input type="hidden" value="<%= currentRole%>" name="currentRole">
                                             <input type="hidden" value="<%= tag%>" name="tag">
                                             <%
@@ -302,7 +301,7 @@
                             <%
                                 for (int i = 1; i <= endPage; i++) {
                             %>
-                            <a class="<%= (new Integer(tag) == i) ? "table-redirect-active-link" : ""%>" href="MainController?action=manageAccount&index=<%= i%>&role=<%= currentRole%>"><%= i%></a>
+                            <a class="<%= (new Integer(tag) == i) ? "table-redirect-active-link" : ""%>" href="AdminController?action=manageAccount&index=<%= i%>&role=<%= currentRole%>"><%= i%></a>
                             <%
                                 }
                             %>
@@ -330,13 +329,13 @@
                                 %>
                                 <tr>
                                     <td><%= count%></td>
-                                    <td><a href="MainController?action=showUserDetail&username=<%= u.getUserName()%>"><%= u.getUserName()%></a></td>
+                                    <td><a href="AdminController?action=showUserDetail&username=<%= u.getUserName()%>"><%= u.getUserName()%></a></td>
                                     <td><%= AdminDAO.getRoleByRoleId(u.getRole())%></td>
                                     <td><%= u.getEmail()%></td>
                                     <td><%= u.getCreateAt()%></td>
                                     <td><%= tmp[u.getStatus()]%></td>
                                     <td class="user-action-button">
-                                        <form action="MainController?username=<%= u.getUserName()%>" method="post" class="activate-acc-button">
+                                        <form action="AdminController?username=<%= u.getUserName()%>" method="post" class="activate-acc-button">
                                             <input type="hidden" value="<%= currentRole%>" name="currentRole">
                                             <input type="hidden" value="<%= tag%>" name="tag">
                                             <%
@@ -385,7 +384,7 @@
                         <div class="table-redirect">
                             <%
                                 for (int i = 1; i <= endPage; i++) {
-                                    String pageUrl = "MainController?action=manageAccount&page=" + i + "&role=" + currentRole;
+                                    String pageUrl = "AdminController?action=manageAccount&page=" + i + "&role=" + currentRole;
                             %>
                             <a class="<%= (currentPage == i) ? "table-redirect-active-link" : ""%>" href="<%= pageUrl%>"><%= i%></a>
                             <%

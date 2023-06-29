@@ -4,12 +4,10 @@
     Author     : khang
 --%>
 
+<%@page import="DAO.UserDAO"%>
+<%@page import="DAO.ReviewDAO"%>
+<%@page import="DTO.ReviewDTO"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="Review.ReviewDTO"%>
-<%@page import="Review.ReviewDAO"%>
-<%@page import="User.UserDTO"%>
-<%@page import="Recipe.RecipeDTO"%>
-<%@page import="User.UserDAO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -37,8 +35,6 @@
 //                int ownerId = recipe.getUser_id();
 //                UserDTO user = UserDAO.getUserByUserId(ownerId);
 //                ArrayList<ReviewDTO> reviewList = (ArrayList) request.getAttribute("reviewList");
-
-
             %>
 
             <%  String activeScroll = request.getParameter("activeScroll");
@@ -49,7 +45,7 @@
             <header class="recipe-detail-review-main-header">
                 EDIT YOUR REVIEWS
             </header>
-            <form class="recipe-detail-review-self" id="ratingForm" action="MainController" method="post">
+            <form class="recipe-detail-review-self" id="ratingForm" action="UserController" method="post">
                 <div class="row">
                     <div class="col-md-6">
                         <p class="recipe-detail-review-self-header">Your Rating</p>
@@ -99,7 +95,6 @@
                     scrollTarget.scrollIntoView({behavior: 'smooth'});
                 }
             </script>
-
             <%
                 }
             } else {
@@ -107,7 +102,7 @@
             <header class="recipe-detail-review-main-header">
                 REVIEWS
             </header>
-            <form class="recipe-detail-review-self" id="ratingForm" action="MainController" method="post">
+            <form class="recipe-detail-review-self" id="ratingForm" action="UserController" method="post">
                 <div class="row">
                     <div class="col-md-6">
                         <p class="recipe-detail-review-self-header">Your Rating</p>

@@ -4,11 +4,11 @@
     Author     : Admin
 --%>
 
-<%@page import="User.UserDTO"%>
+<%@page import="DTO.NewsDTO"%>
+<%@page import="DAO.NewsDAO"%>
+<%@page import="DTO.UserDTO"%>
 <%@page import="java.util.Map"%>
 <%@page import="java.util.HashMap"%>
-<%@page import="News.NewsDAO"%>
-<%@page import="News.NewsDTO"%>
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -51,25 +51,25 @@
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageAccount" >
+                        <a href="AdminController?action=manageAccount" >
                             <img src="./assets/user-unchosen-icon.svg" alt="">
                             User
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageRecipe" >
+                        <a href="AdminController?action=manageRecipe" >
                             <img src="./assets/post-unchosen-icon.svg" alt="">
                             Recipe
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageSuggestion" >
+                        <a href="AdminController?action=manageSuggestion" >
                             <img src="./assets/content-unchosen-icon.svg" alt="">
                             Content
                         </a>
                     </div>
                     <div>
-                        <a href="MainController?action=manageNews" class="active">
+                        <a href="AdminController?action=manageNews" class="active">
                             <img src="./assets/news-icon.svg" alt="">
                             News
                         </a>
@@ -122,25 +122,25 @@
                                                     </a>
                                                 </div>-->
                         <div>
-                            <a href="MainController?action=manageAccount">
+                            <a href="AdminController?action=manageAccount">
                                 <img src="./assets/user-unchose.svg" alt="">
                                 User
                             </a>
                         </div>
                         <div>
-                            <a href="MainController?action=manageRecipe">
+                            <a href="AdminController?action=manageRecipe">
                                 <img src="./assets/post-unchose.svg" alt="">
                                 Posts
                             </a>
                         </div>
                         <div>
-                            <a href="MainController?action=manageSuggestion">
+                            <a href="AdminController?action=manageSuggestion">
                                 <img src="./assets/content-unchose.svg" alt="">
                                 Content
                             </a>
                         </div>
                         <div>
-                            <a href="MainController?action=manageNews" class="active">
+                            <a href="AdminController?action=manageNews" class="active">
                                 <img src="./assets/news.svg" alt="">
                                 News
                             </a>
@@ -191,7 +191,7 @@
                                         NewsDTO news = NewsDAO.getNewsByNewsId(new Integer(id));
                                         //if (news.getUser_id() == user.getId()) {
                                 %>
-                                <form action="MainController" method="post" class="news-create-button" enctype="multipart/form-data">
+                                <form action="AdminController" method="post" class="news-create-button" enctype="multipart/form-data">
                                     <div class="news-content-info">
                                         <p>Title: <input type="text" name="txtTitle" value="<%= news.getTitle()%>"></p>
                                     </div>

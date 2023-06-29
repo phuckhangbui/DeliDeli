@@ -1,4 +1,9 @@
 <%-- Document : header Created on : May 24, 2023, 7:23:26 PM Author : khang --%>
+<%@page import="DAO.NotificationTypeDAO"%>
+<%@page import="DTO.NotificationTypeDTO"%>
+<%@page import="DTO.NotificationDTO"%>
+<%@page import="DAO.NotificationDAO"%>
+<%@page import="DTO.UserDTO"%>
 <%-- Document : header Created on : May 24, 2023, 7:23:26 PM Author : khang --%>
 
 <%@page import="java.time.format.DateTimeFormatter" %>
@@ -9,12 +14,7 @@
 <%@page import="java.time.ZoneId" %>
 <%@page import="java.time.LocalDate" %>
 <%@page import="java.sql.Date" %>
-<%@page import="NotificationType.NotificationTypeDAO" %>
-<%@page import="NotificationType.NotificationTypeDTO" %>
-<%@page import="Notification.NotificationDTO" %>
 <%@page import="java.util.ArrayList" %>
-<%@page import="Notification.NotificationDAO" %>
-<%@page import="User.UserDTO" %>
 <%@page import="java.util.Map" %>
 <%@page import="java.util.HashMap" %>
 <%@page contentType="text/html"
