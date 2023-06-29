@@ -45,6 +45,15 @@ public class UserController extends HttpServlet {
                 url = "error.jsp";
             } else {
                 switch (action.trim()) {
+                    case "userPublicDetail":
+                        url = "UserPublicDetailServlet";
+                        break;
+                    case "userEmailSetting":
+                        url = "UserEmailSettingServlet";
+                        break;
+                    case "userPasswordSetting":
+                        url = "UserPasswordSettingServlet";
+                        break;
                     case "saveUserPublicDetail":
                         url = "SaveUserPublicDetailServlet";
                         break;

@@ -43,7 +43,7 @@
                         <img src="assets/Logo3.svg" alt="">
                     </a>
                     <div>
-                        <a href="admin.jsp" >
+                        <a href="AdminController?action=adminDashboard" >
                             <img src="./assets/public-unchosen-icon.svg" alt="">
                             Dashboard
                         </a>
@@ -217,7 +217,7 @@
                                     <div class="news-detail-admin-action">
                                         <form action="AdminController" method="post" class="news-detail-admin-button">
                                             <input type="hidden" value="<%= news.getId()%>" name="newsId">
-                                            <button><a href="updateNews.jsp?newsId=<%= news.getId()%>">Edit</a></button>
+                                            <button><a href="AdminController?action=loadNewsForUpdate&newsId=<%= news.getId()%>">Edit</a></button>
                                             <button type="submit" name="action" value="deleteNews" class="news-detail-admin-button-delete">Delete</a></button>
                                         </form>
                                     </div>

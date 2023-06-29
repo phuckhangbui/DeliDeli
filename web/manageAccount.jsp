@@ -55,7 +55,7 @@
                         <img src="assets/Logo3.svg" alt="">
                     </a>
                     <div>
-                        <a href="admin.jsp" >
+                        <a href="AdminController?action=adminDashboard" >
                             <img src="./assets/public-unchosen-icon.svg" alt="">
                             Dashboard
                         </a>
@@ -232,7 +232,7 @@
                                     <th>User name</th>
                                     <th>Role</th>
                                     <th>Email</th>
-                                    <th>Created</th>
+                                    <th>Create at</th>
                                     <th>Status</th>
                                     <th></th>
                                 </tr>

@@ -45,7 +45,7 @@
                         <img src="assets/Logo3.svg" alt="">
                     </a>
                     <div>
-                        <a href="admin.jsp" >
+                        <a href="AdminController?action=adminDashboard" >
                             <img src="./assets/public-unchosen-icon.svg" alt="">
                             Dashboard
                         </a>
@@ -272,7 +272,8 @@
                                             }
                                         %>
                                     </td>
-                                    <td><a href="AdminController?action=showUserDetail&username=<%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%>"><%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%></a></td>
+                                    <% UserDTO owner = RecipeDAO.getRecipeOwnerByRecipeId(r.getId());%>
+                                    <td><a href="AdminController?action=showUserDetail&username=<%= owner.getUserName()%>"><%= owner.getUserName()%></a></td>
                                     <td><%= tmp[r.getStatus()]%></td>
                                     <td>
                                         <form action="AdminController" method="post" class="recipe-table-button">

@@ -42,7 +42,7 @@
                         <img src="assets/Logo3.svg" alt="">
                     </a>
                     <div>
-                        <a href="admin.jsp" >
+                        <a href="AdminController?action=adminDashboard" >
                             <img src="./assets/public-unchosen-icon.svg" alt="">
                             Dashboard
                         </a>

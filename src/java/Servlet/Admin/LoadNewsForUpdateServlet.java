@@ -4,73 +4,44 @@
  */
 package Servlet.Admin;
 
-import DAO.RecipeDAO;
-import DTO.RecipeDTO;
-import DAO.SuggestionDAO;
+import DAO.NewsDAO;
+import DTO.NewsDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author Admin
  */
-public class AddSuggestionSerlvet extends HttpServlet {
+public class LoadNewsForUpdateServlet extends HttpServlet {
 
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            //String[] customSuggestionListValues = request.getParameterValues("customSuggestionList");
-            HttpSession session = request.getSession();
-            String id = request.getParameter("id");
-            String update = request.getParameter("update");
-            String suggestion = request.getParameter("suggestion");
-            String link = "";
-
-            if (update == null) {
-                link = "createSuggestion.jsp";
-            } else {
-                link = "updateSuggestion.jsp";
-            }
-
-            RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(new Integer(id));
-
-            ArrayList<RecipeDTO> customSuggestionList = (ArrayList<RecipeDTO>) session.getAttribute("customSuggestionList");
-            if (customSuggestionList == null) {
-                customSuggestionList = new ArrayList<>();
-            } else {
-                boolean isDuplicate = false;
-                for (RecipeDTO existingRecipe : customSuggestionList) {
-                    if (existingRecipe.getId() == recipe.getId()) {
-                        isDuplicate = true;
-                        break;
-                    }
-                }
-
-                if (isDuplicate) {
-                    request.setAttribute("error", "Recipe already added");
-                    request.setAttribute("suggestion", suggestion);
-                    request.setAttribute("update", update);
-                    request.getRequestDispatcher(link).forward(request, response);
-                    return;
-                }
-            }
-
-            customSuggestionList.add(recipe);
-
-            session.setAttribute("customSuggestionList", customSuggestionList);
-
-            request.setAttribute("suggestion", suggestion);
-            request.setAttribute("update", update);
-            request.getRequestDispatcher(link).forward(request, response);
+            String id = request.getParameter("newsId");
+            
+            NewsDTO news = NewsDAO.getNewsByNewsId(new Integer(id));
+            
+            request.setAttribute("news", news);
+            
+            request.getRequestDispatcher("updateNews.jsp").forward(request, response);
+            
+            //out.println(news);
         }
     }
 

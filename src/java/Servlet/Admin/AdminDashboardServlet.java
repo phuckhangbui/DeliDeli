@@ -4,73 +4,57 @@
  */
 package Servlet.Admin;
 
+import DAO.AdminDAO;
 import DAO.RecipeDAO;
 import DTO.RecipeDTO;
-import DAO.SuggestionDAO;
+import DTO.UserDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.TreeMap;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author Admin
  */
-public class AddSuggestionSerlvet extends HttpServlet {
+public class AdminDashboardServlet extends HttpServlet {
 
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            //String[] customSuggestionListValues = request.getParameterValues("customSuggestionList");
-            HttpSession session = request.getSession();
-            String id = request.getParameter("id");
-            String update = request.getParameter("update");
-            String suggestion = request.getParameter("suggestion");
-            String link = "";
+            int totalRecipe = AdminDAO.getTotalRecipe();
+            int totalAccount = AdminDAO.getTotalAccount();
+            ArrayList<RecipeDTO> listRecipe = AdminDAO.getTop5LatestRecipes();
+            ArrayList<UserDTO> listUser = AdminDAO.getTop5LatestUser();
+            TreeMap<Date, Integer> mapRecipe = (TreeMap) AdminDAO.getRecipeMap();
+            TreeMap<Date, Integer> mapAccount = (TreeMap) AdminDAO.getAccountMap();
+            
 
-            if (update == null) {
-                link = "createSuggestion.jsp";
-            } else {
-                link = "updateSuggestion.jsp";
-            }
+            request.setAttribute("totalRecipe", totalRecipe);
+            request.setAttribute("totalAccount", totalAccount);
+            request.setAttribute("listRecipe", listRecipe);
+            request.setAttribute("listUser", listUser);
+            request.setAttribute("mapRecipe", mapRecipe);
+            request.setAttribute("mapAccount", mapAccount);
+            
+            request.getRequestDispatcher("admin.jsp").forward(request, response);
 
-            RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(new Integer(id));
-
-            ArrayList<RecipeDTO> customSuggestionList = (ArrayList<RecipeDTO>) session.getAttribute("customSuggestionList");
-            if (customSuggestionList == null) {
-                customSuggestionList = new ArrayList<>();
-            } else {
-                boolean isDuplicate = false;
-                for (RecipeDTO existingRecipe : customSuggestionList) {
-                    if (existingRecipe.getId() == recipe.getId()) {
-                        isDuplicate = true;
-                        break;
-                    }
-                }
-
-                if (isDuplicate) {
-                    request.setAttribute("error", "Recipe already added");
-                    request.setAttribute("suggestion", suggestion);
-                    request.setAttribute("update", update);
-                    request.getRequestDispatcher(link).forward(request, response);
-                    return;
-                }
-            }
-
-            customSuggestionList.add(recipe);
-
-            session.setAttribute("customSuggestionList", customSuggestionList);
-
-            request.setAttribute("suggestion", suggestion);
-            request.setAttribute("update", update);
-            request.getRequestDispatcher(link).forward(request, response);
         }
     }
 

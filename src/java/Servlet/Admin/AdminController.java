@@ -31,7 +31,6 @@ public class AdminController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
     private String url = "errorpage.html";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -46,6 +45,9 @@ public class AdminController extends HttpServlet {
                 url = "error.jsp";
             } else {
                 switch (action.trim()) {
+                    case "adminDashboard":
+                        url = "AdminDashboardServlet";
+                        break;
                     case "manageAccount":
                         url = "ManageAccountServlet";
                         break;
@@ -85,6 +87,9 @@ public class AdminController extends HttpServlet {
                     case "createNews":
                         url = "CreateNewsServlet";
                         break;
+                    case "loadNewsForUpdate":
+                        url = "LoadNewsForUpdateServlet";
+                        break;
                     case "updateNews":
                         url = "UpdateNewsServlet";
                         break;
@@ -93,6 +98,9 @@ public class AdminController extends HttpServlet {
                         break;
                     case "addPlan":
                         url = "AddPlanServlet";
+                        break;
+                    case "suggestionRecipe":
+                        url = "SuggestionRecipeServlet";
                         break;
                     case "addSuggestion":
                         url = "AddSuggestionSerlvet";
@@ -114,6 +122,9 @@ public class AdminController extends HttpServlet {
                         break;
                     case "deleteSuggestion":
                         url = "DeleteSuggestionServlet";
+                        break;
+                    case "loadSuggestionForUpdate":
+                        url = "LoadSuggestionForUpdateServlet";
                         break;
                 }
             }

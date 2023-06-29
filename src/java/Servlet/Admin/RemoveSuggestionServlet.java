@@ -61,7 +61,9 @@ public class RemoveSuggestionServlet extends HttpServlet {
                 if (update == null) {
                     request.getRequestDispatcher("createSuggestion.jsp").forward(request, response);
                 } else {
-                    request.getRequestDispatcher("updateSuggestion.jsp?suggestion=" + selectedSuggestion + "&update=" + update).forward(request, response);
+                    request.setAttribute("suggestion", selectedSuggestion);
+                    request.setAttribute("update", update);
+                    request.getRequestDispatcher("updateSuggestion.jsp").forward(request, response);
 //                    response.sendRedirect("updateSuggestion.jsp?suggestion=" + selectedSuggestion);
                 }
             } else {

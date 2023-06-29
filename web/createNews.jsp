@@ -44,7 +44,7 @@
                         <img src="assets/Logo3.svg" alt="">
                     </a>
                     <div>
-                        <a href="admin.jsp" >
+                        <a href="AdminController?action=adminDashboard" >
                             <img src="./assets/public-unchosen-icon.svg" alt="">
                             Dashboard
                         </a>
@@ -189,7 +189,7 @@
                                     %>
                                     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                                         <ol class="breadcrumb">
-                                            <li class="breadcrumb-item"><a href="#">News List</a></li>
+                                            <li class="breadcrumb-item"><a href="AdminController?action=manageNews">News List</a></li>
                                             <li class="breadcrumb-item current-link" aria-current="page">Add News</li>
                                         </ol>
                                     </nav>
@@ -206,7 +206,8 @@
                                         <div class="news-content-info-header">
                                             <p>Category <span>*</span>
                                                 <select name="category">
-                                                    <%                                                HashMap<Integer, String> newsMap = Utils.NavigationBarUtils.getMap("NewsCategory");
+                                                    <%                                                
+                                                        HashMap<Integer, String> newsMap = Utils.NavigationBarUtils.getMap("NewsCategory");
                                                         for (Map.Entry<Integer, String> entry : newsMap.entrySet()) {
                                                     %>
                                                     <option value="<%= entry.getKey()%>"><%= entry.getValue()%></option>

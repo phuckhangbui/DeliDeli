@@ -12,6 +12,7 @@ import DAO.NutritionDAO;
 import DTO.NutritionDTO;
 import DAO.RecipeDAO;
 import DTO.RecipeDTO;
+import DTO.UserDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -45,7 +46,13 @@ public class ShowRecipeDetailServlet extends HttpServlet {
             RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(new Integer(id));
             request.setAttribute("recipe", recipe);
 
-            String owner = RecipeDAO.getRecipeOwnerByRecipeId(new Integer(id));
+            String imgPath = RecipeDAO.getImageByRecipeId(new Integer(id)).getImgPath();
+            request.setAttribute("imgPath", imgPath);
+
+            String thumbnailPath = RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath();
+            request.setAttribute("thumbnailPath", thumbnailPath);
+
+            UserDTO owner = RecipeDAO.getRecipeOwnerByRecipeId(new Integer(id));
             request.setAttribute("owner", owner);
 
             int totalReview = RecipeDAO.getTotalReviewByRecipeId(new Integer(id));
@@ -54,24 +61,14 @@ public class ShowRecipeDetailServlet extends HttpServlet {
             double avgRating = RecipeDAO.getRatingByRecipeId(new Integer(id));
             request.setAttribute("avgRating", avgRating);
 
-            String thumbnail = RecipeDAO.getThumbnailByRecipeId(new Integer(id)).getThumbnailPath();
-            request.setAttribute("thumbnail", thumbnail);
-
             ArrayList<IngredientDetailDTO> ingredientDetailList = IngredientDetailDAO.getIngredientDetailByRecipeId(new Integer(id));
             request.setAttribute("ingredientDetailList", ingredientDetailList);
 
-            DirectionDTO directionList = DirectionDAO.getDirectionByRecipeId(new Integer(id));
-            request.setAttribute("directionList", directionList);
-            
             NutritionDTO nutrition = NutritionDAO.getNutrition(new Integer(id));
             request.setAttribute("nutrition", nutrition);
 
-            try {
-                String image = RecipeDAO.getImageByRecipeId(new Integer(id)).getImgPath();
-                request.setAttribute("image", image);
-            } catch (Exception e) {
-
-            }
+            DirectionDTO direction = DirectionDAO.getDirectionByRecipeId(new Integer(id));
+            request.setAttribute("direction", direction);
 
             request.getRequestDispatcher("showRecipeDetail.jsp").forward(request, response);
         }

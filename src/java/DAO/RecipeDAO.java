@@ -7,6 +7,7 @@ package DAO;
 
 import DTO.RecipeDTO;
 import DTO.RecipeImageDTO;
+import DTO.UserDTO;
 import Utils.DBUtils;
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -25,15 +26,15 @@ import java.util.List;
  */
 public class RecipeDAO {
 
-    public static String getRecipeOwnerByRecipeId(int recipeId) {
-        String owner = "";
+    public static UserDTO getRecipeOwnerByRecipeId(int recipeId) {
+        UserDTO owner = new UserDTO();
         Connection cn = null;
 
         try {
             cn = DBUtils.getConnection();
 
             if (cn != null) {
-                String sql = "SELECT user_name FROM Recipe r \n"
+                String sql = "SELECT * FROM Recipe r \n"
                         + "INNER JOIN\n"
                         + "[User] u\n"
                         + "ON r.user_id = u.id\n"
@@ -44,7 +45,16 @@ public class RecipeDAO {
                 ResultSet rs = pst.executeQuery();
                 if (rs != null) {
                     while (rs.next()) {
-                        owner = rs.getString("user_name");
+                        int id = rs.getInt("id");
+                        String userName = rs.getString("user_name");
+                        String email = rs.getString("email");
+                        String password = rs.getString("password");
+                        String avatar = rs.getString("avatar");
+                        String createAt = rs.getString("create_at");
+                        int status = rs.getInt("status");
+                        int role = rs.getInt("role_id");
+                        int setting = rs.getInt("user_setting_id");
+                        owner = new UserDTO(id, userName, email, password, avatar, createAt, status, role, setting);
                     }
                 }
                 rs.close();
@@ -507,7 +517,7 @@ public class RecipeDAO {
     }
 
     public static void main(String[] args) {
-        RecipeDTO r = getRecipeByRecipeId(1);
-        System.out.println(r.getCreate_at());
+        //RecipeDTO r = getRecipeByRecipeId(1);
+        System.out.println(getRecipeOwnerByRecipeId(1));
     }
 }

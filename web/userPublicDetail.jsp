@@ -29,7 +29,7 @@
 
         <%            
             String userId = request.getParameter("userId");
-            UserDetailDTO userDetail = UserDetailDAO.getUserDetailByUserId(new Integer(userId));
+            UserDetailDTO userDetail = (UserDetailDTO)request.getAttribute("userDetail");
         %>
         <!--        User Public Info Manage        -->
         <div class="blank-background">
@@ -48,15 +48,15 @@
                             </p>
                         </div>
                         <div class="user-profile-option">
-                            <a href="userPublicDetail.jsp?userId=<%= user.getId()%>" class="active-link">
+                            <a href="UserController?action=userPublicDetail&userId=<%=user.getId()%>" class="active-link">
                                 <img src="./assets/public-icon.svg" alt="">
                                 Public Profile
                             </a>
-                            <a href="userEmailSetting.jsp?userId=<%= user.getId()%>">
+                            <a href="UserController?action=userEmailSetting&userId=<%=user.getId()%>">
                                 <img src="./assets/user-unchosen-icon.svg" alt="">
                                 Personal Setting
                             </a>
-                            <a href="userPasswordSetting.jsp?userId=<%= user.getId()%>">
+                            <a href="UserController?action=userPasswordSetting&userId=<%=user.getId()%>">
                                 <img src="./assets/password-unchosen-icon.svg" alt="">
                                 Change Password
                             </a>

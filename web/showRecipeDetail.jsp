@@ -38,10 +38,13 @@
             <%
                 ArrayList<IngredientDetailDTO> ingredientDetailList = (ArrayList) request.getAttribute("ingredientDetailList");
                 ArrayList<ReviewDTO> reviewList = (ArrayList) request.getAttribute("reviewList");
-                NutritionDTO nutrition = (NutritionDTO) request.getAttribute("nutrition");
                 RecipeDTO recipe = (RecipeDTO) request.getAttribute("recipe");
+                String imgPath = (String) request.getAttribute("imgPath");
+                String thumbnailPath = (String) request.getAttribute("thumbnailPath");
+                NutritionDTO nutrition = (NutritionDTO) request.getAttribute("nutrition");
+                DirectionDTO direction = (DirectionDTO) request.getAttribute("direction");
                 int ownerId = recipe.getUser_id();
-                UserDTO owner = UserDAO.getUserByUserId(ownerId);
+                UserDTO owner = (UserDTO) request.getAttribute("owner");
                 String link = "userCommunityProfile.jsp?accountName=" + owner.getUserName();
             %>
 
@@ -58,7 +61,7 @@
                         <img src="assets/Logo3.svg" alt="">
                     </a>
                     <div>
-                        <a href="admin.jsp" >
+                        <a href="AdminController?action=adminDashboard" >
                             <img src="./assets/public-unchosen-icon.svg" alt="">
                             Dashboard
                         </a>
@@ -210,7 +213,7 @@
                                     <a href="<%=link%>"><img src="./assets/profile-pic.svg" alt=""></a>
                                     <div>
                                         <span>By</span>
-                                        <span><a href="<%=link%>"><%= request.getAttribute("owner")%></a></span>
+                                        <span><a href="<%=link%>"><%= owner.getUserName()%></a></span>
                                             <%
                                                 Timestamp timestamp = null;
                                                 if (recipe.getUpdate_at() == null) {
@@ -257,7 +260,7 @@
                                     </div>
                                 </div>
                                 <div class="recipe-detail-main-pic">
-                                    <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
+                                    <img src="ServletImageLoader?identifier=<%= thumbnailPath%>" alt="">
                                 </div>
                                 <div class="recipe-detail-info-overview">
                                     <div class="recipe-detail-info-overview-content">
@@ -357,12 +360,8 @@
                                         Directions
                                     </div>
                                     <div>
-                                        <%
-                                            DirectionDTO direction = DirectionDAO.getDirectionByRecipeId(recipe.getId());
-                                        %>
 
                                         <p class="recipe-detail-info-direction-header"><%= direction.getDesc()%></p>
-
 
                                     </div>
                                 </div>
@@ -371,7 +370,7 @@
 
                                 %>
                                 <div class="recipe-detail-secondary-pic">
-                                    <img src="ServletImageLoader?identifier=<%= RecipeDAO.getImageByRecipeId(recipe.getId()).getImgPath()%>" alt="">
+                                    <img src="ServletImageLoader?identifier=<%= imgPath%>" alt="">
                                 </div>
                                 <% } catch (Exception e) {
 

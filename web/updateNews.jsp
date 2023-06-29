@@ -45,7 +45,7 @@
                         <img src="assets/Logo3.svg" alt="">
                     </a>
                     <div>
-                        <a href="admin.jsp" >
+                        <a href="AdminController?action=adminDashboard" >
                             <img src="./assets/public-unchosen-icon.svg" alt="">
                             Dashboard
                         </a>
@@ -184,12 +184,7 @@
                         <div class="container">
                             <div class="row news-content">
                                 <%
-                                    //UserDTO user = (UserDTO) session.getAttribute("user");
-                                    String id = request.getParameter("newsId");
-
-                                    try {
-                                        NewsDTO news = NewsDAO.getNewsByNewsId(new Integer(id));
-                                        //if (news.getUser_id() == user.getId()) {
+                                    NewsDTO news = (NewsDTO) request.getAttribute("news");
                                 %>
                                 <form action="AdminController" method="post" class="news-create-button" enctype="multipart/form-data">
                                     <div class="news-content-info">
@@ -216,15 +211,10 @@
                                         <p><textarea rows="10" cols="10" id="editor" value=""><%= news.getDesc()%></textarea></p>
                                     </div>
                                     <input type="hidden" name="editorContent" id="editorContent" value="">
-                                    <input type="hidden" name="newsId" value="<%= id%>">
+                                    <input type="hidden" name="newsId" value="<%= news.getId()%>">
                                     <button type="submit" value="updateNews" name="action">Update</button>
                                     <!--<button type="submit" value="deleteNews" name="action">Delete</button>-->
                                 </form>
-                                <%//}
-                                    } catch (Exception e) {
-
-                                    }
-                                %>
                             </div>
                         </div>
                     </div>
