@@ -183,7 +183,7 @@
 
                         <%
                             ArrayList<RecipeDTO> customSuggestionList = (ArrayList<RecipeDTO>) session.getAttribute("customSuggestionList");
-                            ArrayList<RecipeDTO> listRecipe = (ArrayList) RecipeDAO.getAllRecipes();
+                            ArrayList<RecipeDTO> listRecipe = (ArrayList) request.getAttribute("listRecipe");
                             if (listRecipe != null && listRecipe.size() > 0) {
                         %>
                         <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">

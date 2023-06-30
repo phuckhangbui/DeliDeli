@@ -4,7 +4,6 @@
     Author     : Admin
 --%>
 
-<%@page import="DAO.NewsDAO"%>
 <%@page import="DTO.NewsDTO"%>
 <%@page import="DTO.UserDTO"%>
 <%@page import="java.util.ArrayList"%>
@@ -185,17 +184,22 @@
                                     <div class="container ">
                                         <%
                                             NewsDTO news = (NewsDTO) request.getAttribute("news");
+                                            String category = (String) request.getAttribute("category");
                                         %>
+                                        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                                            <ol class="breadcrumb">
+                                                <li class="breadcrumb-item"><a href="AdminController?action=manageNews">News List</a></li>
+                                                <li class="breadcrumb-item current-link" aria-current="page"><%= news.getTitle()%></li>
+                                            </ol>
+                                        </nav>
                                         <div class="row">
-                                            <p><%= NewsDAO.getNewsCategoryByNewsId(news.getId())%></p>
+                                            <p><%= category%></p>
                                             <header class="new-result-header">
                                                 <p><%= news.getTitle()%></p>
                                             </header>
                                         </div>
                                         <div class="row new-result-content new-result-content-link">
                                             <div>
-                                                <!--<p class="new-result-content-post-title"><%= news
-                                                        .getTitle()%></p>-->
                                                 <p class="new-result-content-post-title">By: <%= request.getAttribute("author")%></p>
                                                 <%
                                                     if (news.getCreateAt().equals(news.getUpdateAt())) {

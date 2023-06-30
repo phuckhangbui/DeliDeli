@@ -4,6 +4,7 @@
  */
 package Servlet.Admin;
 
+import DAO.RecipeDAO;
 import DAO.SuggestionDAO;
 import DTO.RecipeDTO;
 import java.io.IOException;
@@ -37,9 +38,11 @@ public class LoadSuggestionForUpdateServlet extends HttpServlet {
             String suggestion = request.getParameter("suggestion");
             
             ArrayList<RecipeDTO> list = SuggestionDAO.getAllRecipesBySuggestion(suggestion);
+            ArrayList<RecipeDTO> listRecipe = RecipeDAO.getAllRecipes();
             
             request.setAttribute("suggestion", suggestion);
             request.setAttribute("list", list);
+            request.setAttribute("listRecipe", listRecipe);
             
             request.getRequestDispatcher("updateSuggestion.jsp").forward(request, response);
         }

@@ -183,7 +183,7 @@
                         %>
                         <div class="nav-top-bar-search">
                             <div class="news-create-button">
-                                <button><a href="createSuggestion.jsp">Create</a></button>
+                                <button><a href="AdminController?action=loadSuggestionForCreate">Create</a></button>
                             </div>
                         </div>
 
@@ -193,7 +193,8 @@
                                     <th>No</th>
                                     <th>Title</th>
                                     <th>Total Recipe</th>
-                                    <td>Show</td>
+                                    <td>Detail</td>
+                                    <td>Choose</td>
                                     <td>Action</td>
                                 </tr>
                             </thead>
@@ -220,6 +221,11 @@
                                         <form action="AdminController" method="post" class="recipe-table-button">
                                             <input type="hidden" name="suggestion" value="<%= key%>">
                                             <button type="submit" name="action" value="suggestionRecipe">Choose</button>
+                                        </form>
+                                    </td>
+                                    <td>
+                                        <form action="AdminController" method="post" class="recipe-table-button">
+                                            <input type="hidden" name="suggestion" value="<%= key%>">
                                             <button><a href="AdminController?action=loadSuggestionForUpdate&suggestion=<%= key%>">Edit</a></button>
                                             <%
                                                 if (map.size() > 1) {

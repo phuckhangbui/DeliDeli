@@ -4,7 +4,6 @@
     Author     : Admin
 --%>
 <%@page import="DTO.UserDetailDTO"%>
-<%@page import="DAO.UserDetailDAO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>

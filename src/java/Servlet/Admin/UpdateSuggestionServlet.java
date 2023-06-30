@@ -4,6 +4,7 @@
  */
 package Servlet.Admin;
 
+import DAO.RecipeDAO;
 import DTO.RecipeDTO;
 import DAO.SuggestionDAO;
 import java.io.IOException;
@@ -40,6 +41,7 @@ public class UpdateSuggestionServlet extends HttpServlet {
             String suggestion = request.getParameter("suggestion");
             String txtUserId = request.getParameter("txtUserId");
             ArrayList<RecipeDTO> customSuggestionList = (ArrayList<RecipeDTO>) session.getAttribute("customSuggestionList");
+            
 
 //            boolean check = SuggestionDAO.checkSuggestionExist(suggestion);
 //            if (check) {
@@ -68,7 +70,7 @@ public class UpdateSuggestionServlet extends HttpServlet {
                 }
             }
             session.removeAttribute("customSuggestionList");
-
+            
             request.getRequestDispatcher("ManageSuggestionServlet").forward(request, response);
 
         }

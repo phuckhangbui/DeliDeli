@@ -308,6 +308,14 @@
         <servlet-name>LoadSuggestionForUpdateServlet</servlet-name>
         <servlet-class>Servlet.Admin.LoadSuggestionForUpdateServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>LoadSuggestionForCreateServlet</servlet-name>
+        <servlet-class>Servlet.Admin.LoadSuggestionForCreateServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoadNewsListServlet</servlet-name>
+        <servlet-class>Servlet.LoadNewsListServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -531,6 +539,14 @@
     <servlet-mapping>
         <servlet-name>LoadSuggestionForUpdateServlet</servlet-name>
         <url-pattern>/LoadSuggestionForUpdateServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadSuggestionForCreateServlet</servlet-name>
+        <url-pattern>/LoadSuggestionForCreateServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadNewsListServlet</servlet-name>
+        <url-pattern>/LoadNewsListServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

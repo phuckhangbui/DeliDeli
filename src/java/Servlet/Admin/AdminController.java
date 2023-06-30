@@ -126,6 +126,9 @@ public class AdminController extends HttpServlet {
                     case "loadSuggestionForUpdate":
                         url = "LoadSuggestionForUpdateServlet";
                         break;
+                    case "loadSuggestionForCreate":
+                        url = "LoadSuggestionForCreateServlet";
+                        break;
                 }
             }
             RequestDispatcher rd = request.getRequestDispatcher(url);

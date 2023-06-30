@@ -35,8 +35,23 @@ public class ManageNewsServlet extends HttpServlet {
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             ArrayList<NewsDTO> listNews = NewsDAO.getAllNews();
+            ArrayList<String> listNewsCategories = new ArrayList<>();
+            ArrayList<String> listNewsAuthors = new ArrayList<>();
+
+            for (NewsDTO news : listNews) {
+                String newsCategory = NewsDAO.getNewsCategoryByNewsId(news.getId());
+                listNewsCategories.add(newsCategory);
+            }
+            
+            for (NewsDTO news : listNews) {
+                String newsAuthor = NewsDAO.getNewsAuthorByNewsId(news.getId());
+                listNewsAuthors.add(newsAuthor);
+            }
             
             request.setAttribute("listNews", listNews);
+            request.setAttribute("listNewsCategories", listNewsCategories);
+            request.setAttribute("listNewsAuthors", listNewsAuthors);
+            
             request.getRequestDispatcher("manageNews.jsp").forward(request, response);
         }
     }

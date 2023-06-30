@@ -183,11 +183,7 @@
                         <div class="blank-background">
                             <div class="container ">
                                 <div class="row news-content">
-                                    <%
-                                        //UserDTO user = (UserDTO) session.getAttribute("user");
-                                        //String id = request.getParameter("newsId");
-                                    %>
-                                    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                                    <nav style="--bs-breadcrumb-divider: '>'; padding-left: 0" aria-label="breadcrumb">
                                         <ol class="breadcrumb">
                                             <li class="breadcrumb-item"><a href="AdminController?action=manageNews">News List</a></li>
                                             <li class="breadcrumb-item current-link" aria-current="page">Add News</li>
@@ -203,7 +199,7 @@
                                                 <input type="text" name="txtTitle" placeholder="What's the new called?">
                                             </div>
                                         </div>
-                                        <div class="news-content-info-header">
+                                        <div class="news-content-info">
                                             <p>Category <span>*</span>
                                                 <select name="category">
                                                     <%                                                

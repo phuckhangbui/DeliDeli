@@ -42,8 +42,8 @@ public class AddSuggestionSerlvet extends HttpServlet {
             }
 
             RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(new Integer(id));
-
             ArrayList<RecipeDTO> customSuggestionList = (ArrayList<RecipeDTO>) session.getAttribute("customSuggestionList");
+            ArrayList<RecipeDTO> listRecipe = RecipeDAO.getAllRecipes();
             if (customSuggestionList == null) {
                 customSuggestionList = new ArrayList<>();
             } else {
@@ -59,6 +59,7 @@ public class AddSuggestionSerlvet extends HttpServlet {
                     request.setAttribute("error", "Recipe already added");
                     request.setAttribute("suggestion", suggestion);
                     request.setAttribute("update", update);
+                    request.setAttribute("listRecipe", listRecipe);
                     request.getRequestDispatcher(link).forward(request, response);
                     return;
                 }
@@ -70,6 +71,7 @@ public class AddSuggestionSerlvet extends HttpServlet {
 
             request.setAttribute("suggestion", suggestion);
             request.setAttribute("update", update);
+            request.setAttribute("listRecipe", listRecipe);
             request.getRequestDispatcher(link).forward(request, response);
         }
     }

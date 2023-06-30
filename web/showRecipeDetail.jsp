@@ -1,8 +1,5 @@
 <%-- Document : showRecipeDetail Created on : Jun 10, 2023, 9:04:47 AM Author : Admin --%>
 
-<%@page import="DAO.UserDAO"%>
-<%@page import="DAO.RecipeDAO"%>
-<%@page import="DAO.DirectionDAO"%>
 <%@page import="DTO.DirectionDTO"%>
 <%@page import="DTO.RecipeDTO"%>
 <%@page import="DTO.UserDTO"%>
@@ -365,16 +362,9 @@
 
                                     </div>
                                 </div>
-                                <% try {
-                                        String path = RecipeDAO.getImageByRecipeId(recipe.getId()).getImgPath();
-
-                                %>
                                 <div class="recipe-detail-secondary-pic">
                                     <img src="ServletImageLoader?identifier=<%= imgPath%>" alt="">
                                 </div>
-                                <% } catch (Exception e) {
-
-                                    }%>
 
                                 <div class="recipe-detail-admin-action">
                                     <form action="AdminController" method="post" class="recipe-table-button">

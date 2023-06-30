@@ -5,9 +5,6 @@
 --%>
 
 <%@page import="DTO.DirectionDTO"%>
-<%@page import="DAO.DirectionDAO"%>
-<%@page import="DAO.RecipeDAO"%>
-<%@page import="DAO.UserDAO"%>
 <%@page import="DTO.NutritionDTO"%>
 <%@page import="DTO.RecipeDTO"%>
 <%@page import="DTO.ReviewDTO"%>

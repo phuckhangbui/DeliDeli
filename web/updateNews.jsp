@@ -5,7 +5,6 @@
 --%>
 
 <%@page import="DTO.NewsDTO"%>
-<%@page import="DAO.NewsDAO"%>
 <%@page import="DTO.UserDTO"%>
 <%@page import="java.util.Map"%>
 <%@page import="java.util.HashMap"%>
@@ -181,40 +180,55 @@
                             }
                         %>
 
-                        <div class="container">
-                            <div class="row news-content">
-                                <%
-                                    NewsDTO news = (NewsDTO) request.getAttribute("news");
-                                %>
-                                <form action="AdminController" method="post" class="news-create-button" enctype="multipart/form-data">
-                                    <div class="news-content-info">
-                                        <p>Title: <input type="text" name="txtTitle" value="<%= news.getTitle()%>"></p>
-                                    </div>
-                                    <div class="news-content-info">
-                                        <p>Category:
-                                            <select name="category">
-                                                <%
-                                                    HashMap<Integer, String> newsMap = Utils.NavigationBarUtils.getMap("NewsCategory");
-                                                    for (Map.Entry<Integer, String> entry : newsMap.entrySet()) {
-                                                %>
-                                                <option value="<%= entry.getKey()%>"><%= entry.getValue()%></option>
-                                                <%
-                                                    }
-                                                %>
-                                            </select>
-                                        </p>
-                                    </div>
-                                    <div class="news-content-info news-content-info-white-background">
-                                        <!--<p>Image: <input type="file" name="file"></p>-->
-                                    </div>
-                                    <div class="news-content-info">
-                                        <p><textarea rows="10" cols="10" id="editor" value=""><%= news.getDesc()%></textarea></p>
-                                    </div>
-                                    <input type="hidden" name="editorContent" id="editorContent" value="">
-                                    <input type="hidden" name="newsId" value="<%= news.getId()%>">
-                                    <button type="submit" value="updateNews" name="action">Update</button>
-                                    <!--<button type="submit" value="deleteNews" name="action">Delete</button>-->
-                                </form>
+                        <div class="blank-background">
+                            <div class="container">
+                                <div class="row news-content">
+                                    <%
+                                        NewsDTO news = (NewsDTO) request.getAttribute("news");
+                                    %>
+                                    <nav style="--bs-breadcrumb-divider: '>'; padding-left: 0" aria-label="breadcrumb">
+                                        <ol class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="AdminController?action=manageNews">News List</a></li>
+                                            <li class="breadcrumb-item current-link" aria-current="page">Update News</li>
+                                        </ol>
+                                    </nav>
+                                    <form action="AdminController" method="post" class="news-create-button" enctype="multipart/form-data">
+                                        <div class="add-news-header">
+                                            <p>Update a New</p>
+                                        </div>
+                                        <div class="news-content-info-header">
+                                            Title: 
+                                            <div>
+                                                <input type="text" name="txtTitle" value="<%= news.getTitle()%>">
+                                            </div>
+                                        </div>
+                                        <div class="news-content-info">
+                                            <p>Category:
+                                                <select name="category">
+                                                    <%
+                                                        HashMap<Integer, String> newsMap = Utils.NavigationBarUtils.getMap("NewsCategory");
+                                                        for (Map.Entry<Integer, String> entry : newsMap.entrySet()) {
+                                                    %>
+                                                    <option value="<%= entry.getKey()%>"><%= entry.getValue()%></option>
+                                                    <%
+                                                        }
+                                                    %>
+                                                </select>
+                                            </p>
+                                        </div>
+                                        <div class="news-content-info news-content-info-white-background">
+                                            <!--<p>Image: <input type="file" name="file"></p>-->
+                                        </div>
+                                        <div class="news-content-info">
+                                            Description
+                                            <textarea rows="10" cols="10" id="editor" value=""><%= news.getDesc()%></textarea>
+                                        </div>
+                                        <input type="hidden" name="editorContent" id="editorContent" value="">
+                                        <input type="hidden" name="newsId" value="<%= news.getId()%>">
+                                        <button type="submit" value="updateNews" name="action">Update</button>
+                                        <!--<button type="submit" value="deleteNews" name="action">Delete</button>-->
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>

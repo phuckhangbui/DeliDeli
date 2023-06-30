@@ -6,7 +6,6 @@
 
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.sql.Timestamp"%>
-<%@page import="DAO.AdminDAO"%>
 <%@page import="DTO.UserDetailDTO"%>
 <%@page import="DTO.RecipeDTO"%>
 <%@page import="DTO.UserDTO"%>
@@ -189,6 +188,7 @@
                             UserDTO account = (UserDTO) request.getAttribute("user");
                             UserDetailDTO userDetail = (UserDetailDTO) request.getAttribute("userDetail");
                             ArrayList<RecipeDTO> userRecipe = (ArrayList) request.getAttribute("userRecipe");
+                            TreeMap<Integer, Integer> mapRating = (TreeMap) request.getAttribute("mapRating");
                         %>
 
                         <div class="container">
@@ -302,7 +302,6 @@
 
                                     <div class="col-md-6">
                                         <%
-                                            TreeMap<Integer, Integer> mapRating = (TreeMap) AdminDAO.getRatingAllRecipesOfOwnerMap(account.getId());
                                             if (mapRating.size() != 0) {
                                         %>
                                         <div><canvas id="myChart"></canvas></div>
