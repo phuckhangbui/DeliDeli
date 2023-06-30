@@ -5,7 +5,9 @@
 package Servlet;
 
 import DAO.RecipeDAO;
+import DTO.DisplayRecipeDTO;
 import DTO.RecipeDTO;
+import DTO.UserDTO;
 import Utils.NavigationBarUtils;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -35,11 +37,31 @@ public class SearchServlet extends HttpServlet {
             //Search recipe for admin
             if (admin != null) {
                 ArrayList<RecipeDTO> list = NavigationBarUtils.searchRecipes(txtsearch, searchBy);
-                request.setAttribute("searchRecipesList", list);
+                ArrayList<DisplayRecipeDTO> displayList = new ArrayList<>();
+                for (RecipeDTO r : list) {
+                    String thumbnailPath = RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath();
+                    String category = RecipeDAO.getCategoryByRecipeId(r.getId());
+                    double rating = RecipeDAO.getRatingByRecipeId(r.getId());
+                    UserDTO owner = RecipeDAO.getRecipeOwnerByRecipeId(r.getId());
+
+                    DisplayRecipeDTO d = new DisplayRecipeDTO(r.getId(), r.getTitle(), thumbnailPath, category, rating, owner);
+                    displayList.add(d);
+                }
+                request.setAttribute("searchRecipesList", displayList);
                 request.getRequestDispatcher("manageRecipe.jsp").forward(request, response);
             } else if (isPlan != null) {
                 ArrayList<RecipeDTO> list = NavigationBarUtils.searchRecipes(txtsearch, searchBy);
-                request.setAttribute("searchRecipesList", list);
+                ArrayList<DisplayRecipeDTO> displayList = new ArrayList<>();
+                for (RecipeDTO r : list) {
+                    String thumbnailPath = RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath();
+                    String category = RecipeDAO.getCategoryByRecipeId(r.getId());
+                    double rating = RecipeDAO.getRatingByRecipeId(r.getId());
+                    UserDTO owner = RecipeDAO.getRecipeOwnerByRecipeId(r.getId());
+
+                    DisplayRecipeDTO d = new DisplayRecipeDTO(r.getId(), r.getTitle(), thumbnailPath, category, rating, owner);
+                    displayList.add(d);
+                }
+                request.setAttribute("searchRecipesList", displayList);
                 String url = "MainController?action=editPlan&id=" + 3 + "&isSearch=true";
                 System.out.println("Searched!");
                 request.getRequestDispatcher(url).forward(request, response);
@@ -53,8 +75,18 @@ public class SearchServlet extends HttpServlet {
                     session.setAttribute("ERROR_MSG", "What do you want to eat? Please search");
                 } else {
                     ArrayList<RecipeDTO> list = NavigationBarUtils.searchRecipes(txtsearch, searchBy);
+                    ArrayList<DisplayRecipeDTO> displayList = new ArrayList<>();
+                    for (RecipeDTO r : list) {
+                        String thumbnailPath = RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath();
+                        String category = RecipeDAO.getCategoryByRecipeId(r.getId());
+                        double rating = RecipeDAO.getRatingByRecipeId(r.getId());
+                        UserDTO owner = RecipeDAO.getRecipeOwnerByRecipeId(r.getId());
+
+                        DisplayRecipeDTO d = new DisplayRecipeDTO(r.getId(), r.getTitle(), thumbnailPath, category, rating, owner);
+                        displayList.add(d);
+                    }
                     if (list.size() != 0) {
-                        session.setAttribute("searchRecipesList", list);
+                        session.setAttribute("searchRecipesList", displayList);
                         session.setAttribute("SUCCESS_MSG", "Result of '" + txtsearch + "' in recipe's " + searchBy);
                     } else {
                         session.setAttribute("ERROR_MSG", "There is no '" + txtsearch + "' in recipe's " + searchBy);

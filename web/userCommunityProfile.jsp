@@ -45,7 +45,7 @@
             ArrayList<DisplayRecipeDTO> favoriteList = (ArrayList<DisplayRecipeDTO>) request.getAttribute("favoriteList");
             ArrayList<DisplayReviewDTO> reviewList = (ArrayList<DisplayReviewDTO>) request.getAttribute("reviewList");
             String fullname = accountDetail.getFirstName() + " " + accountDetail.getLastName();
-            
+
 
         %>
         <%@include file="header.jsp" %>
@@ -71,19 +71,39 @@
                                 <p><%=fullname%></p>
                             </div>
                             <div class="col-md-6">
+                                <%
+                                    if (accountDetail.getBirthdate() != null) {
+                                %> 
                                 <p>BIRTHDATE</p>
-                                <p>31 - 02 - 2002</p> <!<!-- chua them vo db nen t de so dai -->
+                                <p><%= accountDetail.getBirthdate()%></p>
+                                <%
+                                    }
+                                %>
+
                             </div>
                             <div class="col-md-12">
                                 <p>SPECIALTIES</p>
-                                <p>Cajun Seafood, Beef Wellington, Chinese Stir Fry</p> 
+
+                                <%
+                                    if (accountDetail.getSpecialty().equals("")) { %>
+                                <p>Undefined</p>
+                                <%
+                                } else {
+                                %>
+                                <p><%= accountDetail.getSpecialty()%></p> 
+                                <%}%>
                             </div>
                             <div class="col-md-12">
                                 <p>ABOUT</p>
-                                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget
-                                    dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes,
-                                    nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,
-                                    sem. Nulla consequat massa quis enim. Donec.</p> 
+                                <%
+                                    if (accountDetail.getBio().equals("")) { %>
+                                <p>Undefined</p>
+                                <%
+                                } else {
+                                %>
+                                <p><%= accountDetail.getBio()%></p> 
+                                <%}%>
+
                             </div>
                         </div>
                     </div>
@@ -106,10 +126,10 @@
                         %>
                         <a href="MainController?action=getRecipeDetailById&id=<%= r.getId()%>" class="col-md-4 recommendation-content-post">
                             <div class="recommendation-content-picture">
-                                <img src="<%= r.getThumbnailPath() %>" alt="">
+                                <img src="<%= r.getThumbnailPath()%>" alt="">
                             </div>
                             <div>
-                                <p><%= r.getCategory() %></p>
+                                <p><%= r.getCategory()%></p>
                                 <p><%= r.getTitle()%></p>
                             </div>
                             <div class="recommendation-content-reciew">
@@ -139,7 +159,7 @@
                                     }
                                 %>
                                 <p class="recommendation-content-reciew-rating">
-                                    <%= r.getRating() %>
+                                    <%= r.getRating()%>
                                 </p>
                             </div>
                         </a>
@@ -230,10 +250,10 @@
                         %>
                         <a href="MainController?action=getRecipeDetailById&id=<%= r.getId()%>" class="col-md-4 recommendation-content-post">
                             <div class="recommendation-content-picture">
-                                <img src="ServletImageLoader?identifier=<%= r.getThumbnailPath() %>" alt="">
+                                <img src="ServletImageLoader?identifier=<%= r.getThumbnailPath()%>" alt="">
                             </div>
                             <div>
-                                <p><%= r.getCategory() %></p>
+                                <p><%= r.getCategory()%></p>
                                 <p><%= r.getTitle()%></p>
                             </div>
                             <div class="recommendation-content-reciew">
@@ -262,16 +282,16 @@
                                 <%
                                     }
                                 %>
-                                <p class="recommendation-content-reciew-rating"><%= r.getRating() %></p>
+                                <p class="recommendation-content-reciew-rating"><%= r.getRating()%></p>
                             </div>
                         </a>
                         <%       } else {%>
                         <a href="MainController?action=getRecipeDetailById&id=<%= r.getId()%>" class="col-md-4 recommendation-content-post hidden">
                             <div class="search-result-content-picture">
-                                <img src="ServletImageLoader?identifier=<%= r.getThumbnailPath() %>" alt="">
+                                <img src="ServletImageLoader?identifier=<%= r.getThumbnailPath()%>" alt="">
                             </div>
                             <div>
-                                <p><%= r.getCategory() %></p>
+                                <p><%= r.getCategory()%></p>
                                 <p><%= r.getTitle()%></p>
                             </div>
                             <div class="recommendation-content-reciew">
@@ -300,7 +320,7 @@
                                 <%
                                     }
                                 %>
-                                <p class="recommendation-content-reciew-rating"><%= r.getRating() %></p>
+                                <p class="recommendation-content-reciew-rating"><%= r.getRating()%></p>
                             </div>
                         </a>
 
@@ -405,7 +425,7 @@
                         %>
                         <a href="MainController?action=getRecipeDetailById&id=<%= review.getRecipeId()%>&activeScroll=true" class="col-md-3 user-community-recipe-review-card">
                             <div class="user-community-recipe-review-card-picture">
-                                <img src="ServletImageLoader?identifier=<%= review.getThumbnailPath() %>" alt="">
+                                <img src="ServletImageLoader?identifier=<%= review.getThumbnailPath()%>" alt="">
                             </div>
                             <div class="user-community-recipe-review-card-title">
                                 <p><%= review.getRecipeTitle()%></p>
@@ -438,7 +458,7 @@
 
                         <a href="MainController?action=getRecipeDetailById&id=<%= review.getRecipeId()%>&activeScroll=true" class="col-md-3 user-community-recipe-review-card hidden">
                             <div class="user-community-recipe-review-card-picture">
-                                <img src="ServletImageLoader?identifier=<%= review.getThumbnailPath() %>" alt="">
+                                <img src="ServletImageLoader?identifier=<%= review.getThumbnailPath()%>" alt="">
                             </div>
                             <div class="user-community-recipe-review-card-title">
                                 <p><%= review.getRecipeTitle()%></p>

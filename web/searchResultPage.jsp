@@ -4,6 +4,7 @@
     Author     : khang
 --%>
 
+<%@page import="DTO.DisplayRecipeDTO"%>
 <%@page import="DAO.RecipeDAO"%>
 <%@page import="DTO.RecipeDTO"%>
 <%@page import="java.util.ArrayList"%>
@@ -67,11 +68,8 @@
         </div>
 
 
-
-
-
-        <%  ArrayList<RecipeDTO> list = (ArrayList<RecipeDTO>) session.getAttribute("searchRecipesList");
-            session.setAttribute("searchRecipesList", null);
+        <%  ArrayList<DisplayRecipeDTO> list = (ArrayList<DisplayRecipeDTO>) request.getAttribute("searchRecipesList");
+            request.setAttribute("searchRecipesList", null);
             String type = "";
             int id = 0;
 
@@ -79,7 +77,7 @@
                 try {
                     id = Integer.parseInt(request.getParameter("id"));
                     type = request.getParameter("type");
-                    list = Utils.NavigationBarUtils.getRecipeByType(type, id);
+                    list = (ArrayList<DisplayRecipeDTO>) request.getAttribute("typeRecipeList");
                 } catch (Exception e) {
 
                 }
@@ -156,24 +154,22 @@
                 </div>
 
                 <div class="row search-result-content">
-                    <% for (RecipeDTO r : list) {
-
-
+                    <% for (DisplayRecipeDTO r : list) {
                     %>
                     <a href="MainController?action=getRecipeDetailById&id=<%= r.getId()%>" class="col-md-3 search-result-content-post">
                         <div class="search-result-content-picture">
-                            <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath()%>" alt="">
+                            <img src="ServletImageLoader?identifier=<%= r.getThumbnailPath() %>" alt="">
 
                         </div>
                         <div>
-                            <p><%= RecipeDAO.getCategoryByRecipeId(r.getId())%></p>
+                            <p><%= r.getCategory() %></p>
                             <p><%= r.getTitle()%></p>
                         </div>
                         <div class="search-result-content-reciew">
                             <%
-                                double avaRating = RecipeDAO.getRatingByRecipeId(r.getId());
-                                int fullStars = (int) avaRating; 
-                                boolean hasHalfStar = avaRating - fullStars >= 0.5; 
+                                double avaRating = r.getRating();
+                                int fullStars = (int) avaRating;
+                                boolean hasHalfStar = avaRating - fullStars >= 0.5;
 
                                 for (int i = 0; i < fullStars; i++) {
                             %>
@@ -195,7 +191,7 @@
                             <%
                                 }
                             %>
-                            <p class="recommendation-content-reciew-rating"><%= RecipeDAO.getRatingByRecipeId(r.getId())%></p>
+                            <p class="recommendation-content-reciew-rating"><%= r.getRating() %></p>
                         </div>
                     </a>
                     <%

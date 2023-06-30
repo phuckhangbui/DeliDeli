@@ -28,6 +28,10 @@
         <filter-name>UserFilter</filter-name>
         <filter-class>Filter.UserFilter</filter-class>
     </filter>
+    <filter>
+        <filter-name>LoadHeaderFilter</filter-name>
+        <filter-class>Filter.LoadHeaderFilter</filter-class>
+    </filter>
     <filter-mapping>
         <filter-name>UserFilter</filter-name>
         <servlet-name>UserController</servlet-name>
@@ -63,6 +67,13 @@
         <url-pattern>/showUserDetail.jsp</url-pattern>
         <url-pattern>/updateNews.jsp</url-pattern>
         <url-pattern>/updateSuggestion.jsp</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>LoadHeaderFilter</filter-name>
+        <url-pattern>/*</url-pattern>
         <dispatcher>REQUEST</dispatcher>
         <dispatcher>FORWARD</dispatcher>
         <dispatcher>INCLUDE</dispatcher>
@@ -291,6 +302,14 @@
         <servlet-name>LoadPublicProfileServlet</servlet-name>
         <servlet-class>Servlet.LoadPublicProfileServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>TriggerAppServlet</servlet-name>
+        <servlet-class>Servlet.TriggerAppServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SearchByTypeServlet</servlet-name>
+        <servlet-class>Servlet.SearchByTypeServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -511,12 +530,20 @@
         <servlet-name>LoadPublicProfileServlet</servlet-name>
         <url-pattern>/LoadPublicProfileServlet</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TriggerAppServlet</servlet-name>
+        <url-pattern>/TriggerAppServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchByTypeServlet</servlet-name>
+        <url-pattern>/SearchByType</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>home.jsp</welcome-file>
+        <welcome-file>TriggerAppServlet</welcome-file>
     </welcome-file-list>
 </web-app>
