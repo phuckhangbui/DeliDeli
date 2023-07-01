@@ -581,7 +581,10 @@
                         <a href="#"
                            class="modal-link">View plan</a>
                         <% break;
-                                case 5:
+                                case 5: 
+                                if(n.getLink() != ""){%>
+                                <img src="ServletImageLoader?identifier=<%=n.getImgPath()%>" alt="" style="width:100%; border-radius: 5px">
+                            <%}
                                     break;
                             }
                         %>

@@ -410,7 +410,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                             <div class="draggable-container-ingredient col-md-8 add-recipe-info-ingredient-content">
                                 <div class="add-recipe-info-header">Ingredient <span>*</span></div>
                                 <%
-                                    ArrayList<IngredientDetailDTO> ingredientList = (ArrayList<IngredientDetailDTO>)request.getAttribute("ingredientList");
+                                    ArrayList<IngredientDetailDTO> ingredientList = (ArrayList<IngredientDetailDTO>) request.getAttribute("ingredientList");
                                     for (IngredientDetailDTO i : ingredientList) {
                                 %>
                                 <p class="draggable-ingredient draggable" draggable="false">
@@ -452,7 +452,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
 
                         <div class="add-recipe-info-header">Direction <span>*</span></div>
                         <p><textarea name="direction" rows="10" cols="10" id="editor" 
-                                     value="<%=user.getId()%>"><%= request.getAttribute("direction") %></textarea></p>
+                                     value="<%=user.getId()%>"><%= request.getAttribute("direction")%></textarea></p>
                         <script>
                             CKEDITOR.replace('editor');
                         </script>
@@ -495,7 +495,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                         </div>
                         <input type="text" name="userId" value="<%=user.getId()%>" hidden/>
                         <div class=" add-recipe-info-submit">
-                            <button type="submit" name="action" value="editRecipe">
+                            <button type="submit" name="action" value="editRecipe" onclick="return validateForm()">
                                 EDIT
                             </button>
                             <span></span>
@@ -534,7 +534,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
 
                                 // Send an AJAX request to the servlet for handling the deletion
                                 var xhr = new XMLHttpRequest();
-                                xhr.open("POST", "MainController", true);
+                                xhr.open("POST", "UserController", true);
                                 xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                                 xhr.onreadystatechange = function () {
                                     if (xhr.readyState === 4 && xhr.status === 200) {
@@ -553,6 +553,20 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                 xhr.send("action=deleteRecipe&recipeId=" + recipeId + "&userId=" + userId);
                             });
 
+                        </script>
+
+                        <script>
+                            function validateForm() {
+                                var editorContent = CKEDITOR.instances.editor.getData();
+                                if (!editorContent.trim()) {
+                                    // Display an error message or take any other necessary action
+                                    alert("The direction is empty! Please provide instruction for your recipe");
+                                    return false; // Prevent form submission
+                                }
+
+// Form is valid, proceed with form submission
+                                return true;
+                            }
                         </script>
 
                     </form>

@@ -48,12 +48,12 @@ public class LoadRecipeManagementServlet extends HttpServlet {
                     url = "privateRecipeManagement.jsp";
                     recipeList = RecipeDAO.getRecipeByUserIdAndType(userId, 1);
                     break;
-                case "public":
-                    url = "publicRecipeManagement.jsp";
-                    recipeList = RecipeDAO.getRecipeByUserIdAndType(userId, 2);
-                    break;
                 case "pending":
                     url = "pendingRecipeManagement.jsp";
+                    recipeList = RecipeDAO.getRecipeByUserIdAndType(userId, 2);
+                    break;
+                case "public":
+                    url = "publicRecipeManagement.jsp";
                     recipeList = RecipeDAO.getRecipeByUserIdAndType(userId, 3);
                     break;
                 case "rejected":
