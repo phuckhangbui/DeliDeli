@@ -36,6 +36,9 @@ public class ChangeUserEmailServlet extends HttpServlet {
             
             String userId = request.getParameter("userId");
             String email = request.getParameter("txtEmail");
+            
+            request.setAttribute("userId", userId);
+            
             if (email != null) {
                 ValidateEmail validate = new ValidateEmail();
                 boolean exists = validate.isAddressValid(email);
@@ -50,11 +53,11 @@ public class ChangeUserEmailServlet extends HttpServlet {
             if (!email.matches(EMAIL_PATTERN)) {
                 errorList.add("Invalid email format. Please enter a valid email address.");
                 request.setAttribute("errorList", errorList);
-                request.getRequestDispatcher(USER_EMAIL_SETTING_PAGE).forward(request, response);
+                request.getRequestDispatcher("UserController?action=userEmailSetting").forward(request, response);
             } else if (UserDAO.checkEmailExist(email)) {
                 errorList.add("Email already exists.");
                 request.setAttribute("errorList", errorList);
-                request.getRequestDispatcher(USER_EMAIL_SETTING_PAGE).forward(request, response);
+                request.getRequestDispatcher("UserController?action=userEmailSetting").forward(request, response);
             } else {
                 int result = UserDetailDAO.updateUserEmail(new Integer(userId), email);
                 if (result > 0) {

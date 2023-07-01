@@ -28,37 +28,43 @@ public class ManageRecipeServlet extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             String index = request.getParameter("index");
             String status = request.getParameter("status");
-            
+
             ArrayList<RecipeDTO> listRecipe;
-            
+
             if (index == null) {
                 index = "1";
             }
 
             int total = 0;
             int endPage = 0;
-            
+
             if (status != null && !status.equals("all")) {
-                listRecipe = AdminDAO.pagingRecipe(new Integer(index), status);
-                total = AdminDAO.getTotalRecipesBasedOnStatus(status);
-                endPage = total / 3;
-                if (total % 3 != 0) {
-                    endPage++;
+                if (!status.equals("")) {
+                    listRecipe = AdminDAO.pagingRecipe(new Integer(index), status);
+                    total = AdminDAO.getTotalRecipesBasedOnStatus(status);
+                    endPage = total / 10;
+                    if (total % 10 != 0) {
+                        endPage++;
+                    }
+                } else {
+                    listRecipe = new ArrayList<>();
+                    total = 0;
+                    endPage = 0;
                 }
             } else {
                 listRecipe = AdminDAO.pagingRecipe(new Integer(index), "");
                 total = AdminDAO.getTotalRecipesBasedOnStatus("");
-                endPage = total / 3;
-                if (total % 3 != 0) {
+                endPage = total / 10;
+                if (total % 10 != 0) {
                     endPage++;
                 }
             }
-            
+
             ArrayList<Integer> listRecipeStatus = AdminDAO.getAllRecipeStatus();
 
             request.setAttribute("listRecipe", listRecipe);
             request.setAttribute("listRecipeStatus", listRecipeStatus);
-            
+
             request.setAttribute("tag", index);
             request.setAttribute("endPage", endPage);
             request.setAttribute("status", status);
