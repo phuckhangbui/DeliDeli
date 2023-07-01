@@ -85,9 +85,9 @@ public class UploadAvatarImageServlet extends HttpServlet {
                 HttpSession session = request.getSession();
 
                 session.setAttribute("user", user);
-                //request.setAttribute("userId", userId);
+                request.setAttribute("userId", userId);
 
-                request.getRequestDispatcher("userPublicDetail.jsp?userId" + userId).forward(request, response);
+                request.getRequestDispatcher("UserPublicDetailServlet").forward(request, response);
             }
         }
     }
