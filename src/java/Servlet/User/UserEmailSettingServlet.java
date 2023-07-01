@@ -2,10 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package Servlet.Admin;
+package Servlet.User;
 
-import DAO.NewsDAO;
-import DTO.NewsDTO;
+import DAO.UserDetailDAO;
+import DTO.UserDetailDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Admin
  */
-public class ShowNewsDetailServlet extends HttpServlet {
+public class UserEmailSettingServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,19 +33,14 @@ public class ShowNewsDetailServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            String newsId = request.getParameter("newsId");
-
-            NewsDTO news = NewsDAO.getNewsByNewsId(new Integer(newsId));
-            request.setCharacterEncoding("UTF-8");
-            request.setAttribute("news", news);
-
-            String category = NewsDAO.getNewsCategoryByNewsId(news.getId());
-            String author = NewsDAO.getNewsAuthorByNewsId(new Integer(newsId));
-
-            request.setAttribute("author", author);
-            request.setAttribute("category", category);
+            String userId = request.getParameter("userId");
             
-            request.getRequestDispatcher("showNewsDetail.jsp").forward(request, response);
+            UserDetailDTO userDetail = UserDetailDAO.getUserDetailByUserId(new Integer(userId));
+
+            request.setAttribute("userId", userId);
+            request.setAttribute("userDetail", userDetail);
+
+            request.getRequestDispatcher("userEmailSetting.jsp").forward(request, response);
         }
     }
 

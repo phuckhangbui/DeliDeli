@@ -45,7 +45,7 @@
                         <img src="assets/Logo3.svg" alt="">
                     </a>
                     <div>
-                        <a href="admin.jsp" >
+                        <a href="AdminController?action=adminDashboard" >
                             <img src="./assets/public-unchosen-icon.svg" alt="">
                             Dashboard
                         </a>
@@ -183,7 +183,7 @@
 
                         <%
                             ArrayList<RecipeDTO> customSuggestionList = (ArrayList<RecipeDTO>) session.getAttribute("customSuggestionList");
-                            ArrayList<RecipeDTO> listRecipe = (ArrayList) RecipeDAO.getAllRecipes();
+                            ArrayList<RecipeDTO> listRecipe = (ArrayList) request.getAttribute("listRecipe");
                             if (listRecipe != null && listRecipe.size() > 0) {
                         %>
                         <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
@@ -245,7 +245,8 @@
                                             }
                                         %>
                                     </td>
-                                    <td><a href="AdminController?action=showUserDetail&username=<%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%>"><%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%></a></td>
+                                    <% UserDTO owner = RecipeDAO.getRecipeOwnerByRecipeId(r.getId());%>
+                                    <td><a href="AdminController?action=showUserDetail&username=<%= owner.getUserName()%>"><%= owner.getUserName()%></a></td>
                                     <td>
                                         <form action="AdminController" method="post" class="recipe-table-button">
                                             <input type="hidden" value="<%= r.getId()%>" name="id">
@@ -312,7 +313,8 @@
                                             }
                                         %>
                                     </td>
-                                    <td><a href="AdminController?action=showUserDetail&username=<%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%>"><%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%></a></td>
+                                    <% UserDTO owner = RecipeDAO.getRecipeOwnerByRecipeId(r.getId());%>
+                                    <td><a href="AdminController?action=showUserDetail&username=<%= owner.getUserName()%>"><%= owner.getUserName()%></a></td>
                                     <td>
                                         <form action="AdminController" method="post" class="recipe-table-button">
                                             <input type="hidden" value="<%= r.getId()%>" name="id">

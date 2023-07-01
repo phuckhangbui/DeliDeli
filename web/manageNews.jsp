@@ -4,7 +4,6 @@
     Author     : Admin
 --%>
 
-<%@page import="DAO.NewsDAO"%>
 <%@page import="DTO.NewsDTO"%>
 <%@page import="DTO.UserDTO"%>
 <%@page import="java.util.ArrayList"%>
@@ -42,7 +41,7 @@
                         <img src="assets/Logo3.svg" alt="">
                     </a>
                     <div>
-                        <a href="admin.jsp" >
+                        <a href="AdminController?action=adminDashboard" >
                             <img src="./assets/public-unchosen-icon.svg" alt="">
                             Dashboard
                         </a>
@@ -195,6 +194,8 @@
 
                             <%
                                 ArrayList<NewsDTO> listNews = (ArrayList) request.getAttribute("listNews");
+                                ArrayList<String> listNewsCategories = (ArrayList) request.getAttribute("listNewsCategories");
+                                ArrayList<String> listNewsAuthors = (ArrayList) request.getAttribute("listNewsAuthors");
                                 if (listNews.size() > 0 && listNews != null) {
                             %>
                             <table class="table table-striped table-hover">
@@ -212,22 +213,25 @@
                                 </thead>
                                 <tbody class="table-group-divider">
                                     <%
-                                        for (NewsDTO n : listNews) {
+                                        for (int i = 0; i < listNews.size(); i++) {
+                                            NewsDTO news = listNews.get(i);
+                                            String newsCategory = listNewsCategories.get(i);
+                                            String newsAuthor = listNewsAuthors.get(i);
                                     %>
                                     <tr>
-                                        <td><%= n.getId()%></td>
-                                        <td  ><%= n.getTitle()%></td>
-                                        <td><%= n.getCreateAt()%></td>
-                                        <td><%= n.getUpdateAt()%></td>
-                                        <td><%= NewsDAO.getNewsAuthorByNewsId(n.getId())%></td>
-                                        <td><%= NewsDAO.getNewsCategoryByNewsId(n.getId())%></td>
+                                        <td><%= news.getId()%></td>
+                                        <td  ><%= news.getTitle()%></td>
+                                        <td><%= news.getCreateAt()%></td>
+                                        <td><%= news.getUpdateAt()%></td>
+                                        <td><%= newsAuthor%></td>
+                                        <td><%= newsCategory%></td>
                                         <td class="news-action-button">
                                             <form action="AdminController" method="post" class="news-table-button">
-                                                <input type="hidden" value="<%= n.getId()%>" name="newsId">
+                                                <input type="hidden" value="<%= news.getId()%>" name="newsId">
                                                 <button type="submit" value="showNewsDetail" name="action">Show</button>
                                             </form>
                                         </td>
-                                        <!--<td><a href="createNews.jsp?id=<%= n.getId()%>" >Edit</a></td>-->
+                                        <!--<td><a href="createNews.jsp?id=<%= news.getId()%>" >Edit</a></td>-->
                                     </tr>
                                     <%
                                         }

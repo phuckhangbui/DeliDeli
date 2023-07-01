@@ -249,7 +249,7 @@
                                         href="MainController?action=loadPublicProfile&accountName=<%= user.getUserName()%>">Your
                                         Profile</a>
                                     <a
-                                        href="UserController?action=loadRecipeManagement&page=public&userId=<%=user.getId()%>">Management</a>
+                                        href="UserController?action=userPublicDetail&userId=<%=user.getId()%>">Management</a>
                                     <a href="addRecipe.jsp">Add Recipe</a>
                                     <a href="planManagement.jsp">Plan Management</a>
 

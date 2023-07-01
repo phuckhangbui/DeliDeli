@@ -518,7 +518,7 @@ public class RecipeDAO {
     }
 
     public static void main(String[] args) {
-        RecipeDTO r = getRecipeByRecipeId(1);
-        System.out.println(r.getCreate_at());
+        //RecipeDTO r = getRecipeByRecipeId(1);
+        System.out.println(getRecipeOwnerByRecipeId(1));
     }
 }

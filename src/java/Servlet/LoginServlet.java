@@ -42,7 +42,6 @@ public class LoginServlet extends HttpServlet {
 
             EncodePass encode = new EncodePass();
             password = encode.toHexString(encode.getSHA(password));
-            System.out.println("[DAO - InsertAccount]: Hash generated: " + password);
 
             UserDTO user = UserDAO.getAccount(email, password);
             HttpSession session = request.getSession();
@@ -61,7 +60,7 @@ public class LoginServlet extends HttpServlet {
                     request.getRequestDispatcher(HOME_PAGE).forward(request, response);
                 } else if (user.getRole() == 2) {
                     session.setAttribute("user", user);
-                    request.getRequestDispatcher(ADMIN_PAGE).forward(request, response);
+                    request.getRequestDispatcher("AdminController?action=adminDashboard").forward(request, response);
                 } else {
                     session.setAttribute("user", user);
                     request.getRequestDispatcher("AdminController?action=manageAccount").forward(request, response);

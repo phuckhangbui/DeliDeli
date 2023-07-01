@@ -5,9 +5,6 @@
 --%>
 
 <%@page import="DTO.DirectionDTO"%>
-<%@page import="DAO.DirectionDAO"%>
-<%@page import="DAO.RecipeDAO"%>
-<%@page import="DAO.UserDAO"%>
 <%@page import="DTO.NutritionDTO"%>
 <%@page import="DTO.RecipeDTO"%>
 <%@page import="DTO.ReviewDTO"%>
@@ -38,9 +35,12 @@
             ArrayList<IngredientDetailDTO> ingredientDetailList = (ArrayList) request.getAttribute("ingredientDetailList");
             ArrayList<ReviewDTO> reviewList = (ArrayList) request.getAttribute("reviewList");
             RecipeDTO recipe = (RecipeDTO) request.getAttribute("recipe");
+            String imgPath = (String) request.getAttribute("imgPath");
+            String thumbnailPath = (String) request.getAttribute("thumbnailPath");
             NutritionDTO nutrition = (NutritionDTO) request.getAttribute("nutrition");
+            DirectionDTO direction = (DirectionDTO) request.getAttribute("direction");
             int ownerId = recipe.getUser_id();
-            UserDTO owner = UserDAO.getUserByUserId(ownerId);
+            UserDTO owner = (UserDTO) request.getAttribute("owner");
             String link = "userCommunityProfile.jsp?accountName=" + owner.getUserName();
         %>
 
@@ -57,7 +57,7 @@
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
                             <li class="breadcrumb-item"><a href="#"> Recipe Type</a></li> 
-                            <li class="breadcrumb-item current-link" aria-current="page">Recipe Name</li>
+                            <li class="breadcrumb-item current-link" aria-current="page"><%= recipe.getTitle()%></li>
                         </ol>
                     </nav>
                     <header class="recipe-detail-info-main-header">
@@ -67,7 +67,7 @@
                         <a href="<%=link%>"><img src="./assets/profile-pic.svg" alt=""></a>
                         <div>
                             <span>By</span>
-                            <span><a href="<%=link%>"><%= request.getAttribute("owner")%></a></span>
+                            <span><a href="<%=link%>"><%= owner.getUserName()%></a></span>
                                 <%
                                     Timestamp timestamp = null;
                                     if (recipe.getUpdate_at() == null) {
@@ -130,7 +130,7 @@
                         </button>
                     </div>
                     <div class="recipe-detail-main-pic">
-                        <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
+                        <img src="ServletImageLoader?identifier=<%= thumbnailPath%>" alt="">
                     </div>
                     <div class="recipe-detail-info-overview">
                         <div class="recipe-detail-info-overview-content">
@@ -230,25 +230,12 @@
                             Directions
                         </div>
                         <div>
-                            <%
-                                DirectionDTO direction = DirectionDAO.getDirectionByRecipeId(recipe.getId());
-                            %>
-
                             <p class="recipe-detail-info-direction-header"><%= direction.getDesc()%></p>
-
-
                         </div>
                     </div>
-                    <% try {
-                            String path = RecipeDAO.getImageByRecipeId(recipe.getId()).getImgPath();
-
-                    %>
                     <div class="recipe-detail-secondary-pic">
-                        <img src="ServletImageLoader?identifier=<%= RecipeDAO.getImageByRecipeId(recipe.getId()).getImgPath()%>" alt="">
+                        <img src="ServletImageLoader?identifier=<%= imgPath%>" alt="">
                     </div>
-                    <% } catch (Exception e) {
-
-                        }%>
                 </div>
 
                 <%@include file="reviewSection.jsp" %>

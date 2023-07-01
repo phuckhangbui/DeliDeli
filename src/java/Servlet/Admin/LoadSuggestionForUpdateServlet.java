@@ -4,10 +4,12 @@
  */
 package Servlet.Admin;
 
-import DAO.NewsDAO;
-import DTO.NewsDTO;
+import DAO.RecipeDAO;
+import DAO.SuggestionDAO;
+import DTO.RecipeDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Admin
  */
-public class ShowNewsDetailServlet extends HttpServlet {
+public class LoadSuggestionForUpdateServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,19 +35,16 @@ public class ShowNewsDetailServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            String newsId = request.getParameter("newsId");
-
-            NewsDTO news = NewsDAO.getNewsByNewsId(new Integer(newsId));
-            request.setCharacterEncoding("UTF-8");
-            request.setAttribute("news", news);
-
-            String category = NewsDAO.getNewsCategoryByNewsId(news.getId());
-            String author = NewsDAO.getNewsAuthorByNewsId(new Integer(newsId));
-
-            request.setAttribute("author", author);
-            request.setAttribute("category", category);
+            String suggestion = request.getParameter("suggestion");
             
-            request.getRequestDispatcher("showNewsDetail.jsp").forward(request, response);
+            ArrayList<RecipeDTO> list = SuggestionDAO.getAllRecipesBySuggestion(suggestion);
+            ArrayList<RecipeDTO> listRecipe = RecipeDAO.getAllRecipes();
+            
+            request.setAttribute("suggestion", suggestion);
+            request.setAttribute("list", list);
+            request.setAttribute("listRecipe", listRecipe);
+            
+            request.getRequestDispatcher("updateSuggestion.jsp").forward(request, response);
         }
     }
 

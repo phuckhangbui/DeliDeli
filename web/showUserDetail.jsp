@@ -4,7 +4,8 @@
     Author     : Admin
 --%>
 
-<%@page import="DAO.AdminDAO"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.sql.Timestamp"%>
 <%@page import="DTO.UserDetailDTO"%>
 <%@page import="DTO.RecipeDTO"%>
 <%@page import="DTO.UserDTO"%>
@@ -47,7 +48,7 @@
                         <img src="assets/Logo3.svg" alt="">
                     </a>
                     <div>
-                        <a href="admin.jsp" >
+                        <a href="AdminController?action=adminDashboard" >
                             <img src="./assets/public-unchosen-icon.svg" alt="">
                             Dashboard
                         </a>
@@ -187,6 +188,7 @@
                             UserDTO account = (UserDTO) request.getAttribute("user");
                             UserDetailDTO userDetail = (UserDetailDTO) request.getAttribute("userDetail");
                             ArrayList<RecipeDTO> userRecipe = (ArrayList) request.getAttribute("userRecipe");
+                            TreeMap<Integer, Integer> mapRating = (TreeMap) request.getAttribute("mapRating");
                         %>
 
                         <div class="container">
@@ -245,6 +247,7 @@
                                                     <th>ID</th>
                                                     <th>Title</th>
                                                     <th>Create at</th>
+                                                    <th>Update at</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
@@ -255,7 +258,26 @@
                                                 <tr>
                                                     <td><%= r.getId()%></td>
                                                     <td><%= r.getTitle()%></td>
-                                                    <td><%= r.getCreate_at()%></td>
+                                                    <% Timestamp timestamp = r.getCreate_at();
+                                                        SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
+                                                        String createDate = dateFormat.format(timestamp);
+                                                    %>
+                                                    <td><%= createDate%></td>
+                                                    <%
+                                                        if (r.getUpdate_at() == null) {
+                                                    %>
+                                                    <td><%= createDate%></td>
+                                                    <%
+                                                    } else {
+                                                        timestamp = r.getUpdate_at();
+                                                        dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
+                                                        String updateDate = dateFormat.format(timestamp);
+                                                    %>
+                                                    <td><%= updateDate%>
+                                                        <%
+                                                            }
+                                                        %>
+                                                    </td>
                                                     <td>
                                                         <form action="AdminController" method="post" class="user-detail-admin-button">
                                                             <input type="hidden" value="<%= r.getId()%>" name="id">
@@ -280,7 +302,6 @@
 
                                     <div class="col-md-6">
                                         <%
-                                            TreeMap<Integer, Integer> mapRating = (TreeMap) AdminDAO.getRatingAllRecipesOfOwnerMap(account.getId());
                                             if (mapRating.size() != 0) {
                                         %>
                                         <div><canvas id="myChart"></canvas></div>

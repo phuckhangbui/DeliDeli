@@ -4,6 +4,7 @@
  */
 package Servlet.Admin;
 
+import DAO.RecipeDAO;
 import DTO.RecipeDTO;
 import DAO.SuggestionDAO;
 import java.io.IOException;
@@ -36,26 +37,28 @@ public class CreateSuggestionSerlvet extends HttpServlet {
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             HttpSession session = request.getSession();
-            
+
             String title = request.getParameter("txtTitle");
             String txtUserId = request.getParameter("txtUserId");
             ArrayList<RecipeDTO> customSuggestionList = (ArrayList<RecipeDTO>) session.getAttribute("customSuggestionList");
+            ArrayList<RecipeDTO> listRecipe = RecipeDAO.getAllRecipes();
             
             boolean check = SuggestionDAO.checkSuggestionExist(title);
             if (check) {
                 request.setAttribute("titleExist", "Suggestion title is already existed.");
+                request.setAttribute("listRecipe", listRecipe);
                 request.getRequestDispatcher("createSuggestion.jsp").forward(request, response);
                 return;
-            }   
-            
+            }
+
             int suggestionId = SuggestionDAO.insertSuggestion(title, new Integer(txtUserId));
-            
+
             for (RecipeDTO recipe : customSuggestionList) {
                 SuggestionDAO.insertSuggestionList(suggestionId, recipe.getId());
             }
-            
+
             session.removeAttribute("customSuggestionList");
-            
+
             request.getRequestDispatcher("ManageSuggestionServlet").forward(request, response);
         }
     }

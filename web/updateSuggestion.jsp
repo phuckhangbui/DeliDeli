@@ -46,7 +46,7 @@
                         <img src="assets/Logo3.svg" alt="">
                     </a>
                     <div>
-                        <a href="admin.jsp" >
+                        <a href="AdminController?action=adminDashboard" >
                             <img src="./assets/public-unchosen-icon.svg" alt="">
                             Dashboard
                         </a>
@@ -183,10 +183,11 @@
                         %>
 
                         <%
-                            String suggestion = request.getParameter("suggestion");
-                            String update = request.getParameter("update");
-                            ArrayList<RecipeDTO> list = SuggestionDAO.getAllRecipesBySuggestion(suggestion);
+                            String suggestion = (String) request.getAttribute("suggestion");
+                            String update = (String) request.getAttribute("update");
+                            ArrayList<RecipeDTO> list = (ArrayList<RecipeDTO>) request.getAttribute("list");
                             ArrayList<RecipeDTO> customSuggestionList;
+                            ArrayList<RecipeDTO> listRecipe = (ArrayList) request.getAttribute("listRecipe");
 
                             if (update == null) {
                                 session.setAttribute("customSuggestionList", list);
@@ -194,24 +195,29 @@
                             } else {
                                 customSuggestionList = (ArrayList<RecipeDTO>) session.getAttribute("customSuggestionList");
                             }
-                            //
-                            ArrayList<RecipeDTO> listRecipe = (ArrayList) RecipeDAO.getAllRecipes();
                             if (listRecipe != null && listRecipe.size() > 0) {
                         %>
 
-<!--                        <div class="nav-top-bar-search">
-                            <form action="AdminController" method="post" class="nav-top-bar-search-user">
-                                <button type="submit" name="action" value="search"><img src="assets/search2.svg" alt=""></button>
-                                <input type="hidden" name="admin" value="admin"> 
-                                <input type="text" name="txtsearch">
-                                <select name="searchBy" id="">
-                                    <option value="Title" selected="selected">TITLE</option>
-                                    <option value="Category">CATEGORY</option>
-                                    <option value="Cuisine">CUISINES</option>
-                                </select>
-                            </form>
-                        </div>
--->
+                        <!--                        <div class="nav-top-bar-search">
+                                                    <form action="AdminController" method="post" class="nav-top-bar-search-user">
+                                                        <button type="submit" name="action" value="search"><img src="assets/search2.svg" alt=""></button>
+                                                        <input type="hidden" name="admin" value="admin"> 
+                                                        <input type="text" name="txtsearch">
+                                                        <select name="searchBy" id="">
+                                                            <option value="Title" selected="selected">TITLE</option>
+                                                            <option value="Category">CATEGORY</option>
+                                                            <option value="Cuisine">CUISINES</option>
+                                                        </select>
+                                                    </form>
+                                                </div>
+                        -->
+
+                        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="AdminController?action=manageSuggestion">Content List</a></li>
+                                <li class="breadcrumb-item current-link" aria-current="page">Edit Content</li>
+                            </ol>
+                        </nav>
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr>
@@ -252,7 +258,8 @@
                                             }
                                         %>
                                     </td>
-                                    <td><a href="AdminController?action=showUserDetail&username=<%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%>"><%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%></a></td>
+                                    <% UserDTO owner = RecipeDAO.getRecipeOwnerByRecipeId(r.getId());%>
+                                    <td><a href="AdminController?action=showUserDetail&username=<%= owner.getUserName()%>"><%= owner.getUserName()%></a></td>
                                     <td>
                                         <form action="AdminController" method="post" class="recipe-table-button">
                                             <input type="hidden" value="<%= r.getId()%>" name="id">
@@ -322,7 +329,8 @@
                                             }
                                         %>
                                     </td>
-                                    <td><a href="AdminController?action=showUserDetail&username=<%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%>"><%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%></a></td>
+                                    <% UserDTO owner = RecipeDAO.getRecipeOwnerByRecipeId(r.getId());%>
+                                    <td><a href="AdminController?action=showUserDetail&username=<%= owner.getUserName()%>"><%= owner.getUserName()%></a></td>
                                     <td>
                                         <form action="AdminController" method="post" class="recipe-table-button">
                                             <input type="hidden" value="<%= r.getId()%>" name="id">

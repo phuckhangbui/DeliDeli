@@ -4,6 +4,8 @@
     Author     : Admin
 --%>
 
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.sql.Timestamp"%>
 <%@page import="DAO.RecipeDAO"%>
 <%@page import="DTO.RecipeDTO"%>
 <%@page import="DAO.SuggestionDAO"%>
@@ -46,7 +48,7 @@
                         <img src="assets/Logo3.svg" alt="">
                     </a>
                     <div>
-                        <a href="admin.jsp" >
+                        <a href="AdminController?action=adminDashboard" >
                             <img src="./assets/public-unchosen-icon.svg" alt="">
                             Dashboard
                         </a>
@@ -181,7 +183,7 @@
                         %>
                         <div class="nav-top-bar-search">
                             <div class="news-create-button">
-                                <button><a href="createSuggestion.jsp">Create</a></button>
+                                <button><a href="AdminController?action=loadSuggestionForCreate">Create</a></button>
                             </div>
                         </div>
 
@@ -191,7 +193,8 @@
                                     <th>No</th>
                                     <th>Title</th>
                                     <th>Total Recipe</th>
-                                    <td>Show</td>
+                                    <td>Detail</td>
+                                    <td>Choose</td>
                                     <td>Action</td>
                                 </tr>
                             </thead>
@@ -218,7 +221,12 @@
                                         <form action="AdminController" method="post" class="recipe-table-button">
                                             <input type="hidden" name="suggestion" value="<%= key%>">
                                             <button type="submit" name="action" value="suggestionRecipe">Choose</button>
-                                            <button><a href="updateSuggestion.jsp?suggestion=<%= key%>">Edit</a></button>
+                                        </form>
+                                    </td>
+                                    <td>
+                                        <form action="AdminController" method="post" class="recipe-table-button">
+                                            <input type="hidden" name="suggestion" value="<%= key%>">
+                                            <button><a href="AdminController?action=loadSuggestionForUpdate&suggestion=<%= key%>">Edit</a></button>
                                             <%
                                                 if (map.size() > 1) {
                                             %>
@@ -257,6 +265,7 @@
                                     <th>No</th>
                                     <th>Title</th>
                                     <th>Create at</th>
+                                    <th>Update at</th>
                                     <th>Owner</th>
                                     <th>Show</th>
                                 </tr>
@@ -269,8 +278,28 @@
                                 <tr>
                                     <td><%= count%></td>
                                     <td><%= r.getTitle()%></td>
-                                    <td><%= r.getCreate_at()%></td>
-                                    <td><a href="AdminController?action=showUserDetail&username=<%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%>"><%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%></a></td>
+                                    <% Timestamp timestamp = r.getCreate_at();
+                                        SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
+                                        String createDate = dateFormat.format(timestamp);
+                                    %>
+                                    <td><%= createDate%></td>
+                                    <%
+                                        if (r.getUpdate_at() == null) {
+                                    %>
+                                    <td><%= createDate%></td>
+                                    <%
+                                    } else {
+                                        timestamp = r.getUpdate_at();
+                                        dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
+                                        String updateDate = dateFormat.format(timestamp);
+                                    %>
+                                    <td><%= updateDate%>
+                                        <%
+                                            }
+                                        %>
+                                    </td>
+                                    <% UserDTO owner = RecipeDAO.getRecipeOwnerByRecipeId(r.getId());%>
+                                    <td><a href="AdminController?action=showUserDetail&username=<%= owner.getUserName()%>"><%= owner.getUserName()%></a></td>
                                     <td>
                                         <form action="AdminController" method="post" class="recipe-table-button">
                                             <input type="hidden" value="<%= r.getId()%>" name="id">

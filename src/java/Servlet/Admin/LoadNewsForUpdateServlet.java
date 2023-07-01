@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Admin
  */
-public class ShowNewsDetailServlet extends HttpServlet {
+public class LoadNewsForUpdateServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,19 +33,15 @@ public class ShowNewsDetailServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            String newsId = request.getParameter("newsId");
-
-            NewsDTO news = NewsDAO.getNewsByNewsId(new Integer(newsId));
-            request.setCharacterEncoding("UTF-8");
-            request.setAttribute("news", news);
-
-            String category = NewsDAO.getNewsCategoryByNewsId(news.getId());
-            String author = NewsDAO.getNewsAuthorByNewsId(new Integer(newsId));
-
-            request.setAttribute("author", author);
-            request.setAttribute("category", category);
+            String id = request.getParameter("newsId");
             
-            request.getRequestDispatcher("showNewsDetail.jsp").forward(request, response);
+            NewsDTO news = NewsDAO.getNewsByNewsId(new Integer(id));
+            
+            request.setAttribute("news", news);
+            
+            request.getRequestDispatcher("updateNews.jsp").forward(request, response);
+            
+            //out.println(news);
         }
     }
 

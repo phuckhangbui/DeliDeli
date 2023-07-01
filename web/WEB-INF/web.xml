@@ -310,6 +310,38 @@
         <servlet-name>SearchByTypeServlet</servlet-name>
         <servlet-class>Servlet.SearchByTypeServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UserPublicDetailServlet</servlet-name>
+        <servlet-class>Servlet.User.UserPublicDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UserEmailSettingServlet</servlet-name>
+        <servlet-class>Servlet.User.UserEmailSettingServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UserPasswordSettingServlet</servlet-name>
+        <servlet-class>Servlet.User.UserPasswordSettingServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminDashboardServlet</servlet-name>
+        <servlet-class>Servlet.Admin.AdminDashboardServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoadNewsForUpdateServlet</servlet-name>
+        <servlet-class>Servlet.Admin.LoadNewsForUpdateServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoadSuggestionForUpdateServlet</servlet-name>
+        <servlet-class>Servlet.Admin.LoadSuggestionForUpdateServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoadSuggestionForCreateServlet</servlet-name>
+        <servlet-class>Servlet.Admin.LoadSuggestionForCreateServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoadNewsListServlet</servlet-name>
+        <servlet-class>Servlet.LoadNewsListServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -537,6 +569,38 @@
     <servlet-mapping>
         <servlet-name>SearchByTypeServlet</servlet-name>
         <url-pattern>/SearchByType</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserPublicDetailServlet</servlet-name>
+        <url-pattern>/UserPublicDetailServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserEmailSettingServlet</servlet-name>
+        <url-pattern>/UserEmailSettingServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserPasswordSettingServlet</servlet-name>
+        <url-pattern>/UserPasswordSettingServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminDashboardServlet</servlet-name>
+        <url-pattern>/AdminDashboardServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadNewsForUpdateServlet</servlet-name>
+        <url-pattern>/LoadNewsForUpdateServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadSuggestionForUpdateServlet</servlet-name>
+        <url-pattern>/LoadSuggestionForUpdateServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadSuggestionForCreateServlet</servlet-name>
+        <url-pattern>/LoadSuggestionForCreateServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadNewsListServlet</servlet-name>
+        <url-pattern>/LoadNewsListServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

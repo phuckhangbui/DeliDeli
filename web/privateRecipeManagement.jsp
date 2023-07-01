@@ -55,15 +55,15 @@
                             </p>
                         </div>
                         <div class="user-profile-option">
-                            <a href="userPublicDetail.jsp?userId=<%= user.getId()%>" >
-                                <img src="./assets/public-unchosen-icon.svg" alt="">
+                            <a href="UserController?action=userPublicDetail&userId=<%=user.getId()%>">
+                                <img src="./assets/public-icon.svg" alt="">
                                 Public Profile
                             </a>
-                            <a href="userEmailSetting.jsp?userId=<%= user.getId()%>" >
+                            <a href="UserController?action=userEmailSetting&userId=<%=user.getId()%>">
                                 <img src="./assets/user-unchosen-icon.svg" alt="">
                                 Personal Setting
                             </a>
-                            <a href="userPasswordSetting.jsp?userId=<%= user.getId()%>" >
+                            <a href="UserController?action=userPasswordSetting&userId=<%=user.getId()%>">
                                 <img src="./assets/password-unchosen-icon.svg" alt="">
                                 Change Password
                             </a>

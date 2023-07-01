@@ -5,7 +5,6 @@
 --%>
 
 <%@page import="DTO.UserDetailDTO"%>
-<%@page import="DAO.UserDetailDAO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -30,7 +29,7 @@
         <!--        User Public Info Manage        -->
         <%
             String userId = request.getParameter("userId");
-            UserDetailDTO userDetail = UserDetailDAO.getUserDetailByUserId(new Integer(userId));
+            UserDetailDTO userDetail = (UserDetailDTO)request.getAttribute("userDetail");
         %>
         <div class="blank-background">
             <div class="container ">
@@ -49,15 +48,15 @@
                             </p>
                         </div>
                         <div class="user-profile-option">
-                            <a href="userPublicDetail.jsp?userId=<%= user.getId()%>" >
-                                <img src="./assets/public-unchosen-icon.svg" alt="">
+                            <a href="UserController?action=userPublicDetail&userId=<%=user.getId()%>">
+                                <img src="./assets/public-icon.svg" alt="">
                                 Public Profile
                             </a>
-                            <a href="userEmailSetting.jsp?userId=<%= user.getId()%>" class="active-link">
-                                <img src="./assets/user-icon.svg" alt="">
+                            <a href="UserController?action=userEmailSetting&userId=<%=user.getId()%>" class="active-link">
+                                <img src="./assets/user-unchosen-icon.svg" alt="">
                                 Personal Setting
                             </a>
-                            <a href="userPasswordSetting.jsp?userId=<%= user.getId()%>">
+                            <a href="UserController?action=userPasswordSetting&userId=<%=user.getId()%>">
                                 <img src="./assets/password-unchosen-icon.svg" alt="">
                                 Change Password
                             </a>
@@ -66,8 +65,8 @@
                                 Saved Recipes
                             </a>
                             <div class="dropdown" id="dropdownUserRecipe">
-                                <a href="#" class="dropbtn">
-                                    <img src="./assets/my-recipe-unchosen-icon.svg" alt="">
+                                <a href="#">
+                                    <img src="./assets/my-recipe-icon.svg" alt="">
                                     My Own Recipes
                                 </a>
                                 <div class="dropdown-content-right">

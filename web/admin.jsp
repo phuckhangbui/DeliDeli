@@ -114,6 +114,16 @@
                     <%
                         }
                     %>
+
+
+                    <%
+                        ArrayList<RecipeDTO> listRecipe = (ArrayList) request.getAttribute("listRecipe");
+                        ArrayList<UserDTO> listUser = (ArrayList) request.getAttribute("listUser");
+                        int totalRecipe = (Integer) request.getAttribute("totalRecipe");
+                        int totalAccount = (Integer) request.getAttribute("totalAccount");
+                        TreeMap<Date, Integer> mapRecipe = (TreeMap) request.getAttribute("mapRecipe");
+                        TreeMap<Date, Integer> mapAccount = (TreeMap) request.getAttribute("mapAccount");
+                    %>
                     <!--      Dashboard         -->
                     <div class="main-panel">
                         <div class="content-wrapper">
@@ -132,7 +142,7 @@
                                                     <h4 class="">
                                                         Total Recipes
                                                     </h4>
-                                                    <h2 class=""><%= AdminDAO.getTotalRecipe()%></h2>
+                                                    <h2 class=""><%= totalRecipe%></h2>
                                                 </div>
                                                 <div>
                                                     <img src="assets/total-post-icon.svg" alt="">
@@ -152,7 +162,7 @@
                                                 <div>
                                                     <h4 class="">Total Users
                                                     </h4>
-                                                    <h2 class=""><%= AdminDAO.getTotalAccount()%></h2>
+                                                    <h2 class=""><%= totalAccount%></h2>
                                                 </div>
                                                 <div>
                                                     <img src="assets/total-user-icon.svg" alt="">
@@ -200,7 +210,6 @@
                                             </p>
 
                                             <%
-                                                ArrayList<RecipeDTO> listRecipe = AdminDAO.getTop5LatestRecipes();
                                                 String[] tmp = {"Confirmed", "Unconfirmed"};
                                             %>
                                             <table class="table table-striped table-hover">
@@ -208,7 +217,7 @@
                                                     <tr>
                                                         <th>No.</th>
                                                         <th>Title</th>
-                                                        <th>Created</th>
+                                                        <th>Create at</th>
                                                         <th>Owner</th>
                                                     </tr>
                                                 </thead>
@@ -223,7 +232,8 @@
                                                         SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
                                                         String date = dateFormat.format(timestamp);%>
                                                     <td><%= date%></td>
-                                                    <td><a href="AdminController?action=showUserDetail&username=<%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%>"><%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%></a></td>
+                                                    <% UserDTO owner = RecipeDAO.getRecipeOwnerByRecipeId(r.getId());%>
+                                                    <td><a href="AdminController?action=showUserDetail&username=<%= owner.getUserName()%>"><%= owner.getUserName()%></a></td>
                                                 </tr>
                                                 <% }
                                                     }
@@ -253,17 +263,13 @@
                                     <div class="card">
                                         <div class="card-body">
                                             <h4 class="card-title">Latest Users</h4>
-                                            </p>
-                                            <%
-                                                ArrayList<UserDTO> listUser = AdminDAO.getTop5LatestUser();
-                                            %>
                                             <table class="table table-striped table-hover">
                                                 <thead>
                                                     <tr>
                                                         <th>No.</th>
                                                         <th>User Name</th>
                                                         <th>Email</th>
-                                                        <th>Created</th>
+                                                        <th>Create at</th>
                                                     </tr>
                                                 </thead>
 
@@ -297,10 +303,6 @@
                 </div>
             </div>
         </div>
-
-        <%            TreeMap<Date, Integer> mapRecipe = (TreeMap) AdminDAO.getRecipeMap();
-            TreeMap<Date, Integer> mapAccount = (TreeMap) AdminDAO.getAccountMap();
-        %>
 
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script>

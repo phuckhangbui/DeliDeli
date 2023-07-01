@@ -58,6 +58,9 @@ public class MainController extends HttpServlet {
                     case "getRecipeDetailById":
                         url = "RecipeDetailServlet";
                         break;
+                    case "loadNewsList":
+                        url = "LoadNewsListServlet";
+                        break;
                     case "getNewsDetail":
                         url = "NewsDetailServlet";
                         break;
