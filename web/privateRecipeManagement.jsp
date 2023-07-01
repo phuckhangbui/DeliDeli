@@ -78,8 +78,8 @@
                                 </a>
                                 <div class="dropdown-content-right">
                                     <a href="UserController?action=loadRecipeManagement&page=private&userId=<%= userId%>" class="active-link">Private Recipes</a>
-                                    <a href="UserController?action=loadRecipeManagement&page=public&userId=<%= userId%>">Pending Recipes</a>
-                                    <a href="UserController?action=loadRecipeManagement&page=pending&userId=<%= userId%>">Public Recipes</a>
+                                    <a href="UserController?action=loadRecipeManagement&page=pending&userId=<%= userId%>">Pending Recipes</a>
+                                    <a href="UserController?action=loadRecipeManagement&page=public&userId=<%= userId%>">Public Recipes</a>
                                     <a href="UserController?action=loadRecipeManagement&page=rejected&userId=<%= userId%>">Rejected Recipes</a>
                                 </div>
                             </div>
@@ -94,7 +94,7 @@
                     </div>
 
                     <%
-                        ArrayList<DisplayRecipeDTO> displayList = (ArrayList<DisplayRecipeDTO>) request.getAttribute("displayList");
+                        ArrayList<DisplayRecipeDTO> displayList = (ArrayList<DisplayRecipeDTO>) request.getAttribute("displayRecipeList");
                     %>
 
                     <div class="col-md-5 user-profile-column-2">
@@ -190,7 +190,7 @@
                         </div>
                         <div class="user-profile-public-avatar">
                             <div>
-                                <img id="preview-image" src="./assets/profile-pic.svg" alt="">
+                                <img src="ServletImageLoader?identifier=<%= user.getAvatar()%>" alt="">
                             </div>
                         </div>
                     </div>

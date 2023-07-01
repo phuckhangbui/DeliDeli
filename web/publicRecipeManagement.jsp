@@ -80,8 +80,8 @@
                                 </a>
                                 <div class="dropdown-content-right">
                                     <a href="UserController?action=loadRecipeManagement&page=private&userId=<%= userId%>">Private Recipes</a>
-                                    <a href="UserController?action=loadRecipeManagement&page=public&userId=<%= userId%>">Pending Recipes</a>
-                                    <a href="UserController?action=loadRecipeManagement&page=pending&userId=<%= userId%>" class="active-link">Public Recipes</a>
+                                    <a href="UserController?action=loadRecipeManagement&page=pending&userId=<%= userId%>">Pending Recipes</a>
+                                    <a href="UserController?action=loadRecipeManagement&page=public&userId=<%= userId%>" class="active-link">Public Recipes</a>
                                     <a href="UserController?action=loadRecipeManagement&page=rejected&userId=<%= userId%>">Rejected Recipes</a>
                                 </div>
                             </div>
@@ -96,16 +96,16 @@
                     </div>
 
                      <%
-                        ArrayList<DisplayRecipeDTO> displayList = (ArrayList<DisplayRecipeDTO>) request.getAttribute("displayList");
+                        ArrayList<DisplayRecipeDTO> displayList = (ArrayList<DisplayRecipeDTO>) request.getAttribute("displayRecipeList");
                     %>
 
                     <div class="col-md-5 user-profile-column-2">
                         <div class="user-profile-header">
                             <div>
-                                Private Recipes
+                                Public Recipes
                             </div>
                             <p>
-                                View your own recipes that you made only for yourself
+                                View your own recipes that you made for everyone to see
                             </p>
                         </div>
                         <div class="row user-profile-recipes">
@@ -190,7 +190,7 @@
                         </div>
                         <div class="user-profile-public-avatar">
                             <div>
-                                <img id="preview-image" src="./assets/profile-pic.svg" alt="">
+                                <img src="ServletImageLoader?identifier=<%= user.getAvatar()%>" alt="">
                             </div>
                         </div>
                     </div>

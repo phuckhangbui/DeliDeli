@@ -71,7 +71,7 @@ public class LoadRecipeManagementServlet extends HttpServlet {
                 displayList.add(d);
             }
 
-            request.setAttribute("displayList", displayList);
+            request.setAttribute("displayRecipeList", displayList);
 
             request.getRequestDispatcher(url).forward(request, response);
 
