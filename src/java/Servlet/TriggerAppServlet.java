@@ -4,8 +4,16 @@
  */
 package Servlet;
 
+import DAO.NewsDAO;
+import DAO.RecipeDAO;
+import DAO.SuggestionDAO;
+import DTO.DisplayRecipeDTO;
+import DTO.NewsDTO;
+import DTO.RecipeDTO;
+import DTO.UserDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -46,7 +54,6 @@ public class TriggerAppServlet extends HttpServlet {
             HashMap<Integer, String> newsMap
                     = Utils.NavigationBarUtils.getMap("NewsCategory");
 
-            
             HttpSession session = request.getSession();
             session.setAttribute("cateMap", cateMap);
             session.setAttribute("cuisineMap", cuisineMap);
@@ -54,6 +61,61 @@ public class TriggerAppServlet extends HttpServlet {
             session.setAttribute("ingredientMap", ingredientMap);
             session.setAttribute("dietMap", dietMap);
             session.setAttribute("newsMap", newsMap);
+
+            //-- News section --
+            ArrayList<String> listNewsCategories = new ArrayList<>();
+            NewsDTO latestNews = NewsDAO.getLatestNews();
+            ArrayList<NewsDTO> listNews = NewsDAO.getNext2News(latestNews.getId());
+
+            for (NewsDTO news : listNews) {
+                String newsCategory = NewsDAO.getNewsCategoryByNewsId(news.getId());
+                listNewsCategories.add(newsCategory);
+            }
+
+            session.setAttribute("latestNews", latestNews);
+            session.setAttribute("listNews", listNews);
+            session.setAttribute("listNewsCategories", listNewsCategories);
+            
+            //-- Mr. Worldwide section --
+            ArrayList<RecipeDTO> listRecipe = RecipeDAO.getTop6LatestRecipes();
+            ArrayList<DisplayRecipeDTO> displayList = new ArrayList<>();
+            
+            for (RecipeDTO r : listRecipe) {
+                String thumbnailPath = RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath();
+                String category = RecipeDAO.getCategoryByRecipeId(r.getId());
+                double rating = RecipeDAO.getRatingByRecipeId(r.getId());
+                UserDTO owner = RecipeDAO.getRecipeOwnerByRecipeId(r.getId());
+
+                DisplayRecipeDTO d = new DisplayRecipeDTO(r.getId(), r.getTitle(), thumbnailPath, category, rating, owner);
+                displayList.add(d);
+            }
+
+            session.setAttribute("displayRecipeList", displayList);
+
+            //-- Suggestion section  --
+            ArrayList<RecipeDTO> suggestionRecipeList;
+            ArrayList<DisplayRecipeDTO> displaySuggestionList = new ArrayList<>();
+
+            String selectedSuggestion = (String) session.getAttribute("selectedSuggestion");
+            if (selectedSuggestion == null) {
+                suggestionRecipeList = SuggestionDAO.getDefaultSuggestionRecipe();
+                selectedSuggestion = SuggestionDAO.getDefaultSuggestionTitle();
+            } else {
+                suggestionRecipeList = SuggestionDAO.getAllRecipesBySuggestion(selectedSuggestion);
+            }
+            
+            for (RecipeDTO r : suggestionRecipeList) {
+                String thumbnailPath = RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath();
+                String category = RecipeDAO.getCategoryByRecipeId(r.getId());
+                double rating = RecipeDAO.getRatingByRecipeId(r.getId());
+                UserDTO owner = RecipeDAO.getRecipeOwnerByRecipeId(r.getId());
+
+                DisplayRecipeDTO d = new DisplayRecipeDTO(r.getId(), r.getTitle(), thumbnailPath, category, rating, owner);
+                displaySuggestionList.add(d);
+            }
+
+            session.setAttribute("selectedSuggestion", selectedSuggestion);
+            session.setAttribute("displaySuggestionList", displaySuggestionList);
             
             request.getRequestDispatcher("home.jsp").forward(request, response);
         }

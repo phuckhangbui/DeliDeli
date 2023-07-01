@@ -25,6 +25,52 @@ import java.util.List;
  * @author Daiisuke
  */
 public class RecipeDAO {
+    
+    public static ArrayList<RecipeDTO> getTop6LatestRecipes() {
+        ArrayList<RecipeDTO> result = new ArrayList<RecipeDTO>();
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                String sql = "SELECT TOP 6 * FROM Recipe\n"
+                        + "WHERE status = 3 ORDER BY create_at DESC";
+
+                PreparedStatement pst = cn.prepareStatement(sql);
+                ResultSet rs = pst.executeQuery();
+                if (rs != null) {
+                    while (rs.next()) {
+                        int id = rs.getInt("id");
+                        String title = rs.getString("title");
+                        String description = rs.getString("description");
+                        int prep_time = rs.getInt("prep_time");
+                        int cook_time = rs.getInt("cook_time");
+                        int servings = rs.getInt("servings");
+                        Timestamp create_at = rs.getTimestamp("create_at");
+                        Timestamp update_at = rs.getTimestamp("update_at");
+                        int cuisin_id = rs.getInt("cuisine_id");
+                        int category_id = rs.getInt("category_id");
+                        int user_id = rs.getInt("user_id");
+                        int level_id = rs.getInt("level_id");
+                        int status = rs.getInt("status");
+
+                        RecipeDTO recipe = new RecipeDTO(id, title, description, prep_time,
+                                cook_time, servings, create_at, update_at, cuisin_id,
+                                category_id, user_id, level_id, status);
+                        result.add(recipe);
+                    }
+                }
+                rs.close();
+                pst.close();
+                cn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
 
     public static UserDTO getRecipeOwnerByRecipeId(int recipeId) {
         UserDTO owner = new UserDTO();
@@ -519,6 +565,6 @@ public class RecipeDAO {
 
     public static void main(String[] args) {
         //RecipeDTO r = getRecipeByRecipeId(1);
-        System.out.println(getRecipeOwnerByRecipeId(1));
+        System.out.println(getTop6LatestRecipes());
     }
 }

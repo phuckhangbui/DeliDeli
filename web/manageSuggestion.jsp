@@ -8,7 +8,6 @@
 <%@page import="java.sql.Timestamp"%>
 <%@page import="DAO.RecipeDAO"%>
 <%@page import="DTO.RecipeDTO"%>
-<%@page import="DAO.SuggestionDAO"%>
 <%@page import="DTO.UserDTO"%>
 <%@page import="java.util.Map"%>
 <%@page import="java.util.TreeMap"%>
@@ -179,7 +178,7 @@
                         %>
 
                         <%
-                            ArrayList<String> suggestionList = SuggestionDAO.getAllSuggestion();
+                            ArrayList<String> suggestionList = (ArrayList) request.getAttribute("suggestionList");
                         %>
                         <div class="nav-top-bar-search">
                             <div class="news-create-button">

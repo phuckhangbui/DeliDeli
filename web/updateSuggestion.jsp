@@ -7,7 +7,6 @@
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.sql.Timestamp"%>
 <%@page import="DAO.RecipeDAO"%>
-<%@page import="DAO.SuggestionDAO"%>
 <%@page import="DTO.RecipeDTO"%>
 <%@page import="DTO.UserDTO"%>
 <%@page import="java.util.ArrayList"%>
