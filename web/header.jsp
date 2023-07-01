@@ -1,8 +1,7 @@
 <%-- Document : header Created on : May 24, 2023, 7:23:26 PM Author : khang --%>
-<%@page import="DAO.NotificationTypeDAO"%>
+<%@page import="DTO.DisplayNotificationDTO"%>
 <%@page import="DTO.NotificationTypeDTO"%>
 <%@page import="DTO.NotificationDTO"%>
-<%@page import="DAO.NotificationDAO"%>
 <%@page import="DTO.UserDTO"%>
 <%-- Document : header Created on : May 24, 2023, 7:23:26 PM Author : khang --%>
 
@@ -46,18 +45,17 @@
 
     <body>
         <% HashMap<Integer, String> cateMap
-                    = Utils.NavigationBarUtils.getMap("Category");
+                    = (HashMap<Integer, String>) session.getAttribute("cateMap");
             HashMap<Integer, String> cuisineMap
-                    = Utils.NavigationBarUtils.getMap("Cuisine");
+                    = (HashMap<Integer, String>) session.getAttribute("cuisineMap");
             HashMap<Integer, String> levelMap
-                    = Utils.NavigationBarUtils.getMap("Level");
+                    = (HashMap<Integer, String>) session.getAttribute("levelMap");
             HashMap<Integer, String> ingredientMap
-                    = Utils.NavigationBarUtils.getMap("Ingredient");
+                    = (HashMap<Integer, String>) session.getAttribute("ingredientMap");
             HashMap<Integer, String> dietMap
-                    = Utils.NavigationBarUtils.getMap("Diet");
-
+                    = (HashMap<Integer, String>) session.getAttribute("dietMap");
             HashMap<Integer, String> newsMap
-                    = Utils.NavigationBarUtils.getMap("NewsCategory");
+                    = (HashMap<Integer, String>) session.getAttribute("newsMap");
 
             UserDTO user
                     = (UserDTO) session.getAttribute("user");
@@ -115,7 +113,7 @@
                         </form>
                     </div>
                     <%if (user != null) {%>
-                    <% int[] count = NotificationDAO.getNotificationCount(user.getId());
+                    <% int[] count = (int[]) request.getAttribute("count");
                     %>
                     <div
                         class="notification col-md-1">
@@ -146,25 +144,23 @@
                                 <div
                                     class="notification-content">
                                     <%
-                                        ArrayList<NotificationDTO> list
-                                                = NotificationDAO.getNotificationList(user.getId());
-                                        for (NotificationDTO notification : list) {
-                                            NotificationTypeDTO type
-                                                    = NotificationTypeDAO.getNotificationType(notification.getNotification_type());
-                                            if (notification.is_read()) {
+                                        ArrayList<DisplayNotificationDTO> list
+                                                = (ArrayList<DisplayNotificationDTO>) request.getAttribute("displayList");
+                                        for (DisplayNotificationDTO n : list) {
+                                            if (n.is_read()) {
 
                                     %>
                                     <button
                                         type="button"
                                         class="a-notification "
                                         data-bs-toggle="modal"
-                                        data-bs-target="#<%= notification.getId()%>">
+                                        data-bs-target="#<%= n.getId()%>">
                                         <% } else {%>
                                         <button
                                             type="button"
                                             class="a-notification notification-disable"
                                             data-bs-toggle="modal"
-                                            data-bs-target="#<%= notification.getId()%>">
+                                            data-bs-target="#<%= n.getId()%>">
                                             <%
                                                 }%>
                                             <div
@@ -172,19 +168,19 @@
                                                 <img src="assets/delideli-website-favicon-color.png"
                                                      alt="img">
                                                 <p>
-                                                    <%=type.getSender()%>
+                                                    <%=n.getType().getSender()%>
                                                 </p>
                                             </div>
                                             <div
                                                 class="text">
                                                 <p>
-                                                    <%=notification.getTitle()%>
+                                                    <%=n.getTitle()%>
                                                 </p>
                                             </div>
                                             <p
                                                 class="date">
                                                 <% Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
-                                                    Timestamp sendTimestamp = notification.getSend_date();
+                                                    Timestamp sendTimestamp = n.getSend_date();
 
                                                     LocalDateTime currentDateTime = currentTimestamp.toLocalDateTime();
                                                     LocalDateTime sendDateTime = sendTimestamp.toLocalDateTime();
@@ -250,7 +246,7 @@
                                 <div
                                     class="user-dropdown-content">
                                     <a
-                                        href="userCommunityProfile.jsp?accountName=<%= user.getUserName()%>">Your
+                                        href="MainController?action=loadPublicProfile&accountName=<%= user.getUserName()%>">Your
                                         Profile</a>
                                     <a
                                         href="UserController?action=userPublicDetail&userId=<%=user.getId()%>">Management</a>
@@ -363,7 +359,7 @@
                                                     = entry.getValue();
                                     %>
                                     <a
-                                        href="searchResultPage.jsp?type=Ingredient&id=<%=key%>">
+                                        href="SearchByType?type=Ingredient&id=<%=key%>">
                                         <%=value%>
                                     </a>
                                     <%}%>
@@ -381,7 +377,7 @@
                                             String value
                                                     = entry.getValue();
                                     %>
-                                    <a href="searchResultPage.jsp?type=Category&id=<%=key%>">
+                                    <a href="SearchByType?type=Category&id=<%=key%>">
                                         <%=value%>
                                     </a>
 
@@ -404,7 +400,7 @@
                                                     = entry.getValue();
                                     %>
                                     <a
-                                        href="searchResultPage.jsp?type=Cuisine&id=<%=key%>">
+                                        href="SearchByType?type=Cuisine&id=<%=key%>">
                                         <%=value%>
                                     </a>
                                     <%}%>
@@ -426,7 +422,7 @@
                                                     = entry.getValue();
                                     %>
                                     <a
-                                        href="searchResultPage.jsp?type=Level&id=<%=key%>">
+                                        href="SearchByType?type=Level&id=<%=key%>">
                                         <%=value%>
                                     </a>
                                     <%}%>
@@ -448,7 +444,7 @@
                                                     = entry.getValue();
                                     %>
                                     <a
-                                        href="searchResultPage.jsp?type=Diet&id=<%=key%>">
+                                        href="SearchByType?type=Diet&id=<%=key%>">
                                         <%=value%>
                                     </a>
                                     <%}%>
@@ -486,17 +482,15 @@
 
 
 
-        <% if (user
-                    != null) {
-                ArrayList<NotificationDTO> list = NotificationDAO.getNotificationList(user.getId());
-                for (NotificationDTO notification
-                        : list) {
-                    NotificationTypeDTO type
-                            = NotificationTypeDAO.getNotificationType(notification.getNotification_type());
+        <% if (user != null) {
+                ArrayList<DisplayNotificationDTO> list
+                        = (ArrayList<DisplayNotificationDTO>) request.getAttribute("displayList");
+                for (DisplayNotificationDTO n : list) {
+
         %>
         <!-- Modal -->
         <div class="modal fade"
-             id="<%= notification.getId()%>"
+             id="<%= n.getId()%>"
              data-bs-keyboard="false"
              tabindex="-1"
              aria-labelledby="deletePlanModalLabel"
@@ -511,11 +505,11 @@
                              id="exampleModalLabel">
                             <p
                                 class="modal-title-text">
-                                <%=notification.getTitle()%>
+                                <%=n.getTitle()%>
                             </p>
                             <p class="modal-title-date">
                                 <% Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
-                                    Timestamp sendTimestamp = notification.getSend_date();
+                                    Timestamp sendTimestamp = n.getSend_date();
 
                                     LocalDateTime currentDateTime = currentTimestamp.toLocalDateTime();
                                     LocalDateTime sendDateTime = sendTimestamp.toLocalDateTime();
@@ -564,37 +558,33 @@
                         class="modal-body">
                         <div
                             class="modal-body-content">
-                            <%=notification.getDescription()%>
+                            <%=n.getDescription()%>
                         </div>
-                        <% switch (type.getId()) {
+                        <% switch (n.getType().getId()) {
                                 case 1:%>
-                        <a href="editRecipe.jsp?recipeId=<%=notification.getRecipe_id()%>"
-                           class="modal-link">Edit
-                            recipe</a>
+                        <a href="editRecipe.jsp?recipeId=<%=n.getRecipe_id()%>"
+                           class="modal-link">Edit recipe</a>
 
                         <% break;
                             case 2:%>
-                        <a href="MainController?action=getRecipeDetailById&id=<%=notification.getRecipe_id()%>"
-                           class="modal-link">View
-                            recipe</a>
+                        <a href="MainController?action=getRecipeDetailById&id=<%=n.getRecipe_id()%>"
+                           class="modal-link">View recipe</a>
 
                         <% break;
                             case 3:%>
-                        <a href="MainController?action=getRecipeDetailById&id=<%=notification.getRecipe_id()%>"
-                           class="modal-link">View
-                            recipe</a>
+                        <a href="MainController?action=getRecipeDetailById&id=<%=n.getRecipe_id()%>"
+                           class="modal-link">View recipe</a>
 
                         <% break;
                             case 4:
                         %>
                         <a href="#"
-                           class="modal-link">View
-                            plan</a>
-                            <% break;
-                                    case 5:
-                                        break;
-                                }
-                            %>
+                           class="modal-link">View plan</a>
+                        <% break;
+                                case 5:
+                                    break;
+                            }
+                        %>
                     </div>
                     <div class="modal-footer">
                         <button

@@ -4,6 +4,8 @@
     Author     : khang
 --%>
 
+<%@page import="DTO.DisplayReviewDTO"%>
+<%@page import="DTO.DisplayRecipeDTO"%>
 <%@page import="DAO.FavoriteDAO"%>
 <%@page import="DAO.ReviewDAO"%>
 <%@page import="DAO.RecipeDAO"%>
@@ -36,19 +38,15 @@
 
     <body>
 
-        <% String accountName = request.getParameter("accountName");
-            UserDTO account = UserDAO.getAccountByName(accountName);
-            String fullName = "";
-            ArrayList<RecipeDTO> accountRecipe = null;
-            ArrayList<ReviewDTO> reviewList = null;
-            ArrayList<FavoriteDTO> favoriteList = null;
-            if (account != null) {
-                UserDetailDTO accountDetail = UserDetailDAO.getUserDetailByUserId(account.getId());
-                fullName = accountDetail.getLastName() + " " + accountDetail.getFirstName();
-                accountRecipe = RecipeDAO.getRecipeByUserIdAndType(account.getId(), 3);
-                reviewList = ReviewDAO.getReviewByUserId(account.getId());
-                favoriteList = FavoriteDAO.getAllFavoriteRecipeByUserId(account.getId());
-            }
+        <%
+            UserDTO account = (UserDTO) request.getAttribute("account");
+            UserDetailDTO accountDetail = (UserDetailDTO) request.getAttribute("accountDetail");
+            ArrayList<DisplayRecipeDTO> accountPublicRecipe = (ArrayList<DisplayRecipeDTO>) request.getAttribute("accountPublicRecipe");
+            ArrayList<DisplayRecipeDTO> favoriteList = (ArrayList<DisplayRecipeDTO>) request.getAttribute("favoriteList");
+            ArrayList<DisplayReviewDTO> reviewList = (ArrayList<DisplayReviewDTO>) request.getAttribute("reviewList");
+            String fullname = accountDetail.getFirstName() + " " + accountDetail.getLastName();
+
+
         %>
         <%@include file="header.jsp" %>
 
@@ -70,22 +68,42 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <p>NAME</p>
-                                <p><%=fullName%></p>
+                                <p><%=fullname%></p>
                             </div>
                             <div class="col-md-6">
+                                <%
+                                    if (accountDetail.getBirthdate() != null) {
+                                %> 
                                 <p>BIRTHDATE</p>
-                                <p>31 - 02 - 2002</p> <!<!-- chua them vo db nen t de so dai -->
+                                <p><%= accountDetail.getBirthdate()%></p>
+                                <%
+                                    }
+                                %>
+
                             </div>
                             <div class="col-md-12">
                                 <p>SPECIALTIES</p>
-                                <p>Cajun Seafood, Beef Wellington, Chinese Stir Fry</p> 
+
+                                <%
+                                    if (accountDetail.getSpecialty().equals("")) { %>
+                                <p>Undefined</p>
+                                <%
+                                } else {
+                                %>
+                                <p><%= accountDetail.getSpecialty()%></p> 
+                                <%}%>
                             </div>
                             <div class="col-md-12">
                                 <p>ABOUT</p>
-                                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget
-                                    dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes,
-                                    nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,
-                                    sem. Nulla consequat massa quis enim. Donec.</p> 
+                                <%
+                                    if (accountDetail.getBio().equals("")) { %>
+                                <p>Undefined</p>
+                                <%
+                                } else {
+                                %>
+                                <p><%= accountDetail.getBio()%></p> 
+                                <%}%>
+
                             </div>
                         </div>
                     </div>
@@ -101,29 +119,47 @@
                     <div class="row user-community-favorite-recipe" id="favoriteRecipe">
                         <%
                             int count = 0;
-                            for (FavoriteDTO list : favoriteList) {
+                            for (DisplayRecipeDTO r : favoriteList) {
                                 count++;
-                                RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(list.getRecipe_id());
+                                RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(r.getId());
                                 if (count < 4) {
                         %>
-                        <a href="MainController?action=getRecipeDetailById&id=<%= list.getRecipe_id()%>" class="col-md-4 recommendation-content-post">
+                        <a href="MainController?action=getRecipeDetailById&id=<%= r.getId()%>" class="col-md-4 recommendation-content-post">
                             <div class="recommendation-content-picture">
-                                <img src="<%= RecipeDAO.getThumbnailByRecipeId(list.getRecipe_id()).getThumbnailPath()%>" alt="">
+                                <img src="<%= r.getThumbnailPath()%>" alt="">
                             </div>
                             <div>
-                                <p><%= RecipeDAO.getCategoryByRecipeId(list.getRecipe_id())%></p>
-                                <p><%= recipe.getTitle()%></p>
+                                <p><%= r.getCategory()%></p>
+                                <p><%= r.getTitle()%></p>
                             </div>
                             <div class="recommendation-content-reciew">
                                 <%
-                                    for (int i = 0; i < RecipeDAO.getRatingByRecipeId(list.getRecipe_id()); i++) {
+                                    double avaRating = r.getRating();
+                                    int fullStars = (int) avaRating;
+                                    boolean hasHalfStar = avaRating - fullStars >= 0.5;
+
+                                    for (int i = 0; i < fullStars; i++) {
                                 %>
-                                <img src="./assets/full-star.png" alt="">
+                                <img src="./assets/full-star-icon.svg" alt="">
+                                <%
+                                    }
+
+                                    if (hasHalfStar) {
+                                %>
+                                <img src="./assets/half-star-icon.svg" alt="" style="width: 17px">
+                                <%
+                                    }
+
+                                    int remainingStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+                                    for (int i = 0; i < remainingStars; i++) {
+                                %>
+                                <img src="./assets/empty-star-icon.svg" alt="">
                                 <%
                                     }
                                 %>
                                 <p class="recommendation-content-reciew-rating">
-                                    <%= RecipeDAO.getRatingByRecipeId(list.getRecipe_id())%>
+                                    <%= r.getRating()%>
                                 </p>
                             </div>
                         </a>
@@ -208,21 +244,21 @@
                     </div>
                     <div class="row user-community-own-recipe" id="ownRecipe">
                         <% int count1 = 0;
-                            for (RecipeDTO r : accountRecipe) {
+                            for (DisplayRecipeDTO r : accountPublicRecipe) {
                                 count++;
                                 if (count < 4) {
                         %>
                         <a href="MainController?action=getRecipeDetailById&id=<%= r.getId()%>" class="col-md-4 recommendation-content-post">
                             <div class="recommendation-content-picture">
-                                <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath()%>" alt="">
+                                <img src="ServletImageLoader?identifier=<%= r.getThumbnailPath()%>" alt="">
                             </div>
                             <div>
-                                <p><%= RecipeDAO.getCategoryByRecipeId(r.getId())%></p>
+                                <p><%= r.getCategory()%></p>
                                 <p><%= r.getTitle()%></p>
                             </div>
                             <div class="recommendation-content-reciew">
                                 <%
-                                    double avaRating = RecipeDAO.getRatingByRecipeId(r.getId());
+                                    double avaRating = r.getRating();
                                     int fullStars = (int) avaRating;
                                     boolean hasHalfStar = avaRating - fullStars >= 0.5;
 
@@ -246,21 +282,21 @@
                                 <%
                                     }
                                 %>
-                                <p class="recommendation-content-reciew-rating"><%= RecipeDAO.getRatingByRecipeId(r.getId())%></p>
+                                <p class="recommendation-content-reciew-rating"><%= r.getRating()%></p>
                             </div>
                         </a>
                         <%       } else {%>
                         <a href="MainController?action=getRecipeDetailById&id=<%= r.getId()%>" class="col-md-4 recommendation-content-post hidden">
                             <div class="search-result-content-picture">
-                                <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath()%>" alt="">
+                                <img src="ServletImageLoader?identifier=<%= r.getThumbnailPath()%>" alt="">
                             </div>
                             <div>
-                                <p><%= RecipeDAO.getCategoryByRecipeId(r.getId())%></p>
+                                <p><%= r.getCategory()%></p>
                                 <p><%= r.getTitle()%></p>
                             </div>
                             <div class="recommendation-content-reciew">
                                 <%
-                                    double avaRating = RecipeDAO.getRatingByRecipeId(r.getId());
+                                    double avaRating = r.getRating();
                                     int fullStars = (int) avaRating;
                                     boolean hasHalfStar = avaRating - fullStars >= 0.5;
 
@@ -284,7 +320,7 @@
                                 <%
                                     }
                                 %>
-                                <p class="recommendation-content-reciew-rating"><%= RecipeDAO.getRatingByRecipeId(r.getId())%></p>
+                                <p class="recommendation-content-reciew-rating"><%= r.getRating()%></p>
                             </div>
                         </a>
 
@@ -383,21 +419,20 @@
                     </div>
                     <div class="row user-community-recipe-review" id="review">
                         <% int count2 = 0;
-                            for (ReviewDTO review : reviewList) {
+                            for (DisplayReviewDTO review : reviewList) {
                                 count1++;
-                                RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(review.getRecipe_id());
                                 if (count1 < 5) {
                         %>
-                        <a href="MainController?action=getRecipeDetailById&id=<%= recipe.getId()%>&activeScroll=true" class="col-md-3 user-community-recipe-review-card">
+                        <a href="MainController?action=getRecipeDetailById&id=<%= review.getRecipeId()%>&activeScroll=true" class="col-md-3 user-community-recipe-review-card">
                             <div class="user-community-recipe-review-card-picture">
-                                <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
+                                <img src="ServletImageLoader?identifier=<%= review.getThumbnailPath()%>" alt="">
                             </div>
                             <div class="user-community-recipe-review-card-title">
-                                <p><%= recipe.getTitle()%></p>
+                                <p><%= review.getRecipeTitle()%></p>
                             </div>
                             <div class="recommendation-content-reciew">
                                 <%
-                                    int fullStars = review.getRating();
+                                    int fullStars = review.getReviewRating();
                                     for (int i = 0; i < fullStars; i++) {
                                 %>
                                 <img src="./assets/full-star-icon.svg" alt="">
@@ -415,22 +450,22 @@
 
                             </div>
                             <div class="user-community-recipe-review-card-content">
-                                <p><%=review.getContent()%></p>
+                                <p><%=review.getReviewContent()%></p>
                             </div>
                         </a>
                         <%
                         } else {%>
 
-                        <a href="MainController?action=getRecipeDetailById&id=<%= recipe.getId()%>&activeScroll=true" class="col-md-3 user-community-recipe-review-card hidden">
+                        <a href="MainController?action=getRecipeDetailById&id=<%= review.getRecipeId()%>&activeScroll=true" class="col-md-3 user-community-recipe-review-card hidden">
                             <div class="user-community-recipe-review-card-picture">
-                                <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
+                                <img src="ServletImageLoader?identifier=<%= review.getThumbnailPath()%>" alt="">
                             </div>
                             <div class="user-community-recipe-review-card-title">
-                                <p><%= recipe.getTitle()%></p>
+                                <p><%= review.getRecipeTitle()%></p>
                             </div>
                             <div class="recommendation-content-reciew">
                                 <%
-                                    int fullStars = review.getRating();
+                                    int fullStars = review.getReviewRating();
                                     for (int i = 0; i < fullStars; i++) {
                                 %>
                                 <img src="./assets/full-star-icon.svg" alt="">
@@ -446,7 +481,7 @@
                                 %>
                             </div>
                             <div class="user-community-recipe-review-card-content">
-                                <p><%=review.getContent()%></p>
+                                <p><%=review.getReviewContent()%></p>
                             </div>
                         </a>
                         <% }

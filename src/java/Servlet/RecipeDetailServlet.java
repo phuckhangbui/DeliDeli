@@ -73,6 +73,7 @@ public class RecipeDetailServlet extends HttpServlet {
             
             request.getRequestDispatcher("recipeDetail.jsp").forward(request, response);
 
+
 //            out.println("<!DOCTYPE html>");
 //            out.println("<html>");
 //            out.println("<head>");

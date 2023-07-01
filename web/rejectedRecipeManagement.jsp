@@ -5,12 +5,9 @@
 --%>
 
 
+<%@page import="DTO.DisplayRecipeDTO"%>
 <%@page import="DTO.UserDetailDTO"%>
 <%@page import="DAO.UserDetailDAO"%>
-<%@page import="User.UserDetailDTO"%>
-<%@page import="User.UserDetailDAO"%>
-<%@page import="Recipe.RecipeDAO"%>
-<%@page import="Recipe.RecipeDTO"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -95,33 +92,33 @@
                         </div>
                     </div>
 
-                    <%
-                        ArrayList<RecipeDTO> recipeList = RecipeDAO.getRecipeByUserIdAndType(user.getId(), 4);
+                     <%
+                        ArrayList<DisplayRecipeDTO> displayList = (ArrayList<DisplayRecipeDTO>) request.getAttribute("displayList");
                     %>
 
                     <div class="col-md-5 user-profile-column-2">
                         <div class="user-profile-header">
                             <div>
-                                Rejected Recipes
+                                Private Recipes
                             </div>
                             <p>
-                                View and edit the recipes that are not fit for publication
+                                View your own recipes that you made only for yourself
                             </p>
                         </div>
                         <div class="row user-profile-recipes">
                             <%
-                                for (RecipeDTO r : recipeList) {
+                                for (DisplayRecipeDTO r : displayList) {
                             %>
                             <div  class="col-md-6 user-profile-recipe-post">
                                 <a href="MainController?action=getRecipeDetailById&id=<%= r.getId()%>"
                                    class="user-profile-recipe-post-picture" data-page="editRecipe.jsp?recipeId=<%=r.getId()%>">
-                                    <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath()%>" alt="">
+                                    <img src="ServletImageLoader?identifier=<%= r.getThumbnailPath() %>" alt="">
                                 </a>
 
                                 <div>
                                     <div class="user-profile-recipe-post-description">
-                                        <p><%= RecipeDAO.getCategoryByRecipeId(r.getId())%></p>
-                                        <a href="editRecipe.jsp?recipeId=<%=r.getId()%>">
+                                        <p><%= r.getCategory() %></p>
+                                        <a href="UserController?action=loadEditRecipe&recipeId=<%=r.getId()%>">
                                             <img src="./assets/edit-icon.svg"/>
                                         </a>
                                     </div>
@@ -129,7 +126,7 @@
                                 </div>
                                 <div class="recommendation-content-reciew">
                                     <%
-                                        double avaRating = RecipeDAO.getRatingByRecipeId(r.getId());
+                                        double avaRating = r.getRating();
                                         int fullStars = (int) avaRating;
                                         boolean hasHalfStar = avaRating - fullStars >= 0.5;
 
@@ -153,7 +150,7 @@
                                     <%
                                         }
                                     %>
-                                    <p class="recommendation-content-reciew-rating"><%= RecipeDAO.getRatingByRecipeId(r.getId())%></p>
+                                    <p class="recommendation-content-reciew-rating"><%= r.getRating()%></p>
                                 </div>
                             </div>
                             <% }%>

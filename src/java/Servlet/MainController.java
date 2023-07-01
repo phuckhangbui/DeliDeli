@@ -70,6 +70,9 @@ public class MainController extends HttpServlet {
                     case "editPlan":
                         url = "PlanEditServlet";
                         break;
+                    case "loadPublicProfile":
+                        url = "LoadPublicProfileServlet";
+                        break;
                 }
             }
             RequestDispatcher rd = request.getRequestDispatcher(url);

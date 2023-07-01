@@ -67,6 +67,7 @@ public class RecipeDAO {
         return owner;
     }
 
+
     public static int getTotalReviewByRecipeId(int recipeId) {
         int total = 0;
         Connection cn = null;

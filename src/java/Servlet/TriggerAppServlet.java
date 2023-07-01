@@ -2,30 +2,22 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package Servlet.Admin;
+package Servlet;
 
-import DAO.DirectionDAO;
-import DTO.DirectionDTO;
-import DAO.IngredientDetailDAO;
-import DTO.IngredientDetailDTO;
-import DAO.NutritionDAO;
-import DTO.NutritionDTO;
-import DAO.RecipeDAO;
-import DTO.RecipeDTO;
-import DTO.UserDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
+import java.util.HashMap;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Admin
+ * @author khang
  */
-public class ShowRecipeDetailServlet extends HttpServlet {
+public class TriggerAppServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,37 +33,29 @@ public class ShowRecipeDetailServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-           String id = request.getParameter("id");
+            HashMap<Integer, String> cateMap
+                    = Utils.NavigationBarUtils.getMap("Category");
+            HashMap<Integer, String> cuisineMap
+                    = Utils.NavigationBarUtils.getMap("Cuisine");
+            HashMap<Integer, String> levelMap
+                    = Utils.NavigationBarUtils.getMap("Level");
+            HashMap<Integer, String> ingredientMap
+                    = Utils.NavigationBarUtils.getMap("Ingredient");
+            HashMap<Integer, String> dietMap
+                    = Utils.NavigationBarUtils.getMap("Diet");
+            HashMap<Integer, String> newsMap
+                    = Utils.NavigationBarUtils.getMap("NewsCategory");
 
-            RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(new Integer(id));
-            request.setAttribute("recipe", recipe);
-
-            String imgPath = RecipeDAO.getImageByRecipeId(new Integer(id)).getImgPath();
-            request.setAttribute("imgPath", imgPath);
-
-            String thumbnailPath = RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath();
-            request.setAttribute("thumbnailPath", thumbnailPath);
-
-            UserDTO owner = RecipeDAO.getRecipeOwnerByRecipeId(new Integer(id));
-            request.setAttribute("owner", owner);
-
-            int totalReview = RecipeDAO.getTotalReviewByRecipeId(new Integer(id));
-            request.setAttribute("totalReview", totalReview);
-
-            double avgRating = RecipeDAO.getRatingByRecipeId(new Integer(id));
-            request.setAttribute("avgRating", avgRating);
-
-            ArrayList<IngredientDetailDTO> ingredientDetailList = IngredientDetailDAO.getIngredientDetailByRecipeId(new Integer(id));
-            request.setAttribute("ingredientDetailList", ingredientDetailList);
-
-            NutritionDTO nutrition = NutritionDAO.getNutrition(new Integer(id));
-            request.setAttribute("nutrition", nutrition);
-
-            DirectionDTO direction = DirectionDAO.getDirectionByRecipeId(new Integer(id));
-            request.setAttribute("direction", direction);
-
-            request.getRequestDispatcher("showRecipeDetail.jsp").forward(request, response);
-
+            
+            HttpSession session = request.getSession();
+            session.setAttribute("cateMap", cateMap);
+            session.setAttribute("cuisineMap", cuisineMap);
+            session.setAttribute("levelMap", levelMap);
+            session.setAttribute("ingredientMap", ingredientMap);
+            session.setAttribute("dietMap", dietMap);
+            session.setAttribute("newsMap", newsMap);
+            
+            request.getRequestDispatcher("home.jsp").forward(request, response);
         }
     }
 
