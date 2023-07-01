@@ -56,7 +56,7 @@ public class LoadUserReviewServlet extends HttpServlet {
                     displayList.add(d);
                 }
             }
-            request.setAttribute("displayList", displayList);
+            request.setAttribute("displayReviewList", displayList);
             
             
             request.getRequestDispatcher("userReviewManagement.jsp").forward(request, response);

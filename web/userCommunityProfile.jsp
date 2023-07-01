@@ -58,7 +58,7 @@
                 <div class="row user-community-profile">
                     <div class="col-md-3 user-community-profile-avatar">
                         <div>
-                            <img src="./assets/profile-pic.svg" alt="">
+                            <img src="ServletImageLoader?identifier=<%= user.getAvatar()%>" alt="">
                         </div>
                         <div>
                             <p><%=account.getUserName()%></p>

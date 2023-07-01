@@ -107,7 +107,7 @@
                         </div>
                         <div class="row user-profile-recipes">
                             <%
-                                ArrayList<DisplayReviewDTO> displayList = (ArrayList<DisplayReviewDTO>) request.getAttribute("displayList");
+                                ArrayList<DisplayReviewDTO> displayList = (ArrayList<DisplayReviewDTO>) request.getAttribute("displayReviewList");
 
                                 for (DisplayReviewDTO review : displayList) {
                             %>
@@ -149,7 +149,7 @@
                         </div>
                         <div class="user-profile-public-avatar">
                             <div>
-                                <img id="preview-image" src="./assets/profile-pic.svg" alt="">
+                                <img src="ServletImageLoader?identifier=<%= user.getAvatar()%>" alt="">
                             </div>
                         </div>
                     </div>

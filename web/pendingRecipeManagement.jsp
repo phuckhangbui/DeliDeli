@@ -99,10 +99,10 @@
                     <div class="col-md-5 user-profile-column-2">
                         <div class="user-profile-header">
                             <div>
-                                Private Recipes
+                                Pending Recipes
                             </div>
                             <p>
-                                View your own recipes that you made only for yourself
+                                View your own recipes that are currently being reviewed by our moderator team for publishing
                             </p>
                         </div>
                         <div class="row user-profile-recipes">
@@ -189,7 +189,7 @@
                         </div>
                         <div class="user-profile-public-avatar">
                             <div>
-                                <img id="preview-image" src="./assets/profile-pic.svg" alt="">
+                                <img src="ServletImageLoader?identifier=<%= user.getAvatar()%>" alt="">
                             </div>
                         </div>
                     </div>
