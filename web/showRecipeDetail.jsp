@@ -221,7 +221,7 @@
                                                 SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
                                                 String date = dateFormat.format(timestamp);
                                             %>
-                                        <p>Published on <%= date%></p>
+                                        <p>Date: <%= date%></p>
                                     </div>
                                 </div>
                                 <div class="recipe-detail-info-interaction">

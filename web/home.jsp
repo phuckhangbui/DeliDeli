@@ -47,9 +47,9 @@
                 </div>
                 <div class="row">
                     <%
-                        ArrayList<NewsDTO> listNews = (ArrayList) session.getAttribute("listNews");
-                        ArrayList<String> listNewsCategories = (ArrayList) session.getAttribute("listNewsCategories");
-                        NewsDTO latestNews = (NewsDTO) session.getAttribute("latestNews");
+                        ArrayList<NewsDTO> listNews = (ArrayList) request.getAttribute("listNews");
+                        ArrayList<String> listNewsCategories = (ArrayList) request.getAttribute("listNewsCategories");
+                        NewsDTO latestNews = (NewsDTO) request.getAttribute("latestNews");
                     %>
                     <a href="MainController?action=getNewsDetail&id=<%= latestNews.getId()%>" class="col-md-8 first-new ">
                         <img src="ServletImageLoader?identifier=<%= latestNews.getImage()%>" alt="">
@@ -100,7 +100,7 @@
                     </header>
                 </div>
                 <div class="row recommendation-content">
-                    <% ArrayList<DisplayRecipeDTO> listRecipe = (ArrayList) session.getAttribute("displayRecipeList");
+                    <% ArrayList<DisplayRecipeDTO> listRecipe = (ArrayList) request.getAttribute("displayRecipeList");
                         if (listRecipe != null && listRecipe.size() != 0) {
                             for (DisplayRecipeDTO r : listRecipe) {
                     %>
@@ -236,8 +236,8 @@
         <div class="recommendation-3">
             <div class="container">
                 <%
-                    ArrayList<DisplayRecipeDTO> suggestionRecipeList = (ArrayList) session.getAttribute("displaySuggestionList");
-                    String selectedSuggestion = (String) session.getAttribute("selectedSuggestion");
+                    ArrayList<DisplayRecipeDTO> suggestionRecipeList = (ArrayList) request.getAttribute("displaySuggestionList");
+                    String selectedSuggestion = (String) request.getAttribute("selectedSuggestion");
 
                 %>
                 <div class="row">
