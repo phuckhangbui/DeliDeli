@@ -183,6 +183,8 @@
 
                         <%
                             String suggestion = (String) request.getAttribute("suggestion");
+                            String chosenSuggestion = (String) request.getAttribute("chosenSuggestion");
+                            System.out.println(chosenSuggestion);
                             String update = (String) request.getAttribute("update");
                             ArrayList<RecipeDTO> list = (ArrayList<RecipeDTO>) request.getAttribute("list");
                             ArrayList<RecipeDTO> customSuggestionList;
@@ -270,6 +272,7 @@
                                             <input type="hidden" value="<%= r.getId()%>" name="id">
                                             <input type="hidden" value="<%= customSuggestionList%>" name="customSuggestionList">
                                             <input type="hidden" value="update" name="update">
+                                            <input type="hidden" value="<%= chosenSuggestion%>" name="chosenSuggestion">
                                             <input type="hidden" value="<%= suggestion%>" name="suggestion">
                                             <button type="submit" value="addSuggestion" name="action">Add</button>
                                         </form>
@@ -341,6 +344,7 @@
                                             <input type="hidden" value="<%= r.getId()%>" name="id">
                                             <input type="hidden" value="<%= customSuggestionList%>" name="customSuggestionList">
                                             <input type="hidden" value="update" name="update">
+                                            <input type="hidden" value="<%= chosenSuggestion%>" name="chosenSuggestion">
                                             <input type="hidden" value="<%= suggestion%>" name="suggestion">
                                             <button type="submit" value="removeSuggestion" name="action">Remove</button>
                                         </form>
@@ -358,6 +362,7 @@
                             <input type="hidden" name="txtUserId" value="<%= user.getId()%>">
                             <input type="hidden" value="<%= customSuggestionList%>" name="customSuggestionList">
                             <input type="hidden" value="<%= suggestion%>" name="suggestion">
+                            <input type="hidden" value="<%= chosenSuggestion%>" name="chosenSuggestion">
                             <button type="submit" name="action" value="updateSuggestion">Update</button>
                             <p class="error-popup">${requestScope.error}</p>
                             <p class="error-popup">${requestScope.titleExist}</p>

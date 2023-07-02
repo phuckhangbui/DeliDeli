@@ -36,10 +36,23 @@ public class ManageSuggestionServlet extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             TreeMap<String, Integer> map = SuggestionDAO.getSuggestionMap();
             ArrayList<String> suggestionList = SuggestionDAO.getAllSuggestion();
+            String chosenSuggestion = (String) request.getAttribute("chosenSuggestion");
             
+            if (chosenSuggestion == null) {
+                chosenSuggestion = SuggestionDAO.getDefaultSuggestionTitle();
+            }
+            
+            if (suggestionList.size() == 1) {
+                SuggestionDAO.chooseSuggestion(suggestionList.get(0));
+                chosenSuggestion = SuggestionDAO.getDefaultSuggestionTitle();
+            }
+
             request.setAttribute("suggestionMap", map);
             request.setAttribute("suggestionList", suggestionList);
+            request.setAttribute("chosenSuggestion", chosenSuggestion);
             
+            System.out.println(chosenSuggestion);
+
             request.getRequestDispatcher("manageSuggestion.jsp").forward(request, response);
         }
     }

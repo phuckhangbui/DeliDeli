@@ -37,8 +37,7 @@ public class SuggestionRecipeServlet extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             String suggestion = request.getParameter("suggestion");
 
-            HttpSession session = request.getSession();
-            session.setAttribute("selectedSuggestion", suggestion);
+            SuggestionDAO.chooseSuggestion(suggestion);
 
             request.getRequestDispatcher("ManageSuggestionServlet").forward(request, response);
         }
