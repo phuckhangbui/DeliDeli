@@ -5,6 +5,7 @@
  */
 package DAO;
 
+import DTO.FavoriteDTO;
 import DTO.RecipeDTO;
 import DTO.RecipeImageDTO;
 import DTO.UserDTO;
@@ -14,6 +15,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
@@ -25,7 +27,7 @@ import java.util.List;
  * @author Daiisuke
  */
 public class RecipeDAO {
-    
+
     public static ArrayList<RecipeDTO> getTop6LatestRecipes() {
         ArrayList<RecipeDTO> result = new ArrayList<RecipeDTO>();
         Connection cn = null;
@@ -112,7 +114,6 @@ public class RecipeDAO {
         }
         return owner;
     }
-
 
     public static int getTotalReviewByRecipeId(int recipeId) {
         int total = 0;
@@ -416,8 +417,6 @@ public class RecipeDAO {
 
         return result;
     }
-    
-   
 
     public static int addRecipe(RecipeDTO recipe) {
         int generatedId = -1; // Default value if ID generation fails
@@ -535,13 +534,13 @@ public class RecipeDAO {
                 PreparedStatement pst = cn.prepareStatement(sql);
                 pst.setInt(1, recipeId);
                 result = pst.executeUpdate();
-                
+
                 sql = "DELETE FROM [dbo].[Nutrition]\n"
                         + "WHERE recipe_id = ?";
                 pst = cn.prepareStatement(sql);
                 pst.setInt(1, recipeId);
                 result = pst.executeUpdate();
-                
+
                 sql = "DELETE FROM [dbo].[SuggestionRecipe]\n"
                         + "WHERE recipe_id = ?";
                 pst = cn.prepareStatement(sql);
@@ -553,7 +552,7 @@ public class RecipeDAO {
                 pst = cn.prepareStatement(sql);
                 pst.setInt(1, recipeId);
                 result = pst.executeUpdate();
-                
+
                 pst.close();
                 cn.close();
             }
@@ -566,5 +565,45 @@ public class RecipeDAO {
     public static void main(String[] args) {
         //RecipeDTO r = getRecipeByRecipeId(1);
         System.out.println(getTop6LatestRecipes());
+    }
+
+    public static boolean addFavoriteRecipe(int user_id, int recipe_id) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+
+        String sql = "INSERT INTO FavoriteRecipe(user_id, recipe_id)\n"
+                + "VALUES(?, ?)";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, user_id);
+                stm.setInt(2, recipe_id);
+                int effectRows = stm.executeUpdate();
+                if (effectRows > 0) {
+                    return true;
+                }
+
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return false;
     }
 }

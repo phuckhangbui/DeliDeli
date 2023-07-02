@@ -342,6 +342,10 @@
         <servlet-name>LoadNewsListServlet</servlet-name>
         <servlet-class>Servlet.LoadNewsListServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>addFavoriteServlet</servlet-name>
+        <servlet-class>Servlet.addFavoriteServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -601,6 +605,10 @@
     <servlet-mapping>
         <servlet-name>LoadNewsListServlet</servlet-name>
         <url-pattern>/LoadNewsListServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>addFavoriteServlet</servlet-name>
+        <url-pattern>/addFavoriteServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
