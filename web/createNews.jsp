@@ -19,6 +19,7 @@
         <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css"/>
         <!--      CSS         -->
         <link rel="stylesheet" href="./styles/adminStyle.css">
+        <link rel="stylesheet" href="./styles/notificationStyle.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link
@@ -189,14 +190,14 @@
                                             <li class="breadcrumb-item current-link" aria-current="page">Add News</li>
                                         </ol>
                                     </nav>
-                                    <form action="AdminController" method="post" class="news-create-button" enctype="multipart/form-data">
+                                    <form action="AdminController" method="post" class="news-create-button" enctype="multipart/form-data" id="newsForm">
                                         <div class="add-news-header">
                                             <p>Add a New</p>
                                         </div>
                                         <div class="news-content-info-header">
                                             Title <span>*</span>
                                             <div>
-                                                <input type="text" name="txtTitle" placeholder="What's the new called?">
+                                                <input type="text" name="txtTitle" placeholder="What's the new called?" required="">
                                             </div>
                                         </div>
                                         <div class="news-content-info">
@@ -214,7 +215,7 @@
                                             </p>
                                         </div>
                                         <div class="news-content-info-header news-content-info-white-background">
-                                            <p>Image <span>*</span> <input type="file" name="file"></p>
+                                            <p>Image <span>*</span> <input type="file" name="file" required=""></p>
                                         </div>
                                         <div class="news-content-info">
                                             Description
@@ -224,7 +225,7 @@
                                         <input type="hidden" name="userId" value="<%= user.getId()%>">
 
                                         <div class="add-news-create">
-                                            <button type="submit" value="createNews" name="action" >CREATE</button>
+                                            <button type="submit" value="createNews" name="action" onclick="return validateForm()">CREATE</button>
                                         </div>
                                     </form>
                                 </div>
@@ -233,6 +234,40 @@
                     </div>
                 </div>
             </div>
+
+            <div class="modal fade" id="disapprove" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                 aria-labelledby="deletePlanModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <form action="" method="post"class="modal-content modal-content-self">
+                        <div class="modal-header form-header">
+                            <div class="form-title disapprove-style" id="exampleModalLabel">
+                                Warning
+                            </div>
+                        </div>
+                        <div class="modal-body">
+                            <p class="title-text">Message Title: All input are required</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-warning" data-bs-dismiss="modal">OK</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
+            <script>
+                function validateForm() {
+                    var editorContent = CKEDITOR.instances.editor.getData();
+
+                    if (!editorContent.trim()) {
+                        alert("The description is empty! Please provide description for your news");
+                        return false; 
+                    }
+                    return true;
+                }
+
+            </script>
+
 
             <script>
                 // Get all file input elements

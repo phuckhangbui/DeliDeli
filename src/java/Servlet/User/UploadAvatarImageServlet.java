@@ -49,8 +49,8 @@ public class UploadAvatarImageServlet extends HttpServlet {
             String fileName = "";
             Part filePart = request.getPart("file");
 
-            if (filePart == null) {
-                //request.getRequestDispatcher("ManageNewsServlet").forward(request, response);
+            if (filePart == null && filePart.getSize() == 0) {
+                request.getRequestDispatcher("UserPublicDetailServlet").forward(request, response);
             } else {
                 String uploadPath = "C:/project-swp/pictures/User/" + userId;
 
