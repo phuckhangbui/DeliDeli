@@ -73,6 +73,9 @@ public class MainController extends HttpServlet {
                     case "loadPublicProfile":
                         url = "LoadPublicProfileServlet";
                         break;
+                    case "addFavorite":
+                        url = "addFavoriteServlet";
+                        break;
                 }
             }
             RequestDispatcher rd = request.getRequestDispatcher(url);

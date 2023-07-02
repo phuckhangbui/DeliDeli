@@ -114,11 +114,11 @@
                             <p>|</p>
                             <p class=""><%= request.getAttribute("totalReview")%> rating(s)</p>
                         </div>
-                        <form action="" class="recipe-detail-info-button-add">
-                            <input type="text" hidden="">
+                        <form action="MainController" class="recipe-detail-info-button-add" method="POST">
+                            <input type="hidden" name="userId" value="<%= user.getId() %>" />
+                            <input type="hidden" name="recipeId" value="<%= recipe.getId() %>" />
                             <div>
-
-                                <button type="submit" class="like-button">
+                                <button type="submit" name="action" value="addFavorite" class="like-button" >
                                     <img src="./assets/favorite-icon.svg" alt="">
                                     Save
                                 </button>
