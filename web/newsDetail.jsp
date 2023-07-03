@@ -23,16 +23,10 @@
     <body>
         <%@include file="header.jsp" %>
 
-        <!--         The banner       -->
-        <%--<%@include file="banner.jsp" %>--%>
-
         <!--       News Result     -->
         <div class="blank-background">
-            <div class="new-result" style="background-color: white;
-                 height: 100%;
-                 padding: 30px 80px;
-                 margin: 0 80px;">
-                <div class="container ">
+            <div class="container ">
+                <div class="row recipe-detail-info">
                     <%
                         NewsDTO news = (NewsDTO) request.getAttribute("news");
                         String category = (String) request.getAttribute("category");
@@ -43,16 +37,14 @@
                             <li class="breadcrumb-item current-link" aria-current="page"><%= news.getTitle()%></li>
                         </ol>
                     </nav>
-                    <div class="row">
-                        <p><%= category%></p>
-                        <header class="new-result-header">
-                            <p><%= news.getTitle()%></p>
-                        </header>
-                    </div>
-                    <div class="row new-result-content new-result-content-link">
+                    <header class="recipe-detail-info-main-header">
+                        <p><%= news.getTitle()%></p>
+                    </header>
+                    <div class="recipe-detail-info-user">
+                        <a href=""><img src="./assets/profile-pic.svg" alt=""></a>
                         <div>
-                            <!--<p class="new-result-content-post-title"><%= news.getTitle()%></p>-->
-                            <p class="new-result-content-post-title">By: <%= request.getAttribute("author")%></p>
+                            <span>By</span>
+                            <span><a href=""> <%= request.getAttribute("author")%></a></span>
                             <%
                                 if (news.getCreateAt().equals(news.getUpdateAt())) {
                             %>
@@ -65,7 +57,26 @@
                                 }
                             %>
                         </div>
-                        <img src="ServletImageLoader?identifier=<%= news.getImage()%>" alt="">
+                    </div>
+                    <div class="row new-result-content new-result-content-link">
+                        <!--                        <div>
+                                                    <p class="new-result-content-post-title"><%= news.getTitle()%></p>
+                                                    <p class="new-result-content-post-title">By: <%= request.getAttribute("author")%></p>
+                        <%
+                            if (news.getCreateAt().equals(news.getUpdateAt())) {
+                        %>
+                        <p>Create at: <%= news.getCreateAt()%></p>
+                        <%
+                        } else {
+                        %>
+                        <p>Update at: <%= news.getUpdateAt()%></p>
+                        <%
+                            }
+                        %>
+                    </div>-->
+                        <div class="recipe-detail-main-pic">
+                            <img src="ServletImageLoader?identifier=<%= news.getImage()%>" alt="">
+                        </div>
                         <p><%= news.getDesc()%></p>
                     </div>
                 </div>

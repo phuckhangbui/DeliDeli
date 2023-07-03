@@ -56,7 +56,7 @@
                         </div>
                         <div class="user-profile-option">
                             <a href="UserController?action=userPublicDetail&userId=<%=user.getId()%>">
-                                <img src="./assets/public-icon.svg" alt="">
+                                <img src="./assets/public-unchosen-icon.svg" alt="">
                                 Public Profile
                             </a>
                             <a href="UserController?action=userEmailSetting&userId=<%=user.getId()%>">

@@ -2393,3 +2393,57 @@ input[type=checkbox]{
 .add-recipe-to-plan-modal-button:hover{
     background-color: rgb(219, 136, 47);
 }
+
+
+
+
+
+
+/*     error page     */
+.error-background{
+	background-color: #e87e0c;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: white;
+	flex-direction: column;
+	text-align: center;
+}
+.error-background-404{
+	font-size: 100px;
+	font-family: Pacifico;
+}
+.error-background-message{
+	font-size: 48px;
+	font-family: Pacifico;
+	
+}
+.error-background-explaination{
+	margin-top: 10px;
+	margin-bottom: 80px;
+}
+.error-background-button{
+	background-color: #e87e0c;
+	border: none;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: absolute;
+	margin-top: 500px;
+}
+.error-background-go-back{
+	font-family: Pacifico;
+	font-size: 48px;
+	background-color: transparent;
+	border: none;
+	color: white;
+	transition: all 0.3s;
+}
+.error-background-go-back span{
+	margin-left: 30px;
+	font-size: 85px;
+}
+.error-background-button a:hover{
+	color: #79c141;
+}

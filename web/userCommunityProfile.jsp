@@ -68,14 +68,30 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <p>NAME</p>
+                                <%
+                                    if (fullname != null) {
+                                %> 
                                 <p><%=fullname%></p>
+                                <%
+                                } else {
+                                %>
+                                <p>Unspecified</p>
+                                <%
+                                    }
+                                %>
+
                             </div>
                             <div class="col-md-6">
+                                <p>BIRTHDATE</p>
                                 <%
                                     if (accountDetail.getBirthdate() != null) {
                                 %> 
-                                <p>BIRTHDATE</p>
+
                                 <p><%= accountDetail.getBirthdate()%></p>
+                                <%
+                                } else {
+                                %>
+                                <p>Unspecified</p>
                                 <%
                                     }
                                 %>
@@ -86,7 +102,7 @@
 
                                 <%
                                     if (accountDetail.getSpecialty().equals("")) { %>
-                                <p>Undefined</p>
+                                <p>Unspecified</p>
                                 <%
                                 } else {
                                 %>
@@ -97,7 +113,7 @@
                                 <p>ABOUT</p>
                                 <%
                                     if (accountDetail.getBio().equals("")) { %>
-                                <p>Undefined</p>
+                                <p>Unspecified</p>
                                 <%
                                 } else {
                                 %>

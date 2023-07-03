@@ -64,12 +64,12 @@
                                 Saved Recipes
                             </a>
                             <div class="dropdown" id="dropdownUserRecipe">
-                                <a href="#">
-                                    <img src="./assets/my-recipe-icon.svg" alt="">
+                                <a href="#" >
+                                    <img src="./assets/my-recipe-unchosen-icon.svg" alt="">
                                     My Own Recipes
                                 </a>
                                 <div class="dropdown-content-right">
-                                    <a href="UserController?action=loadRecipeManagement&page=private&userId=<%= userId%>">Private Recipes</a>
+                                    <a href="UserController?action=loadRecipeManagement&page=private&userId=<%= userId%>" class="active-link">Private Recipes</a>
                                     <a href="UserController?action=loadRecipeManagement&page=pending&userId=<%= userId%>">Pending Recipes</a>
                                     <a href="UserController?action=loadRecipeManagement&page=public&userId=<%= userId%>">Public Recipes</a>
                                     <a href="UserController?action=loadRecipeManagement&page=rejected&userId=<%= userId%>">Rejected Recipes</a>
