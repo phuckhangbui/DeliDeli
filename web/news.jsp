@@ -33,14 +33,22 @@
             <div class="container ">
                 <div class="row">
                     <header class="new-result-header">
-                        <p>What's New on The Board</p>
+                    <%
+                        String ERROR_MSG = (String) request.getAttribute("ERROR_MSG");
+                        String SUCCESS_MSG = (String) request.getAttribute("SUCCESS_MSG");
+                        ArrayList<NewsDTO> listNews = (ArrayList) request.getAttribute("listNews");
+                        ArrayList<String> listNewsCategories = (ArrayList) request.getAttribute("listNewsCategories");
+                        if(listNews.size() > 0 && listNews != null){
+                        %>
+                        <p><%=SUCCESS_MSG %></p>
+                        <% }else{%>
+                        <p><%=ERROR_MSG %></p>
+                        <% }%>
                     </header>
                 </div>
                 <div class="row new-result-content">
-                    <%
-                        ArrayList<NewsDTO> listNews = (ArrayList) request.getAttribute("listNews");
-                        ArrayList<String> listNewsCategories = (ArrayList) request.getAttribute("listNewsCategories");
-                        if (listNews.size() > 0 && listNews != null) {
+                    
+                       <% if (listNews.size() > 0 && listNews != null) {
                             for (int i = 0; i < listNews.size(); i++) {
                                 NewsDTO news = listNews.get(i);
                                 String newsCategory = listNewsCategories.get(i);

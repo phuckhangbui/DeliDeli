@@ -467,7 +467,7 @@
                                                     = entry.getValue();
                                     %>
                                     <a
-                                        href="searchResultPage.jsp?type=NewsCategory&id=<%=key%>">
+                                        href="LoadNewsList?id=<%=key%>">
                                         <%=value%>
                                     </a>
                                     <%}%>

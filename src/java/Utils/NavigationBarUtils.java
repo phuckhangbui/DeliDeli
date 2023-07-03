@@ -55,7 +55,9 @@ public class NavigationBarUtils {
                 sql += " AND status = 3\n"
                         + "GROUP BY r.[id],r.[title],r.[prep_time],r.[cook_time],[servings],\n"
                         + "r.[create_at],r.[update_at],[cuisine_id],[category_id],r.[user_id],[level_id], status\n"
-                        + "ORDER BY CAST(SUM(re.rating) AS decimal) / COUNT(re.rating) DESC";
+                        + "ORDER BY CASE WHEN COUNT(re.rating) > 0\n"
+                        + "    THEN CAST(SUM(re.rating) AS decimal) / COUNT(re.rating)\n"
+                        + "    ELSE 0 END DESC";
 
                 PreparedStatement pst = cn.prepareStatement(sql);
                 pst.setString(1, "%" + keyword + "%");
@@ -147,7 +149,7 @@ public class NavigationBarUtils {
             if (cn != null) {
                 String sql = "SELECT r.[id],r.[title],r.[prep_time],r.[cook_time],[servings],\n"
                         + "r.[create_at],r.[update_at],[cuisine_id],[category_id],r.[user_id],[level_id], status\n"
-                        + "FROM [dbo].[Recipe] r JOIN [dbo].[Review] re ON r.[id] = re.recipe_id\n";
+                        + "FROM [dbo].[Recipe] r LEFT JOIN [dbo].[Review] re ON r.[id] = re.recipe_id\n";
 
                 if (type.equals("Ingredient")) {
                     sql += "JOIN [dbo].[IngredientDetail] id ON r.id = id.recipe_id\n"
@@ -170,7 +172,9 @@ public class NavigationBarUtils {
 
                 sql += "GROUP BY r.[id],r.[title],r.[prep_time],r.[cook_time],[servings],\n"
                         + "r.[create_at],r.[update_at],[cuisine_id],[category_id],r.[user_id],[level_id], status\n"
-                        + "ORDER BY CAST(SUM(re.rating) AS decimal) / COUNT(re.rating) DESC";
+                        + "ORDER BY CASE WHEN COUNT(re.rating) > 0\n"
+                        + "    THEN CAST(SUM(re.rating) AS decimal) / COUNT(re.rating)\n"
+                        + "    ELSE 0 END DESC";
 
                 PreparedStatement pst = cn.prepareStatement(sql);
                 pst.setInt(1, typeId);
@@ -197,20 +201,20 @@ public class NavigationBarUtils {
                         ratingList.add(recipe);
                     }
                 }
-                noRatingList = getRecipeByTypeNoRating(type, typeId);
-                Map<Integer, RecipeDTO> uniqueRecipes = new HashMap<>();
-
-                for (RecipeDTO recipe : ratingList) {
-                    uniqueRecipes.put(recipe.getId(), recipe);
-                }
-
-                for (RecipeDTO recipe : noRatingList) {
-                    if (!uniqueRecipes.containsKey(recipe.getId())) {
-                        uniqueRecipes.put(recipe.getId(), recipe);
-                    }
-                }
-
-                result = new ArrayList<>(uniqueRecipes.values());
+//                noRatingList = getRecipeByTypeNoRating(type, typeId);
+//                Map<Integer, RecipeDTO> uniqueRecipes = new HashMap<>();
+//
+//                for (RecipeDTO recipe : ratingList) {
+//                    uniqueRecipes.put(recipe.getId(), recipe);
+//                }
+//
+//                for (RecipeDTO recipe : noRatingList) {
+//                    if (!uniqueRecipes.containsKey(recipe.getId())) {
+//                        uniqueRecipes.put(recipe.getId(), recipe);
+//                    }
+//                }
+//
+//                result = new ArrayList<>(uniqueRecipes.values());
 
                 rs.close();
                 pst.close();
@@ -220,73 +224,7 @@ public class NavigationBarUtils {
             e.printStackTrace();
             return null;
         }
-        return result;
-    }
-
-    public static ArrayList<RecipeDTO> getRecipeByTypeNoRating(String type, int typeId) {
-        ArrayList<RecipeDTO> result = new ArrayList<RecipeDTO>();
-        Connection cn = null;
-        try {
-            cn = DBUtils.getConnection();
-
-            if (cn != null) {
-                String sql = "SELECT r.[id],r.[title],r.[prep_time],r.[cook_time],[servings],\n"
-                        + "r.[create_at],r.[update_at],[cuisine_id],[category_id],r.[user_id],[level_id], status\n"
-                        + "FROM [dbo].[Recipe] r\n";
-
-                if (type.equals("Ingredient")) {
-                    sql += "JOIN [dbo].[IngredientDetail] id ON r.id = id.recipe_id\n"
-                            + "WHERE id.ingredient_id = ? AND status = 3\n";
-                }
-                if (type.equals("Category")) {
-                    sql += "WHERE r.category_id = ? AND status = 3\n";
-                }
-                if (type.equals("Cuisine")) {
-                    sql += "WHERE [cuisine_id] = ? AND status = 3\n";
-                }
-                if (type.equals("Level")) {
-                    sql += "WHERE [level_id]= ? AND status = 3\n";
-                }
-                if (type.equals("Diet")) {
-                    sql += "JOIN [dbo].[RecipeDiet] rd ON rd.recipe_id = r.id\n"
-                            + "JOIN [dbo].[Diet] d ON d.id = rd.diet_id\n"
-                            + "WHERE d.id = ? AND status = 3\n";
-                }
-
-                PreparedStatement pst = cn.prepareStatement(sql);
-                pst.setInt(1, typeId);
-                ResultSet rs = pst.executeQuery();
-                if (rs != null) {
-                    while (rs.next()) {
-                        int id = rs.getInt("id");
-                        String title = rs.getString("title");
-                        String description = "";
-                        int prep_time = rs.getInt("prep_time");
-                        int cook_time = rs.getInt("cook_time");
-                        int servings = rs.getInt("servings");
-                        Timestamp create_at = rs.getTimestamp("create_at");
-                        Timestamp update_at = rs.getTimestamp("update_at");
-                        int cuisin_id = rs.getInt("cuisine_id");
-                        int category_id = rs.getInt("category_id");
-                        int user_id = rs.getInt("user_id");
-                        int level_id = rs.getInt("level_id");
-                        int status = rs.getInt("status");
-
-                        RecipeDTO recipe = new RecipeDTO(id, title, description, prep_time,
-                                cook_time, servings, create_at, update_at, cuisin_id,
-                                category_id, user_id, level_id, status);
-                        result.add(recipe);
-                    }
-                }
-                rs.close();
-                pst.close();
-                cn.close();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-        return result;
+        return ratingList;
     }
 
     public static void main(String[] args) {

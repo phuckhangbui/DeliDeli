@@ -34,14 +34,26 @@ public class LoadNewsListServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            ArrayList<NewsDTO> listNews = NewsDAO.getAllNews();
+            int cateId = Integer.parseInt(request.getParameter("id"));
+            ArrayList<NewsDTO> listNews = NewsDAO.getNewsByCate(cateId);
             ArrayList<String> listNewsCategories = new ArrayList<>();
 
             for (NewsDTO news : listNews) {
                 String newsCategory = NewsDAO.getNewsCategoryByNewsId(news.getId());
                 listNewsCategories.add(newsCategory);
             }
-
+            
+            String ERROR_MSG = "";
+            String SUCCESS_MSG = "";
+            
+            if(listNews.size() > 0){
+                SUCCESS_MSG= NewsDAO.getNewsCategoryByCateId(cateId);
+            }else{
+                ERROR_MSG = "Three is no article in " + NewsDAO.getNewsCategoryByCateId(cateId);
+            }
+            
+            request.setAttribute("ERROR_MSG", ERROR_MSG);
+            request.setAttribute("SUCCESS_MSG", SUCCESS_MSG);
             request.setAttribute("listNews", listNews);
             request.setAttribute("listNewsCategories", listNewsCategories);
 

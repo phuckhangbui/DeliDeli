@@ -155,12 +155,15 @@ public class RecipeDAO {
                         recipeImg = new RecipeImageDTO(id, img, recipeId, thumbnail);
                     }
                 }
+                if(recipeImg == null){
+                    recipeImg = new RecipeImageDTO(0, "", recipeId, false);
+                }
                 rs.close();
                 pst.close();
                 cn.close();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            recipeImg = new RecipeImageDTO(0, "", recipeId, false);
         }
         return recipeImg;
     }
@@ -519,6 +522,7 @@ public class RecipeDAO {
 
     public static void main(String[] args) {
         //RecipeDTO r = getRecipeByRecipeId(1);
-        System.out.println(getRecipeOwnerByRecipeId(1));
+        
+        System.out.println(getImageByRecipeId(17).toString());
     }
 }

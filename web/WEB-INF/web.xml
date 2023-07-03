@@ -608,7 +608,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>LoadNewsListServlet</servlet-name>
-        <url-pattern>/LoadNewsListServlet</url-pattern>
+        <url-pattern>/LoadNewsList</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CreateBroadcastServlet</servlet-name>
