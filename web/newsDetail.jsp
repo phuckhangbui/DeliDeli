@@ -33,7 +33,8 @@
                     %>
                     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="MainController?action=loadNewsList">News List</a></li>
+                            <li class="breadcrumb-item"><a href="home.jsp">Home</a></li>
+                            <li class="breadcrumb-item"><a href="LoadNewsList?id=<%= news.getNews_category()%>"><%= category%></a></li>
                             <li class="breadcrumb-item current-link" aria-current="page"><%= news.getTitle()%></li>
                         </ol>
                     </nav>

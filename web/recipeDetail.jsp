@@ -46,9 +46,6 @@
 
         <%@include file="header.jsp" %>
 
-
-
-
         <!--        Recipe Detail         -->
         <div class="blank-background">
             <div class="container ">
@@ -114,9 +111,12 @@
                             <p>|</p>
                             <p class=""><%= request.getAttribute("totalReview")%> rating(s)</p>
                         </div>
+                        <%
+                            if (user != null) {
+                        %>
                         <form action="MainController" class="recipe-detail-info-button-add" method="POST">
-                            <input type="hidden" name="userId" value="<%= user.getId() %>" />
-                            <input type="hidden" name="recipeId" value="<%= recipe.getId() %>" />
+                            <input type="hidden" name="userId" value="<%= user.getId()%>" />
+                            <input type="hidden" name="recipeId" value="<%= recipe.getId()%>" />
                             <div>
                                 <button type="submit" name="action" value="addFavorite" class="like-button" >
                                     <img src="./assets/favorite-icon.svg" alt="">
@@ -124,6 +124,9 @@
                                 </button>
                             </div>
                         </form>
+                        <%
+                            }
+                        %>
                         <button class="share-button">
                             <img src="./assets/share-icon.svg" alt="">
                             Share

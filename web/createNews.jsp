@@ -75,21 +75,15 @@
                         </a>
                     </div>
                     <div>
-                        <a href="#">
-                            <img src="./assets/policies-unchosen-icon.svg" alt="">
-                            Policies
-                        </a>
-                    </div>
-                    <div>
-                        <a href="#">
+                        <a href="adminBroadcast.jsp">
                             <img src="./assets/broadcast-unchosen-icon.svg" alt="">
                             Broadcast
                         </a>
                     </div>
                     <div>
-                        <a href="#">
+                        <a href="MainController?action=logout">
                             <img src="./assets/bug-report-unchosen-icon.svg" alt="">
-                            Report
+                            Logout
                         </a>
                     </div>
                 </nav>
@@ -115,12 +109,6 @@
                         <a class="logo" href="">
                             <img src="assets/Logo3.svg" alt="">
                         </a>
-                        <!--                        <div>
-                                                    <a href="admin.jsp">
-                                                        <img src="./assets/public-unchose.svg" alt="">
-                                                        Dashboard
-                                                    </a>
-                                                </div>-->
                         <div>
                             <a href="AdminController?action=manageAccount">
                                 <img src="./assets/user-unchose.svg" alt="">
@@ -145,24 +133,12 @@
                                 News
                             </a>
                         </div>
-                        <!--                        <div>
-                                                    <a href="#">
-                                                        <img src="./assets/policies-unchose.svg" alt="">
-                                                        Policies
-                                                    </a>
-                                                </div>-->
                         <div>
-                            <a href="#">
-                                <img src="./assets/broadcast-unchose.svg" alt="">
-                                Broadcast
+                            <a href="MainController?action=logout">
+                                <img src="./assets/bug-report-unchosen-icon.svg" alt="">
+                                Logout
                             </a>
                         </div>
-                        <!--                        <div>
-                                                    <a href="#">
-                                                        <img src="./assets/bug-report-unchose.svg" alt="">
-                                                        Report
-                                                    </a>
-                                                </div>-->
                     </nav>
 
                     <div class="col-md-10 recipe">
@@ -197,12 +173,12 @@
                                         <div class="news-content-info-header">
                                             Title <span>*</span>
                                             <div>
-                                                <input type="text" name="txtTitle" placeholder="What's the new called?" required="">
+                                                <input id="txtTitle" type="text" name="txtTitle" placeholder="What's the new called?" required="">
                                             </div>
                                         </div>
                                         <div class="news-content-info">
                                             <p>Category <span>*</span>
-                                                <select name="category">
+                                                <select name="category" id="category">
                                                     <%
                                                         HashMap<Integer, String> newsMap = Utils.NavigationBarUtils.getMap("NewsCategory");
                                                         for (Map.Entry<Integer, String> entry : newsMap.entrySet()) {
@@ -219,13 +195,12 @@
                                         </div>
                                         <div class="news-content-info">
                                             Description
-                                            <textarea rows="10" cols="10" id="editor"></textarea>
+                                            <textarea rows="10" cols="10" id="editor" ></textarea>
                                         </div>
                                         <input type="hidden" name="editorContent" id="editorContent" value="">
                                         <input type="hidden" name="userId" value="<%= user.getId()%>">
-
                                         <div class="add-news-create">
-                                            <button type="submit" value="createNews" name="action" onclick="return validateForm()">CREATE</button>
+                                            <button id="newsform" type="submit" name="action" value="createNews" onclick="return validateForm()">Create</button>
                                         </div>
                                     </form>
                                 </div>
@@ -235,39 +210,13 @@
                 </div>
             </div>
 
-            <div class="modal fade" id="disapprove" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-                 aria-labelledby="deletePlanModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <form action="" method="post"class="modal-content modal-content-self">
-                        <div class="modal-header form-header">
-                            <div class="form-title disapprove-style" id="exampleModalLabel">
-                                Warning
-                            </div>
-                        </div>
-                        <div class="modal-body">
-                            <p class="title-text">Message Title: All input are required</p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-warning" data-bs-dismiss="modal">OK</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-
             <script>
-                function validateForm() {
-                    var editorContent = CKEDITOR.instances.editor.getData();
-
-                    if (!editorContent.trim()) {
-                        alert("The description is empty! Please provide description for your news");
-                        return false; 
-                    }
-                    return true;
-                }
-
+                CKEDITOR.replace('editor', {
+                    language: 'vi',
+                    entities_latin: false,
+                    entities_greek: false
+                });
             </script>
-
 
             <script>
                 // Get all file input elements
@@ -294,11 +243,20 @@
             </script>
 
             <script>
-                CKEDITOR.replace('editor', {
-                    language: 'vi',
-                    entities_latin: false,
-                    entities_greek: false
-                });
+                function validateForm() {
+// Get the CKEditor content
+                    var editorContent = CKEDITOR.instances.editor.getData();
+
+// Perform validation
+                    if (!editorContent.trim()) {
+                        // Display an error message or take any other necessary action
+                        alert("The description is empty! Please provide description for your news");
+                        return false; // Prevent form submission
+                    }
+
+// Form is valid, proceed with form submission
+                    return true;
+                }
             </script>
 
             <script>

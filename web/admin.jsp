@@ -40,7 +40,7 @@
                         <img src="assets/Logo3.svg" alt="">
                     </a>
                     <div>
-                        <a href="admin.jsp" class="active">
+                        <a href="AdminController?action=adminDashboard" class="active">
                             <img src="./assets/public-icon.svg" alt="">
                             Dashboard
                         </a>
@@ -70,21 +70,15 @@
                         </a>
                     </div>
                     <div>
-                        <a href="#">
-                            <img src="./assets/policies-unchosen-icon.svg" alt="">
-                            Policies
-                        </a>
-                    </div>
-                    <div>
                         <a href="adminBroadcast.jsp">
                             <img src="./assets/broadcast-unchosen-icon.svg" alt="">
                             Broadcast
                         </a>
                     </div>
                     <div>
-                        <a href="#">
+                        <a href="MainController?action=logout">
                             <img src="./assets/bug-report-unchosen-icon.svg" alt="">
-                            Report
+                            Logout
                         </a>
                     </div>
 

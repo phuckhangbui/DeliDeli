@@ -34,7 +34,7 @@
                         <img src="assets/Logo3.svg" alt="">
                     </a>
                     <div>
-                        <a href="admin.jsp" class="active">
+                        <a href="AdminController?action=adminDashboard">
                             <img src="./assets/public-icon.svg" alt="">
                             Dashboard
                         </a>
@@ -64,21 +64,15 @@
                         </a>
                     </div>
                     <div>
-                        <a href="#">
-                            <img src="./assets/policies-unchosen-icon.svg" alt="">
-                            Policies
-                        </a>
-                    </div>
-                    <div>
-                        <a href="adminBroadcast.jsp">
+                        <a href="adminBroadcast.jsp" class="active">
                             <img src="./assets/broadcast-unchosen-icon.svg" alt="">
                             Broadcast
                         </a>
                     </div>
                     <div>
-                        <a href="#">
+                        <a href="MainController?action=logout">
                             <img src="./assets/bug-report-unchosen-icon.svg" alt="">
-                            Report
+                            Logout
                         </a>
                     </div>
 
@@ -106,7 +100,7 @@
                                 <%
                                     //UserDTO user = (UserDTO) session.getAttribute("user");
                                     //String id = request.getParameter("newsId");
-                                %>
+%>
                                 <form action="AdminController" method="post" class="news-create-button" enctype="multipart/form-data">
                                     <div class="add-news-header">
                                         <p>Make a Broadcast</p>
@@ -127,7 +121,7 @@
                                     <input type="hidden" name="editorContent" id="editorContent" value="">
 
                                     <div class="add-news-create">
-                                        <button disabled="" id="broadcastform" type="button" data-bs-toggle="modal" data-bs-target="#confirmModal">Broadcast</button>
+                                                <button disabled="" id="broadcastform" type="button" data-bs-toggle="modal" data-bs-target="#confirmModal">Broadcast</button>
                                     </div>
                                 </form>
                             </div>
