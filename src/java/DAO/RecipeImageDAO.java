@@ -149,7 +149,6 @@ public class RecipeImageDAO {
             return false;
         }
     }
-            
 
     public boolean updateRecipeThumbnailImageByID(String imageName, int recipeID) {
         Connection con = null;
@@ -170,6 +169,48 @@ public class RecipeImageDAO {
                 int effectRows = stm.executeUpdate();
 
                 System.out.println("[DAO - updateRecipeImageByID]: Executed.");
+
+                if (effectRows > 0) {
+                    return true;
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+            return false;
+        }
+    }
+
+    public static boolean deleteRecipeImages(int recipeID) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+
+        String sql = "DELETE FROM RecipeImage\n"
+                + "WHERE recipe_id = ?";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, recipeID);
+
+                int effectRows = stm.executeUpdate();
+
+                System.out.println("[DAO - DeleteRecipeImages]: Executed.");
 
                 if (effectRows > 0) {
                     return true;

@@ -124,7 +124,15 @@ public class AddRecipeServlet extends HttpServlet {
             String directionDesc = request.getParameter("direction");
             DirectionDAO.addDirections(new DirectionDTO(directionDesc, recipeId));
 
-            request.getRequestDispatcher("UploadImageServlet").forward(request, response);
+            request.getRequestDispatcher("UploadImageServlet").include(request, response);
+            
+            if (status == 1) {
+                request.getRequestDispatcher("UserController?action=loadRecipeManagement&page=private&userId" + userId)
+                        .include(request, response);
+            }else{
+                request.getRequestDispatcher("UserController?action=loadRecipeManagement&page=pending&userId" + userId)
+                        .include(request, response);
+            }
         }
     }
 
