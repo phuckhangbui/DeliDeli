@@ -202,12 +202,15 @@ public class RecipeDAO {
                         recipeImg = new RecipeImageDTO(id, img, recipeId, thumbnail);
                     }
                 }
+                if(recipeImg == null){
+                    recipeImg = new RecipeImageDTO(0, "", recipeId, false);
+                }
                 rs.close();
                 pst.close();
                 cn.close();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            recipeImg = new RecipeImageDTO(0, "", recipeId, false);
         }
         return recipeImg;
     }

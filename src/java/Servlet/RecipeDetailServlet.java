@@ -43,6 +43,7 @@ public class RecipeDetailServlet extends HttpServlet {
             RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(new Integer(id));
             request.setAttribute("recipe", recipe);
             
+            
             String imgPath = RecipeDAO.getImageByRecipeId(new Integer(id)).getImgPath();
             request.setAttribute("imgPath", imgPath);
             

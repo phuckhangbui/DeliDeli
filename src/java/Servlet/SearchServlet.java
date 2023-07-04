@@ -86,7 +86,7 @@ public class SearchServlet extends HttpServlet {
                         displayList.add(d);
                     }
                     if (list.size() != 0) {
-                        session.setAttribute("searchRecipesList", displayList);
+                        request.setAttribute("searchRecipesList", displayList);
                         session.setAttribute("SUCCESS_MSG", "Result of '" + txtsearch + "' in recipe's " + searchBy);
                     } else {
                         session.setAttribute("ERROR_MSG", "There is no '" + txtsearch + "' in recipe's " + searchBy);

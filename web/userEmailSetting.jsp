@@ -49,11 +49,11 @@
                         </div>
                         <div class="user-profile-option">
                             <a href="UserController?action=userPublicDetail&userId=<%=user.getId()%>">
-                                <img src="./assets/public-icon.svg" alt="">
+                                <img src="./assets/public-unchosen-icon.svg" alt="">
                                 Public Profile
                             </a>
                             <a href="UserController?action=userEmailSetting&userId=<%=user.getId()%>" class="active-link">
-                                <img src="./assets/user-unchosen-icon.svg" alt="">
+                                <img src="./assets/user-icon.svg" alt="">
                                 Personal Setting
                             </a>
                             <a href="UserController?action=userPasswordSetting&userId=<%=user.getId()%>">
@@ -65,12 +65,12 @@
                                 Saved Recipes
                             </a>
                             <div class="dropdown" id="dropdownUserRecipe">
-                                <a href="#">
-                                    <img src="./assets/my-recipe-icon.svg" alt="">
+                                <a href="#" >
+                                    <img src="./assets/my-recipe-unchosen-icon.svg" alt="">
                                     My Own Recipes
                                 </a>
                                 <div class="dropdown-content-right">
-                                    <a href="UserController?action=loadRecipeManagement&page=private&userId=<%= userId%>">Private Recipes</a>
+                                    <a href="UserController?action=loadRecipeManagement&page=private&userId=<%= userId%>" class="active-link">Private Recipes</a>
                                     <a href="UserController?action=loadRecipeManagement&page=pending&userId=<%= userId%>">Pending Recipes</a>
                                     <a href="UserController?action=loadRecipeManagement&page=public&userId=<%= userId%>">Public Recipes</a>
                                     <a href="UserController?action=loadRecipeManagement&page=rejected&userId=<%= userId%>">Rejected Recipes</a>
@@ -84,7 +84,7 @@
                                 My Notifications
                             </a>-->
                         </div>
-                    </div>           
+                    </div>     
 
 
 

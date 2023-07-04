@@ -346,6 +346,14 @@
         <servlet-name>addFavoriteServlet</servlet-name>
         <servlet-class>Servlet.addFavoriteServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CreateBroadcastServlet</servlet-name>
+        <servlet-class>Servlet.Admin.CreateBroadcastServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UploadBroadcastImageServlet</servlet-name>
+        <servlet-class>Servlet.Admin.UploadBroadcastImageServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -604,7 +612,15 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>LoadNewsListServlet</servlet-name>
-        <url-pattern>/LoadNewsListServlet</url-pattern>
+        <url-pattern>/LoadNewsList</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateBroadcastServlet</servlet-name>
+        <url-pattern>/CreateBroadcastServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UploadBroadcastImageServlet</servlet-name>
+        <url-pattern>/UploadBroadcastImageServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>addFavoriteServlet</servlet-name>

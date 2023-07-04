@@ -26,4 +26,9 @@ public class DisplayNotificationDTO {
     private int plan_id;
     private String link;
     private NotificationTypeDTO type;
+    
+    
+    public String getImgPath(){
+        return "Broadcast/" + this.link;
+    }
 }
