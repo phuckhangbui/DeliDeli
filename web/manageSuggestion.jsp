@@ -218,10 +218,11 @@
                                     <td>
                                         <form action="AdminController" method="post" class="recipe-table-button">
                                             <input type="hidden" name="suggestion" value="<%= key%>">
+                                            <input type="hidden" name="chosenSuggestion" value="<%= chosenSuggestion%>">
                                             <%
                                                 if (map.size() > 1) {
                                             %>
-                                            <button><a href="AdminController?action=loadSuggestionForUpdate&suggestion=<%= key%>&chosenSuggestion=<%= chosenSuggestion%>">Edit</a></button>
+                                            <button type="submit" name="action" value="loadSuggestionForUpdate">Edit</button>
                                             <button type="submit" name="action" value="deleteSuggestion">Delete</button>
                                             <%
                                             } else if (map.size() == 1) {
