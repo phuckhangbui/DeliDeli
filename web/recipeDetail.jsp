@@ -39,6 +39,7 @@
             String thumbnailPath = (String) request.getAttribute("thumbnailPath");
             NutritionDTO nutrition = (NutritionDTO) request.getAttribute("nutrition");
             DirectionDTO direction = (DirectionDTO) request.getAttribute("direction");
+            String category = (String) request.getAttribute("category");
             int ownerId = recipe.getUser_id();
             UserDTO owner = (UserDTO) request.getAttribute("owner");
             String link = "userCommunityProfile.jsp?accountName=" + owner.getUserName();
@@ -52,8 +53,8 @@
                 <div class="row recipe-detail-info">
                     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item"><a href="#"> Recipe Type</a></li> 
+                            <li class="breadcrumb-item"><a href="home.jsp">Home</a></li>
+                            <li class="breadcrumb-item"><a href="SearchByType?type=Category&id=<%= recipe.getCategory_id()%>"> <%= category%></a></li> 
                             <li class="breadcrumb-item current-link" aria-current="page"><%= recipe.getTitle()%></li>
                         </ol>
                     </nav>

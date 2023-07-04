@@ -567,7 +567,7 @@ public class RecipeDAO {
 
     public static void main(String[] args) {
         //RecipeDTO r = getRecipeByRecipeId(1);
-        System.out.println(getTop6LatestRecipes());
+        System.out.println(getCategoryByRecipeId(10));
     }
 
     public static boolean addFavoriteRecipe(int user_id, int recipe_id) {
