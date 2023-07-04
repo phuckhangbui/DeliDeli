@@ -73,7 +73,7 @@ public class EditRecipeServlet extends HttpServlet {
             RecipeDAO.editRecipe(newRecipe);
             request.setAttribute("recipeId", recipeId);
             out.print(newRecipe.toString());
-            
+
             //Process nutrition
             int calories = Integer.parseInt(request.getParameter("calories"));
             int fat = Integer.parseInt(request.getParameter("fat"));
@@ -83,7 +83,7 @@ public class EditRecipeServlet extends HttpServlet {
             NutritionDTO nutrition = new NutritionDTO(recipeId, calories, fat, carbs, protein);
             NutritionDAO.deleteNutrition(recipeId);
             NutritionDAO.addNutrition(nutrition);
-            
+
             //Process Diet
             String[] txtDiet = request.getParameterValues("diet");
 
@@ -119,9 +119,15 @@ public class EditRecipeServlet extends HttpServlet {
             String directionDesc = request.getParameter("direction");
             DirectionDAO.deleteDirection(recipeId);
             DirectionDAO.addDirections(new DirectionDTO(directionDesc, recipeId));
-            
-            
-            request.getRequestDispatcher("UploadImageServlet").forward(request, response);
+
+            request.getRequestDispatcher("UploadImageServlet").include(request, response);
+            if (status == 1) {
+                request.getRequestDispatcher("UserController?action=loadRecipeManagement&page=private&userId" + userId)
+                        .include(request, response);
+            }else{
+                request.getRequestDispatcher("UserController?action=loadRecipeManagement&page=pending&userId" + userId)
+                        .include(request, response);
+            }
         }
     }
 

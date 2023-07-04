@@ -42,7 +42,6 @@ public class LoadEditRecipeServlet extends HttpServlet {
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             int recipeId = Integer.parseInt(request.getParameter("recipeId"));
-
             RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(recipeId);
             Set<Integer> dietSet = RecipeDietDAO.getDietSetByRecipeId(recipeId);
             NutritionDTO nutrition = NutritionDAO.getNutrition(recipeId);

@@ -136,9 +136,9 @@ public class UploadImageServlet extends HttpServlet {
                 }
 
             }
-            response.sendRedirect("home.jsp");
+            
         } catch (Exception e) {
-            response.sendRedirect("home.jsp");
+            
         }
     }
 

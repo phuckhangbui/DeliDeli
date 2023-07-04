@@ -15,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -71,6 +72,13 @@ public class LoadRecipeManagementServlet extends HttpServlet {
                 displayList.add(d);
             }
 
+            String requestURI = request.getRequestURI();
+
+            // Remove the protocol, domain, and port from the URL
+
+            HttpSession session = request.getSession();
+            String managementUrl = "UserController?action=loadRecipeManagement&userId=3&page=" + page.trim();
+            session.setAttribute("managementUrl", managementUrl);
             request.setAttribute("displayRecipeList", displayList);
 
             request.getRequestDispatcher(url).forward(request, response);

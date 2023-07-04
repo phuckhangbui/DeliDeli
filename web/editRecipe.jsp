@@ -528,6 +528,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                         <script>
                             var deleteButton = document.getElementById("deleteButton");
                             deleteButton.addEventListener("click", function () {
+                                var previousUrl = '<%= (String) session.getAttribute("managementUrl") %>';
                                 // Perform your deletion logic here
                                 var recipeId = '<%= recipe.getId()%>'; // Replace with the actual recipe ID
                                 var userId = '<%= user.getId()%>'; // Replace with the actual user ID
@@ -546,12 +547,16 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                         var modalInstance = bootstrap.Modal.getInstance(modal);
                                         modalInstance.hide();
 
-                                        // Redirect to home.jsp
-                                        window.location.href = "home.jsp";
+                                        // Redirect to the correct side
+                                        window.location.href = previousUrl;
+
+
                                     }
                                 };
                                 xhr.send("action=deleteRecipe&recipeId=" + recipeId + "&userId=" + userId);
                             });
+
+                            
 
                         </script>
 
