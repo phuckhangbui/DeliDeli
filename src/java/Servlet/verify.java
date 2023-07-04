@@ -43,8 +43,7 @@ public class verify extends HttpServlet {
         } else if (verificationResult && userType.equals("RegisterUser")) {
             System.out.println("[SERVLET - verify]: Token logged: " + receivedToken);
             userDAO.updateStatus(receivedToken);
-            RequestDispatcher rd = request.getRequestDispatcher("home.jsp");
-            rd.forward(request, response);
+            response.sendRedirect("TriggerAppServlet");
         } else {
             response.sendRedirect("expiredToken.html");
         }

@@ -43,7 +43,7 @@ public class ChangeUserPasswordServlet extends HttpServlet {
                 request.setAttribute("errorList", errorList);
                 request.getRequestDispatcher(USER_PASSWORD_SETTING_PAGE).forward(request, response);
             } else if (!newPassword.matches(PASS_PATTERN)) {
-                errorList.add("Invalid new password. Password must have a length of 8-16 "
+                errorList.add("Password must have a length of 8-16 "
                         + "characters and contain at least one special symbol and one uppercase letter.");
                 request.setAttribute("errorList", errorList);
                 request.getRequestDispatcher(USER_PASSWORD_SETTING_PAGE).forward(request, response);

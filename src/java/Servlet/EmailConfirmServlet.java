@@ -65,12 +65,12 @@ public class EmailConfirmServlet extends HttpServlet {
         if (userType != null && userType.equals("ForgotPassUser")) {
             subject = "[NOTICE] DeliDeli ID Password Reset Confirmation"; // Title of the email
             content = "Click the following link to reset your account: \n\n"
-                    + "http://localhost:8084/ProjectSWP/MainController?action=verify&token=" + generatedToken + "&type=" + userType;
+                    + "http://localhost:8080/DeliDeli/MainController?action=verify&token=" + generatedToken + "&type=" + userType;
             //verify = servlet; token = param.
         } else if (userType != null && userType.equals("RegisterUser")) {
             subject = "[NOTICE] DeliDeli ID Confirmation"; // Title of the email
             content = "Click the following link to access your account: \n\n"
-                    + "http://localhost:8084/ProjectSWP/MainController?action=verify&token=" + generatedToken + "&type=" + userType;
+                    + "http://localhost:8080/DeliDeli/MainController?action=verify&token=" + generatedToken + "&type=" + userType;
             //verify = servlet; token = param.
         }
 

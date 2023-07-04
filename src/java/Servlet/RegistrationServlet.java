@@ -74,7 +74,7 @@ public class RegistrationServlet extends HttpServlet {
             }
             if (!password.matches(PASS_PATTERN)) {
                 //Incorrect pass pattern
-                errorList.add("Invalid password. Password must have a length of 8-16 "
+                errorList.add("Password must have a length of 8-16 "
                         + "characters and contain at least one special symbol and one uppercase letter.");
                 request.setAttribute("errorList", errorList);
                 request.getRequestDispatcher(REGISTRATION_PAGE).forward(request, response);
