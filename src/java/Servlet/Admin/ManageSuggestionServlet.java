@@ -7,6 +7,7 @@ package Servlet.Admin;
 import DAO.SuggestionDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.TreeMap;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -34,9 +35,24 @@ public class ManageSuggestionServlet extends HttpServlet {
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             TreeMap<String, Integer> map = SuggestionDAO.getSuggestionMap();
+            ArrayList<String> suggestionList = SuggestionDAO.getAllSuggestion();
+            String chosenSuggestion = (String) request.getAttribute("chosenSuggestion");
             
+            if (chosenSuggestion == null) {
+                chosenSuggestion = SuggestionDAO.getDefaultSuggestionTitle();
+            }
+            
+            if (suggestionList.size() == 1) {
+                SuggestionDAO.chooseSuggestion(suggestionList.get(0));
+                chosenSuggestion = SuggestionDAO.getDefaultSuggestionTitle();
+            }
+
             request.setAttribute("suggestionMap", map);
+            request.setAttribute("suggestionList", suggestionList);
+            request.setAttribute("chosenSuggestion", chosenSuggestion);
             
+            System.out.println(chosenSuggestion);
+
             request.getRequestDispatcher("manageSuggestion.jsp").forward(request, response);
         }
     }

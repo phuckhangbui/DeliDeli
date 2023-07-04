@@ -20,6 +20,55 @@ import java.util.TreeMap;
  * @author Admin
  */
 public class AdminDAO {
+    
+    public static ArrayList<RecipeDTO> getRecipeByUserId(int userId) {
+        ArrayList<RecipeDTO> result = new ArrayList<RecipeDTO>();
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                String sql = "SELECT *\n"
+                        + "FROM Recipe\n"
+                        + "WHERE user_id = ? AND status IN (2, 3, 4)\n"
+                        + "ORDER BY COALESCE(update_at, create_at) DESC, create_at DESC";
+
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setInt(1, userId);
+                ResultSet rs = pst.executeQuery();
+                if (rs != null) {
+                    while (rs.next()) {
+                        int id = rs.getInt("id");
+                        String title = rs.getString("title");
+                        String description = rs.getString("description");
+                        int prep_time = rs.getInt("prep_time");
+                        int cook_time = rs.getInt("cook_time");
+                        int servings = rs.getInt("servings");
+                        Timestamp create_at = rs.getTimestamp("create_at");
+                        Timestamp update_at = rs.getTimestamp("update_at");
+                        int cuisin_id = rs.getInt("cuisine_id");
+                        int category_id = rs.getInt("category_id");
+                        int user_id = rs.getInt("user_id");
+                        int level_id = rs.getInt("level_id");
+                        int status = rs.getInt("status");
+
+                        RecipeDTO recipe = new RecipeDTO(id, title, description, prep_time,
+                                cook_time, servings, create_at, update_at, cuisin_id,
+                                category_id, user_id, level_id, status);
+                        result.add(recipe);
+                    }
+                }
+                rs.close();
+                pst.close();
+                cn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
 
     public static String getRoleByRoleId(int id) {
         String result = "";
@@ -532,18 +581,19 @@ public class AdminDAO {
             if (cn != null) {
                 if (statusTag.equals("")) {
                     sql = "SELECT * FROM [Recipe]\n"
+                            + "WHERE status IN (2, 3, 4)\n"
                             + "ORDER BY id \n"
-                            + "OFFSET ? ROWS FETCH NEXT 3 ROWS ONLY";
+                            + "OFFSET ? ROWS FETCH NEXT 10 ROWS ONLY";
                     pst = cn.prepareStatement(sql);
-                    pst.setInt(1, Math.max((index - 1) * 3, 0));
+                    pst.setInt(1, Math.max((index - 1) * 10, 0));
                 } else {
                     sql = "SELECT * FROM [Recipe]\n"
                             + "WHERE status = ?\n"
                             + "ORDER BY id \n"
-                            + "OFFSET ? ROWS FETCH NEXT 3 ROWS ONLY";
+                            + "OFFSET ? ROWS FETCH NEXT 10 ROWS ONLY";
                     pst = cn.prepareStatement(sql);
                     pst.setInt(1, new Integer(statusTag));
-                    pst.setInt(2, Math.max((index - 1) * 3, 0));
+                    pst.setInt(2, Math.max((index - 1) * 10, 0));
                 }
                 ResultSet rs = pst.executeQuery();
                 if (rs != null) {
@@ -589,7 +639,7 @@ public class AdminDAO {
 
             if (cn != null) {
                 if (status.equals("")) {
-                    sql = "SELECT COUNT(id) as total FROM [Recipe]";
+                    sql = "SELECT COUNT(id) as total FROM [Recipe] WHERE status IN (2, 3, 4)";
                     pst = cn.prepareStatement(sql);
                 } else {
                     sql = "SELECT COUNT(id) as total FROM [Recipe] WHERE status = ?";

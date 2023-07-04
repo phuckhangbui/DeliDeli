@@ -253,18 +253,18 @@ public class SuggestionDAO {
         return result;
     }
 
-    public static int insertSuggestion(String title, int userId) {
+    public static int insertSuggestion(String title, int userId, int status) {
         int generatedId = -1;
         Connection cn = null;
 
         try {
             cn = DBUtils.getConnection();
-            String sql = "INSERT INTO Suggestion(title, user_id) \n"
-                    + "VALUES (?, ?)";
+            String sql = "INSERT INTO Suggestion(title, user_id, status) \n"
+                    + "VALUES (?, ?, ?)";
             PreparedStatement pst = cn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             pst.setString(1, title);
             pst.setInt(2, userId);
-
+            pst.setInt(3, status);
             pst.executeUpdate();
             ResultSet generatedKeys = pst.getGeneratedKeys();
 
@@ -317,6 +317,65 @@ public class SuggestionDAO {
 
     public static ArrayList<RecipeDTO> getDefaultSuggestionRecipe() {
         ArrayList<RecipeDTO> result = new ArrayList<>();
+        int id = 0;
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                String sql = "SELECT * FROM Recipe WHERE status = 3 AND id IN (SELECT recipe_id FROM SuggestionRecipe\n"
+                        + "WHERE suggestion_id IN (SELECT id FROM Suggestion WHERE status = 1))";
+                PreparedStatement pst = cn.prepareStatement(sql);
+                ResultSet rs = pst.executeQuery();
+//                if (rs != null) {
+//                    while (rs.next()) {
+//                        id = rs.getInt("id");
+//                    }
+//                }
+//
+//                sql = "SELECT * FROM Recipe WHERE id IN (SELECT recipe_id FROM SuggestionRecipe sg\n"
+//                        + "JOIN Suggestion s\n"
+//                        + "ON sg.suggestion_id = s.id\n"
+//                        + "WHERE s.title = ? AND status = 3)";
+
+//                pst = cn.prepareStatement(sql);
+//                pst.setString(1, suggestion);
+//                rs = pst.executeQuery();
+                if (rs != null) {
+                    while (rs.next()) {
+                        int recipeId = rs.getInt("id");
+                        String title = rs.getString("title");
+                        String description = rs.getString("description");
+                        int prep_time = rs.getInt("prep_time");
+                        int cook_time = rs.getInt("cook_time");
+                        int servings = rs.getInt("servings");
+                        Timestamp create_at = rs.getTimestamp("create_at");
+                        Timestamp update_at = rs.getTimestamp("update_at");
+                        int cuisin_id = rs.getInt("cuisine_id");
+                        int category_id = rs.getInt("category_id");
+                        int user_id = rs.getInt("user_id");
+                        int level_id = rs.getInt("level_id");
+                        int status = rs.getInt("status");
+
+                        RecipeDTO recipe = new RecipeDTO(recipeId, title, description, prep_time,
+                                cook_time, servings, create_at, update_at, cuisin_id,
+                                category_id, user_id, level_id, status);
+                        result.add(recipe);
+                    }
+                }
+                rs.close();
+                pst.close();
+                cn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    public static String getDefaultSuggestionTitle() {
         String suggestion = "";
         Connection cn = null;
 
@@ -324,7 +383,7 @@ public class SuggestionDAO {
             cn = DBUtils.getConnection();
 
             if (cn != null) {
-                String sql = "SELECT TOP 1 title FROM Suggestion";
+                String sql = "SELECT title FROM Suggestion WHERE status = 1";
                 PreparedStatement pst = cn.prepareStatement(sql);
                 ResultSet rs = pst.executeQuery();
                 if (rs != null) {
@@ -332,15 +391,33 @@ public class SuggestionDAO {
                         suggestion = rs.getString("title");
                     }
                 }
+                rs.close();
+                pst.close();
+                cn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-                sql = "SELECT * FROM Recipe WHERE id IN (SELECT recipe_id FROM SuggestionRecipe sg\n"
+        return suggestion;
+    }
+
+    public static ArrayList<RecipeDTO> getAllRecipesBySuggestion(String suggestion) {
+        ArrayList<RecipeDTO> result = new ArrayList<>();
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                String sql = "SELECT * FROM Recipe WHERE status = 3 AND id IN (SELECT recipe_id FROM SuggestionRecipe sg\n"
                         + "JOIN Suggestion s\n"
                         + "ON sg.suggestion_id = s.id\n"
-                        + "WHERE s.title = ? AND status = 3)";
+                        + "WHERE s.title = ?)";
 
-                pst = cn.prepareStatement(sql);
+                PreparedStatement pst = cn.prepareStatement(sql);
                 pst.setString(1, suggestion);
-                rs = pst.executeQuery();
+                ResultSet rs = pst.executeQuery();
                 if (rs != null) {
                     while (rs.next()) {
                         int id = rs.getInt("id");
@@ -374,75 +451,23 @@ public class SuggestionDAO {
         return result;
     }
     
-    public static String getDefaultSuggestionTitle() {
-        String suggestion = "";
+    public static int chooseSuggestion(String title) {
+        int result = 0;
         Connection cn = null;
 
         try {
             cn = DBUtils.getConnection();
+            String sql = "UPDATE Suggestion SET status = 0";
+            PreparedStatement pst = cn.prepareStatement(sql);
+            pst.executeUpdate();
 
-            if (cn != null) {
-                String sql = "SELECT TOP 1 title FROM Suggestion";
-                PreparedStatement pst = cn.prepareStatement(sql);
-                ResultSet rs = pst.executeQuery();
-                if (rs != null) {
-                    while (rs.next()) {
-                        suggestion = rs.getString("title");
-                    }
-                }
-                rs.close();
-                pst.close();
-                cn.close();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return suggestion;
-    }
-
-    public static ArrayList<RecipeDTO> getAllRecipesBySuggestion(String suggestion) {
-        ArrayList<RecipeDTO> result = new ArrayList<>();
-        Connection cn = null;
-
-        try {
-            cn = DBUtils.getConnection();
-
-            if (cn != null) {
-                String sql = "SELECT * FROM Recipe WHERE id IN (SELECT recipe_id FROM SuggestionRecipe sg\n"
-                        + "JOIN Suggestion s\n"
-                        + "ON sg.suggestion_id = s.id\n"
-                        + "WHERE s.title = ? AND status = 3)";
-
-                PreparedStatement pst = cn.prepareStatement(sql);
-                pst.setString(1, suggestion);
-                ResultSet rs = pst.executeQuery();
-                if (rs != null) {
-                    while (rs.next()) {
-                        int id = rs.getInt("id");
-                        String title = rs.getString("title");
-                        String description = rs.getString("description");
-                        int prep_time = rs.getInt("prep_time");
-                        int cook_time = rs.getInt("cook_time");
-                        int servings = rs.getInt("servings");
-                        Timestamp create_at = rs.getTimestamp("create_at");
-                        Timestamp update_at = rs.getTimestamp("update_at");
-                        int cuisin_id = rs.getInt("cuisine_id");
-                        int category_id = rs.getInt("category_id");
-                        int user_id = rs.getInt("user_id");
-                        int level_id = rs.getInt("level_id");
-                        int status = rs.getInt("status");
-
-                        RecipeDTO recipe = new RecipeDTO(id, title, description, prep_time,
-                                cook_time, servings, create_at, update_at, cuisin_id,
-                                category_id, user_id, level_id, status);
-                        result.add(recipe);
-                    }
-                }
-                rs.close();
-                pst.close();
-                cn.close();
-            }
+            sql = "UPDATE Suggestion SET status = 1 WHERE title = ?";
+            pst = cn.prepareStatement(sql);
+            pst.setString(1, title);
+            pst.executeUpdate();
+            
+            pst.close();
+            cn.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -451,6 +476,6 @@ public class SuggestionDAO {
     }
 
     public static void main(String[] args) {
-        System.out.println(SuggestionDAO.getDefaultSuggestionRecipe());
+        System.out.println(SuggestionDAO.getAllSuggestion().size());
     }
 }

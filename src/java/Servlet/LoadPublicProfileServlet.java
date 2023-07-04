@@ -4,12 +4,14 @@
  */
 package Servlet;
 
+import DAO.FavoriteDAO;
 import DAO.RecipeDAO;
 import DAO.ReviewDAO;
 import DAO.UserDAO;
 import DAO.UserDetailDAO;
 import DTO.DisplayRecipeDTO;
 import DTO.DisplayReviewDTO;
+import DTO.FavoriteDTO;
 import DTO.RecipeDTO;
 import DTO.ReviewDTO;
 import DTO.UserDTO;
@@ -52,6 +54,19 @@ public class LoadPublicProfileServlet extends HttpServlet {
             if (account != null) {
                 accountDetail = UserDetailDAO.getUserDetailByUserId(account.getId());
 
+                // Get account favorite recipes list
+                ArrayList<FavoriteDTO> favoriteRecipeList = FavoriteDAO.getAllFavoriteRecipeByUserId(account.getId());
+                for (FavoriteDTO r : favoriteRecipeList) {
+                    String title = RecipeDAO.getRecipeByRecipeId(r.getRecipe_id()).getTitle();
+                    String thumbnailPath = RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath();
+                    String category = RecipeDAO.getCategoryByRecipeId(r.getId());
+                    double rating = RecipeDAO.getRatingByRecipeId(r.getId());
+                    UserDTO owner = RecipeDAO.getRecipeOwnerByRecipeId(r.getId());
+
+                    DisplayRecipeDTO d = new DisplayRecipeDTO(r.getId(), title, thumbnailPath, category, rating, owner);
+                    favoriteList.add(d);
+                }
+
                 //get accountPublicRecipeList
                 ArrayList<RecipeDTO> recipeList = RecipeDAO.getRecipeByUserIdAndType(account.getId(), 2);
                 for (RecipeDTO r : recipeList) {
@@ -79,16 +94,16 @@ public class LoadPublicProfileServlet extends HttpServlet {
                         displayReviewList.add(d);
                     }
                 }
-                
+
                 //get favoriteList
             }
-            
+
             request.setAttribute("account", account);
             request.setAttribute("accountDetail", accountDetail);
             request.setAttribute("accountPublicRecipe", accountPublicRecipe);
             request.setAttribute("reviewList", displayReviewList);
             request.setAttribute("favoriteList", favoriteList);
-            
+
             request.getRequestDispatcher("userCommunityProfile.jsp").forward(request, response);
         } catch (Exception ex) {
             ex.printStackTrace();

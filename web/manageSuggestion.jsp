@@ -8,7 +8,6 @@
 <%@page import="java.sql.Timestamp"%>
 <%@page import="DAO.RecipeDAO"%>
 <%@page import="DTO.RecipeDTO"%>
-<%@page import="DAO.SuggestionDAO"%>
 <%@page import="DTO.UserDTO"%>
 <%@page import="java.util.Map"%>
 <%@page import="java.util.TreeMap"%>
@@ -148,12 +147,12 @@
                                 News
                             </a>
                         </div>
-<!--                        <div>
-                            <a href="#">
-                                <img src="./assets/broadcast-unchose.svg" alt="">
-                                Broadcast
-                            </a>
-                        </div>-->
+                        <!--                        <div>
+                                                    <a href="#">
+                                                        <img src="./assets/broadcast-unchose.svg" alt="">
+                                                        Broadcast
+                                                    </a>
+                                                </div>-->
                         <!--                        <div>
                                                     <a href="#">
                                                         <img src="./assets/bug-report-unchose.svg" alt="">
@@ -179,7 +178,7 @@
                         %>
 
                         <%
-                            ArrayList<String> suggestionList = SuggestionDAO.getAllSuggestion();
+                            ArrayList<String> suggestionList = (ArrayList) request.getAttribute("suggestionList");
                         %>
                         <div class="nav-top-bar-search">
                             <div class="news-create-button">
@@ -200,6 +199,7 @@
                             </thead>
                             <tbody class="table-group-divider">
                                 <%
+                                    String chosenSuggestion = (String) request.getAttribute("chosenSuggestion");
                                     TreeMap<String, Integer> map = (TreeMap<String, Integer>) request.getAttribute("suggestionMap");
                                     if (map != null) {
                                         int count = 1;
@@ -220,20 +220,33 @@
                                     <td>
                                         <form action="AdminController" method="post" class="recipe-table-button">
                                             <input type="hidden" name="suggestion" value="<%= key%>">
+                                            <%
+                                                if (chosenSuggestion != null && chosenSuggestion.equals(key)) {
+                                            %>
+                                            <button disabled="">Chosen</button> 
+                                            <%
+                                            } else {
+                                            %>
                                             <button type="submit" name="action" value="suggestionRecipe">Choose</button>
+                                            <%
+                                                }
+                                            %>
                                         </form>
                                     </td>
                                     <td>
                                         <form action="AdminController" method="post" class="recipe-table-button">
                                             <input type="hidden" name="suggestion" value="<%= key%>">
-                                            <button><a href="AdminController?action=loadSuggestionForUpdate&suggestion=<%= key%>">Edit</a></button>
                                             <%
                                                 if (map.size() > 1) {
                                             %>
+                                            <button><a href="AdminController?action=loadSuggestionForUpdate&suggestion=<%= key%>&chosenSuggestion=<%= chosenSuggestion%>">Edit</a></button>
                                             <button type="submit" name="action" value="deleteSuggestion">Delete</button>
                                             <%
-                                                } else if (map.size() == 1) {
-                                                    session.removeAttribute("selectedSuggestion");
+                                            } else if (map.size() == 1) {
+                                                session.removeAttribute("selectedSuggestion");
+                                            %>
+                                            <button disabled="">Unavailable</button>
+                                            <%
                                                 }
                                             %>
                                         </form>

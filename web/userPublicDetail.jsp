@@ -26,9 +26,9 @@
 
         <%@include file="header.jsp" %>
 
-        <%            
+        <%
             String userId = request.getParameter("userId");
-            UserDetailDTO userDetail = (UserDetailDTO)request.getAttribute("userDetail");
+            UserDetailDTO userDetail = (UserDetailDTO) request.getAttribute("userDetail");
         %>
         <!--        User Public Info Manage        -->
         <div class="blank-background">
@@ -144,6 +144,30 @@
                 </form>
             </div>
         </div>
+
+        <script>
+            // Get all file input elements
+            var fileInputs = document.querySelectorAll('input[type="file"]');
+
+            // Add event listeners for the "change" event
+            fileInputs.forEach(function (fileInput) {
+                fileInput.addEventListener('change', validateFile);
+            });
+
+            // File validation function
+            function validateFile(event) {
+                var file = event.target.files[0];
+                if (file) {
+                    if (file.type.startsWith('image/')) {
+                    } else {
+                        alert('Please select an image file.');
+                        event.target.value = ''; // Reset the file input value
+                    }
+                } else {
+                    alert('Please select a file.');
+                }
+            }
+        </script>
 
 
 

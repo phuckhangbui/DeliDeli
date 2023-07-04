@@ -210,7 +210,7 @@
                                     <a href="<%=link%>"><img src="./assets/profile-pic.svg" alt=""></a>
                                     <div>
                                         <span>By</span>
-                                        <span><a href="<%=link%>"><%= owner.getUserName()%></a></span>
+                                        <span><a href="AdminController?action=showUserDetail&username=<%= owner.getUserName()%>"><%= owner.getUserName()%></a></span>
                                             <%
                                                 Timestamp timestamp = null;
                                                 if (recipe.getUpdate_at() == null) {
@@ -221,7 +221,7 @@
                                                 SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
                                                 String date = dateFormat.format(timestamp);
                                             %>
-                                        <p>Published on <%= date%></p>
+                                        <p>Date: <%= date%></p>
                                     </div>
                                 </div>
                                 <div class="recipe-detail-info-interaction">
@@ -371,9 +371,16 @@
                                         <input type="hidden" value="<%= recipe.getId()%>" name="recipeId">
                                         <input type="text" name="userId" value="<%= ownerId%>" hidden>
                                         <input type="hidden" name="admin" value="admin">
+                                        <%
+                                            if (recipe.getStatus() != 4) {
+                                        %>
                                         <button type="button" value="rejectRecipe" name="action" class="recipe-table-button-delete btn-disapprove" data-bs-toggle="modal" data-bs-target="#disapprove">Reject</button>
                                         <%
-                                            if (recipe.getStatus() == 2) {
+                                            }
+                                        %>
+                                        
+                                        <%
+                                            if (recipe.getStatus() == 2 || recipe.getStatus() == 4) {
                                         %>
                                         <button type="submit" value="confirmRecipe" name="action">Confirm</button>
                                         <%

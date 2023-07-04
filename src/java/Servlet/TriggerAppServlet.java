@@ -4,8 +4,16 @@
  */
 package Servlet;
 
+import DAO.NewsDAO;
+import DAO.RecipeDAO;
+import DAO.SuggestionDAO;
+import DTO.DisplayRecipeDTO;
+import DTO.NewsDTO;
+import DTO.RecipeDTO;
+import DTO.UserDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -46,7 +54,6 @@ public class TriggerAppServlet extends HttpServlet {
             HashMap<Integer, String> newsMap
                     = Utils.NavigationBarUtils.getMap("NewsCategory");
 
-            
             HttpSession session = request.getSession();
             session.setAttribute("cateMap", cateMap);
             session.setAttribute("cuisineMap", cuisineMap);

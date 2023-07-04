@@ -45,8 +45,6 @@
             ArrayList<DisplayRecipeDTO> favoriteList = (ArrayList<DisplayRecipeDTO>) request.getAttribute("favoriteList");
             ArrayList<DisplayReviewDTO> reviewList = (ArrayList<DisplayReviewDTO>) request.getAttribute("reviewList");
             String fullname = accountDetail.getFirstName() + " " + accountDetail.getLastName();
-
-
         %>
         <%@include file="header.jsp" %>
 
@@ -137,7 +135,6 @@
                             int count = 0;
                             for (DisplayRecipeDTO r : favoriteList) {
                                 count++;
-                                RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(r.getId());
                                 if (count < 4) {
                         %>
                         <a href="MainController?action=getRecipeDetailById&id=<%= r.getId()%>" class="col-md-4 recommendation-content-post">

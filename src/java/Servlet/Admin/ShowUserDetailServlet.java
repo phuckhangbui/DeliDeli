@@ -5,7 +5,6 @@
 package Servlet.Admin;
 
 import DAO.AdminDAO;
-import DAO.RecipeDAO;
 import DTO.RecipeDTO;
 import DTO.UserDTO;
 import DAO.UserDetailDAO;
@@ -44,7 +43,7 @@ public class ShowUserDetailServlet extends HttpServlet {
             UserDTO user = AdminDAO.getAccountByUserName(userName);
             UserDetailDTO userDetail = UserDetailDAO.getUserDetailByUserId(user.getId());
 
-            ArrayList<RecipeDTO> userRecipe = RecipeDAO.getRecipeByUserIdAndType(user.getId(), 3);
+            ArrayList<RecipeDTO> userRecipe = AdminDAO.getRecipeByUserId(user.getId());
             TreeMap<Integer, Integer> mapRating = (TreeMap) AdminDAO.getRatingAllRecipesOfOwnerMap(user.getId());
 
             request.setAttribute("user", user);

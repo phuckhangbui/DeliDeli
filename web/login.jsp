@@ -46,7 +46,7 @@
                             <input type="password" name="txtPass" required="" />
                         </div>
                         <div class="user-form-content-remember">
-                            <input type="checkbox" /><span>Remember me</span>
+                            <input type="checkbox" name="remember"/><span>Remember me</span>
                         </div>
 
                         <%

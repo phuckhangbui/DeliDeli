@@ -1,4 +1,6 @@
 <%-- Document : home Created on : May 23, 2023, 8:09:36 AM Author : Admin --%>
+<%@page import="DTO.NewsDTO"%>
+<%@page import="DTO.DisplayRecipeDTO"%>
 <%@page import="DAO.SuggestionDAO"%>
 <%@page import="DAO.RecipeDAO"%>
 <%@page import="DTO.RecipeDTO"%>
@@ -44,23 +46,43 @@
                     </header>
                 </div>
                 <div class="row">
-                    <a href="" class="col-md-8 first-new ">
-                        <img src="./pictures/gorden.jpg" alt="">
-                        <p>Gordon Ramsey's recipes that can help you lose
-                            weight
-                            effectively</p>
+                    <%
+                        ArrayList<NewsDTO> listNews = (ArrayList) request.getAttribute("listNews");
+                        ArrayList<String> listNewsCategories = (ArrayList) request.getAttribute("listNewsCategories");
+                        NewsDTO latestNews = (NewsDTO) request.getAttribute("latestNews");
+                    %>
+                    <a href="MainController?action=getNewsDetail&id=<%= latestNews.getId()%>" class="col-md-8 first-new ">
+                        <img src="ServletImageLoader?identifier=<%= latestNews.getImage()%>" alt="">
+                        <p><%= latestNews.getTitle()%></p>
                     </a>
+                    <%
+                        if (listNews.size() > 0 && listNews != null) {
+                            NewsDTO news;
+                            String newsCategory;
+                    %>
                     <div class="col-md-4 other-news">
-                        <a href="" class="second-new">
-                            <img src="./pictures/banana.jpg" alt="">
-                            <p>6 nutritional benefits that bananas can give
-                                you</p>
+                        <%
+                            news = listNews.get(0);
+                            newsCategory = listNewsCategories.get(0);
+                        %>
+                        <a href="MainController?action=getNewsDetail&id=<%= news.getId()%>" class="second-new">
+                            <img src="ServletImageLoader?identifier=<%= news.getImage()%>" alt="">
+                            <p><%= news.getTitle()%></p>
                         </a>
-                        <a href="" class="third-new">
-                            <img src="./pictures/fried-food.png" alt="">
-                            <p>Fried foods: To eat or not to eat</p>
+                        
+                        <%
+                            news = listNews.get(1);
+                            newsCategory = listNewsCategories.get(1);
+                        %>
+                        <a href="MainController?action=getNewsDetail&id=<%= news.getId()%>" class="third-new">
+                            <img src="ServletImageLoader?identifier=<%= news.getImage()%>" alt="">
+                            <p><%= news.getTitle()%></p>
                         </a>
                     </div>
+                    <%
+                        }
+                    %>
+
                 </div>
             </div>
         </div>
@@ -78,20 +100,20 @@
                     </header>
                 </div>
                 <div class="row recommendation-content">
-                    <% ArrayList<RecipeDTO> listRecipe = RecipeDAO.getAllRecipes();
+                    <% ArrayList<DisplayRecipeDTO> listRecipe = (ArrayList) request.getAttribute("displayRecipeList");
                         if (listRecipe != null && listRecipe.size() != 0) {
-                            for (RecipeDTO r : listRecipe) {
+                            for (DisplayRecipeDTO r : listRecipe) {
                     %>
                     <a href="MainController?action=getRecipeDetailById&id=<%= r.getId()%>"
                        class="col-md-4 recommendation-content-post">
                         <div class="recommendation-content-picture">
 
-                            <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath()%>"
+                            <img src="ServletImageLoader?identifier=<%= r.getThumbnailPath()%>"
                                  alt="">
                         </div>
                         <div>
                             <p>
-                                <%=RecipeDAO.getCategoryByRecipeId(r.getId())%>
+                                <%= r.getCategory()%>
                             </p>
                             <p>
                                 <%= r.getTitle()%>
@@ -99,7 +121,7 @@
                         </div>
                         <div class="recommendation-content-reciew">
                             <%
-                                double avaRating = RecipeDAO.getRatingByRecipeId(r.getId());
+                                double avaRating = r.getRating();
                                 int fullStars = (int) avaRating;
                                 boolean hasHalfStar = avaRating - fullStars >= 0.5;
 
@@ -125,7 +147,7 @@
                             %>
                             <p
                                 class="recommendation-content-reciew-rating">
-                                <%=RecipeDAO.getRatingByRecipeId(r.getId())%>
+                                <%= r.getRating()%>
                             </p>
                         </div>
                     </a>
@@ -213,18 +235,10 @@
 
         <div class="recommendation-3">
             <div class="container">
-                <% ArrayList<RecipeDTO> suggestionRecipeList;
+                <%
+                    ArrayList<DisplayRecipeDTO> suggestionRecipeList = (ArrayList) request.getAttribute("displaySuggestionList");
+                    String selectedSuggestion = (String) request.getAttribute("selectedSuggestion");
 
-                    String selectedSuggestion = (String) session.getAttribute("selectedSuggestion");
-                    if (selectedSuggestion == null) {
-                        suggestionRecipeList
-                                = SuggestionDAO.getDefaultSuggestionRecipe();
-                        selectedSuggestion
-                                = SuggestionDAO.getDefaultSuggestionTitle();
-                    } else {
-                        suggestionRecipeList
-                                = SuggestionDAO.getAllRecipesBySuggestion(selectedSuggestion);
-                    }
                 %>
                 <div class="row">
                     <header class="search-result-header">
@@ -236,18 +250,18 @@
                 <div class="row recommendation-content">
                     <% if (suggestionRecipeList != null
                                 && suggestionRecipeList.size() > 0) {
-                            for (RecipeDTO r : suggestionRecipeList) {
+                            for (DisplayRecipeDTO r : suggestionRecipeList) {
                     %>
                     <a href="MainController?action=getRecipeDetailById&id=<%= r.getId()%>"
                        class="col-md-4 recommendation-content-post">
                         <div class="recommendation-content-picture">
 
-                            <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath()%>"
+                            <img src="ServletImageLoader?identifier=<%= r.getThumbnailPath()%>"
                                  alt="">
                         </div>
                         <div>
                             <p>
-                                <%=RecipeDAO.getCategoryByRecipeId(r.getId())%>
+                                <%= r.getCategory()%>
                             </p>
                             <p>
                                 <%= r.getTitle()%>
@@ -255,9 +269,9 @@
                         </div>
                         <div class="recommendation-content-reciew">
                             <%
-                                double avaRating = RecipeDAO.getRatingByRecipeId(r.getId());
-                                int fullStars = (int) avaRating; 
-                                boolean hasHalfStar = avaRating - fullStars >= 0.5; 
+                                double avaRating = r.getRating();
+                                int fullStars = (int) avaRating;
+                                boolean hasHalfStar = avaRating - fullStars >= 0.5;
 
                                 for (int i = 0; i < fullStars; i++) {
                             %>
@@ -281,7 +295,7 @@
                             %>
                             <p
                                 class="recommendation-content-reciew-rating">
-                                <%=RecipeDAO.getRatingByRecipeId(r.getId())%>
+                                <%= r.getRating()%>
                             </p>
                         </div>
                     </a>

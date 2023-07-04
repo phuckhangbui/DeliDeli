@@ -222,9 +222,11 @@
                                     <%
                                         if (listRecipeStatus != null && listRecipeStatus.size() > 0) {
                                             for (Integer status : listRecipeStatus) {
+                                                if (status != 1) {
                                     %>
                                     <option value="<%= status%>"><%= tmp[status]%></option>
                                     <%
+                                                }
                                             }
                                         }
                                     %>

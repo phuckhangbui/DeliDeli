@@ -33,6 +33,7 @@ public class AddSuggestionSerlvet extends HttpServlet {
             String id = request.getParameter("id");
             String update = request.getParameter("update");
             String suggestion = request.getParameter("suggestion");
+            String chosenSuggestion = request.getParameter("chosenSuggestion");
             String link = "";
 
             if (update == null) {
@@ -58,8 +59,10 @@ public class AddSuggestionSerlvet extends HttpServlet {
                 if (isDuplicate) {
                     request.setAttribute("error", "Recipe already added");
                     request.setAttribute("suggestion", suggestion);
+                    request.setAttribute("chosenSuggestion", chosenSuggestion);
                     request.setAttribute("update", update);
                     request.setAttribute("listRecipe", listRecipe);
+                    session.setAttribute("customSuggestionList", customSuggestionList);
                     request.getRequestDispatcher(link).forward(request, response);
                     return;
                 }
@@ -70,6 +73,7 @@ public class AddSuggestionSerlvet extends HttpServlet {
             session.setAttribute("customSuggestionList", customSuggestionList);
 
             request.setAttribute("suggestion", suggestion);
+            request.setAttribute("chosenSuggestion", chosenSuggestion);
             request.setAttribute("update", update);
             request.setAttribute("listRecipe", listRecipe);
             request.getRequestDispatcher(link).forward(request, response);

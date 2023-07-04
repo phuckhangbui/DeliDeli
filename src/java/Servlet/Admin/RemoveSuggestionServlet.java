@@ -42,6 +42,7 @@ public class RemoveSuggestionServlet extends HttpServlet {
             String tag = request.getParameter("tag");
             String update = request.getParameter("update");
             String selectedSuggestion = request.getParameter("suggestion");
+            String chosenSuggestion = request.getParameter("chosenSuggestion");
             ArrayList<RecipeDTO> listRecipe = RecipeDAO.getAllRecipes();
 
             if (tag == null) {
@@ -64,6 +65,7 @@ public class RemoveSuggestionServlet extends HttpServlet {
                     request.getRequestDispatcher("createSuggestion.jsp").forward(request, response);
                 } else {
                     request.setAttribute("suggestion", selectedSuggestion);
+                    request.setAttribute("chosenSuggestion", chosenSuggestion);
                     request.setAttribute("update", update);
                     request.setAttribute("listRecipe", listRecipe);
                     request.getRequestDispatcher("updateSuggestion.jsp").forward(request, response);

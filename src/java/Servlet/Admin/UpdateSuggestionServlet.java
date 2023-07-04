@@ -22,15 +22,8 @@ import javax.servlet.http.HttpSession;
  */
 public class UpdateSuggestionServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    private static final int DEFAULT_STATUS = 0;
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -39,9 +32,10 @@ public class UpdateSuggestionServlet extends HttpServlet {
             HttpSession session = request.getSession();
 
             String suggestion = request.getParameter("suggestion");
+            String chosenSuggestion = request.getParameter("chosenSuggestion");
             String txtUserId = request.getParameter("txtUserId");
             ArrayList<RecipeDTO> customSuggestionList = (ArrayList<RecipeDTO>) session.getAttribute("customSuggestionList");
-            
+            int newSuggestionId = 0;
 
 //            boolean check = SuggestionDAO.checkSuggestionExist(suggestion);
 //            if (check) {
@@ -51,26 +45,25 @@ public class UpdateSuggestionServlet extends HttpServlet {
 //            }   
             int suggestionId = SuggestionDAO.getSuggestionIdFromSuggestionRecipe(suggestion);
 
-            int totalRecipeOldSuggestion = SuggestionDAO.getTotalRecipeBySuggestion(suggestionId);
+            SuggestionDAO.deleteSuggestionRecipe(suggestionId);
 
-            if (customSuggestionList.size() != totalRecipeOldSuggestion) {
-
-                SuggestionDAO.deleteSuggestionRecipe(suggestionId);
-                
-                SuggestionDAO.deleteSuggestion(suggestion);
-                
-                int newSuggestionId = SuggestionDAO.insertSuggestion(suggestion, new Integer(txtUserId));
-
-                for (RecipeDTO recipe : customSuggestionList) {
-                    SuggestionDAO.insertSuggestionList(newSuggestionId, recipe.getId());
-                }
+            SuggestionDAO.deleteSuggestion(suggestion);
+            
+            if (chosenSuggestion != null) {
+                newSuggestionId = SuggestionDAO.insertSuggestion(suggestion, new Integer(txtUserId), 1);
             } else {
-                for (RecipeDTO recipe : customSuggestionList) {
-                    SuggestionDAO.updateSuggestionRecipe(suggestionId, recipe.getId());
-                }
+                newSuggestionId = SuggestionDAO.insertSuggestion(suggestion, new Integer(txtUserId), DEFAULT_STATUS);
             }
+            
+            for (RecipeDTO recipe : customSuggestionList) {
+                SuggestionDAO.insertSuggestionList(newSuggestionId, recipe.getId());
+            }
+
             session.removeAttribute("customSuggestionList");
             
+            request.setAttribute("chosenSuggestion", chosenSuggestion);
+            System.out.println(chosenSuggestion);
+
             request.getRequestDispatcher("ManageSuggestionServlet").forward(request, response);
 
         }

@@ -22,15 +22,8 @@ import javax.servlet.http.HttpSession;
  */
 public class CreateSuggestionSerlvet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    private static final int DEFAULT_STATUS = 0;
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -51,7 +44,7 @@ public class CreateSuggestionSerlvet extends HttpServlet {
                 return;
             }
 
-            int suggestionId = SuggestionDAO.insertSuggestion(title, new Integer(txtUserId));
+            int suggestionId = SuggestionDAO.insertSuggestion(title, new Integer(txtUserId), DEFAULT_STATUS);
 
             for (RecipeDTO recipe : customSuggestionList) {
                 SuggestionDAO.insertSuggestionList(suggestionId, recipe.getId());

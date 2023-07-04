@@ -36,11 +36,13 @@ public class LoadSuggestionForUpdateServlet extends HttpServlet {
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             String suggestion = request.getParameter("suggestion");
+            String chosenSuggestion = request.getParameter("chosenSuggestion");
             
             ArrayList<RecipeDTO> list = SuggestionDAO.getAllRecipesBySuggestion(suggestion);
             ArrayList<RecipeDTO> listRecipe = RecipeDAO.getAllRecipes();
             
             request.setAttribute("suggestion", suggestion);
+            request.setAttribute("chosenSuggestion", chosenSuggestion);
             request.setAttribute("list", list);
             request.setAttribute("listRecipe", listRecipe);
             
