@@ -58,21 +58,21 @@
                             </div>
                         </div>
                         <div class="col-md-6 weekly-plans-add">
-                            <a class="weekly-plans-add-content" href="addPlan.jsp">
+                            <a class="weekly-plans-add-content" href="UserController?action=categoryLoadToPlan">
                                 <div>
                                     <img src="assets/add-icon-black.svg" alt="">
                                 </div>
                             </a>
                         </div>
                         <%
-                            ArrayList<PlanDTO> planList = PlanDAO.getAllUserPlanByUserID(user.getId());
+                            ArrayList<PlanDTO> planList = (ArrayList<PlanDTO>) request.getAttribute("planList");
                             if (planList != null && planList.size() != 0) {
                                 for (PlanDTO list : planList) {
                         %>
                         <div class="col-md-6 ">
                             <div class="weekly-plans-plan active-plan">
 
-                                <a href="MainController?action=getPlanDetailById&id=<%= list.getId()%>" class="weekly-plans-plan-content ">
+                                <a href="UserController?action=getPlanDetailById&id=<%= list.getId()%>" class="weekly-plans-plan-content ">
                                     <div class="weekly-plans-plan-content-thumbnail">
                                         <img src="./pictures/plan1.jpg" alt="">
                                     </div>

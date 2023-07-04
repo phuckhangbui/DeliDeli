@@ -37,6 +37,7 @@ public class AddPlanServlet extends HttpServlet {
         String note = request.getParameter("note");
         int dietID = Integer.parseInt(request.getParameter("recipeDietId"));
         int userID = Integer.parseInt(request.getParameter("userId"));
+        boolean status = false;
 
         // Simple week calculator 
         String start_date_str = request.getParameter("start_date");
@@ -47,7 +48,7 @@ public class AddPlanServlet extends HttpServlet {
 
         // Adding plan
         try {
-            result = PlanDAO.insertPlan(name, description, note, start_date, end_date, userID, dietID);
+            result = PlanDAO.insertPlan(name, description, note, start_date, end_date, status, userID, dietID);
             id = PlanDAO.getPlanByUserIdAndName(userID, name);
         } catch (Exception ex) {
             System.out.println("[addPlanServlet - ERROR]: " + ex.getMessage());

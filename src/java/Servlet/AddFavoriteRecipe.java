@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Daiisuke
  */
-public class addFavoriteServlet extends HttpServlet {
+public class AddFavoriteRecipe extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

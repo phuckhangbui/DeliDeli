@@ -45,6 +45,9 @@ public class UserController extends HttpServlet {
                 url = "error.jsp";
             } else {
                 switch (action.trim()) {
+                    case "search":
+                        url = "SearchServlet";
+                        break;
                     case "userPublicDetail":
                         url = "UserPublicDetailServlet";
                         break;
@@ -97,9 +100,15 @@ public class UserController extends HttpServlet {
                         url = "LoadRecipeManagementServlet";
                         break;
                     case "loadUserReview":
-                        url="LoadUserReviewServlet";
+                        url = "LoadUserReviewServlet";
                         break;
-                    
+                    case "categoryLoadToPlan":
+                        url = "CategoryLoadServlet";
+                        break;
+                    case "planManagement":
+                        url = "PlanManagementServlet";
+                        break;
+
                 }
             }
             RequestDispatcher rd = request.getRequestDispatcher(url);

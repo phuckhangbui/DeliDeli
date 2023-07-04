@@ -343,8 +343,8 @@
         <servlet-class>Servlet.LoadNewsListServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>addFavoriteServlet</servlet-name>
-        <servlet-class>Servlet.addFavoriteServlet</servlet-class>
+        <servlet-name>AddFavoriteServlet</servlet-name>
+        <servlet-class>Servlet.AddFavoriteServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>CreateBroadcastServlet</servlet-name>
@@ -353,6 +353,14 @@
     <servlet>
         <servlet-name>UploadBroadcastImageServlet</servlet-name>
         <servlet-class>Servlet.Admin.UploadBroadcastImageServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PlanManagementServlet</servlet-name>
+        <servlet-class>Servlet.User.PlanManagementServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CategoryLoadServlet</servlet-name>
+        <servlet-class>Servlet.User.CategoryLoadServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
@@ -623,8 +631,16 @@
         <url-pattern>/UploadBroadcastImageServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>addFavoriteServlet</servlet-name>
-        <url-pattern>/addFavoriteServlet</url-pattern>
+        <servlet-name>AddFavoriteServlet</servlet-name>
+        <url-pattern>/AddFavoriteServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PlanManagementServlet</servlet-name>
+        <url-pattern>/PlanManagementServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CategoryLoadServlet</servlet-name>
+        <url-pattern>/CategoryLoadServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

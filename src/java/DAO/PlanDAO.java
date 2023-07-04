@@ -24,13 +24,13 @@ import java.util.List;
  */
 public class PlanDAO {
 
-    public static boolean insertPlan(String name, String description, String note, Date start_at, Date end_at, int user_id, int diet_id) throws Exception {
+    public static boolean insertPlan(String name, String description, String note, Date start_at, Date end_at, boolean status, int user_id, int diet_id) throws Exception {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
 
-        String sql = "INSERT INTO [Plan](name, description, note, start_at, end_at, user_id, diet_id)\n"
-                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO [Plan](name, description, note, start_at, end_at, status, user_id, diet_id)\n"
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try {
             con = DBUtils.getConnection();
@@ -41,8 +41,9 @@ public class PlanDAO {
                 stm.setString(3, note);
                 stm.setDate(4, start_at);
                 stm.setDate(5, end_at);
-                stm.setInt(6, user_id);
-                stm.setInt(7, diet_id);
+                stm.setBoolean(6, status);
+                stm.setInt(7, user_id);
+                stm.setInt(8, diet_id);
 
                 int effectRows = stm.executeUpdate();
                 if (effectRows > 0) {
@@ -168,7 +169,7 @@ public class PlanDAO {
         return false;
     }
 
-    public static ArrayList<PlanDTO> getAllUserPlanByUserID(int userId) throws Exception {
+    public static ArrayList<PlanDTO> getAllUserPlanByUserID(int userId) {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
