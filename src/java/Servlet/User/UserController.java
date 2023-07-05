@@ -36,9 +36,6 @@ public class UserController extends HttpServlet {
                 url = "error.jsp";
             } else {
                 switch (action.trim()) {
-                    case "recipePlanSearch":
-                        url = "PlanSearchServlet";
-                        break;
                     case "userPublicDetail":
                         url = "UserPublicDetailServlet";
                         break;
@@ -99,8 +96,11 @@ public class UserController extends HttpServlet {
                     case "planManagement":
                         url = "PlanManagementServlet";
                         break;
+                    case "recipePlanSearch":
+                        url = "PlanSearchServlet";
+                        break;
                     case "addPlanRecipe":
-                        url = "PlanAddRecipe";
+                        url = "PlanAddRecipeServlet";
                         break;
 
                 }

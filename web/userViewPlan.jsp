@@ -43,12 +43,40 @@
                 window.location.href = "UserController?action=editPlan&id=<%= plan.getId()%>&isSearch=false";
             }
 
+            function startCountdown(endTime) {
+                var countdownElement = document.getElementById("countdown");
+                var endTimeObj = new Date(endTime);
+
+                var countdownInterval = setInterval(function () {
+                    var currentTime = new Date();
+                    var remainingTime = endTimeObj.getTime() - currentTime.getTime();
+                    var remainingSeconds = Math.floor(remainingTime / 1000);
+
+                    if (remainingSeconds > 0) {
+                        countdownElement.innerHTML = "Remaining time: " + remainingSeconds + " seconds";
+                    } else {
+                        countdownElement.innerHTML = "Countdown completed!";
+                        clearInterval(countdownInterval);
+                        submitForm();
+                    }
+                }, 1000);
+            }
+
+            function submitForm() {
+                // Submit your form here
+                document.getElementById("yourFormId").submit();
+            }
+
         </script>
     </head>
 
     <body onload="startCountdown()">
         <!--         The navigation bar       -->
         <%@include file="header.jsp" %>
+
+        <!-- Tick Tock -->
+
+
 
         <!--         Recipe Plan       -->
 
@@ -79,7 +107,7 @@
                                 <a href="userViewPlan.html"><img src="./assets/leave.svg" alt=""></a>
                             </button> -->
                     </div>
-                    
+
                     <div class=" plan-table">
                         <%
                             ArrayList<PlanDateDTO> planDate = (ArrayList<PlanDateDTO>) request.getAttribute("planDate");

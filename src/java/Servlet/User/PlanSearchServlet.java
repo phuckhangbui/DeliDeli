@@ -49,7 +49,7 @@ public class PlanSearchServlet extends HttpServlet {
                 DisplayRecipeDTO d = new DisplayRecipeDTO(r.getId(), r.getTitle(), thumbnailPath, category, rating, owner);
                 displayList.add(d);
             }
-            request.setAttribute("searchRecipesList", displayList);
+            request.setAttribute("searchRecipesList", displayList); 
             String url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=true";
             request.getRequestDispatcher(url).forward(request, response);
         }
