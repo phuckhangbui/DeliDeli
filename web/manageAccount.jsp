@@ -220,7 +220,7 @@
                                 %>
                                 <tr>
                                     <td><%= count%></td>
-                                    <td><a href="AdminController?action=showUserDetail&username=<%= u.getUserName()%>"><%= u.getUserName()%></a></td>
+                                    <td class="recipe-and-user-link"><a href="AdminController?action=showUserDetail&username=<%= u.getUserName()%>"><%= u.getUserName()%></a></td>
                                     <td><%= AdminDAO.getRoleByRoleId(u.getRole())%></td>
                                     <td><%= u.getEmail()%></td>
                                     <td><%= u.getCreateAt()%></td>

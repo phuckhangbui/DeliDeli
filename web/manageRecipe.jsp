@@ -213,13 +213,12 @@
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr>
-                                    <th>No</th>
+                                    <th>No.</th>
                                     <th>Title</th>
-                                    <th>Create at</th>
-                                    <th>Update at</th>
                                     <th>Owner</th>
                                     <th>Status</th>
-                                    <th>Action</th>
+                                    <th>Create at</th>
+                                    <th>Update at</th>   
                                 </tr>
                             </thead>
                             <tbody class="table-group-divider">
@@ -229,7 +228,15 @@
                                 %>
                                 <tr>
                                     <td><%= count%></td>
-                                    <td><%= r.getTitle()%></td>
+                                    <td class="recipe-and-user-link">
+                                        <a href="AdminController?action=showRecipeDetail&id=<%= r.getId()%>"><%= r.getTitle()%></a>
+                                        
+                                    </td>
+                                    <% UserDTO owner = RecipeDAO.getRecipeOwnerByRecipeId(r.getId());%>
+                                    <td class="recipe-and-user-link">
+                                        <a href="AdminController?action=showUserDetail&username=<%= owner.getUserName()%>"><%= owner.getUserName()%></a>
+                                    </td>
+                                    <td><%= tmp[r.getStatus()]%></td>
                                     <% Timestamp timestamp = r.getCreate_at();
                                         SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
                                         String createDate = dateFormat.format(timestamp);
@@ -250,15 +257,9 @@
                                             }
                                         %>
                                     </td>
-                                    <% UserDTO owner = RecipeDAO.getRecipeOwnerByRecipeId(r.getId());%>
-                                    <td><a href="AdminController?action=showUserDetail&username=<%= owner.getUserName()%>"><%= owner.getUserName()%></a></td>
-                                    <td><%= tmp[r.getStatus()]%></td>
-                                    <td>
-                                        <form action="AdminController" method="post" class="recipe-table-button">
-                                            <input type="hidden" value="<%= r.getId()%>" name="id">
-                                            <button type="submit" value="showRecipeDetail" name="action">Show</button>
-                                        </form>
-                                    </td>
+                                    
+                                    
+                                    
                                 </tr>
                                 <%
                                             count++;

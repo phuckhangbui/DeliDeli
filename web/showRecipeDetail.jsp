@@ -42,7 +42,7 @@
                 DirectionDTO direction = (DirectionDTO) request.getAttribute("direction");
                 int ownerId = recipe.getUser_id();
                 UserDTO owner = (UserDTO) request.getAttribute("owner");
-                String link = "userCommunityProfile.jsp?accountName=" + owner.getUserName();
+                String link = "AdminController?action=showUserDetail&username=" + owner.getUserName();
             %>
 
             <div class="row">
@@ -183,7 +183,9 @@
                                         <%= recipe.getTitle()%>
                                     </header>
                                     <div class="recipe-detail-info-user">
-                                        <a href="<%=link%>"><img src="./assets/profile-pic.svg" alt=""></a>
+                                        <a href="<%=link%>">
+                                            <img src="ServletImageLoader?identifier=<%= owner.getAvatar()%>" alt="">
+                                        </a>
                                         <div>
                                             <span>By</span>
                                             <span><a href="AdminController?action=showUserDetail&username=<%= owner.getUserName()%>"><%= owner.getUserName()%></a></span>

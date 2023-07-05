@@ -24,7 +24,7 @@ userList.forEach( element =>{
 })
 
 // Change the color of account status
-const activeList = document.querySelectorAll("td:nth-child(6)");
+const activeList = document.querySelectorAll("td:nth-child(4)");
 console.log(activeList)
 activeList.forEach( element =>{
     if(element.innerHTML == "Approved"){

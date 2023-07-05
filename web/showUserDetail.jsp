@@ -165,6 +165,7 @@
                             UserDetailDTO userDetail = (UserDetailDTO) request.getAttribute("userDetail");
                             ArrayList<RecipeDTO> userRecipe = (ArrayList) request.getAttribute("userRecipe");
                             TreeMap<Integer, Integer> mapRating = (TreeMap) request.getAttribute("mapRating");
+                            String fullname = userDetail.getFirstName() + " " + userDetail.getLastName();
                         %>
                         <div class="blank-background">
                             <div class="container">
@@ -178,40 +179,56 @@
                                     <div class="user-detail-admin-heading">
                                         <h3 class="">Profile Detail</h3>
                                     </div>
-
-                                    <!--                                    <div class="row">
-                                                                            <p class="col-lg-2 user-detail-admin-title">User Name: </p>
-                                                                            <p class="col-lg-10"><%= account.getUserName()%></p>
-                                                                        </div>
-                                    
-                                                                        <div class="row">
-                                                                            <p class="col-lg-2 user-detail-admin-title">Email: </p>
-                                                                            <p class="col-lg-10"><%= account.getEmail()%></p>
-                                                                        </div>
-                                    
-                                                                        <div class="row">
-                                                                            <p class="col-lg-2 user-detail-admin-title">First Name: </p>
-                                                                            <p class="col-lg-10"><%= userDetail.getFirstName()%></p>
-                                                                        </div>
-                                    
-                                                                        <div class="row">
-                                                                            <p class="col-lg-2 user-detail-admin-title">Last Name: </p>
-                                                                            <p class="col-lg-10"><%= userDetail.getLastName()%></p>
-                                                                        </div>
-                                    
-                                                                        <div class="row">
-                                                                            <p class="col-lg-2 user-detail-admin-title">Specialty: </p>
-                                                                            <p class="col-lg-10"><%= userDetail.getSpecialty()%></p>
-                                                                        </div>
-                                    
-                                                                        <div class="row">
-                                                                            <p class="col-lg-2 user-detail-admin-title">Bio: </p>
-                                                                            <p class="col-lg-10"><%= userDetail.getBio()%></p>
-                                                                        </div>-->
-
-                                    <div>
-
+                                    <div class="row">
+                                        <div class="col-md-3 user-detail-admin-image">
+<!--                                            <img src="pictures/egg1.jpeg" alt="alt"/>-->
+                                            <img src="ServletImageLoader?identifier=<%= account.getAvatar()%>" alt="alt"/>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <div class="row">
+                                                <div class="col-md-4 user-detail-admin-title">
+                                                    <p>User Name</p>
+                                                    <p><%= account.getUserName()%></p>
+                                                </div>
+                                                <div class="col-md-4 user-detail-admin-title">
+                                                    <p>Full Name</p>
+                                                    <p id="userFullName"><%=fullname%></p>
+                                                </div>
+                                                <div class="col-md-4 user-detail-admin-title">
+                                                    <p>Email</p>
+                                                    <p><%= account.getEmail()%></p>
+                                                </div>
+                                                <div class="col-md-12 user-detail-admin-title">
+                                                    <p>Specialties</p>
+                                                    <%
+                                                        if ( userDetail.getSpecialty().equals("")) { %>
+                                                    <p class="unspecified">Unspecified</p>
+                                                    <%
+                                                    } else {
+                                                    %>
+                                                    <p><%= userDetail.getSpecialty()%></p>
+                                                    <%}%>
+                                                    
+                                                    
+                                                    
+                                                    
+                                                </div>
+                                                <div class="col-md-12 user-detail-admin-title">
+                                                    <p>Bio</p>
+                                                    <%
+                                                        if (  userDetail.getBio().equals("")) { %>
+                                                    <p class="unspecified">Unspecified</p>
+                                                    <%
+                                                    } else {
+                                                    %>
+                                                    <p><%= userDetail.getBio() %></p>
+                                                    <%}%>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
+
                                     <%                if (userRecipe != null && userRecipe.size() > 0) {
                                     %>
 
@@ -336,6 +353,7 @@
                 })();
             </script>
         </div>
+        <script src="./script/userCommunityProfileScript.js" defer></script>
         <script src="bootstrap/js/bootstrap.min.js" ></script>
     </body>
 </html>

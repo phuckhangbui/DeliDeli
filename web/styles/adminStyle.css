@@ -364,7 +364,12 @@ thead{
     padding: 0 10px;
     width: 85px;
 }
-
+.recipe-and-user-link a{
+    transition: all 0.2s;
+}
+.recipe-and-user-link a:hover{
+    color: #ec9131;
+}
 
 
 
@@ -575,5 +580,27 @@ thead{
 }
 
 .user-detail-admin-title {
-    color: #ec9131;
+}
+.user-detail-admin-title p:first-child{
+    font-size: 24px;
+    margin-bottom: 0px;
+    color: #79c141;
+}
+.user-detail-admin-title p:last-child {
+    font-size: 20px;
+}
+.user-detail-admin-image{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.user-detail-admin-image img{
+    width: 250px;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 200px;
+}
+.unspecified{
+    font-style: italic;
+    color: rgb(0,0,0,0.5);
 }
