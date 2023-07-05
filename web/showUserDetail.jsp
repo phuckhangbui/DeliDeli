@@ -166,128 +166,137 @@
                             ArrayList<RecipeDTO> userRecipe = (ArrayList) request.getAttribute("userRecipe");
                             TreeMap<Integer, Integer> mapRating = (TreeMap) request.getAttribute("mapRating");
                         %>
-
-                        <div class="container">
-                            <div class="user-detail-admin">
-                                <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-                                    <ol class="breadcrumb">
-                                        <li class="breadcrumb-item"><a href="AdminController?action=manageAccount">User List</a></li>
-                                        <li class="breadcrumb-item current-link" aria-current="page"><%= account.getUserName()%></li>
-                                    </ol>
-                                </nav>
-                                <div class="user-detail-admin-heading">
-                                    <h3 class="">Profile Detail</h3>
-                                </div>
-
-                                <div class="row">
-                                    <p class="col-lg-2 user-detail-admin-title">User Name: </p>
-                                    <p class="col-lg-10"><%= account.getUserName()%></p>
-                                </div>
-
-                                <div class="row">
-                                    <p class="col-lg-2 user-detail-admin-title">Email: </p>
-                                    <p class="col-lg-10"><%= account.getEmail()%></p>
-                                </div>
-
-                                <div class="row">
-                                    <p class="col-lg-2 user-detail-admin-title">First Name: </p>
-                                    <p class="col-lg-10"><%= userDetail.getFirstName()%></p>
-                                </div>
-
-                                <div class="row">
-                                    <p class="col-lg-2 user-detail-admin-title">Last Name: </p>
-                                    <p class="col-lg-10"><%= userDetail.getLastName()%></p>
-                                </div>
-
-                                <div class="row">
-                                    <p class="col-lg-2 user-detail-admin-title">Specialty: </p>
-                                    <p class="col-lg-10"><%= userDetail.getSpecialty()%></p>
-                                </div>
-
-                                <div class="row">
-                                    <p class="col-lg-2 user-detail-admin-title">Bio: </p>
-                                    <p class="col-lg-10"><%= userDetail.getBio()%></p>
-                                </div>
-
-                                <%                if (userRecipe != null && userRecipe.size() > 0) {
-                                %>
-
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="user-detail-admin-heading">
-                                            <h3 class="">User's Recipe(s)</h3>
-                                        </div>
-                                        <table class="table table-striped table-hover">
-                                            <thead>
-                                                <tr>
-                                                    <th>ID</th>
-                                                    <th>Title</th>
-                                                    <th>Create at</th>
-                                                    <th>Update at</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody class="table-group-divider">
-                                                <%
-                                                    for (RecipeDTO r : userRecipe) {
-                                                %>
-                                                <tr>
-                                                    <td><%= r.getId()%></td>
-                                                    <td><%= r.getTitle()%></td>
-                                                    <% Timestamp timestamp = r.getCreate_at();
-                                                        SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
-                                                        String createDate = dateFormat.format(timestamp);
-                                                    %>
-                                                    <td><%= createDate%></td>
-                                                    <%
-                                                        if (r.getUpdate_at() == null) {
-                                                    %>
-                                                    <td><%= createDate%></td>
-                                                    <%
-                                                    } else {
-                                                        timestamp = r.getUpdate_at();
-                                                        dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
-                                                        String updateDate = dateFormat.format(timestamp);
-                                                    %>
-                                                    <td><%= updateDate%>
-                                                        <%
-                                                            }
-                                                        %>
-                                                    </td>
-                                                    <td>
-                                                        <form action="AdminController" method="post" class="user-detail-admin-button">
-                                                            <input type="hidden" value="<%= r.getId()%>" name="id">
-                                                            <button type="submit" value="showRecipeDetail" name="action">Show</button>
-                                                        </form>
-                                                    </td>
-                                                </tr>
-                                                <% }
-                                                %>
-                                            </tbody>
-                                        </table>
-                                        <%
-                                        } else {
-                                        %>
-                                        <div class="user-detail-admin-heading">
-                                            <h3>User does not have any recipe yet.</h3>
-                                        </div>
-                                        <%
-                                            }
-                                        %>
+                        <div class="blank-background">
+                            <div class="container">
+                                <div class="user-detail-admin new-result">
+                                    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                                        <ol class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="AdminController?action=manageAccount">User List</a></li>
+                                            <li class="breadcrumb-item current-link" aria-current="page"><%= account.getUserName()%></li>
+                                        </ol>
+                                    </nav>
+                                    <div class="user-detail-admin-heading">
+                                        <h3 class="">Profile Detail</h3>
                                     </div>
 
-                                    <div class="col-md-6">
-                                        <%
-                                            if (mapRating.size() != 0) {
-                                        %>
-                                        <div><canvas id="myChart"></canvas></div>
-                                                <%
-                                                    }
-                                                %>
+                                    <!--                                    <div class="row">
+                                                                            <p class="col-lg-2 user-detail-admin-title">User Name: </p>
+                                                                            <p class="col-lg-10"><%= account.getUserName()%></p>
+                                                                        </div>
+                                    
+                                                                        <div class="row">
+                                                                            <p class="col-lg-2 user-detail-admin-title">Email: </p>
+                                                                            <p class="col-lg-10"><%= account.getEmail()%></p>
+                                                                        </div>
+                                    
+                                                                        <div class="row">
+                                                                            <p class="col-lg-2 user-detail-admin-title">First Name: </p>
+                                                                            <p class="col-lg-10"><%= userDetail.getFirstName()%></p>
+                                                                        </div>
+                                    
+                                                                        <div class="row">
+                                                                            <p class="col-lg-2 user-detail-admin-title">Last Name: </p>
+                                                                            <p class="col-lg-10"><%= userDetail.getLastName()%></p>
+                                                                        </div>
+                                    
+                                                                        <div class="row">
+                                                                            <p class="col-lg-2 user-detail-admin-title">Specialty: </p>
+                                                                            <p class="col-lg-10"><%= userDetail.getSpecialty()%></p>
+                                                                        </div>
+                                    
+                                                                        <div class="row">
+                                                                            <p class="col-lg-2 user-detail-admin-title">Bio: </p>
+                                                                            <p class="col-lg-10"><%= userDetail.getBio()%></p>
+                                                                        </div>-->
+
+                                    <div>
+
+                                    </div>
+                                    <%                if (userRecipe != null && userRecipe.size() > 0) {
+                                    %>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="user-detail-admin-heading">
+                                                <h3 class="">User's Recipe(s)</h3>
+                                            </div>
+                                            <table class="table table-striped table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>ID</th>
+                                                        <th>Title</th>
+                                                        <th>Create at</th>
+                                                        <th>Update at</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="table-group-divider">
+                                                    <%
+                                                        for (RecipeDTO r : userRecipe) {
+                                                    %>
+                                                    <tr>
+                                                        <td><%= r.getId()%></td>
+                                                        <td><%= r.getTitle()%></td>
+                                                        <% Timestamp timestamp = r.getCreate_at();
+                                                            SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
+                                                            String createDate = dateFormat.format(timestamp);
+                                                        %>
+                                                        <td><%= createDate%></td>
+                                                        <%
+                                                            if (r.getUpdate_at() == null) {
+                                                        %>
+                                                        <td><%= createDate%></td>
+                                                        <%
+                                                        } else {
+                                                            timestamp = r.getUpdate_at();
+                                                            dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
+                                                            String updateDate = dateFormat.format(timestamp);
+                                                        %>
+                                                        <td><%= updateDate%>
+                                                            <%
+                                                                }
+                                                            %>
+                                                        </td>
+                                                        <td>
+                                                            <form action="AdminController" method="post" class="user-detail-admin-button">
+                                                                <input type="hidden" value="<%= r.getId()%>" name="id">
+                                                                <button type="submit" value="showRecipeDetail" name="action">Show</button>
+                                                            </form>
+                                                        </td>
+                                                    </tr>
+                                                    <% }
+                                                    %>
+                                                </tbody>
+                                            </table>
+                                            <%
+                                            } else {
+                                            %>
+                                            <div class="user-detail-admin-heading">
+                                                <h3>User does not have any recipe yet.</h3>
+                                            </div>
+                                            <%
+                                                }
+                                            %>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <%
+                                                if (mapRating.size() != 0) {
+                                            %>
+                                            <div><canvas id="myChart"></canvas></div>
+                                                    <%
+                                                        }
+                                                    %>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+
+
+
+
                     </div>
                 </div>
             </div>

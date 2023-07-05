@@ -233,14 +233,17 @@
                             </div>
                         </div>
                     </div>
-
+                    <!--                    <div class="account col-md-1">
+                                             <a href="UserController?action=userPublicDetail&userId=<%=user.getId()%>">
+                                                <img src="ServletImageLoader?identifier=<%= user.getAvatar()%>" alt="">
+                                            </a>
+                                        </div>-->
                     <div
                         class="account col-md-1">
                         <span>
-                            <div
-                                class="user-dropdown">
-                                <button
-                                    class="user-dropbtn">
+                            <div class="user-dropdown">
+                                <button class="user-dropbtn">
+                                    <img src="ServletImageLoader?identifier=<%= user.getAvatar()%>" alt="">
                                     <%=user.getUserName()%>
                                 </button>
                                 <div
@@ -581,10 +584,10 @@
                         <a href="#"
                            class="modal-link">View plan</a>
                         <% break;
-                                case 5: 
-                                if(n.getLink() != ""){%>
-                                <img src="ServletImageLoader?identifier=<%=n.getImgPath()%>" alt="" style="width:100%; border-radius: 5px">
-                            <%}
+                            case 5:
+                                if (n.getLink() != "") {%>
+                        <img src="ServletImageLoader?identifier=<%=n.getImgPath()%>" alt="" style="width:100%; border-radius: 5px">
+                        <%}
                                     break;
                             }
                         %>

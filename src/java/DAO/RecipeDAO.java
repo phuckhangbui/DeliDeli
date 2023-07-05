@@ -93,7 +93,7 @@ public class RecipeDAO {
                 ResultSet rs = pst.executeQuery();
                 if (rs != null) {
                     while (rs.next()) {
-                        int id = rs.getInt("id");
+                        int id = rs.getInt("user_id");
                         String userName = rs.getString("user_name");
                         String email = rs.getString("email");
                         String password = rs.getString("password");

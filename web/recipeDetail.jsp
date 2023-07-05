@@ -42,7 +42,7 @@
             String category = (String) request.getAttribute("category");
             int ownerId = recipe.getUser_id();
             UserDTO owner = (UserDTO) request.getAttribute("owner");
-            String link = "userCommunityProfile.jsp?accountName=" + owner.getUserName();
+            String link = "LoadPublicProfileServlet?accountName=" + owner.getUserName();
         %>
 
         <%@include file="header.jsp" %>
@@ -62,7 +62,9 @@
                         <%= recipe.getTitle()%>
                     </header>
                     <div class="recipe-detail-info-user">
-                        <a href="<%=link%>"><img src="./assets/profile-pic.svg" alt=""></a>
+                        <a href="<%=link%>">
+                            <img src="ServletImageLoader?identifier=<%= owner.getAvatar()%>" alt="">
+                        </a>
                         <div>
                             <span>By</span>
                             <span><a href="<%=link%>"><%= owner.getUserName()%></a></span>

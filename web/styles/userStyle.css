@@ -89,7 +89,7 @@ ul {
 .account {
     text-align: center;
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
     font-size: 18px;
 }
@@ -644,7 +644,12 @@ span {
     align-items: center;
     margin: 10px 0 0 0;
 }
-
+.recipe-detail-info-user img{
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 100px;
+}
 .recipe-detail-info-user div p {
     margin: 0;
 }
@@ -985,15 +990,24 @@ span {
 /*           */
 
 .user-dropbtn {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
     background-color: #fff;
     font-size: 18px;
+    padding: 10px;
     outline: none;
-    padding: 10.5px;
     font-weight: 500;
     border: 1px solid;
     border: none;
 }
-
+.user-dropbtn img{
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 100px;
+    margin-right: 5px;
+}
 .user-dropbtn:hover {
     text-decoration: underline;
     text-decoration-color: #ec9131;
