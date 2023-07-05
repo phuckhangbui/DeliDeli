@@ -169,6 +169,57 @@ public class PlanDAO {
         return false;
     }
 
+    public static PlanDTO getCurrentActivePlan(int user_id) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        PlanDTO result = new PlanDTO();
+
+        String sql = "SELECT * FROM [Plan]\n"
+                + "WHERE user_id = ? AND status = 1";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, user_id);
+                rs = stm.executeQuery();
+                while (rs.next()) {
+
+                    int id = rs.getInt("id");
+                    String name = rs.getString("name");
+                    String description = rs.getString("description");
+                    String note = rs.getString("note");
+                    Date start_at = rs.getDate("start_at");
+                    Date end_at = rs.getDate("end_at");
+                    boolean status = rs.getBoolean("status");
+                    user_id = rs.getInt("user_id");
+                    int diet_id = rs.getInt("diet_id");
+
+                    result = new PlanDTO(id, name, description, note, start_at, end_at, status, user_id, diet_id);
+                    return result;
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error - getAllUserPlanByUserID: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return result;
+    }
+
     public static ArrayList<PlanDTO> getAllUserPlanByUserID(int userId) {
         Connection con = null;
         PreparedStatement stm = null;
@@ -192,10 +243,11 @@ public class PlanDAO {
                     String note = rs.getString("note");
                     Date start_at = rs.getDate("start_at");
                     Date end_at = rs.getDate("end_at");
+                    boolean status = rs.getBoolean("status");
                     int user_id = rs.getInt("user_id");
                     int diet_id = rs.getInt("diet_id");
 
-                    PlanDTO userPlan = new PlanDTO(id, name, description, note, start_at, end_at, user_id, diet_id);
+                    PlanDTO userPlan = new PlanDTO(id, name, description, note, start_at, end_at, status, user_id, diet_id);
                     result.add(userPlan);
                 }
             }
@@ -242,10 +294,11 @@ public class PlanDAO {
                     String note = rs.getString("note");
                     Date start_at = rs.getDate("start_at");
                     Date end_at = rs.getDate("end_at");
+                    boolean status = rs.getBoolean("status");
                     int user_id = rs.getInt("user_id");
                     int diet_id = rs.getInt("diet_id");
 
-                    result = new PlanDTO(id, name, description, note, start_at, end_at, user_id, diet_id);
+                    result = new PlanDTO(id, name, description, note, start_at, end_at, status, user_id, diet_id);
                     return result;
                 }
             }

@@ -4,11 +4,19 @@
  */
 package Servlet;
 
+import DAO.MealDAO;
+import DAO.PlanDAO;
+import DAO.PlanDateDAO;
 import Utils.EncodePass;
 import DAO.UserDAO;
+import DTO.MealDTO;
+import DTO.PlanDTO;
+import DTO.PlanDateDTO;
 import DTO.UserDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -56,6 +64,25 @@ public class LoginServlet extends HttpServlet {
                     session.setAttribute("user", user);
                     request.getRequestDispatcher(RECIPE_PAGE + recipeID + "&activeScroll=true").forward(request, response);
                 } else if (user.getRole() == 1) {
+
+                    // Get all plan for this current date.
+                    LocalDate currentDate = LocalDate.now();
+                    Date currentDateNow = Date.valueOf(currentDate);
+                    System.out.println("Current date - " + currentDateNow);
+                    PlanDateDTO currentPlanToday = null; // Get all non-active schedules
+                    System.out.println("UserID - " + user.getId());
+                    PlanDTO activePlan = PlanDAO.getCurrentActivePlan(user.getId()); // false status stands for non-active.
+                    System.out.println("Report activePlan - " + activePlan.getId());
+                    if (activePlan != null) {
+                        currentPlanToday = PlanDateDAO.getAllCurrentDatePlan(currentDateNow, activePlan.getId());
+                        session.setAttribute("currentPlanToday", currentPlanToday);
+                        if (currentPlanToday != null) {
+                            System.out.println("Current active plan report - " + currentPlanToday.getId());
+                        } else {
+                            System.out.println("THE PLAN IS REAL!!!!!!111!!!!");
+                        }
+                    }
+
                     session.setAttribute("user", user);
                     request.getRequestDispatcher(HOME_PAGE).forward(request, response);
                 } else if (user.getRole() == 2) {

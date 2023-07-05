@@ -1,4 +1,7 @@
 <%-- Document : header Created on : May 24, 2023, 7:23:26 PM Author : khang --%>
+<%@page import="java.sql.Time"%>
+<%@page import="java.time.LocalTime"%>
+<%@page import="DTO.PlanDateDTO"%>
 <%@page import="DTO.DisplayNotificationDTO"%>
 <%@page import="DTO.NotificationTypeDTO"%>
 <%@page import="DTO.NotificationDTO"%>
@@ -59,7 +62,6 @@
 
             UserDTO user
                     = (UserDTO) session.getAttribute("user");
-
         %>
         <div
             class="navigator-bar">
@@ -115,6 +117,22 @@
                     <%if (user != null) {%>
                     <% int[] count = (int[]) request.getAttribute("count");
                     %>
+
+                    <!--    TICK TOCK PLAN NOTIFICATION   -->
+
+                    <%
+//                        LocalTime currentTime = LocalTime.now();
+//                        PlanDateDTO currentPlanToday = (PlanDateDTO) session.getAttribute("currentPlanToday");
+//                        System.out.println("[DEBUG] Check planTime - " + currentPlanToday.getStart_time());
+//                        Time startTimeFromDB = currentPlanToday.getStart_time();
+//                        LocalTime startTime = startTimeFromDB.toLocalTime();
+//                        if (startTime.isAfter(currentTime) || startTime.equals(currentTime)) {
+//                            System.out.println("Yahoo!");
+//                        }
+%>
+
+                    <!--                                  -->
+
                     <div
                         class="notification col-md-1">
                         <div
@@ -581,10 +599,10 @@
                         <a href="#"
                            class="modal-link">View plan</a>
                         <% break;
-                                case 5: 
-                                if(n.getLink() != ""){%>
-                                <img src="ServletImageLoader?identifier=<%=n.getImgPath()%>" alt="" style="width:100%; border-radius: 5px">
-                            <%}
+                            case 5:
+                                if (n.getLink() != "") {%>
+                        <img src="ServletImageLoader?identifier=<%=n.getImgPath()%>" alt="" style="width:100%; border-radius: 5px">
+                        <%}
                                     break;
                             }
                         %>
