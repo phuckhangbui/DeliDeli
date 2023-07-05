@@ -134,4 +134,46 @@ public class MealDAO {
         }
         return result;
     }
+    
+    public static boolean addMealById(int date_id, int recipe_id, Time start_time, Time end_time) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+
+        String sql = "INSERT INTO [Meal](date_id, recipe_id, start_time, end_time)\n"
+                + "VALUES (?, ?, ?, ?)";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, date_id);
+                stm.setInt(2, recipe_id);
+                stm.setTime(3, start_time);
+                stm.setTime(4, end_time);
+
+                int effectRows = stm.executeUpdate();
+                if (effectRows > 0) {
+                    return true;
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error - insertPlan: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return false;
+    }
 }
