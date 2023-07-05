@@ -367,8 +367,12 @@
         <servlet-class>Servlet.User.PlanSearchServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>PlanAddRecipe</servlet-name>
-        <servlet-class>Servlet.User.PlanAddRecipe</servlet-class>
+        <servlet-name>PlanAddRecipeServlet</servlet-name>
+        <servlet-class>Servlet.User.PlanAddRecipeServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PlanRecipeNotificationServlet</servlet-name>
+        <servlet-class>Servlet.User.PlanRecipeNotificationServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
@@ -655,8 +659,12 @@
         <url-pattern>/PlanSearchServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>PlanAddRecipe</servlet-name>
-        <url-pattern>/PlanAddRecipe</url-pattern>
+        <servlet-name>PlanAddRecipeServlet</servlet-name>
+        <url-pattern>/PlanAddRecipeServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PlanRecipeNotificationServlet</servlet-name>
+        <url-pattern>/PlanRecipeNotificationServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

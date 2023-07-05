@@ -4,6 +4,9 @@
     Author     : Walking Bag
 --%>
 
+<%@page import="java.io.IOException"%>
+<%@page import="java.util.TimerTask"%>
+<%@page import="java.util.Timer"%>
 <%@page import="DTO.RecipeDTO"%>
 <%@page import="DAO.RecipeDAO"%>
 <%@page import="DAO.MealDAO"%>
@@ -37,16 +40,18 @@
         <script>
 
             function redirectToEditPlan() {
-                window.location.href = "UserController?action=editPlan&id=<%= plan.getId() %>&isSearch=false";
+                window.location.href = "UserController?action=editPlan&id=<%= plan.getId()%>&isSearch=false";
             }
+
         </script>
     </head>
 
-    <body>
+    <body onload="startCountdown()">
         <!--         The navigation bar       -->
         <%@include file="header.jsp" %>
 
         <!--         Recipe Plan       -->
+
         <div class="blank-background">
             <div class="container">
                 <div class="row plan">
@@ -74,9 +79,7 @@
                                 <a href="userViewPlan.html"><img src="./assets/leave.svg" alt=""></a>
                             </button> -->
                     </div>
-
-
-
+                    
                     <div class=" plan-table">
                         <%
                             ArrayList<PlanDateDTO> planDate = (ArrayList<PlanDateDTO>) request.getAttribute("planDate");
@@ -228,7 +231,7 @@
                                                 SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
                                                 String formattedTime = timeFormat.format(list.getStart_time());
                                             %>
-                                            <p class="plan-table-week-recipe-content-des-time"><%= formattedTime %></p>
+                                            <p class="plan-table-week-recipe-content-des-time"><%= formattedTime%></p>
                                         </div>
                                     </button>
 
