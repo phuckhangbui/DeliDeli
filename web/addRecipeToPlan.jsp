@@ -4,6 +4,7 @@
     Author     : Walking Bag
 --%>
 
+<%@page import="DTO.DisplayRecipeDTO"%>
 <%@page import="DAO.DietDAO"%>
 <%@page import="DTO.DietDTO"%>
 <%@page import="DAO.RecipeDAO"%>
@@ -437,18 +438,19 @@
                             scrollTarget.scrollIntoView({behavior: 'smooth'});
                         }
                     </script>
-                    <% } %>
+                    <% }%>
                     <div class="add-recipe-to-plan">
                         <div class="add-recipe-to-plan-section-header">
                             Add Recipes Section
                         </div>
                         <div class="add-recipe-to-plan-search-bar">
                             <form action="UserController" method="post">
-                                <button type="submit" name="action" value="search">
+                                <button type="submit" name="action" value="recipePlanSearch">
                                     <img src="assets/search-icon.svg" alt="">
                                 </button>
                                 <input type="text" name="txtsearch" placeholder="What recipes are you searching for ?">
                                 <input type="hidden" name="isPlan" value="true" />
+                                <input type="hidden" name="planId" value="<%= plan.getId()%>"/>
                                 <select name="searchBy" id="">
                                     <option value="Title" selected="selected">TITLE</option>
                                     <option value="Category">CATEGORIES</option>
@@ -463,12 +465,11 @@
 
 
 
-
                 <div class="row add-recipe-to-plan-content">
                     <%
-                        ArrayList<RecipeDTO> searchRecipesList = (ArrayList<RecipeDTO>) request.getAttribute("searchRecipesList");
+                        ArrayList<DisplayRecipeDTO> searchRecipesList = (ArrayList<DisplayRecipeDTO>) request.getAttribute("SEARCH_LIST");
                         if (searchRecipesList != null && !searchRecipesList.isEmpty()) {
-                            for (RecipeDTO list : searchRecipesList) {
+                            for (DisplayRecipeDTO list : searchRecipesList) {
                     %>
                     <div class="col-md-3">
                         <div href="" class="add-recipe-to-plan-content-recipe">
@@ -476,6 +477,9 @@
                                 <img src="./pictures/egg1.jpeg" alt="">
                             </div>
                             <div class="add-recipe-to-plan-content-recipe-title"><%= list.getTitle()%></div>
+                            <%
+                                System.out.println("Title - " + list.getTitle());
+                            %>
                             <div class="add-recipe-to-plan-content-recipe-nutrients">
                                 <p><span class="plan-table-calories">Cals</span>20</p>
                                 <p><span class="plan-table-protein">P</span> 29g</p>
@@ -563,10 +567,13 @@
                     </div>
                     <%
                             }
+                        } else {
+                            System.out.println("The search list is null");
                         }
                     %>
                 </div>
             </div>
+
 
 
 

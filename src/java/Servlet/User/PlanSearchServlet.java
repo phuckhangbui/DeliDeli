@@ -4,21 +4,15 @@
  */
 package Servlet.User;
 
-import DAO.DietDAO;
-import DAO.MealDAO;
-import DTO.DietDTO;
-import DAO.PlanDAO;
-import DTO.PlanDTO;
-import DAO.PlanDateDAO;
+import DAO.RecipeDAO;
 import DTO.DisplayRecipeDTO;
-import DTO.MealDTO;
-import DTO.PlanDateDTO;
+import DTO.RecipeDTO;
+import DTO.UserDTO;
+import Utils.NavigationBarUtils;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,41 +21,41 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Daiisuke
  */
-@WebServlet(name = "PlanEditServlet", urlPatterns = {"/PlanEditServlet"})
-public class PlanEditServlet extends HttpServlet {
+public class PlanSearchServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String id = request.getParameter("id");
-        ArrayList<DisplayRecipeDTO> displayList = (ArrayList<DisplayRecipeDTO>) request.getAttribute("searchRecipesList");
-        
-        boolean isSearch = Boolean.parseBoolean(request.getParameter("isSearch"));
 
-        PlanDTO plan = PlanDAO.getUserPlanById(new Integer(id));
-        request.setAttribute("plan", plan);
+        Boolean isPlan = Boolean.parseBoolean(request.getParameter("isPlan"));
+        String txtsearch = request.getParameter("txtsearch").toLowerCase();
+        String searchBy = request.getParameter("searchBy").toLowerCase();
+        String plan_id = request.getParameter("planId").toLowerCase();
 
-        DietDTO diet = DietDAO.getTypeById(plan.getDiet_id());
-        request.setAttribute("diet", diet);
+        System.out.println("isPlan - " + isPlan);
+        System.out.println("txtSearch - " + txtsearch);
+        System.out.println("searchBy - " + searchBy);
+        System.out.println("plan_id - " + plan_id);
 
-        ArrayList<PlanDateDTO> planDate = PlanDateDAO.getAllDateByPlanId(plan.getId());
-        request.setAttribute("planDate", planDate);
+        if (isPlan != null && isPlan) {
+            ArrayList<RecipeDTO> list = NavigationBarUtils.searchRecipes(txtsearch, searchBy);
+            ArrayList<DisplayRecipeDTO> displayList = new ArrayList<>();
+            for (RecipeDTO r     : list) {
+                String thumbnailPath = RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath();
+                String category = RecipeDAO.getCategoryByRecipeId(r.getId());
+                double rating = RecipeDAO.getRatingByRecipeId(r.getId());
+                UserDTO owner = RecipeDAO.getRecipeOwnerByRecipeId(r.getId());
 
-        if (isSearch) {
-            request.setAttribute("SEARCH_LIST", displayList);
-            request.setAttribute("SEARCH_PLAN_REAL", true);
-            RequestDispatcher rq = request.getRequestDispatcher("addRecipeToPlan.jsp");
-            rq.forward(request, response);
-        } else {
-            request.setAttribute("SEARCH_PLAN_REAL", false);
-            RequestDispatcher rq = request.getRequestDispatcher("addRecipeToPlan.jsp");
-            rq.forward(request, response);
+                DisplayRecipeDTO d = new DisplayRecipeDTO(r.getId(), r.getTitle(), thumbnailPath, category, rating, owner);
+                displayList.add(d);
+            }
+            request.setAttribute("searchRecipesList", displayList);
+            String url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=true";
+            request.getRequestDispatcher(url).forward(request, response);
         }
-
-        response.sendRedirect("error.jsp");
     }
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+
     /**
      * Handles the HTTP <code>GET</code> method.
      *

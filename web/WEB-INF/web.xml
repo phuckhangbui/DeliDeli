@@ -362,6 +362,10 @@
         <servlet-name>CategoryLoadServlet</servlet-name>
         <servlet-class>Servlet.User.CategoryLoadServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>PlanSearchServlet</servlet-name>
+        <servlet-class>Servlet.User.PlanSearchServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -641,6 +645,10 @@
     <servlet-mapping>
         <servlet-name>CategoryLoadServlet</servlet-name>
         <url-pattern>/CategoryLoadServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PlanSearchServlet</servlet-name>
+        <url-pattern>/PlanSearchServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

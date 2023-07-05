@@ -43,9 +43,8 @@ public class MealDAO {
                     int recipe_id = rs.getInt("recipe_id");
                     Time start_time = rs.getTime("start_time");
                     Time end_time = rs.getTime("end_time");
-                    int plan_id = rs.getInt("plan_id");
 
-                    MealDTO meal = new MealDTO(id, date_id, recipe_id, start_time, end_time, plan_id);
+                    MealDTO meal = new MealDTO(id, date_id, recipe_id, start_time, end_time, date_id);
                     result.add(meal);
                 }
             }
@@ -75,7 +74,9 @@ public class MealDAO {
         ResultSet rs = null;
         ArrayList<MealDTO> result = new ArrayList<>();
 
-        String sql = "SELECT * FROM [Meal]"
+        String sql = "SELECT *\n"
+                + "FROM [Meal] m\n"
+                + "JOIN [Date] d ON m.date_id = d.id\n"
                 + "WHERE [plan_id] = ? and [date_id] = ?\n"
                 + "ORDER BY [start_time]\n";
 

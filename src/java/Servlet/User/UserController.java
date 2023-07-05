@@ -22,15 +22,6 @@ import javax.servlet.http.HttpServletResponse;
         maxRequestSize = 1024 * 1024 * 50) // 50MB => maximum request from server.
 public class UserController extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     private String url = "errorpage.html";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -45,8 +36,8 @@ public class UserController extends HttpServlet {
                 url = "error.jsp";
             } else {
                 switch (action.trim()) {
-                    case "search":
-                        url = "SearchServlet";
+                    case "recipePlanSearch":
+                        url = "PlanSearchServlet";
                         break;
                     case "userPublicDetail":
                         url = "UserPublicDetailServlet";
