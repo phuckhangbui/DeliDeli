@@ -121,15 +121,17 @@
                     <!--    TICK TOCK PLAN NOTIFICATION   -->
 
                     <%
-//                        LocalTime currentTime = LocalTime.now();
-//                        PlanDateDTO currentPlanToday = (PlanDateDTO) session.getAttribute("currentPlanToday");
-//                        System.out.println("[DEBUG] Check planTime - " + currentPlanToday.getStart_time());
-//                        Time startTimeFromDB = currentPlanToday.getStart_time();
-//                        LocalTime startTime = startTimeFromDB.toLocalTime();
-//                        if (startTime.isAfter(currentTime) || startTime.equals(currentTime)) {
-//                            System.out.println("Yahoo!");
-//                        }
-%>
+                        LocalTime currentTime = LocalTime.now();
+                        PlanDateDTO currentPlanToday = (PlanDateDTO) session.getAttribute("currentPlanToday");
+                        System.out.println("[DEBUG] Check planTime - " + currentPlanToday.getStart_time());
+                        Time startTimeFromDB = currentPlanToday.getStart_time();
+                        LocalTime startTime = startTimeFromDB.toLocalTime();
+                        if (currentTime.isAfter(startTime) || currentTime.equals(startTime)) {
+                            System.out.println("Yahoo!");
+                        } else {
+                            System.out.println("It's not the correct time yet.");
+                        }
+                    %>
 
                     <!--                                  -->
 
