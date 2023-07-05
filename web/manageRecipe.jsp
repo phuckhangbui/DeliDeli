@@ -82,7 +82,7 @@
                     </div>
                     <div>
                         <a href="MainController?action=logout">
-                            <img src="./assets/bug-report-unchosen-icon.svg" alt="">
+                            <img src="./assets/leave-icon.svg" alt="">
                             Logout
                         </a>
                     </div>
@@ -118,7 +118,7 @@
                         <div>
                             <a href="AdminController?action=manageRecipe" class="active">
                                 <img src="./assets/post-icon.svg" alt="">
-                                Posts
+                                Recipe
                             </a>
                         </div>
                         <div>
@@ -135,7 +135,7 @@
                         </div>
                         <div>
                             <a href="MainController?action=logout">
-                                <img src="./assets/bug-report-unchosen-icon.svg" alt="">
+                                <img src="./assets/leave-icon.svg" alt="">
                                 Logout
                             </a>
                         </div>
@@ -284,5 +284,6 @@
             </div>
         </div>
         <script src="bootstrap/js/bootstrap.min.js" ></script>
+        <script src="./script/recipeListScript.js"></script>
     </body>
 </html>

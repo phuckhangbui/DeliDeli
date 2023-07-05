@@ -14,7 +14,10 @@ body {
     font-weight: 500;
     font-size: 16px;
 }
-
+.unspecified{
+    font-style: italic;
+    color: rgb(0,0,0,0.5);
+}
 a {
     text-decoration: none;
     color: black;
@@ -1253,6 +1256,9 @@ span {
 
 .user-profile-public-avatar img {
     width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 100px;
 }
 
 .user-profile-save-button {
@@ -1403,6 +1409,9 @@ span {
 
 .user-community-profile-avatar img {
     width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 100px;
 }
 
 .user-community-profile-avatar div:last-child {

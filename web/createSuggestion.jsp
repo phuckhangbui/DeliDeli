@@ -82,7 +82,7 @@
                     </div>
                     <div>
                         <a href="MainController?action=logout">
-                            <img src="./assets/bug-report-unchosen-icon.svg" alt="">
+                            <img src="./assets/leave-icon.svg" alt="">
                             Logout
                         </a>
                     </div>
@@ -110,38 +110,32 @@
                             <img src="assets/Logo3.svg" alt="">
                         </a>
                         <div>
-                            <a href="AdminController?action=manageAccount">
-                                <img src="./assets/user-unchose.svg" alt="">
+                            <a href="AdminController?action=manageAccount" >
+                                <img src="./assets/user-unchosen-icon.svg" alt="">
                                 User
                             </a>
                         </div>
                         <div>
-                            <a href="AdminController?action=manageRecipe">
-                                <img src="./assets/post-unchose.svg" alt="">
-                                Posts
+                            <a href="AdminController?action=manageRecipe" >
+                                <img src="./assets/post-unchosen-icon.svg" alt="">
+                                Recipe
                             </a>
                         </div>
                         <div>
                             <a href="AdminController?action=manageSuggestion" class="active">
-                                <img src="./assets/content-unchose.svg" alt="">
+                                <img src="./assets/content-icon.svg" alt="">
                                 Content
                             </a>
                         </div>
                         <div>
                             <a href="AdminController?action=manageNews">
-                                <img src="./assets/news.svg" alt="">
+                                <img src="./assets/news-unchosen-icon.svg" alt="">
                                 News
                             </a>
                         </div>
                         <div>
-                            <a href="adminBroadcast.jsp">
-                                <img src="./assets/broadcast-unchose.svg" alt="">
-                                Broadcast
-                            </a>
-                        </div>
-                        <div>
                             <a href="MainController?action=logout">
-                                <img src="./assets/bug-report-unchosen-icon.svg" alt="">
+                                <img src="./assets/leave-icon.svg" alt="">
                                 Logout
                             </a>
                         </div>
@@ -168,12 +162,15 @@
                             ArrayList<RecipeDTO> listRecipe = (ArrayList) request.getAttribute("listRecipe");
                             if (listRecipe != null && listRecipe.size() > 0) {
                         %>
-                        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="AdminController?action=manageSuggestion">Content List</a></li>
-                                <li class="breadcrumb-item current-link" aria-current="page">Add Content</li>
-                            </ol>
-                        </nav>
+
+                        <div class="nav-top-bar-search">
+                            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="AdminController?action=manageSuggestion">Content List</a></li>
+                                    <li class="breadcrumb-item current-link" aria-current="page">Add Content</li>
+                                </ol>
+                            </nav>
+                        </div>
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr>

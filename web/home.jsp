@@ -38,11 +38,10 @@
         <div class="new">
             <div class="container">
                 <div class="row">
-                    <header>
-                        <a href="" class="header">
-                            <p>What's New</p>
-                            <img src="./assets/arrow.svg" alt="">
-                        </a>
+                    <header class="search-result-header">
+                        <p>
+                            What's New
+                        </p>
                     </header>
                 </div>
                 <div class="row">
@@ -69,7 +68,7 @@
                             <img src="ServletImageLoader?identifier=<%= news.getImage()%>" alt="">
                             <p><%= news.getTitle()%></p>
                         </a>
-                        
+
                         <%
                             news = listNews.get(1);
                             newsCategory = listNewsCategories.get(1);

@@ -73,7 +73,7 @@
                                 <%
                                 } else {
                                 %>
-                                <p>Unspecified</p>
+                                <p class="unspecified">Unspecified</p>
                                 <%
                                     }
                                 %>
@@ -89,7 +89,7 @@
                                 <%
                                 } else {
                                 %>
-                                <p>Unspecified</p>
+                                <p class="unspecified">Unspecified</p>
                                 <%
                                     }
                                 %>
@@ -100,7 +100,7 @@
 
                                 <%
                                     if (accountDetail.getSpecialty().equals("")) { %>
-                                <p>Unspecified</p>
+                                <p class="unspecified">Unspecified</p>
                                 <%
                                 } else {
                                 %>
@@ -111,7 +111,7 @@
                                 <p>ABOUT</p>
                                 <%
                                     if (accountDetail.getBio().equals("")) { %>
-                                <p>Unspecified</p>
+                                <p class="unspecified">Unspecified</p>
                                 <%
                                 } else {
                                 %>

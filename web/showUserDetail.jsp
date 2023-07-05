@@ -85,7 +85,7 @@
                     </div>
                     <div>
                         <a href="MainController?action=logout">
-                            <img src="./assets/bug-report-unchosen-icon.svg" alt="">
+                            <img src="./assets/leave-icon.svg" alt="">
                             Logout
                         </a>
                     </div>
@@ -114,31 +114,31 @@
                         </a>
                         <div>
                             <a href="AdminController?action=manageAccount" class="active">
-                                <img src="./assets/user-unchose.svg" alt="">
+                                <img src="./assets/user-icon.svg" alt="">
                                 User
                             </a>
                         </div>
                         <div>
                             <a href="AdminController?action=manageRecipe">
-                                <img src="./assets/post-unchose.svg" alt="">
-                                Posts
+                                <img src="./assets/post-unchosen-icon.svg" alt="">
+                                Recipe
                             </a>
                         </div>
                         <div>
                             <a href="AdminController?action=manageSuggestion">
-                                <img src="./assets/content-unchose.svg" alt="">
+                                <img src="./assets/content-unchosen-icon.svg" alt="">
                                 Content
                             </a>
                         </div>
                         <div>
                             <a href="AdminController?action=manageNews">
-                                <img src="./assets/news.svg" alt="">
+                                <img src="./assets/news-unchosen-icon.svg" alt="">
                                 News
                             </a>
                         </div>
                         <div>
                             <a href="MainController?action=logout">
-                                <img src="./assets/bug-report-unchosen-icon.svg" alt="">
+                                <img src="./assets/leave-icon.svg" alt="">
                                 Logout
                             </a>
                         </div>
