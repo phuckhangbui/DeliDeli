@@ -54,7 +54,7 @@ public class CreateBroadcastServlet extends HttpServlet {
 
             String fileName = "";
             Part filePart = request.getPart("file");
-            if (filePart.getInputStream().available() != 0) {
+            if (filePart.getSubmittedFileName() == null) {
                 
             } else {
                 String uploadPath = "C:/project-swp/pictures/Broadcast/";
