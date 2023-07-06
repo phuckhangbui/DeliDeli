@@ -25,6 +25,7 @@ import lombok.ToString;
 public class PlanDateDTO {
     private int id;
     private Date date;
+    private int date_id;
     private int week_id;
     private int plan_id;
     private Time start_time;
@@ -36,6 +37,17 @@ public class PlanDateDTO {
         this.week_id = week_id;
         this.plan_id = plan_id;
     }
+
+    public PlanDateDTO(int id, Date date, int week_id, int plan_id, Time start_time, Time end_time) {
+        this.id = id;
+        this.date = date;
+        this.week_id = week_id;
+        this.plan_id = plan_id;
+        this.start_time = start_time;
+        this.end_time = end_time;
+    }
+    
+    
 
     
 }

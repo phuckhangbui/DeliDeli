@@ -91,12 +91,13 @@ public class PlanDateDAO {
 
                     int id = rs.getInt("id");
                     Date date = rs.getDate("date");
+                    int date_id = rs.getInt("date_id");
                     int week_id = rs.getInt("week_id");
                     plan_id = rs.getInt("plan_id");
                     Time start_time = rs.getTime("start_time");
                     Time end_time = rs.getTime("end_time");
 
-                    result = new PlanDateDTO(id, date, week_id, plan_id, start_time, end_time);
+                    result = new PlanDateDTO(id, date, date_id, week_id, plan_id, start_time, end_time);
                     return result;
                 }
             }
