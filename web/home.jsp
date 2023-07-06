@@ -173,7 +173,7 @@
                         LocalTime NightStartTime = LocalTime.of(20, 0);
 
                         if (currentTime.isAfter(MorningStartTime) && currentTime.isBefore(AfternoonStartTime)) {
-                            recommendList = NavigationBarUtils.searchRecipes(" Breakfast", "Category");
+                            recommendList = NavigationBarUtils.searchRecipes("Breakfast", "Category");
                             time = "breakfast";
                         } else if (currentTime.isAfter(AfternoonStartTime)
                                 && currentTime.isBefore(EveningStartTime)) {

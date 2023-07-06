@@ -4,6 +4,7 @@
     Author     : Walking Bag
 --%>
 
+<%@page import="DTO.DisplayRecipeDTO"%>
 <%@page import="DAO.DietDAO"%>
 <%@page import="DTO.DietDTO"%>
 <%@page import="DAO.RecipeDAO"%>
@@ -32,6 +33,11 @@
             href="https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed:wght@300;400;500;600;700&display=swap"
             rel="stylesheet">
 
+        <script>
+            function setRecipeId(button, recipeId) {
+                document.getElementById("recipeIdInput" + recipeId).value = recipeId;
+            }
+        </script>
     </head>
 
     <body>
@@ -116,12 +122,10 @@
                         PlanDTO plan = (PlanDTO) request.getAttribute("plan");
                         boolean SEARCH_PLAN_REAL = (boolean) request.getAttribute("SEARCH_PLAN_REAL");
                     %>
-
                     <div class=" plan-table">
                         <%
                             ArrayList<PlanDateDTO> planDate = (ArrayList<PlanDateDTO>) request.getAttribute("planDate");
                             for (PlanDateDTO dateList : planDate) {
-                                System.out.println("DateID: " + dateList.getId());
                                 ArrayList<MealDTO> breakfastMeals = MealDAO.getAllMealsTimeBased(plan.getId(), dateList.getId(), true, false, false);
                                 ArrayList<MealDTO> lunchMeals = MealDAO.getAllMealsTimeBased(plan.getId(), dateList.getId(), false, true, false);
                                 ArrayList<MealDTO> dinnerMeals = MealDAO.getAllMealsTimeBased(plan.getId(), dateList.getId(), false, false, true);
@@ -439,18 +443,19 @@
                             scrollTarget.scrollIntoView({behavior: 'smooth'});
                         }
                     </script>
-                    <% } %>
+                    <% }%>
                     <div class="add-recipe-to-plan">
                         <div class="add-recipe-to-plan-section-header">
                             Add Recipes Section
                         </div>
                         <div class="add-recipe-to-plan-search-bar">
                             <form action="UserController" method="post">
-                                <button type="submit" name="action" value="search">
+                                <button type="submit" name="action" value="recipePlanSearch">
                                     <img src="assets/search-icon.svg" alt="">
                                 </button>
                                 <input type="text" name="txtsearch" placeholder="What recipes are you searching for ?">
                                 <input type="hidden" name="isPlan" value="true" />
+                                <input type="hidden" name="planId" value="<%= plan.getId()%>"/>
                                 <select name="searchBy" id="">
                                     <option value="Title" selected="selected">TITLE</option>
                                     <option value="Category">CATEGORIES</option>
@@ -465,12 +470,11 @@
 
 
 
-
                 <div class="row add-recipe-to-plan-content">
                     <%
-                        ArrayList<RecipeDTO> searchRecipesList = (ArrayList<RecipeDTO>) request.getAttribute("searchRecipesList");
+                        ArrayList<DisplayRecipeDTO> searchRecipesList = (ArrayList<DisplayRecipeDTO>) request.getAttribute("SEARCH_LIST");
                         if (searchRecipesList != null && !searchRecipesList.isEmpty()) {
-                            for (RecipeDTO list : searchRecipesList) {
+                            for (DisplayRecipeDTO list : searchRecipesList) {
                     %>
                     <div class="col-md-3">
                         <div href="" class="add-recipe-to-plan-content-recipe">
@@ -478,6 +482,9 @@
                                 <img src="./pictures/egg1.jpeg" alt="">
                             </div>
                             <div class="add-recipe-to-plan-content-recipe-title"><%= list.getTitle()%></div>
+                            <%
+                                System.out.println("Title - " + list.getTitle());
+                            %>
                             <div class="add-recipe-to-plan-content-recipe-nutrients">
                                 <p><span class="plan-table-calories">Cals</span>20</p>
                                 <p><span class="plan-table-protein">P</span> 29g</p>
@@ -485,90 +492,77 @@
                                 <p><span class="plan-table-fat">F</span> 434g</p>
                             </div>
                             <div class="add-recipe-to-plan-content-recipe-button">
-                                <button type="button" class="" data-bs-toggle="modal" data-bs-target="#addRecipeToPlan">
+                                <button type="button" class="" data-bs-toggle="modal" data-bs-target="#addRecipeToPlan<%= list.getId()%>">
                                     Add
                                 </button>
                                 <button type="button">
-                                    <a href="https://www.youtube.com/" target="_blank">View</a>
+                                    <a href="MainController?action=getRecipeDetailById&id=" target="_blank">View</a>
                                 </button>
                             </div>
                         </div>
                     </div>
+
+
                     <!-- Modal -->
-                    <div class="modal fade" id="addRecipeToPlan" tabindex="-1"
-                         aria-labelledby="addRecipeToPlanModalLabel" aria-hidden="true">
-                        <form class="modal-dialog add-recipe-to-plan-modal">
+                    <div class="modal fade" id="addRecipeToPlan<%= list.getId()%>" tabindex="-1"
+                         aria-labelledby="addRecipeToPlanModalLabel<%= list.getId()%>" aria-hidden="true">
+                        <form action="UserController" method="post" class="modal-dialog add-recipe-to-plan-modal">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Adding Recipe To Plan</h1>
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel<%= list.getId()%>">Adding Recipe To Plan</h1>
                                 </div>
                                 <div class="modal-body">
                                     <div>
                                         <div>What day do you want to cook this recipe ?</div>
                                         <div class="row">
-                                            <div class="col-md-3">
-                                                <input type="checkbox" id="Monday" name="Monday" value="Bike">
-                                                <label for="Monday"> Monday</label>
+                                            <%
+                                                for (PlanDateDTO dateList : planDate) {
+                                                    SimpleDateFormat dayOfWeekFormat = new SimpleDateFormat("EEEE");
+                                                    String dayOfWeek = dayOfWeekFormat.format(dateList.getDate());
+
+                                                    SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd");
+                                                    String formattedDate = dateFormat.format(dateList.getDate());
+                                            %>
+                                            <div class="col-md-6">
+                                                <input type="checkbox" id="date_id<%= dateList.getId()%>" name="date_id" value="<%= dateList.getId()%>">
+                                                <label for="dateOfWeek<%= dateList.getId()%>"> <%= dayOfWeek%> (<%= formattedDate%>) </label>
                                             </div>
-                                            <div class="col-md-3">
-                                                <input type="checkbox" id="Tuesday" name="Tuesday" value="Car">
-                                                <label for="Tuesday"> Tuesday</label>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <input type="checkbox" id="Wednesday" name="Wednesday" value="Boat">
-                                                <label for="Wednesday"> Wednesday</label>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <input type="checkbox" id="Thursday" name="Thursday" value="Bike">
-                                                <label for="Thursday"> Thursday</label>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <input type="checkbox" id="Friday" name="Friday" value="Boat">
-                                                <label for="Friday"> Friday</label>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <input type="checkbox" id="Saturday" name="Saturday" value="Boat">
-                                                <label for="Saturday"> Saturday</label>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <input type="checkbox" id="Sunday" name="Sunday" value="Boat">
-                                                <label for="Sunday"> Sunday</label>
-                                            </div>
+                                            <%
+                                                }
+                                            %>
                                         </div>
-                                        <!--                                                <div>What part of the day do you want to have this meal ?</div>
-                                                                                        <div class="row">
-                                                                                            <div class="col-md-3">
-                                                                                                <input type="checkbox" id="Breakfast" name="Breakfast" value="Bike">
-                                                                                                <label for="Breakfast"> Breakfast</label>
-                                                                                            </div>
-                                                                                            <div class="col-md-3">
-                                                                                                <input type="checkbox" id="Lunch" name="Lunch" value="Car">
-                                                                                                <label for="Lunch"> Lunch</label>
-                                                                                            </div>
-                                                                                            <div class="col-md-3">
-                                                                                                <input type="checkbox" id="Dinner" name="Dinner" value="Boat">
-                                                                                                <label for="Dinner"> Dinner</label>
-                                                                                            </div>
-                                                                                        </div>-->
                                         <label for="eating-time">What time of the day do you want to have this meal ?</label>
                                         <br>
-                                        <input type="time" id="eating-time" name="eating-time">
+                                        <input type="time" id="start_time" name="start_time">
+                                        <br>
+                                        <label for="eating-time">What time of the day do you want to have this meal ?</label>
+                                        <br>
+                                        <input type="time" id="end_time" name="end_time">
                                     </div>
                                 </div>
+
+                                <input type="hidden" id="recipeIdInput<%= list.getId()%>" name="recipe_id" value="<%= list.getId()%>">
+                                <input type="hidden" name="plan_id" value="<%= plan.getId() %>" />
+                                
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary"
                                             data-bs-dismiss="modal">Close</button>
-                                    <button type="button" class="add-recipe-to-plan-modal-button">Add</button>
+                                    <button type="submit" name="action" value="addPlanRecipe" class="add-recipe-to-plan-modal-button" data-recipeid="<%= list.getId()%>" onclick="setRecipeId(this, '<%= list.getId()%>')">
+                                        Add
+                                    </button>
                                 </div>
                             </div>
                         </form>
                     </div>
                     <%
                             }
+                        } else {
+                            System.out.println("The search list is null");
                         }
                     %>
                 </div>
             </div>
+
 
 
 

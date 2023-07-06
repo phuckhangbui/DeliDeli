@@ -30,7 +30,6 @@ public class SearchServlet extends HttpServlet {
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             String admin = request.getParameter("admin");
-            String isPlan = request.getParameter("isPlan");
             String txtsearch = request.getParameter("txtsearch").toLowerCase();
             String searchBy = request.getParameter("searchBy").toLowerCase();
 
@@ -49,22 +48,6 @@ public class SearchServlet extends HttpServlet {
                 }
                 request.setAttribute("searchRecipesList", displayList);
                 request.getRequestDispatcher("manageRecipe.jsp").forward(request, response);
-            } else if (isPlan != null) {
-                ArrayList<RecipeDTO> list = NavigationBarUtils.searchRecipes(txtsearch, searchBy);
-                ArrayList<DisplayRecipeDTO> displayList = new ArrayList<>();
-                for (RecipeDTO r : list) {
-                    String thumbnailPath = RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath();
-                    String category = RecipeDAO.getCategoryByRecipeId(r.getId());
-                    double rating = RecipeDAO.getRatingByRecipeId(r.getId());
-                    UserDTO owner = RecipeDAO.getRecipeOwnerByRecipeId(r.getId());
-
-                    DisplayRecipeDTO d = new DisplayRecipeDTO(r.getId(), r.getTitle(), thumbnailPath, category, rating, owner);
-                    displayList.add(d);
-                }
-                request.setAttribute("searchRecipesList", displayList);
-                String url = "MainController?action=editPlan&id=" + 3 + "&isSearch=true";
-                System.out.println("Searched!");
-                request.getRequestDispatcher(url).forward(request, response);
             } else {
                 HttpSession session = request.getSession();
                 session.setAttribute("searchRecipesList", null);

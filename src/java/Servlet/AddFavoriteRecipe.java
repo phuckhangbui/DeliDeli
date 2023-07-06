@@ -2,11 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package Servlet.Admin;
+package Servlet;
 
-import DAO.AdminDAO;
-import DAO.NotificationDAO;
-import DTO.NotificationDTO;
+import DAO.RecipeDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -16,30 +14,22 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author Admin
+ * @author Daiisuke
  */
-public class RejectRecipeServlet extends HttpServlet {
+public class AddFavoriteRecipe extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            String title = request.getParameter("txtTitle");
-            String desc = request.getParameter("txtDesc");
-            java.sql.Timestamp sendDate = new java.sql.Timestamp(System.currentTimeMillis());
-            String userId = request.getParameter("userId");
-            String notificationType = request.getParameter("notificationType");
-            String recipeId = request.getParameter("recipeId");
-            
-            NotificationDTO notification = new NotificationDTO(0, title, desc, sendDate, false, new Integer(userId), 
-                                                                new Integer(notificationType), new Integer(recipeId), 0, "");
-            NotificationDAO.addNotification(notification);
-            
-            AdminDAO.rejectRecipe(new Integer(recipeId));
-            
-            request.getRequestDispatcher("ManageRecipeServlet").forward(request, response);
-            
+        int user_id = Integer.parseInt(request.getParameter("userId"));
+        int recipe_id = Integer.parseInt(request.getParameter("recipeId"));
+        
+        boolean result = RecipeDAO.addFavoriteRecipe(user_id, recipe_id);
+        
+        if (result) {
+            response.sendRedirect("MainController?action=getRecipeDetailById&id=" + recipe_id);
+        } else {
+            response.sendRedirect("errorpage.html");
         }
     }
 

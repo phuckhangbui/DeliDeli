@@ -2,13 +2,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package Servlet.Admin;
+package Servlet.User;
 
-import DAO.AdminDAO;
-import DAO.NotificationDAO;
-import DTO.NotificationDTO;
+import DAO.RecipeDAO;
+import DTO.DisplayRecipeDTO;
+import DTO.RecipeDTO;
+import DTO.UserDTO;
+import Utils.NavigationBarUtils;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -16,34 +19,43 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author Admin
+ * @author Daiisuke
  */
-public class RejectRecipeServlet extends HttpServlet {
+public class PlanSearchServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            String title = request.getParameter("txtTitle");
-            String desc = request.getParameter("txtDesc");
-            java.sql.Timestamp sendDate = new java.sql.Timestamp(System.currentTimeMillis());
-            String userId = request.getParameter("userId");
-            String notificationType = request.getParameter("notificationType");
-            String recipeId = request.getParameter("recipeId");
-            
-            NotificationDTO notification = new NotificationDTO(0, title, desc, sendDate, false, new Integer(userId), 
-                                                                new Integer(notificationType), new Integer(recipeId), 0, "");
-            NotificationDAO.addNotification(notification);
-            
-            AdminDAO.rejectRecipe(new Integer(recipeId));
-            
-            request.getRequestDispatcher("ManageRecipeServlet").forward(request, response);
-            
+
+        Boolean isPlan = Boolean.parseBoolean(request.getParameter("isPlan"));
+        String txtsearch = request.getParameter("txtsearch").toLowerCase();
+        String searchBy = request.getParameter("searchBy").toLowerCase();
+        String plan_id = request.getParameter("planId").toLowerCase();
+
+        System.out.println("isPlan - " + isPlan);
+        System.out.println("txtSearch - " + txtsearch);
+        System.out.println("searchBy - " + searchBy);
+        System.out.println("plan_id - " + plan_id);
+
+        if (isPlan != null && isPlan) {
+            ArrayList<RecipeDTO> list = NavigationBarUtils.searchRecipes(txtsearch, searchBy);
+            ArrayList<DisplayRecipeDTO> displayList = new ArrayList<>();
+            for (RecipeDTO r     : list) {
+                String thumbnailPath = RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath();
+                String category = RecipeDAO.getCategoryByRecipeId(r.getId());
+                double rating = RecipeDAO.getRatingByRecipeId(r.getId());
+                UserDTO owner = RecipeDAO.getRecipeOwnerByRecipeId(r.getId());
+
+                DisplayRecipeDTO d = new DisplayRecipeDTO(r.getId(), r.getTitle(), thumbnailPath, category, rating, owner);
+                displayList.add(d);
+            }
+            request.setAttribute("searchRecipesList", displayList); 
+            String url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=true";
+            request.getRequestDispatcher(url).forward(request, response);
         }
     }
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+
     /**
      * Handles the HTTP <code>GET</code> method.
      *

@@ -1,4 +1,7 @@
 <%-- Document : header Created on : May 24, 2023, 7:23:26 PM Author : khang --%>
+<%@page import="java.sql.Time"%>
+<%@page import="java.time.LocalTime"%>
+<%@page import="DTO.PlanDateDTO"%>
 <%@page import="DTO.DisplayNotificationDTO"%>
 <%@page import="DTO.NotificationTypeDTO"%>
 <%@page import="DTO.NotificationDTO"%>
@@ -59,7 +62,6 @@
 
             UserDTO user
                     = (UserDTO) session.getAttribute("user");
-
         %>
         <div
             class="navigator-bar">
@@ -115,6 +117,43 @@
                     <%if (user != null) {%>
                     <% int[] count = (int[]) request.getAttribute("count");
                     %>
+
+                    <!--    TICK TOCK PLAN NOTIFICATION   -->
+
+                    <%
+                        LocalTime currentTime = LocalTime.now();
+                        PlanDateDTO currentPlanToday = (PlanDateDTO) session.getAttribute("currentPlanToday");
+                        if (currentPlanToday.getStart_time() != null) {
+                            Time startTimeFromDB = currentPlanToday.getStart_time();
+                            LocalTime startTime = startTimeFromDB.toLocalTime();
+                            System.out.println("[HEADER]: START TIME - " + startTime);
+                            if (currentTime.isAfter(startTime) || currentTime.equals(startTime)) {
+                                // Activate the servlet using AJAX
+                    %>
+                    <script>
+                        var xhr = new XMLHttpRequest();
+                        xhr.open("POST", "UserController?action=planNotification", true);
+                        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                        // This means execute when request is successful (status === 200).
+                        xhr.onreadystatechange = function () {
+                            if (xhr.readyState === 4 && xhr.status === 200) {
+                                console.log("Servlet activated!");
+                            }
+                        };
+                        xhr.send();
+                    </script>
+                    <%
+                            } else {
+                                System.out.println("[HEADER]: It's not the correct time yet.");
+                            }
+                        } else {
+                            System.out.println("[HEADER]: No plan yet.");
+                        }
+                    %>
+
+
+                    <!--                                  -->
+
                     <div
                         class="notification col-md-1">
                         <div
@@ -254,7 +293,7 @@
                                     <a
                                         href="UserController?action=userPublicDetail&userId=<%=user.getId()%>">Management</a>
                                     <a href="addRecipe.jsp">Add Recipe</a>
-                                    <a href="planManagement.jsp">Plan Management</a>
+                                    <a href="UserController?action=planManagement&userId=<%=user.getId()%>">Plan Management</a>
 
                                     <a
                                         href="MainController?action=logout">Logout</a>
