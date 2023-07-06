@@ -4,6 +4,7 @@
  */
 package DTO;
 
+import java.sql.Date;
 import lombok.*;
 
 /**
@@ -23,4 +24,20 @@ public class DisplayReviewDTO {
     private String thumbnailPath;
     private String recipeCategory;
     private UserDTO recipeOwner;
+    private UserDTO reviewOwner;
+    private Date create_at;
+    private Date update_at;
+
+    public DisplayReviewDTO(int id, int reviewRating, String reviewContent, int recipeId, String recipeTitle, String thumbnailPath, String recipeCategory, UserDTO recipeOwner) {
+        this.id = id;
+        this.reviewRating = reviewRating;
+        this.reviewContent = reviewContent;
+        this.recipeId = recipeId;
+        this.recipeTitle = recipeTitle;
+        this.thumbnailPath = thumbnailPath;
+        this.recipeCategory = recipeCategory;
+        this.recipeOwner = recipeOwner;
+    }
+    
+    
 }
