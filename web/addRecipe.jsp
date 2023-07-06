@@ -19,7 +19,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!--      Bootstrap         -->
         <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css"/>
-        
+
         <!--      CSS         -->
         <link rel="stylesheet" href="./styles/recipeStyle.css">
         <link rel="stylesheet" href="./styles/userStyle.css">
@@ -251,73 +251,73 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                     </script>
                                 </div>
                             </div>
-                            
-                        
-                        <div class="row add-recipe-info-type">
-
-                            <div class="col-md-3 add-recipe-info-type-content">
-                                <div>Category:</div>
-                                <select name="category">
-                                    <%for (Map.Entry<Integer, String> entry : cateMap.entrySet()) {
-                                            Integer key = entry.getKey();
-                                            String value = entry.getValue();
-
-                                    %>
-                                    <option value="<%=key%>"><%=value%></option>
-                                    <% }%>
-                                </select>
-                            </div>
-                            <div class="col-md-3 add-recipe-info-type-content">
-                                <div>Cuisine:</div>
-                                <select name="cuisine">
-                                    <%for (Map.Entry<Integer, String> entry : cuisineMap.entrySet()) {
-                                            Integer key = entry.getKey();
-                                            String value = entry.getValue();
-
-                                    %>
-                                    <option value="<%=key%>"><%=value%></option>
-                                    <% }%>
-                                </select>
-                            </div>
-
-                            <div class="col-md-3 add-recipe-info-type-content">
-                                <div>Difficulties:</div>
-                                <select name="level">
-                                    <%for (Map.Entry<Integer, String> entry : levelMap.entrySet()) {
-                                            Integer key = entry.getKey();
-                                            String value = entry.getValue();
-
-                                    %>
-                                    <option value="<%=key%>"><%=value%></option>
-                                    <% }%>
-                                </select>
-                            </div>
-                                
 
 
-                            <div class="col-md-12 add-recipe-info-type-content">
-                                <div>Diet: <span>(If the diet you're looking for is not here, then no need to tick any of these boxes )</span></div>
-                                
-                                <div class="add-recipe-info-type-content-checkbox">
-                                    <% for (Map.Entry<Integer, String> entry : dietMap.entrySet()) {
-                                            Integer key = entry.getKey();
-                                            String value = entry.getValue();
-                                    %>
-                                    <input type="checkbox" name="diet" id="<%= value%>" value="<%= key%>" style="padding-left: 10px;">
-                                    <label for="<%= value%>" style="padding-right: 10px;"><%= value%></label>
-                                    <% }%>
+                            <div class="row add-recipe-info-type">
+
+                                <div class="col-md-3 add-recipe-info-type-content">
+                                    <div>Category:</div>
+                                    <select name="category">
+                                        <%for (Map.Entry<Integer, String> entry : cateMap.entrySet()) {
+                                                Integer key = entry.getKey();
+                                                String value = entry.getValue();
+
+                                        %>
+                                        <option value="<%=key%>"><%=value%></option>
+                                        <% }%>
+                                    </select>
+                                </div>
+                                <div class="col-md-3 add-recipe-info-type-content">
+                                    <div>Cuisine:</div>
+                                    <select name="cuisine">
+                                        <%for (Map.Entry<Integer, String> entry : cuisineMap.entrySet()) {
+                                                Integer key = entry.getKey();
+                                                String value = entry.getValue();
+
+                                        %>
+                                        <option value="<%=key%>"><%=value%></option>
+                                        <% }%>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-3 add-recipe-info-type-content">
+                                    <div>Difficulties:</div>
+                                    <select name="level">
+                                        <%for (Map.Entry<Integer, String> entry : levelMap.entrySet()) {
+                                                Integer key = entry.getKey();
+                                                String value = entry.getValue();
+
+                                        %>
+                                        <option value="<%=key%>"><%=value%></option>
+                                        <% }%>
+                                    </select>
+                                </div>
+
+
+
+                                <div class="col-md-12 add-recipe-info-type-content">
+                                    <div>Diet: <span>(If the diet you're looking for is not here, then no need to tick any of these boxes )</span></div>
+
+                                    <div class="add-recipe-info-type-content-checkbox">
+                                        <% for (Map.Entry<Integer, String> entry : dietMap.entrySet()) {
+                                                Integer key = entry.getKey();
+                                                String value = entry.getValue();
+                                        %>
+                                        <input type="checkbox" name="diet" id="<%= value%>" value="<%= key%>" style="padding-left: 10px;">
+                                        <label for="<%= value%>" style="padding-right: 10px;"><%= value%></label>
+                                        <% }%>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                                </div>
-                                
+
                         <div class="row add-recipe-info-number">
                             <div class="add-recipe-info-header">Nutrition <span class="add-recipe-info-header-des">(Per serving)</span> <span>*</span></div>
                             <div>
                                 For references:
                                 <button>Nutrition Table</button>
                             </div>
-                            
+
 
                             <div class="col-md-3 add-recipe-info-number-content">
                                 <div>Calories:</div>
@@ -416,11 +416,28 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                         </div>
                         <input type="text" name="userId" value="<%=user.getId()%>" hidden/>
                         <div class=" add-recipe-info-submit">
-                            <button type="submit" name="action" value="addRecipe">
+                            <button type="submit" name="action" value="addRecipe" onclick="return validateForm()">
                                 SUBMIT
                             </button>
                         </div>
                     </form>
+
+                    <script>
+                        function validateForm() {
+// Get the CKEditor content
+                            var editorContent = CKEDITOR.instances.editor.getData();
+
+// Perform validation
+                            if (!editorContent.trim()) {
+                                // Display an error message or take any other necessary action
+                                alert("The direction is empty! Please provide instruction for your recipe");
+                                return false; // Prevent form submission
+                            }
+
+// Form is valid, proceed with form submission
+                            return true;
+                        }
+                    </script>
 
                 </div>
             </div>
@@ -428,7 +445,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
 
         <!--         Footer       -->
         <%@include file="footer.jsp" %>
-        
+
         <script src="bootstrap/js/bootstrap.min.js" ></script>
     </body>
 

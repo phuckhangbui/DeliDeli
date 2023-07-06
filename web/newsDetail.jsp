@@ -3,7 +3,6 @@
     Created on : Jun 1, 2023, 5:15:25 PM
     Author     : Admin
 --%>
-<%@page import="DAO.NewsDAO"%>
 <%@page import="DTO.NewsDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -24,25 +23,46 @@
     <body>
         <%@include file="header.jsp" %>
 
-        <!--         The banner       -->
-        <%@include file="banner.jsp" %>
-
         <!--       News Result     -->
-        <div class="new-result">
+        <div class="blank-background">
             <div class="container ">
-                <%
-                    NewsDTO news = (NewsDTO) request.getAttribute("news");
-                %>
-                <div class="row">
-                    <p><%= NewsDAO.getNewsCategoryByNewsId(news.getId())%></p>
-                    <header class="new-result-header">
+                <div class="row recipe-detail-info">
+                    <%
+                        NewsDTO news = (NewsDTO) request.getAttribute("news");
+                        String category = (String) request.getAttribute("category");
+                    %>
+                    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="home.jsp">Home</a></li>
+                            <li class="breadcrumb-item"><a href="LoadNewsList?id=<%= news.getNews_category()%>"><%= category%></a></li>
+                            <li class="breadcrumb-item current-link" aria-current="page"><%= news.getTitle()%></li>
+                        </ol>
+                    </nav>
+                    <header class="recipe-detail-info-main-header">
                         <p><%= news.getTitle()%></p>
                     </header>
-                </div>
-                <div class="row new-result-content new-result-content-link">
-                    <div>
-                        <!--<p class="new-result-content-post-title"><%= news.getTitle()%></p>-->
-                        <p class="new-result-content-post-title">By: <%= request.getAttribute("author")%></p>
+                    <div class="recipe-detail-info-user">
+                        <a ><img src="./assets/profile-pic.svg" alt=""></a>
+                        <div>
+                            <span>By</span>
+                            <span><a > <%= request.getAttribute("author")%></a></span>
+                            <%
+                                if (news.getCreateAt().equals(news.getUpdateAt())) {
+                            %>
+                            <p>Create at: <%= news.getCreateAt()%></p>
+                            <%
+                            } else {
+                            %>
+                            <p>Update at: <%= news.getUpdateAt()%></p>
+                            <%
+                                }
+                            %>
+                        </div>
+                    </div>
+                    <div class="row new-result-content new-result-content-link">
+                        <!--                        <div>
+                                                    <p class="new-result-content-post-title"><%= news.getTitle()%></p>
+                                                    <p class="new-result-content-post-title">By: <%= request.getAttribute("author")%></p>
                         <%
                             if (news.getCreateAt().equals(news.getUpdateAt())) {
                         %>
@@ -54,16 +74,19 @@
                         <%
                             }
                         %>
+                    </div>-->
+                        <div class="recipe-detail-main-pic">
+                            <img src="ServletImageLoader?identifier=<%= news.getImage()%>" alt="">
+                        </div>
+                        <p><%= news.getDesc()%></p>
                     </div>
-                    <img src="ServletImageLoader?identifier=<%= news.getImage()%>" alt="">
-                    <p><%= news.getDesc()%></p>
                 </div>
             </div>
         </div>
 
         <!--         Footer       -->
         <%@include file="footer.jsp" %>
-        
+
         <script src="bootstrap/js/bootstrap.min.js" ></script>
     </body>
 </html>

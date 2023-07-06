@@ -4,7 +4,6 @@
     Author     : Admin
 --%>
 
-<%@page import="DAO.NewsDAO"%>
 <%@page import="DTO.NewsDTO"%>
 <%@page import="DTO.UserDTO"%>
 <%@page import="java.util.ArrayList"%>
@@ -42,7 +41,7 @@
                         <img src="assets/Logo3.svg" alt="">
                     </a>
                     <div>
-                        <a href="admin.jsp" >
+                        <a href="AdminController?action=adminDashboard" >
                             <img src="./assets/public-unchosen-icon.svg" alt="">
                             Dashboard
                         </a>
@@ -72,21 +71,15 @@
                         </a>
                     </div>
                     <div>
-                        <a href="#">
-                            <img src="./assets/policies-unchosen-icon.svg" alt="">
-                            Policies
-                        </a>
-                    </div>
-                    <div>
-                        <a href="#">
+                        <a href="adminBroadcast.jsp">
                             <img src="./assets/broadcast-unchosen-icon.svg" alt="">
                             Broadcast
                         </a>
                     </div>
                     <div>
-                        <a href="#">
-                            <img src="./assets/bug-report-unchosen-icon.svg" alt="">
-                            Report
+                        <a href="MainController?action=logout">
+                            <img src="./assets/leave-icon.svg" alt="">
+                            Logout
                         </a>
                     </div>
                 </nav>
@@ -112,12 +105,6 @@
                         <a class="logo" href="">
                             <img src="assets/Logo3.svg" alt="">
                         </a>
-                        <!--                        <div>
-                                                    <a href="admin.jsp">
-                                                        <img src="./assets/public-unchose.svg" alt="">
-                                                        Dashboard
-                                                    </a>
-                                                </div>-->
                         <div>
                             <a href="AdminController?action=manageAccount" >
                                 <img src="./assets/user-unchosen-icon.svg" alt="">
@@ -127,7 +114,7 @@
                         <div>
                             <a href="AdminController?action=manageRecipe" >
                                 <img src="./assets/post-unchosen-icon.svg" alt="">
-                                Posts
+                                Recipe
                             </a>
                         </div>
                         <div>
@@ -142,24 +129,12 @@
                                 News
                             </a>
                         </div>
-                        <!--                        <div>
-                                                    <a href="#">
-                                                        <img src="./assets/policies-unchose.svg" alt="">
-                                                        Policies
-                                                    </a>
-                                                </div>-->
-                        <!--                        <div>
-                                                    <a href="#">
-                                                        <img src="./assets/broadcast-unchose.svg" alt="">
-                                                        Broadcast
-                                                    </a>
-                                                </div>-->
-                        <!--                        <div>
-                                                    <a href="#">
-                                                        <img src="./assets/bug-report-unchose.svg" alt="">
-                                                        Report
-                                                    </a>
-                                                </div>-->
+                        <div>
+                            <a href="MainController?action=logout">
+                                <img src="./assets/leave-icon.svg" alt="">
+                                Logout
+                            </a>
+                        </div>
                     </nav>
 
                     <div class="col-md-10 recipe">
@@ -195,6 +170,8 @@
 
                             <%
                                 ArrayList<NewsDTO> listNews = (ArrayList) request.getAttribute("listNews");
+                                ArrayList<String> listNewsCategories = (ArrayList) request.getAttribute("listNewsCategories");
+                                ArrayList<String> listNewsAuthors = (ArrayList) request.getAttribute("listNewsAuthors");
                                 if (listNews.size() > 0 && listNews != null) {
                             %>
                             <table class="table table-striped table-hover">
@@ -202,32 +179,28 @@
                                     <tr>
                                         <th>No.</th>
                                         <th>Title</th>
-                                        <th>Created</th>
-                                        <th>Updated</th>
                                         <th>Owner</th>
                                         <th>Category</th>
-                                        <th></th>
-                                        <!--<th>Edit</th>-->
+                                        <th>Created</th>
+                                        <th>Updated</th>
+
                                     </tr>
                                 </thead>
                                 <tbody class="table-group-divider">
                                     <%
-                                        for (NewsDTO n : listNews) {
+                                        for (int i = 0; i < listNews.size(); i++) {
+                                            NewsDTO news = listNews.get(i);
+                                            String newsCategory = listNewsCategories.get(i);
+                                            String newsAuthor = listNewsAuthors.get(i);
                                     %>
                                     <tr>
-                                        <td><%= n.getId()%></td>
-                                        <td  ><%= n.getTitle()%></td>
-                                        <td><%= n.getCreateAt()%></td>
-                                        <td><%= n.getUpdateAt()%></td>
-                                        <td><%= NewsDAO.getNewsAuthorByNewsId(n.getId())%></td>
-                                        <td><%= NewsDAO.getNewsCategoryByNewsId(n.getId())%></td>
-                                        <td class="news-action-button">
-                                            <form action="AdminController" method="post" class="news-table-button">
-                                                <input type="hidden" value="<%= n.getId()%>" name="newsId">
-                                                <button type="submit" value="showNewsDetail" name="action">Show</button>
-                                            </form>
-                                        </td>
-                                        <!--<td><a href="createNews.jsp?id=<%= n.getId()%>" >Edit</a></td>-->
+                                        <td><%= news.getId()%></td>
+                                        <td class="recipe-and-user-link"><a href="AdminController?action=showNewsDetail&newsId=<%= news.getId()%>"><%= news.getTitle()%></a></td>
+                                        <td><%= newsAuthor%></td>
+                                        <td><%= newsCategory%></td>
+                                        <td><%= news.getCreateAt()%></td>
+                                        <td><%= news.getUpdateAt()%></td>
+                                        <!--<td><a href="createNews.jsp?id=<%= news.getId()%>" >Edit</a></td>-->
                                     </tr>
                                     <%
                                         }

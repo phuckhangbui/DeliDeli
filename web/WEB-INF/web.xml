@@ -28,6 +28,21 @@
         <filter-name>UserFilter</filter-name>
         <filter-class>Filter.UserFilter</filter-class>
     </filter>
+    <filter>
+        <filter-name>LoadHeaderFilter</filter-name>
+        <filter-class>Filter.LoadHeaderFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>LoadHomeFilter</filter-name>
+        <filter-class>Filter.LoadHomeFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>LoadHomeFilter</filter-name>
+        <url-pattern>/home.jsp</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+    </filter-mapping>
     <filter-mapping>
         <filter-name>UserFilter</filter-name>
         <servlet-name>UserController</servlet-name>
@@ -45,19 +60,6 @@
     <filter-mapping>
         <filter-name>UserFilter</filter-name>
         <url-pattern>/addRecipe.jsp</url-pattern>
-        <url-pattern>/addPlan.jsp</url-pattern>
-        <url-pattern>/addRecipeToPlan.jsp</url-pattern>
-        <url-pattern>/editRecipe.jsp</url-pattern>
-        <url-pattern>/pendingRecipeManagement.jsp</url-pattern>
-        <url-pattern>/planManagement.jsp</url-pattern>
-        <url-pattern>/privateRecipeManagement.jsp</url-pattern>
-        <url-pattern>/publicRecipeManagement.jsp</url-pattern>
-        <url-pattern>/rejectedRecipeManagement.jsp</url-pattern>
-        <url-pattern>/userEmailSetting.jsp</url-pattern>
-        <url-pattern>/userPassword.jsp</url-pattern>
-        <url-pattern>/userPublicDetail.jsp</url-pattern>
-        <url-pattern>/userReviewManagement.jsp</url-pattern>
-        <url-pattern>/userViewPlan.jsp</url-pattern>
         <dispatcher>REQUEST</dispatcher>
         <dispatcher>FORWARD</dispatcher>
         <dispatcher>INCLUDE</dispatcher>
@@ -65,17 +67,13 @@
     <filter-mapping>
         <filter-name>AdminFilter</filter-name>
         <url-pattern>/admin.jsp</url-pattern>
-        <url-pattern>/createNews.jsp</url-pattern>
-        <url-pattern>/createSuggestion.jsp</url-pattern>
-        <url-pattern>/manageAccount.jsp</url-pattern>
-        <url-pattern>/manageNews.jsp</url-pattern>
-        <url-pattern>/manageRecipe.jsp</url-pattern>
-        <url-pattern>/manageSuggestion.jsp</url-pattern>
-        <url-pattern>/showNewsDetail.jsp</url-pattern>
-        <url-pattern>/showRecipeDetail.jsp</url-pattern>
-        <url-pattern>/showUserDetail.jsp</url-pattern>
-        <url-pattern>/updateNews.jsp</url-pattern>
-        <url-pattern>/updateSuggestion.jsp</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>LoadHeaderFilter</filter-name>
+        <url-pattern>/*</url-pattern>
         <dispatcher>REQUEST</dispatcher>
         <dispatcher>FORWARD</dispatcher>
         <dispatcher>INCLUDE</dispatcher>
@@ -284,6 +282,98 @@
         <servlet-name>UserController</servlet-name>
         <servlet-class>Servlet.User.UserController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>LoadEditRecipeServlet</servlet-name>
+        <servlet-class>Servlet.User.LoadEditRecipeServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoadRecipeManagementServlet</servlet-name>
+        <servlet-class>Servlet.User.LoadRecipeManagementServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoadUserReviewServlet</servlet-name>
+        <servlet-class>Servlet.User.LoadUserReviewServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoadPublicDetailServlet</servlet-name>
+        <servlet-class>Servlet.LoadPublicDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoadPublicProfileServlet</servlet-name>
+        <servlet-class>Servlet.LoadPublicProfileServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>TriggerAppServlet</servlet-name>
+        <servlet-class>Servlet.TriggerAppServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SearchByTypeServlet</servlet-name>
+        <servlet-class>Servlet.SearchByTypeServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UserPublicDetailServlet</servlet-name>
+        <servlet-class>Servlet.User.UserPublicDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UserEmailSettingServlet</servlet-name>
+        <servlet-class>Servlet.User.UserEmailSettingServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UserPasswordSettingServlet</servlet-name>
+        <servlet-class>Servlet.User.UserPasswordSettingServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminDashboardServlet</servlet-name>
+        <servlet-class>Servlet.Admin.AdminDashboardServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoadNewsForUpdateServlet</servlet-name>
+        <servlet-class>Servlet.Admin.LoadNewsForUpdateServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoadSuggestionForUpdateServlet</servlet-name>
+        <servlet-class>Servlet.Admin.LoadSuggestionForUpdateServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoadSuggestionForCreateServlet</servlet-name>
+        <servlet-class>Servlet.Admin.LoadSuggestionForCreateServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoadNewsListServlet</servlet-name>
+        <servlet-class>Servlet.LoadNewsListServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddFavoriteServlet</servlet-name>
+        <servlet-class>Servlet.AddFavoriteServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateBroadcastServlet</servlet-name>
+        <servlet-class>Servlet.Admin.CreateBroadcastServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UploadBroadcastImageServlet</servlet-name>
+        <servlet-class>Servlet.Admin.UploadBroadcastImageServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PlanManagementServlet</servlet-name>
+        <servlet-class>Servlet.User.PlanManagementServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CategoryLoadServlet</servlet-name>
+        <servlet-class>Servlet.User.CategoryLoadServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PlanSearchServlet</servlet-name>
+        <servlet-class>Servlet.User.PlanSearchServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PlanAddRecipeServlet</servlet-name>
+        <servlet-class>Servlet.User.PlanAddRecipeServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PlanRecipeNotificationServlet</servlet-name>
+        <servlet-class>Servlet.User.PlanRecipeNotificationServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -484,12 +574,104 @@
         <servlet-name>UserController</servlet-name>
         <url-pattern>/UserController</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadEditRecipeServlet</servlet-name>
+        <url-pattern>/LoadEditRecipeServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadRecipeManagementServlet</servlet-name>
+        <url-pattern>/LoadRecipeManagementServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadUserReviewServlet</servlet-name>
+        <url-pattern>/LoadUserReviewServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadPublicDetailServlet</servlet-name>
+        <url-pattern>/LoadPublicDetailServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadPublicProfileServlet</servlet-name>
+        <url-pattern>/LoadPublicProfileServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TriggerAppServlet</servlet-name>
+        <url-pattern>/TriggerAppServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchByTypeServlet</servlet-name>
+        <url-pattern>/SearchByType</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserPublicDetailServlet</servlet-name>
+        <url-pattern>/UserPublicDetailServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserEmailSettingServlet</servlet-name>
+        <url-pattern>/UserEmailSettingServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserPasswordSettingServlet</servlet-name>
+        <url-pattern>/UserPasswordSettingServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminDashboardServlet</servlet-name>
+        <url-pattern>/AdminDashboardServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadNewsForUpdateServlet</servlet-name>
+        <url-pattern>/LoadNewsForUpdateServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadSuggestionForUpdateServlet</servlet-name>
+        <url-pattern>/LoadSuggestionForUpdateServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadSuggestionForCreateServlet</servlet-name>
+        <url-pattern>/LoadSuggestionForCreateServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadNewsListServlet</servlet-name>
+        <url-pattern>/LoadNewsList</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateBroadcastServlet</servlet-name>
+        <url-pattern>/CreateBroadcastServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UploadBroadcastImageServlet</servlet-name>
+        <url-pattern>/UploadBroadcastImageServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddFavoriteServlet</servlet-name>
+        <url-pattern>/AddFavoriteServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PlanManagementServlet</servlet-name>
+        <url-pattern>/PlanManagementServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CategoryLoadServlet</servlet-name>
+        <url-pattern>/CategoryLoadServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PlanSearchServlet</servlet-name>
+        <url-pattern>/PlanSearchServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PlanAddRecipeServlet</servlet-name>
+        <url-pattern>/PlanAddRecipeServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PlanRecipeNotificationServlet</servlet-name>
+        <url-pattern>/PlanRecipeNotificationServlet</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>home.jsp</welcome-file>
+        <welcome-file>TriggerAppServlet</welcome-file>
     </welcome-file-list>
 </web-app>

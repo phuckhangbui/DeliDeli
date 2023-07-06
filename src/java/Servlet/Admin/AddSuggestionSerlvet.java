@@ -33,17 +33,18 @@ public class AddSuggestionSerlvet extends HttpServlet {
             String id = request.getParameter("id");
             String update = request.getParameter("update");
             String suggestion = request.getParameter("suggestion");
+            String chosenSuggestion = request.getParameter("chosenSuggestion");
             String link = "";
 
             if (update == null) {
                 link = "createSuggestion.jsp";
             } else {
-                link = "updateSuggestion.jsp?suggestion=" + suggestion;
+                link = "updateSuggestion.jsp";
             }
 
             RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(new Integer(id));
-
             ArrayList<RecipeDTO> customSuggestionList = (ArrayList<RecipeDTO>) session.getAttribute("customSuggestionList");
+            ArrayList<RecipeDTO> listRecipe = RecipeDAO.getAllRecipes();
             if (customSuggestionList == null) {
                 customSuggestionList = new ArrayList<>();
             } else {
@@ -57,6 +58,11 @@ public class AddSuggestionSerlvet extends HttpServlet {
 
                 if (isDuplicate) {
                     request.setAttribute("error", "Recipe already added");
+                    request.setAttribute("suggestion", suggestion);
+                    request.setAttribute("chosenSuggestion", chosenSuggestion);
+                    request.setAttribute("update", update);
+                    request.setAttribute("listRecipe", listRecipe);
+                    session.setAttribute("customSuggestionList", customSuggestionList);
                     request.getRequestDispatcher(link).forward(request, response);
                     return;
                 }
@@ -65,6 +71,11 @@ public class AddSuggestionSerlvet extends HttpServlet {
             customSuggestionList.add(recipe);
 
             session.setAttribute("customSuggestionList", customSuggestionList);
+
+            request.setAttribute("suggestion", suggestion);
+            request.setAttribute("chosenSuggestion", chosenSuggestion);
+            request.setAttribute("update", update);
+            request.setAttribute("listRecipe", listRecipe);
             request.getRequestDispatcher(link).forward(request, response);
         }
     }

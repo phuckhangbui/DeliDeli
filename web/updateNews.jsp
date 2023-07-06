@@ -5,7 +5,6 @@
 --%>
 
 <%@page import="DTO.NewsDTO"%>
-<%@page import="DAO.NewsDAO"%>
 <%@page import="DTO.UserDTO"%>
 <%@page import="java.util.Map"%>
 <%@page import="java.util.HashMap"%>
@@ -45,7 +44,7 @@
                         <img src="assets/Logo3.svg" alt="">
                     </a>
                     <div>
-                        <a href="admin.jsp" >
+                        <a href="AdminController?action=adminDashboard" >
                             <img src="./assets/public-unchosen-icon.svg" alt="">
                             Dashboard
                         </a>
@@ -75,21 +74,15 @@
                         </a>
                     </div>
                     <div>
-                        <a href="#">
-                            <img src="./assets/policies-unchosen-icon.svg" alt="">
-                            Policies
-                        </a>
-                    </div>
-                    <div>
-                        <a href="#">
+                        <a href="adminBroadcast.jsp">
                             <img src="./assets/broadcast-unchosen-icon.svg" alt="">
                             Broadcast
                         </a>
                     </div>
                     <div>
-                        <a href="#">
-                            <img src="./assets/bug-report-unchosen-icon.svg" alt="">
-                            Report
+                        <a href="MainController?action=logout">
+                            <img src="./assets/leave-icon.svg" alt="">
+                            Logout
                         </a>
                     </div>
                 </nav>
@@ -115,54 +108,36 @@
                         <a class="logo" href="">
                             <img src="assets/Logo3.svg" alt="">
                         </a>
-                        <!--                        <div>
-                                                    <a href="admin.jsp">
-                                                        <img src="./assets/public-unchose.svg" alt="">
-                                                        Dashboard
-                                                    </a>
-                                                </div>-->
                         <div>
-                            <a href="AdminController?action=manageAccount">
-                                <img src="./assets/user-unchose.svg" alt="">
+                            <a href="AdminController?action=manageAccount" >
+                                <img src="./assets/user-unchosen-icon.svg" alt="">
                                 User
                             </a>
                         </div>
                         <div>
-                            <a href="AdminController?action=manageRecipe">
-                                <img src="./assets/post-unchose.svg" alt="">
-                                Posts
+                            <a href="AdminController?action=manageRecipe" >
+                                <img src="./assets/post-unchosen-icon.svg" alt="">
+                                Recipe
                             </a>
                         </div>
                         <div>
-                            <a href="AdminController?action=manageSuggestion">
-                                <img src="./assets/content-unchose.svg" alt="">
+                            <a href="AdminController?action=manageSuggestion" >
+                                <img src="./assets/content-unchosen-icon.svg" alt="">
                                 Content
                             </a>
                         </div>
                         <div>
                             <a href="AdminController?action=manageNews" class="active">
-                                <img src="./assets/news.svg" alt="">
+                                <img src="./assets/news-icon.svg" alt="">
                                 News
                             </a>
                         </div>
-                        <!--                        <div>
-                                                    <a href="#">
-                                                        <img src="./assets/policies-unchose.svg" alt="">
-                                                        Policies
-                                                    </a>
-                                                </div>-->
                         <div>
-                            <a href="#">
-                                <img src="./assets/broadcast-unchose.svg" alt="">
-                                Broadcast
+                            <a href="MainController?action=logout">
+                                <img src="./assets/leave-icon.svg" alt="">
+                                Logout
                             </a>
                         </div>
-                        <!--                        <div>
-                                                    <a href="#">
-                                                        <img src="./assets/bug-report-unchose.svg" alt="">
-                                                        Report
-                                                    </a>
-                                                </div>-->
                     </nav>
 
                     <div class="col-md-10 recipe">
@@ -181,50 +156,55 @@
                             }
                         %>
 
-                        <div class="container">
-                            <div class="row news-content">
-                                <%
-                                    //UserDTO user = (UserDTO) session.getAttribute("user");
-                                    String id = request.getParameter("newsId");
-
-                                    try {
-                                        NewsDTO news = NewsDAO.getNewsByNewsId(new Integer(id));
-                                        //if (news.getUser_id() == user.getId()) {
-                                %>
-                                <form action="AdminController" method="post" class="news-create-button" enctype="multipart/form-data">
-                                    <div class="news-content-info">
-                                        <p>Title: <input type="text" name="txtTitle" value="<%= news.getTitle()%>"></p>
-                                    </div>
-                                    <div class="news-content-info">
-                                        <p>Category:
-                                            <select name="category">
-                                                <%
-                                                    HashMap<Integer, String> newsMap = Utils.NavigationBarUtils.getMap("NewsCategory");
-                                                    for (Map.Entry<Integer, String> entry : newsMap.entrySet()) {
-                                                %>
-                                                <option value="<%= entry.getKey()%>"><%= entry.getValue()%></option>
-                                                <%
-                                                    }
-                                                %>
-                                            </select>
-                                        </p>
-                                    </div>
-                                    <div class="news-content-info news-content-info-white-background">
-                                        <!--<p>Image: <input type="file" name="file"></p>-->
-                                    </div>
-                                    <div class="news-content-info">
-                                        <p><textarea rows="10" cols="10" id="editor" value=""><%= news.getDesc()%></textarea></p>
-                                    </div>
-                                    <input type="hidden" name="editorContent" id="editorContent" value="">
-                                    <input type="hidden" name="newsId" value="<%= id%>">
-                                    <button type="submit" value="updateNews" name="action">Update</button>
-                                    <!--<button type="submit" value="deleteNews" name="action">Delete</button>-->
-                                </form>
-                                <%//}
-                                    } catch (Exception e) {
-
-                                    }
-                                %>
+                        <div class="blank-background">
+                            <div class="container">
+                                <div class="row news-content">
+                                    <%
+                                        NewsDTO news = (NewsDTO) request.getAttribute("news");
+                                    %>
+                                    <nav style="--bs-breadcrumb-divider: '>'; padding-left: 0" aria-label="breadcrumb">
+                                        <ol class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="AdminController?action=manageNews">News List</a></li>
+                                            <li class="breadcrumb-item current-link" aria-current="page">Update News</li>
+                                        </ol>
+                                    </nav>
+                                    <form action="AdminController" method="post" class="news-create-button" enctype="multipart/form-data">
+                                        <div class="add-news-header">
+                                            <p>Update a New</p>
+                                        </div>
+                                        <div class="news-content-info-header">
+                                            Title: 
+                                            <div>
+                                                <input type="text" name="txtTitle" value="<%= news.getTitle()%>">
+                                            </div>
+                                        </div>
+                                        <div class="news-content-info">
+                                            <p>Category:
+                                                <select name="category">
+                                                    <%
+                                                        HashMap<Integer, String> newsMap = Utils.NavigationBarUtils.getMap("NewsCategory");
+                                                        for (Map.Entry<Integer, String> entry : newsMap.entrySet()) {
+                                                    %>
+                                                    <option value="<%= entry.getKey()%>"><%= entry.getValue()%></option>
+                                                    <%
+                                                        }
+                                                    %>
+                                                </select>
+                                            </p>
+                                        </div>
+                                        <div class="news-content-info news-content-info-white-background">
+                                            <!--<p>Image: <input type="file" name="file"></p>-->
+                                        </div>
+                                        <div class="news-content-info">
+                                            Description
+                                            <textarea rows="10" cols="10" id="editor" value=""><%= news.getDesc()%></textarea>
+                                        </div>
+                                        <input type="hidden" name="editorContent" id="editorContent" value="">
+                                        <input type="hidden" name="newsId" value="<%= news.getId()%>">
+                                        <button type="submit" value="updateNews" name="action">Update</button>
+                                        <!--<button type="submit" value="deleteNews" name="action">Delete</button>-->
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>

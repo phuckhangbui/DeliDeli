@@ -4,6 +4,7 @@
     Author     : khang
 --%>
 
+<%@page import="DTO.DisplayReviewDTO"%>
 <%@page import="DAO.UserDAO"%>
 <%@page import="DAO.ReviewDAO"%>
 <%@page import="DTO.ReviewDTO"%>
@@ -37,10 +38,11 @@
 //                ArrayList<ReviewDTO> reviewList = (ArrayList) request.getAttribute("reviewList");
             %>
 
-            <%  String activeScroll = request.getParameter("activeScroll");
+            <%
+                String activeScroll = request.getParameter("activeScroll");
                 if (user != null) {
-                    ReviewDTO userReview = ReviewDAO.getReviewByRecipeAndUser(user.getId(), recipe.getId());
-                    if (userReview != null) {
+                    DisplayReviewDTO userDisplayReview =  (DisplayReviewDTO) request.getAttribute("userDisplayReview");
+                    if (userDisplayReview != null) {
             %>
             <header class="recipe-detail-review-main-header">
                 EDIT YOUR REVIEWS
@@ -50,14 +52,14 @@
                     <div class="col-md-6">
                         <p class="recipe-detail-review-self-header">Your Rating</p>
                         <div class="recipe-detail-review-self-rating rate">
-                            <input type="text" name="reviewId" value="<%= userReview.getId()%>" hidden="">
-                            <input type="text" name="recipeId" value="<%= recipe.getId()%>" hidden="">
+                            <input type="text" name="reviewId" value="<%= userDisplayReview.getId()%>" hidden="">
+                            <input type="text" name="recipeId" value="<%= userDisplayReview.getRecipeId()%>" hidden="">
                             <input type="text" name="userId" value="<%= user.getId()%>" hidden="">
 
 
                             <% for (int i = 5; i > 0; i--) {
 
-                                    if (userReview.getRating() == i) {%>
+                                    if (userDisplayReview.getReviewRating()== i) {%>
                             <input type="radio" id="star<%=i%>" name="rating" value="<%=i%>" checked/>
                             <label for="star<%=i%>" title="text"><%=i%> stars</label>
                             <%} else {%>
@@ -75,7 +77,7 @@
                     <div class="col-md-6">
                         <p class="recipe-detail-review-self-header">Your Review</p>
                         <textarea name="txtReview" id="" cols="1" rows="5" class="recipe-detail-review-self-review"
-                                  ><%= userReview.getContent()%></textarea>
+                                  ><%= userDisplayReview.getReviewContent()%></textarea>
                     </div>
                 </div>
                 <div class="recipe-detail-review-self-button" >
@@ -173,16 +175,22 @@
             <div class="recipe-detail-review-others">
 
                 <%
-                    if (reviewList.size() > 0 && reviewList != null) {
-                        for (ReviewDTO o : reviewList) {
+                    ArrayList<DisplayReviewDTO> displayReviewList = (ArrayList<DisplayReviewDTO> ) request.getAttribute("displayReviewList");
+
+                    if (displayReviewList.size() > 0 && displayReviewList != null) {
+                        for (DisplayReviewDTO o : displayReviewList) {
                 %>
                 <div class="recipe-detail-review-others-info">
-                    <a href=""><img src="./assets/profile-pic.svg" alt=""></a>
+                    <a href="LoadPublicProfileServlet?accountName=<%= o.getReviewOwner().getUserName()%>"> 
+                        <img src="ServletImageLoader?identifier=<%= o.getReviewOwner().getAvatar()%>" alt="">
+                    </a>
                     <div class="recipe-detail-review-others-info-content">
-                        <a href=""><%= UserDAO.getUserByUserId(o.getUser_id()).getUserName()%></a>
+                        <a href="LoadPublicProfileServlet?accountName=<%= o.getReviewOwner().getUserName()%>">
+                            <%= o.getReviewOwner().getUserName()%>
+                        </a>
                         <div class="recipe-detail-review-others-info-review">
                             <%
-                                for (int i = 0; i < o.getRating(); i++) {
+                                for (int i = 0; i < o.getReviewRating(); i++) {
                             %>
                             <img src="./assets/full-star-icon.svg" alt="">
                             <%
@@ -196,7 +204,7 @@
                             </div>
                         </div>
                         <p>
-                            <%= o.getContent()%>
+                            <%= o.getReviewContent()%>
                         </p>
                     </div>
                 </div>

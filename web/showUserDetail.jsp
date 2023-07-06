@@ -4,7 +4,8 @@
     Author     : Admin
 --%>
 
-<%@page import="DAO.AdminDAO"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.sql.Timestamp"%>
 <%@page import="DTO.UserDetailDTO"%>
 <%@page import="DTO.RecipeDTO"%>
 <%@page import="DTO.UserDTO"%>
@@ -47,7 +48,7 @@
                         <img src="assets/Logo3.svg" alt="">
                     </a>
                     <div>
-                        <a href="admin.jsp" >
+                        <a href="AdminController?action=adminDashboard" >
                             <img src="./assets/public-unchosen-icon.svg" alt="">
                             Dashboard
                         </a>
@@ -77,21 +78,15 @@
                         </a>
                     </div>
                     <div>
-                        <a href="#">
-                            <img src="./assets/policies-unchosen-icon.svg" alt="">
-                            Policies
-                        </a>
-                    </div>
-                    <div>
-                        <a href="#">
+                        <a href="adminBroadcast.jsp">
                             <img src="./assets/broadcast-unchosen-icon.svg" alt="">
                             Broadcast
                         </a>
                     </div>
                     <div>
-                        <a href="#">
-                            <img src="./assets/bug-report-unchosen-icon.svg" alt="">
-                            Report
+                        <a href="MainController?action=logout">
+                            <img src="./assets/leave-icon.svg" alt="">
+                            Logout
                         </a>
                     </div>
                 </nav>
@@ -117,54 +112,36 @@
                         <a class="logo" href="">
                             <img src="assets/Logo3.svg" alt="">
                         </a>
-                        <!--                        <div>
-                                                    <a href="admin.jsp">
-                                                        <img src="./assets/public-unchose.svg" alt="">
-                                                        Dashboard
-                                                    </a>
-                                                </div>-->
                         <div>
                             <a href="AdminController?action=manageAccount" class="active">
-                                <img src="./assets/user-unchose.svg" alt="">
+                                <img src="./assets/user-icon.svg" alt="">
                                 User
                             </a>
                         </div>
                         <div>
                             <a href="AdminController?action=manageRecipe">
-                                <img src="./assets/post-unchose.svg" alt="">
-                                Posts
+                                <img src="./assets/post-unchosen-icon.svg" alt="">
+                                Recipe
                             </a>
                         </div>
                         <div>
                             <a href="AdminController?action=manageSuggestion">
-                                <img src="./assets/content-unchose.svg" alt="">
+                                <img src="./assets/content-unchosen-icon.svg" alt="">
                                 Content
                             </a>
                         </div>
                         <div>
                             <a href="AdminController?action=manageNews">
-                                <img src="./assets/news.svg" alt="">
+                                <img src="./assets/news-unchosen-icon.svg" alt="">
                                 News
                             </a>
                         </div>
-                        <!--                        <div>
-                                                    <a href="#">
-                                                        <img src="./assets/policies-unchose.svg" alt="">
-                                                        Policies
-                                                    </a>
-                                                </div>-->
                         <div>
-                            <a href="#">
-                                <img src="./assets/broadcast-unchose.svg" alt="">
-                                Broadcast
+                            <a href="MainController?action=logout">
+                                <img src="./assets/leave-icon.svg" alt="">
+                                Logout
                             </a>
                         </div>
-                        <!--                        <div>
-                                                    <a href="#">
-                                                        <img src="./assets/bug-report-unchose.svg" alt="">
-                                                        Report
-                                                    </a>
-                                                </div>-->
                     </nav>
 
                     <div class="col-md-10 recipe">
@@ -187,110 +164,151 @@
                             UserDTO account = (UserDTO) request.getAttribute("user");
                             UserDetailDTO userDetail = (UserDetailDTO) request.getAttribute("userDetail");
                             ArrayList<RecipeDTO> userRecipe = (ArrayList) request.getAttribute("userRecipe");
+                            TreeMap<Integer, Integer> mapRating = (TreeMap) request.getAttribute("mapRating");
+                            String fullname = userDetail.getFirstName() + " " + userDetail.getLastName();
                         %>
-
-                        <div class="container">
-                            <div class="user-detail-admin">
-                                <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-                                    <ol class="breadcrumb">
-                                        <li class="breadcrumb-item"><a href="AdminController?action=manageAccount">User List</a></li>
-                                        <li class="breadcrumb-item current-link" aria-current="page"><%= account.getUserName()%></li>
-                                    </ol>
-                                </nav>
-                                <div class="user-detail-admin-heading">
-                                    <h3 class="">Profile Detail</h3>
-                                </div>
-
-                                <div class="row">
-                                    <p class="col-lg-2 user-detail-admin-title">User Name: </p>
-                                    <p class="col-lg-10"><%= account.getUserName()%></p>
-                                </div>
-
-                                <div class="row">
-                                    <p class="col-lg-2 user-detail-admin-title">Email: </p>
-                                    <p class="col-lg-10"><%= account.getEmail()%></p>
-                                </div>
-
-                                <div class="row">
-                                    <p class="col-lg-2 user-detail-admin-title">First Name: </p>
-                                    <p class="col-lg-10"><%= userDetail.getFirstName()%></p>
-                                </div>
-
-                                <div class="row">
-                                    <p class="col-lg-2 user-detail-admin-title">Last Name: </p>
-                                    <p class="col-lg-10"><%= userDetail.getLastName()%></p>
-                                </div>
-
-                                <div class="row">
-                                    <p class="col-lg-2 user-detail-admin-title">Specialty: </p>
-                                    <p class="col-lg-10"><%= userDetail.getSpecialty()%></p>
-                                </div>
-
-                                <div class="row">
-                                    <p class="col-lg-2 user-detail-admin-title">Bio: </p>
-                                    <p class="col-lg-10"><%= userDetail.getBio()%></p>
-                                </div>
-
-                                <%                if (userRecipe != null && userRecipe.size() > 0) {
-                                %>
-
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="user-detail-admin-heading">
-                                            <h3 class="">User's Recipe(s)</h3>
+                        <div class="blank-background">
+                            <div class="container">
+                                <div class="user-detail-admin new-result">
+                                    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                                        <ol class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="AdminController?action=manageAccount">User List</a></li>
+                                            <li class="breadcrumb-item current-link" aria-current="page"><%= account.getUserName()%></li>
+                                        </ol>
+                                    </nav>
+                                    <div class="user-detail-admin-heading">
+                                        <h3 class="">Profile Detail</h3>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3 user-detail-admin-image">
+                                            <!--                                            <img src="pictures/egg1.jpeg" alt="alt"/>-->
+                                            <img src="ServletImageLoader?identifier=<%= account.getAvatar()%>" alt="alt"/>
                                         </div>
-                                        <table class="table table-striped table-hover">
-                                            <thead>
-                                                <tr>
-                                                    <th>ID</th>
-                                                    <th>Title</th>
-                                                    <th>Create at</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody class="table-group-divider">
-                                                <%
-                                                    for (RecipeDTO r : userRecipe) {
-                                                %>
-                                                <tr>
-                                                    <td><%= r.getId()%></td>
-                                                    <td><%= r.getTitle()%></td>
-                                                    <td><%= r.getCreate_at()%></td>
-                                                    <td>
-                                                        <form action="AdminController" method="post" class="user-detail-admin-button">
-                                                            <input type="hidden" value="<%= r.getId()%>" name="id">
-                                                            <button type="submit" value="showRecipeDetail" name="action">Show</button>
-                                                        </form>
-                                                    </td>
-                                                </tr>
-                                                <% }
-                                                %>
-                                            </tbody>
-                                        </table>
-                                        <%
-                                        } else {
-                                        %>
-                                        <div class="user-detail-admin-heading">
-                                            <h3>User does not have any recipe yet.</h3>
+                                        <div class="col-md-9">
+                                            <div class="row">
+                                                <div class="col-md-4 user-detail-admin-title">
+                                                    <p>User Name</p>
+                                                    <p><%= account.getUserName()%></p>
+                                                </div>
+                                                <div class="col-md-4 user-detail-admin-title">
+                                                    <p>Full Name</p>
+                                                    <p id="userFullName"><%=fullname%></p>
+                                                </div>
+                                                <div class="col-md-4 user-detail-admin-title">
+                                                    <p>Email</p>
+                                                    <p><%= account.getEmail()%></p>
+                                                </div>
+                                                <div class="col-md-12 user-detail-admin-title">
+                                                    <p>Specialties</p>
+                                                    <%
+                                                        if (userDetail.getSpecialty().equals("")) { %>
+                                                    <p class="unspecified">Unspecified</p>
+                                                    <%
+                                                    } else {
+                                                    %>
+                                                    <p><%= userDetail.getSpecialty()%></p>
+                                                    <%}%>
+
+
+
+
+                                                </div>
+                                                <div class="col-md-12 user-detail-admin-title">
+                                                    <p>Bio</p>
+                                                    <%
+                                                        if (userDetail.getBio().equals("")) { %>
+                                                    <p class="unspecified">Unspecified</p>
+                                                    <%
+                                                    } else {
+                                                    %>
+                                                    <p><%= userDetail.getBio()%></p>
+                                                    <%}%>
+
+                                                </div>
+                                            </div>
                                         </div>
-                                        <%
-                                            }
-                                        %>
                                     </div>
 
-                                    <div class="col-md-6">
-                                        <%
-                                            TreeMap<Integer, Integer> mapRating = (TreeMap) AdminDAO.getRatingAllRecipesOfOwnerMap(account.getId());
-                                            if (mapRating.size() != 0) {
-                                        %>
-                                        <div><canvas id="myChart"></canvas></div>
-                                                <%
-                                                    }
-                                                %>
+                                    <%                if (userRecipe != null && userRecipe.size() > 0) {
+                                    %>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="user-detail-admin-heading">
+                                                <h3 class="">User's Recipe(s)</h3>
+                                            </div>
+                                            <table class="table table-striped table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>No.</th>
+                                                        <th>Title</th>
+                                                        <th>Create at</th>
+                                                        <th>Update at</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="table-group-divider">
+                                                    <%
+                                                        for (RecipeDTO r : userRecipe) {
+                                                    %>
+                                                    <tr>
+                                                        <td><%= r.getId()%></td>
+                                                        <td class="recipe-and-user-link">
+                                                            <a href="AdminController?action=showRecipeDetail&id=<%= r.getId()%>"><%= r.getTitle()%></a>
+                                                        </td>
+                                                        <% Timestamp timestamp = r.getCreate_at();
+                                                            SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
+                                                            String createDate = dateFormat.format(timestamp);
+                                                        %>
+                                                        <td><%= createDate%></td>
+                                                        <%
+                                                            if (r.getUpdate_at() == null) {
+                                                        %>
+                                                        <td><%= createDate%></td>
+                                                        <%
+                                                        } else {
+                                                            timestamp = r.getUpdate_at();
+                                                            dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
+                                                            String updateDate = dateFormat.format(timestamp);
+                                                        %>
+                                                        <td><%= updateDate%>
+                                                            <%
+                                                                }
+                                                            %>
+                                                        </td>
+                                                    </tr>
+                                                    <% }
+                                                    %>
+                                                </tbody>
+                                            </table>
+                                            <%
+                                            } else {
+                                            %>
+                                            <div class="user-detail-admin-heading">
+                                                <h3>User does not have any recipe yet.</h3>
+                                            </div>
+                                            <%
+                                                }
+                                            %>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <%
+                                                if (mapRating.size() != 0) {
+                                            %>
+                                            <div><canvas id="myChart"></canvas></div>
+                                                    <%
+                                                        }
+                                                    %>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+
+
+
+
                     </div>
                 </div>
             </div>
@@ -330,6 +348,7 @@
                 })();
             </script>
         </div>
+        <script src="./script/userCommunityProfileScript.js" defer></script>
         <script src="bootstrap/js/bootstrap.min.js" ></script>
     </body>
 </html>

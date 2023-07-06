@@ -43,10 +43,55 @@ public class MealDAO {
                     int recipe_id = rs.getInt("recipe_id");
                     Time start_time = rs.getTime("start_time");
                     Time end_time = rs.getTime("end_time");
-                    int plan_id = rs.getInt("plan_id");
 
-                    MealDTO meal = new MealDTO(id, date_id, recipe_id, start_time, end_time, plan_id);
+                    MealDTO meal = new MealDTO(id, date_id, recipe_id, start_time, end_time, date_id);
                     result.add(meal);
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return result;
+    }
+    public static MealDTO getMealByDateId(int DateId) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        MealDTO result = new MealDTO();
+
+        String sql = "SELECT * FROM [Meal]\n"
+                + "WHERE date_id = ?";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, DateId);
+                rs = stm.executeQuery();
+                while (rs.next()) {
+
+                    int id = rs.getInt("id");
+                    int date_id = rs.getInt("date_id");
+                    int recipe_id = rs.getInt("recipe_id");
+                    Time start_time = rs.getTime("start_time");
+                    Time end_time = rs.getTime("end_time");
+
+                    result = new MealDTO(id, date_id, recipe_id, start_time, end_time);
+                    return result;
                 }
             }
         } catch (SQLException ex) {
@@ -75,7 +120,9 @@ public class MealDAO {
         ResultSet rs = null;
         ArrayList<MealDTO> result = new ArrayList<>();
 
-        String sql = "SELECT * FROM [Meal]"
+        String sql = "SELECT *\n"
+                + "FROM [Meal] m\n"
+                + "JOIN [Date] d ON m.date_id = d.id\n"
                 + "WHERE [plan_id] = ? and [date_id] = ?\n"
                 + "ORDER BY [start_time]\n";
 
@@ -94,7 +141,7 @@ public class MealDAO {
                     Time start_time = rs.getTime("start_time");
                     Time end_time = rs.getTime("end_time");
                     plan_id = rs.getInt("plan_id");
-                    
+
                     // Time filter
                     if (breakfast) {
                         if (start_time.getHours() >= 5 && start_time.getHours() < 12) {
@@ -132,5 +179,88 @@ public class MealDAO {
             }
         }
         return result;
+    }
+
+    public static boolean addMealById(int date_id, int recipe_id, Time start_time, Time end_time) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+
+        String sql = "INSERT INTO [Meal](date_id, recipe_id, start_time, end_time, status)\n"
+                + "VALUES (?, ?, ?, ?, ?)";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, date_id);
+                stm.setInt(2, recipe_id);
+                stm.setTime(3, start_time);
+                stm.setTime(4, end_time);
+                stm.setBoolean(5, false);
+
+                int effectRows = stm.executeUpdate();
+                if (effectRows > 0) {
+                    return true;
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error - insertPlan: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return false;
+    }
+    
+    public static boolean updateMealNotificationStatusById(int id) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+
+        String sql = "UPDATE dbo.[Meal]\n"
+                + "SET [isNotified] = 1\n"
+                + "WHERE id = ?";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, id);
+
+                int effectRows = stm.executeUpdate();
+                if (effectRows > 0) {
+                    return true;
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error - updateMealNotificationStatusById: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return false;
     }
 }

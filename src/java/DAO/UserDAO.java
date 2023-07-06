@@ -567,6 +567,126 @@ public class UserDAO {
 //        }
 //        return false;
 //    }
+    
+    public static UserDTO getAccountByToken(String token) throws Exception {
+        UserDTO user = null;
+        Connection cn;
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                String sql = "SELECT * FROM [User] WHERE token = ?";
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setString(1, token);
+                ResultSet rs = pst.executeQuery();
+                if (rs != null && rs.next()) {
+                    int id = rs.getInt("id");
+                    String userName = rs.getString("user_name");
+                    String email = rs.getString("email");
+                    String password = rs.getString("password");
+                    String avatar = rs.getString("avatar");
+                    String createAt = rs.getString("create_at");
+                    int status = rs.getInt("status");
+                    int role = rs.getInt("role_id");
+                    int setting = rs.getInt("user_setting_id");
+                    user = new UserDTO(id, userName, email, password, avatar, createAt, status, role, setting);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+    
+    public static Boolean checkToken(String token) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+
+        String sql = "SELECT id "
+                + "FROM [User] "
+                + "WHERE token = ?";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setString(1, token);
+                rs = stm.executeQuery();
+
+                System.out.println("[DAO - verifyToken]: Reached to this part.");
+                if (rs.next()) {
+//                    String tokenString = rs.getString("token");
+                    int isUserIdExist = rs.getInt("id");
+                    System.out.println("[DAO - verifyToken]: User ID searched: " + isUserIdExist);
+                    if (isUserIdExist > 0) {
+                        return true;
+                    }
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return false;
+    }
+    
+    public static boolean updateToken(String email, String tokenReceived) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+
+        String sql = "UPDATE [User] "
+                + "SET token = ? "
+                + "WHERE email = ?";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+
+                stm.setString(1, tokenReceived);
+                stm.setString(2, email);
+
+                int effectRows = stm.executeUpdate();
+                if (effectRows > 0) {
+                    return true;
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return false;
+    }
+    
+    
     public boolean updateTokenByEmail(String email, String tokenReceived) {
         Connection con = null;
         PreparedStatement stm = null;
@@ -656,7 +776,7 @@ public class UserDAO {
     }
 
     public static void main(String[] args) throws Exception {
-        System.out.println(UserDAO.checkOldPassword(3, "123"));
+        System.out.println(UserDAO.getAccountByToken("HYSDZCnbOQKmbQ8fOq1IVm5sfSdYAl0XyjehH8Z50HI="));
     }
 
 }

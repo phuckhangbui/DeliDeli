@@ -45,7 +45,7 @@
                         <img src="assets/Logo3.svg" alt="">
                     </a>
                     <div>
-                        <a href="admin.jsp" >
+                        <a href="AdminController?action=adminDashboard" >
                             <img src="./assets/public-unchosen-icon.svg" alt="">
                             Dashboard
                         </a>
@@ -75,21 +75,15 @@
                         </a>
                     </div>
                     <div>
-                        <a href="#">
-                            <img src="./assets/policies-unchosen-icon.svg" alt="">
-                            Policies
-                        </a>
-                    </div>
-                    <div>
-                        <a href="#">
+                        <a href="adminBroadcast.jsp">
                             <img src="./assets/broadcast-unchosen-icon.svg" alt="">
                             Broadcast
                         </a>
                     </div>
                     <div>
-                        <a href="#">
-                            <img src="./assets/bug-report-unchosen-icon.svg" alt="">
-                            Report
+                        <a href="MainController?action=logout">
+                            <img src="./assets/leave-icon.svg" alt="">
+                            Logout
                         </a>
                     </div>
                 </nav>
@@ -115,12 +109,6 @@
                         <a class="logo" href="">
                             <img src="assets/Logo3.svg" alt="">
                         </a>
-                        <!--                        <div>
-                                                    <a href="admin.jsp">
-                                                        <img src="./assets/public-unchose.svg" alt="">
-                                                        Dashboard
-                                                    </a>
-                                                </div>-->
                         <div>
                             <a href="AdminController?action=manageAccount" >
                                 <img src="./assets/user-unchosen-icon.svg" alt="">
@@ -130,7 +118,7 @@
                         <div>
                             <a href="AdminController?action=manageRecipe" class="active">
                                 <img src="./assets/post-icon.svg" alt="">
-                                Posts
+                                Recipe
                             </a>
                         </div>
                         <div>
@@ -145,24 +133,12 @@
                                 News
                             </a>
                         </div>
-                        <!--                        <div>
-                                                    <a href="#">
-                                                        <img src="./assets/policies-unchose.svg" alt="">
-                                                        Policies
-                                                    </a>
-                                                </div>-->
-                        <!--                        <div>
-                                                    <a href="#">
-                                                        <img src="./assets/broadcast-unchose.svg" alt="">
-                                                        Broadcast
-                                                    </a>
-                                                </div>-->
-                        <!--                        <div>
-                                                    <a href="#">
-                                                        <img src="./assets/bug-report-unchose.svg" alt="">
-                                                        Report
-                                                    </a>
-                                                </div>-->
+                        <div>
+                            <a href="MainController?action=logout">
+                                <img src="./assets/leave-icon.svg" alt="">
+                                Logout
+                            </a>
+                        </div>
                     </nav>
 
                     <div class="col-md-10 recipe">
@@ -199,7 +175,7 @@
                                 currentStatus = "all";
                             }
 
-                            String[] tmp = {"", "", "Pending", "Approved", "Rejected"};
+                            String[] tmp = {"", "", "Pending...", "Approved", "Rejected"};
 
                             if (listRecipe != null && listRecipe.size() > 0) {
                         %>
@@ -222,9 +198,11 @@
                                     <%
                                         if (listRecipeStatus != null && listRecipeStatus.size() > 0) {
                                             for (Integer status : listRecipeStatus) {
+                                                if (status != 1) {
                                     %>
                                     <option value="<%= status%>"><%= tmp[status]%></option>
                                     <%
+                                                }
                                             }
                                         }
                                     %>
@@ -235,13 +213,12 @@
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr>
-                                    <th>No</th>
+                                    <th>No.</th>
                                     <th>Title</th>
-                                    <th>Create at</th>
-                                    <th>Update at</th>
                                     <th>Owner</th>
                                     <th>Status</th>
-                                    <th>Action</th>
+                                    <th>Create at</th>
+                                    <th>Update at</th>   
                                 </tr>
                             </thead>
                             <tbody class="table-group-divider">
@@ -251,7 +228,15 @@
                                 %>
                                 <tr>
                                     <td><%= count%></td>
-                                    <td><%= r.getTitle()%></td>
+                                    <td class="recipe-and-user-link">
+                                        <a href="AdminController?action=showRecipeDetail&id=<%= r.getId()%>"><%= r.getTitle()%></a>
+                                        
+                                    </td>
+                                    <% UserDTO owner = RecipeDAO.getRecipeOwnerByRecipeId(r.getId());%>
+                                    <td class="recipe-and-user-link">
+                                        <a href="AdminController?action=showUserDetail&username=<%= owner.getUserName()%>"><%= owner.getUserName()%></a>
+                                    </td>
+                                    <td><%= tmp[r.getStatus()]%></td>
                                     <% Timestamp timestamp = r.getCreate_at();
                                         SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
                                         String createDate = dateFormat.format(timestamp);
@@ -272,14 +257,9 @@
                                             }
                                         %>
                                     </td>
-                                    <td><a href="AdminController?action=showUserDetail&username=<%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%>"><%= RecipeDAO.getRecipeOwnerByRecipeId(r.getId())%></a></td>
-                                    <td><%= tmp[r.getStatus()]%></td>
-                                    <td>
-                                        <form action="AdminController" method="post" class="recipe-table-button">
-                                            <input type="hidden" value="<%= r.getId()%>" name="id">
-                                            <button type="submit" value="showRecipeDetail" name="action">Show</button>
-                                        </form>
-                                    </td>
+                                    
+                                    
+                                    
                                 </tr>
                                 <%
                                             count++;
@@ -305,5 +285,6 @@
             </div>
         </div>
         <script src="bootstrap/js/bootstrap.min.js" ></script>
+        <script src="./script/recipeListScript.js"></script>
     </body>
 </html>

@@ -34,13 +34,16 @@ public class ShowNewsDetailServlet extends HttpServlet {
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             String newsId = request.getParameter("newsId");
-            
+
             NewsDTO news = NewsDAO.getNewsByNewsId(new Integer(newsId));
             request.setCharacterEncoding("UTF-8");
             request.setAttribute("news", news);
-            
+
+            String category = NewsDAO.getNewsCategoryByNewsId(news.getId());
             String author = NewsDAO.getNewsAuthorByNewsId(new Integer(newsId));
+
             request.setAttribute("author", author);
+            request.setAttribute("category", category);
             
             request.getRequestDispatcher("showNewsDetail.jsp").forward(request, response);
         }

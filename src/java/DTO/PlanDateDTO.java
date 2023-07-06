@@ -5,19 +5,31 @@
 package DTO;
 
 import java.sql.Date;
+import java.sql.Time;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  *
  * @author Daiisuke
  */
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@ToString
 public class PlanDateDTO {
     private int id;
     private Date date;
+    private int date_id;
     private int week_id;
     private int plan_id;
-
-    public PlanDateDTO() {
-    }
+    private Time start_time;
+    private Time end_time;
 
     public PlanDateDTO(int id, Date date, int week_id, int plan_id) {
         this.id = id;
@@ -26,37 +38,16 @@ public class PlanDateDTO {
         this.plan_id = plan_id;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
+    public PlanDateDTO(int id, Date date, int week_id, int plan_id, Time start_time, Time end_time) {
         this.id = id;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
         this.date = date;
-    }
-
-    public int getWeek_id() {
-        return week_id;
-    }
-
-    public void setWeek_id(int week_id) {
         this.week_id = week_id;
-    }
-
-    public int getPlan_id() {
-        return plan_id;
-    }
-
-    public void setPlan_id(int plan_id) {
         this.plan_id = plan_id;
+        this.start_time = start_time;
+        this.end_time = end_time;
     }
     
+    
+
     
 }

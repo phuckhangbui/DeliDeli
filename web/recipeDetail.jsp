@@ -5,9 +5,6 @@
 --%>
 
 <%@page import="DTO.DirectionDTO"%>
-<%@page import="DAO.DirectionDAO"%>
-<%@page import="DAO.RecipeDAO"%>
-<%@page import="DAO.UserDAO"%>
 <%@page import="DTO.NutritionDTO"%>
 <%@page import="DTO.RecipeDTO"%>
 <%@page import="DTO.ReviewDTO"%>
@@ -38,16 +35,18 @@
             ArrayList<IngredientDetailDTO> ingredientDetailList = (ArrayList) request.getAttribute("ingredientDetailList");
             ArrayList<ReviewDTO> reviewList = (ArrayList) request.getAttribute("reviewList");
             RecipeDTO recipe = (RecipeDTO) request.getAttribute("recipe");
+            String imgPath = (String) request.getAttribute("imgPath");
+            String thumbnailPath = (String) request.getAttribute("thumbnailPath");
             NutritionDTO nutrition = (NutritionDTO) request.getAttribute("nutrition");
+            DirectionDTO direction = (DirectionDTO) request.getAttribute("direction");
+            String category = (String) request.getAttribute("category");
             int ownerId = recipe.getUser_id();
-            UserDTO owner = UserDAO.getUserByUserId(ownerId);
-            String link = "userCommunityProfile.jsp?accountName=" + owner.getUserName();
+            UserDTO owner = (UserDTO) request.getAttribute("owner");
+            String link = "LoadPublicProfileServlet?accountName=" + owner.getUserName();
+            
         %>
 
         <%@include file="header.jsp" %>
-
-
-
 
         <!--        Recipe Detail         -->
         <div class="blank-background">
@@ -55,19 +54,21 @@
                 <div class="row recipe-detail-info">
                     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item"><a href="#"> Recipe Type</a></li> 
-                            <li class="breadcrumb-item current-link" aria-current="page">Recipe Name</li>
+                            <li class="breadcrumb-item"><a href="home.jsp">Home</a></li>
+                            <li class="breadcrumb-item"><a href="SearchByType?type=Category&id=<%= recipe.getCategory_id()%>"> <%= category%></a></li> 
+                            <li class="breadcrumb-item current-link" aria-current="page"><%= recipe.getTitle()%></li>
                         </ol>
                     </nav>
                     <header class="recipe-detail-info-main-header">
                         <%= recipe.getTitle()%>
                     </header>
                     <div class="recipe-detail-info-user">
-                        <a href="<%=link%>"><img src="./assets/profile-pic.svg" alt=""></a>
+                        <a href="<%=link%>">
+                            <img src="ServletImageLoader?identifier=<%= owner.getAvatar()%>" alt="">
+                        </a>
                         <div>
                             <span>By</span>
-                            <span><a href="<%=link%>"><%= request.getAttribute("owner")%></a></span>
+                            <span><a href="<%=link%>"><%= owner.getUserName()%></a></span>
                                 <%
                                     Timestamp timestamp = null;
                                     if (recipe.getUpdate_at() == null) {
@@ -114,23 +115,29 @@
                             <p>|</p>
                             <p class=""><%= request.getAttribute("totalReview")%> rating(s)</p>
                         </div>
-                        <form action="" class="recipe-detail-info-button-add">
-                            <input type="text" hidden="">
+                        <%
+                            if (user != null) {
+                        %>
+                        <form action="MainController" class="recipe-detail-info-button-add" method="POST">
+                            <input type="hidden" name="userId" value="<%= user.getId()%>" />
+                            <input type="hidden" name="recipeId" value="<%= recipe.getId()%>" />
                             <div>
-
-                                <button type="submit" class="like-button">
+                                <button type="submit" name="action" value="addFavorite" class="like-button" >
                                     <img src="./assets/favorite-icon.svg" alt="">
                                     Save
                                 </button>
                             </div>
                         </form>
+                        <%
+                            }
+                        %>
                         <button class="share-button">
                             <img src="./assets/share-icon.svg" alt="">
                             Share
                         </button>
                     </div>
                     <div class="recipe-detail-main-pic">
-                        <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
+                        <img src="ServletImageLoader?identifier=<%= thumbnailPath%>" alt="">
                     </div>
                     <div class="recipe-detail-info-overview">
                         <div class="recipe-detail-info-overview-content">
@@ -230,25 +237,12 @@
                             Directions
                         </div>
                         <div>
-                            <%
-                                DirectionDTO direction = DirectionDAO.getDirectionByRecipeId(recipe.getId());
-                            %>
-
                             <p class="recipe-detail-info-direction-header"><%= direction.getDesc()%></p>
-
-
                         </div>
                     </div>
-                    <% try {
-                            String path = RecipeDAO.getImageByRecipeId(recipe.getId()).getImgPath();
-
-                    %>
                     <div class="recipe-detail-secondary-pic">
-                        <img src="ServletImageLoader?identifier=<%= RecipeDAO.getImageByRecipeId(recipe.getId()).getImgPath()%>" alt="">
+                        <img src="ServletImageLoader?identifier=<%= imgPath%>" alt="">
                     </div>
-                    <% } catch (Exception e) {
-
-                        }%>
                 </div>
 
                 <%@include file="reviewSection.jsp" %>

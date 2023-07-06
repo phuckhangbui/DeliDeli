@@ -41,6 +41,9 @@ public class NewsDetailServlet extends HttpServlet {
             String author = NewsDAO.getNewsAuthorByNewsId(new Integer(id));
             request.setAttribute("author", author);
             
+            String category = NewsDAO.getNewsCategoryByNewsId(news.getId());
+            request.setAttribute("category", category);
+            
             request.getRequestDispatcher("newsDetail.jsp").forward(request, response);
             
         }

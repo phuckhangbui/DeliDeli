@@ -23,7 +23,7 @@ public class LogOutServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
         session.invalidate();
-        response.sendRedirect("home.jsp");
+        response.sendRedirect("TriggerAppServlet");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

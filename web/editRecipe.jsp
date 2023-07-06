@@ -4,15 +4,10 @@
     Author     : khang
 --%>
 
-<%@page import="DAO.DirectionDAO"%>
-<%@page import="DAO.NutritionDAO"%>
+
 <%@page import="DTO.IngredientDetailDTO"%>
-<%@page import="DAO.IngredientDetailDAO"%>
-<%@page import="DAO.IngredientDetailDAO"%>
 <%@page import="DTO.NutritionDTO"%>
 <%@page import="DTO.NutritionDTO"%>
-<%@page import="DAO.RecipeDietDAO"%>
-<%@page import="DAO.RecipeDAO"%>
 <%@page import="DTO.RecipeDTO"%>
 <%@page import="java.util.Set"%>
 <%@page import="java.util.ArrayList"%>
@@ -64,7 +59,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
         <%
             int recipeId = Integer.parseInt(request.getParameter("recipeId"));
             try {
-                RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(recipeId);
+                RecipeDTO recipe = (RecipeDTO) request.getAttribute("recipe");
                 if (recipe.getUser_id() == user.getId()) {
 
         %>
@@ -332,7 +327,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                 <div class="col-md-12 add-recipe-info-type-content">
                                     <div>Diet: <span>(If the diet you're looking for is not here, then no need to tick any of these boxes )</span></div>
                                     <%
-                                        Set<Integer> dietSet = RecipeDietDAO.getDietSetByRecipeId(recipeId);
+                                        Set<Integer> dietSet = (Set<Integer>) request.getAttribute("dietSet");
                                         if (dietSet.size() == 0) { %>
                                     <div class="">
                                         <% for (Map.Entry<Integer, String> entry : dietMap.entrySet()) {
@@ -376,7 +371,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                 For references:
                                 <button>Nutrition Table</button>
                             </div>
-                            <% NutritionDTO nutrition = NutritionDAO.getNutrition(recipeId);%>
+                            <% NutritionDTO nutrition = (NutritionDTO) request.getAttribute("nutrition");%>
 
                             <div class="col-md-3 add-recipe-info-number-content">
                                 <div>Calories:</div>
@@ -415,7 +410,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                             <div class="draggable-container-ingredient col-md-8 add-recipe-info-ingredient-content">
                                 <div class="add-recipe-info-header">Ingredient <span>*</span></div>
                                 <%
-                                    ArrayList<IngredientDetailDTO> ingredientList = IngredientDetailDAO.getIngredientDetailByRecipeId(recipe.getId());
+                                    ArrayList<IngredientDetailDTO> ingredientList = (ArrayList<IngredientDetailDTO>) request.getAttribute("ingredientList");
                                     for (IngredientDetailDTO i : ingredientList) {
                                 %>
                                 <p class="draggable-ingredient draggable" draggable="false">
@@ -457,7 +452,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
 
                         <div class="add-recipe-info-header">Direction <span>*</span></div>
                         <p><textarea name="direction" rows="10" cols="10" id="editor" 
-                                     value="<%=user.getId()%>"><%= DirectionDAO.getDirectionByRecipeId(recipe.getId()).getDesc()%></textarea></p>
+                                     value="<%=user.getId()%>"><%= request.getAttribute("direction")%></textarea></p>
                         <script>
                             CKEDITOR.replace('editor');
                         </script>
@@ -500,7 +495,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                         </div>
                         <input type="text" name="userId" value="<%=user.getId()%>" hidden/>
                         <div class=" add-recipe-info-submit">
-                            <button type="submit" name="action" value="editRecipe">
+                            <button type="submit" name="action" value="editRecipe" onclick="return validateForm()">
                                 EDIT
                             </button>
                             <span></span>
@@ -533,13 +528,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                         <script>
                             var deleteButton = document.getElementById("deleteButton");
                             deleteButton.addEventListener("click", function () {
+                                var previousUrl = '<%= (String) session.getAttribute("managementUrl") %>';
                                 // Perform your deletion logic here
                                 var recipeId = '<%= recipe.getId()%>'; // Replace with the actual recipe ID
                                 var userId = '<%= user.getId()%>'; // Replace with the actual user ID
 
                                 // Send an AJAX request to the servlet for handling the deletion
                                 var xhr = new XMLHttpRequest();
-                                xhr.open("POST", "MainController", true);
+                                xhr.open("POST", "UserController", true);
                                 xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                                 xhr.onreadystatechange = function () {
                                     if (xhr.readyState === 4 && xhr.status === 200) {
@@ -551,13 +547,31 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                         var modalInstance = bootstrap.Modal.getInstance(modal);
                                         modalInstance.hide();
 
-                                        // Redirect to home.jsp
-                                        window.location.href = "home.jsp";
+                                        // Redirect to the correct side
+                                        window.location.href = previousUrl;
+
+
                                     }
                                 };
                                 xhr.send("action=deleteRecipe&recipeId=" + recipeId + "&userId=" + userId);
                             });
 
+                            
+
+                        </script>
+
+                        <script>
+                            function validateForm() {
+                                var editorContent = CKEDITOR.instances.editor.getData();
+                                if (!editorContent.trim()) {
+                                    // Display an error message or take any other necessary action
+                                    alert("The direction is empty! Please provide instruction for your recipe");
+                                    return false; // Prevent form submission
+                                }
+
+// Form is valid, proceed with form submission
+                                return true;
+                            }
                         </script>
 
                     </form>

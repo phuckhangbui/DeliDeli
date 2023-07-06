@@ -4,6 +4,7 @@
     Author     : khang
 --%>
 
+<%@page import="DTO.DisplayReviewDTO"%>
 <%@page import="DAO.ReviewDAO"%>
 <%@page import="DAO.RecipeDAO"%>
 <%@page import="DTO.RecipeDTO"%>
@@ -45,8 +46,9 @@
         <div class="blank-background">
             <div class="container ">
                 <form class="row user-profile">
-
                     <input type="hidden" name="userId" value="<%= userId%>">
+                    
+                    
                     <div class="col-md-3 user-profile-column-1">
                         <div class="user-profile-header">
                             <div>
@@ -57,15 +59,15 @@
                             </p>
                         </div>
                         <div class="user-profile-option">
-                            <a href="userPublicDetail.jsp?userId=<%= user.getId()%>" >
+                            <a href="UserController?action=userPublicDetail&userId=<%=user.getId()%>">
                                 <img src="./assets/public-unchosen-icon.svg" alt="">
                                 Public Profile
                             </a>
-                            <a href="userEmailSetting.jsp?userId=<%= user.getId()%>" >
+                            <a href="UserController?action=userEmailSetting&userId=<%=user.getId()%>">
                                 <img src="./assets/user-unchosen-icon.svg" alt="">
                                 Personal Setting
                             </a>
-                            <a href="userPasswordSetting.jsp?userId=<%= user.getId()%>" >
+                            <a href="UserController?action=userPasswordSetting&userId=<%=user.getId()%>">
                                 <img src="./assets/password-unchosen-icon.svg" alt="">
                                 Change Password
                             </a>
@@ -79,13 +81,13 @@
                                     My Own Recipes
                                 </a>
                                 <div class="dropdown-content-right">
-                                    <a href="privateRecipeManagement.jsp?userId=<%= userId%>" >Private Recipes</a>
-                                    <a href="pendingRecipeManagement.jsp?userId=<%= userId%>">Pending Recipes</a>
-                                    <a href="publicRecipeManagement.jsp?userId=<%= userId%>">Public Recipes</a>
-                                    <a href="rejectedRecipeManagement.jsp?userId=<%= userId%>">Rejected Recipes</a>
+                                    <a href="UserController?action=loadRecipeManagement&page=private&userId=<%= userId%>">Private Recipes</a>
+                                    <a href="UserController?action=loadRecipeManagement&page=pending&userId=<%= userId%>">Pending Recipes</a>
+                                    <a href="UserController?action=loadRecipeManagement&page=public&userId=<%= userId%>">Public Recipes</a>
+                                    <a href="UserController?action=loadRecipeManagement&page=rejected&userId=<%= userId%>">Rejected Recipes</a>
                                 </div>
                             </div>
-                            <a href="userReviewManagement.jsp?userId=<%= userId%>" class="active-link">
+                            <a href="UserController?action=loadUserReview&userId=<%= userId%>" class="active-link">
                                 <img src="./assets/full-star-icon.svg" alt="">
                                 My Reviews
                             </a>
@@ -106,20 +108,20 @@
                         </div>
                         <div class="row user-profile-recipes">
                             <%
-                                ArrayList<ReviewDTO> reviewList = ReviewDAO.getReviewByUserId(user.getId());
-                                for (ReviewDTO review : reviewList) {
-                                    RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(review.getRecipe_id());
+                                ArrayList<DisplayReviewDTO> displayList = (ArrayList<DisplayReviewDTO>) request.getAttribute("displayReviewList");
+
+                                for (DisplayReviewDTO review : displayList) {
                             %>
-                            <a href="MainController?action=getRecipeDetailById&id=<%= recipe.getId()%>&activeScroll=true" class="col-md-6 user-profile-recipe-review">
+                            <a href="MainController?action=getRecipeDetailById&id=<%= review.getRecipeId()%>&activeScroll=true" class="col-md-6 user-profile-recipe-review">
                                 <div class="user-profile-recipe-post-picture">
-                                    <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
+                                    <img src="ServletImageLoader?identifier=<%= review.getThumbnailPath() %>" alt="">
                                 </div>
                                 <div class="user-profile-recipe-review-title">
-                                    <p><%= recipe.getTitle()%></p>
+                                    <p><%= review.getRecipeTitle() %></p>
                                 </div>
                                 <div class="recommendation-content-reciew">
                                     <%
-                                        for (int i = 0; i < review.getRating(); i++) {
+                                        for (int i = 0; i < review.getReviewRating(); i++) {
                                     %>
                                     <img src="./assets/full-star-icon.svg" alt="">
                                     <%
@@ -128,7 +130,7 @@
 
                                 </div>
                                 <div class="user-profile-recipe-review-content">
-                                    <p><%=review.getContent()%></p>
+                                    <p><%=review.getReviewContent()%></p>
                                 </div>
                             </a>
                             <%
@@ -148,7 +150,7 @@
                         </div>
                         <div class="user-profile-public-avatar">
                             <div>
-                                <img id="preview-image" src="./assets/profile-pic.svg" alt="">
+                                <img src="ServletImageLoader?identifier=<%= user.getAvatar()%>" alt="">
                             </div>
                         </div>
                     </div>

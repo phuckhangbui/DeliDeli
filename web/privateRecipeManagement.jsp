@@ -4,10 +4,10 @@
     Author     : khang
 --%>
 
-<%@page import="DAO.RecipeDAO"%>
+<%@page import="DAO.UserDetailDAO"%>
+<%@page import="DTO.DisplayRecipeDTO"%>
 <%@page import="DTO.RecipeDTO"%>
 <%@page import="DTO.UserDetailDTO"%>
-<%@page import="DAO.UserDetailDAO"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -37,6 +37,7 @@
         <%
             String userId = request.getParameter("userId");
             UserDetailDTO userDetail = UserDetailDAO.getUserDetailByUserId(new Integer(userId));
+           
         %>
         <div class="blank-background">
             <div class="container ">
@@ -54,15 +55,15 @@
                             </p>
                         </div>
                         <div class="user-profile-option">
-                            <a href="userPublicDetail.jsp?userId=<%= user.getId()%>" >
+                            <a href="UserController?action=userPublicDetail&userId=<%=user.getId()%>">
                                 <img src="./assets/public-unchosen-icon.svg" alt="">
                                 Public Profile
                             </a>
-                            <a href="userEmailSetting.jsp?userId=<%= user.getId()%>" >
+                            <a href="UserController?action=userEmailSetting&userId=<%=user.getId()%>">
                                 <img src="./assets/user-unchosen-icon.svg" alt="">
                                 Personal Setting
                             </a>
-                            <a href="userPasswordSetting.jsp?userId=<%= user.getId()%>" >
+                            <a href="UserController?action=userPasswordSetting&userId=<%=user.getId()%>">
                                 <img src="./assets/password-unchosen-icon.svg" alt="">
                                 Change Password
                             </a>
@@ -76,13 +77,13 @@
                                     My Own Recipes
                                 </a>
                                 <div class="dropdown-content-right">
-                                    <a href="privateRecipeManagement.jsp?userId=<%= userId%>" class="active-link">Private Recipes</a>
-                                    <a href="pendingRecipeManagement.jsp?userId=<%= userId%>">Pending Recipes</a>
-                                    <a href="publicRecipeManagement.jsp?userId=<%= userId%>">Public Recipes</a>
-                                    <a href="rejectedRecipeManagement.jsp?userId=<%= userId%>">Rejected Recipes</a>
+                                    <a href="UserController?action=loadRecipeManagement&page=private&userId=<%= userId%>" class="active-link">Private Recipes</a>
+                                    <a href="UserController?action=loadRecipeManagement&page=pending&userId=<%= userId%>">Pending Recipes</a>
+                                    <a href="UserController?action=loadRecipeManagement&page=public&userId=<%= userId%>">Public Recipes</a>
+                                    <a href="UserController?action=loadRecipeManagement&page=rejected&userId=<%= userId%>">Rejected Recipes</a>
                                 </div>
                             </div>
-                            <a href="userReviewManagement.jsp?userId=<%= userId%>">
+                            <a href="UserController?action=loadUserReview&userId=<%= userId%>">
                                 <img src="./assets/full-star-unchosen-icon.svg" alt="">
                                 My Reviews
                             </a>
@@ -93,7 +94,7 @@
                     </div>
 
                     <%
-                        ArrayList<RecipeDTO> recipeList = RecipeDAO.getRecipeByUserIdAndType(user.getId(), 1);
+                        ArrayList<DisplayRecipeDTO> displayList = (ArrayList<DisplayRecipeDTO>) request.getAttribute("displayRecipeList");
                     %>
 
                     <div class="col-md-5 user-profile-column-2">
@@ -107,18 +108,18 @@
                         </div>
                         <div class="row user-profile-recipes">
                             <%
-                                for (RecipeDTO r : recipeList) {
+                                for (DisplayRecipeDTO r : displayList) {
                             %>
                             <div  class="col-md-6 user-profile-recipe-post">
                                 <a href="MainController?action=getRecipeDetailById&id=<%= r.getId()%>"
                                    class="user-profile-recipe-post-picture" data-page="editRecipe.jsp?recipeId=<%=r.getId()%>">
-                                    <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath()%>" alt="">
+                                    <img src="ServletImageLoader?identifier=<%= r.getThumbnailPath() %>" alt="">
                                 </a>
 
                                 <div>
                                     <div class="user-profile-recipe-post-description">
-                                        <p><%= RecipeDAO.getCategoryByRecipeId(r.getId())%></p>
-                                        <a href="editRecipe.jsp?recipeId=<%=r.getId()%>">
+                                        <p><%= r.getCategory() %></p>
+                                        <a href="UserController?action=loadEditRecipe&recipeId=<%=r.getId()%>">
                                             <img src="./assets/edit-icon.svg"/>
                                         </a>
                                     </div>
@@ -126,7 +127,7 @@
                                 </div>
                                 <div class="recommendation-content-reciew">
                                     <%
-                                        double avaRating = RecipeDAO.getRatingByRecipeId(r.getId());
+                                        double avaRating = r.getRating();
                                         int fullStars = (int) avaRating;
                                         boolean hasHalfStar = avaRating - fullStars >= 0.5;
 
@@ -150,7 +151,7 @@
                                     <%
                                         }
                                     %>
-                                    <p class="recommendation-content-reciew-rating"><%= RecipeDAO.getRatingByRecipeId(r.getId())%></p>
+                                    <p class="recommendation-content-reciew-rating"><%= r.getRating()%></p>
                                 </div>
                             </div>
                             <% }%>
@@ -189,7 +190,7 @@
                         </div>
                         <div class="user-profile-public-avatar">
                             <div>
-                                <img id="preview-image" src="./assets/profile-pic.svg" alt="">
+                                <img src="ServletImageLoader?identifier=<%= user.getAvatar()%>" alt="">
                             </div>
                         </div>
                     </div>

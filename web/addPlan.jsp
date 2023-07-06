@@ -31,7 +31,7 @@
             <!--         The navigation bar       -->
             <%@include file="header.jsp" %>
             <%
-                ArrayList<DietDTO> dietList = DietDAO.getAllDietType();
+                ArrayList<DietDTO> dietList = (ArrayList<DietDTO>) request.getAttribute("dietList");
             %>
 
             <!--         Recipe Plan       -->

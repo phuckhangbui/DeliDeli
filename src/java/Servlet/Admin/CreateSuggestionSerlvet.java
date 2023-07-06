@@ -4,6 +4,7 @@
  */
 package Servlet.Admin;
 
+import DAO.RecipeDAO;
 import DTO.RecipeDTO;
 import DAO.SuggestionDAO;
 import java.io.IOException;
@@ -21,41 +22,41 @@ import javax.servlet.http.HttpSession;
  */
 public class CreateSuggestionSerlvet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    private static final int DEFAULT_STATUS = 0;
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             HttpSession session = request.getSession();
-            
+
             String title = request.getParameter("txtTitle");
             String txtUserId = request.getParameter("txtUserId");
             ArrayList<RecipeDTO> customSuggestionList = (ArrayList<RecipeDTO>) session.getAttribute("customSuggestionList");
+            ArrayList<RecipeDTO> listRecipe = RecipeDAO.getAllRecipes();
             
             boolean check = SuggestionDAO.checkSuggestionExist(title);
             if (check) {
                 request.setAttribute("titleExist", "Suggestion title is already existed.");
+                request.setAttribute("listRecipe", listRecipe);
                 request.getRequestDispatcher("createSuggestion.jsp").forward(request, response);
                 return;
-            }   
-            
-            int suggestionId = SuggestionDAO.insertSuggestion(title, new Integer(txtUserId));
-            
+            }
+            if (customSuggestionList == null){
+                request.setAttribute("emptyList", "Suggestion list is empty");
+                request.setAttribute("listRecipe", listRecipe);
+                request.getRequestDispatcher("createSuggestion.jsp").forward(request, response);
+                return;
+            }
+            int suggestionId = SuggestionDAO.insertSuggestion(title, new Integer(txtUserId), DEFAULT_STATUS);
+
             for (RecipeDTO recipe : customSuggestionList) {
                 SuggestionDAO.insertSuggestionList(suggestionId, recipe.getId());
             }
-            
+
             session.removeAttribute("customSuggestionList");
-            
+
             request.getRequestDispatcher("ManageSuggestionServlet").forward(request, response);
         }
     }

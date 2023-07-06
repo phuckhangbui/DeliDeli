@@ -4,7 +4,9 @@
  */
 package Servlet.User;
 
+import DAO.UserDAO;
 import DAO.UserDetailDAO;
+import DTO.UserDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -14,6 +16,7 @@ import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 /**
@@ -33,21 +36,27 @@ public class SaveUserPublicDetailServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-//            Part filePart = request.getPart("file");
-//            
-//            out.println(filePart);
-
             String userId = request.getParameter("userId");
             String firstName = request.getParameter("txtFirstName");
             String lastName = request.getParameter("txtLastName");
             String specialty = request.getParameter("txtSpecialty");
             String bio = request.getParameter("txtBio");
             String birthdate = request.getParameter("txtBirthDate");
+            
+            Part filePart = request.getPart("file");
 
-            int result = UserDetailDAO.updateUserPublicDetail(new Integer(userId), firstName, lastName, specialty, bio, birthdate);
-            if (result > 0) {
+            UserDetailDAO.updateUserPublicDetail(new Integer(userId), firstName, lastName, specialty, bio, birthdate);
+            
+            if (filePart.getSubmittedFileName().equals("")) {
+                UserDTO user = UserDAO.getUserByUserId(new Integer(userId));
+                HttpSession session = request.getSession();
+
+                session.setAttribute("user", user);
                 request.setAttribute("userId", userId);
-                //request.getRequestDispatcher(USER_PUBLIC_DETAIL_PAGE).forward(request, response);
+
+                request.getRequestDispatcher("UserPublicDetailServlet").forward(request, response);
+            } else {
+                request.setAttribute("userId", userId);
                 request.getRequestDispatcher("UploadAvatarImageServlet").forward(request, response);
             }
         }

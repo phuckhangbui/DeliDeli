@@ -5,7 +5,6 @@
 --%>
 
 <%@page import="DTO.UserDetailDTO"%>
-<%@page import="DAO.UserDetailDAO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -27,9 +26,9 @@
 
         <%@include file="header.jsp" %>
 
-        <%            
+        <%
             String userId = request.getParameter("userId");
-            UserDetailDTO userDetail = UserDetailDAO.getUserDetailByUserId(new Integer(userId));
+            UserDetailDTO userDetail = (UserDetailDTO) request.getAttribute("userDetail");
         %>
         <!--        User Public Info Manage        -->
         <div class="blank-background">
@@ -48,15 +47,15 @@
                             </p>
                         </div>
                         <div class="user-profile-option">
-                            <a href="userPublicDetail.jsp?userId=<%= user.getId()%>" class="active-link">
+                            <a href="UserController?action=userPublicDetail&userId=<%=user.getId()%>" class="active-link">
                                 <img src="./assets/public-icon.svg" alt="">
                                 Public Profile
                             </a>
-                            <a href="userEmailSetting.jsp?userId=<%= user.getId()%>">
+                            <a href="UserController?action=userEmailSetting&userId=<%=user.getId()%>">
                                 <img src="./assets/user-unchosen-icon.svg" alt="">
                                 Personal Setting
                             </a>
-                            <a href="userPasswordSetting.jsp?userId=<%= user.getId()%>">
+                            <a href="UserController?action=userPasswordSetting&userId=<%=user.getId()%>">
                                 <img src="./assets/password-unchosen-icon.svg" alt="">
                                 Change Password
                             </a>
@@ -65,18 +64,18 @@
                                 Saved Recipes
                             </a>
                             <div class="dropdown" id="dropdownUserRecipe">
-                                <a href="#" class="dropbtn">
+                                <a href="#" >
                                     <img src="./assets/my-recipe-unchosen-icon.svg" alt="">
                                     My Own Recipes
                                 </a>
                                 <div class="dropdown-content-right">
-                                    <a href="privateRecipeManagement.jsp?userId=<%= userId%>">Private Recipes</a>
-                                    <a href="pendingRecipeManagement.jsp?userId=<%= userId%>">Pending Recipes</a>
-                                    <a href="publicRecipeManagement.jsp?userId=<%= userId%>">Public Recipes</a>
-                                    <a href="rejectedRecipeManagement.jsp?userId=<%= userId%>">Rejected Recipes</a>
+                                    <a href="UserController?action=loadRecipeManagement&page=private&userId=<%= userId%>">Private Recipes</a>
+                                    <a href="UserController?action=loadRecipeManagement&page=pending&userId=<%= userId%>">Pending Recipes</a>
+                                    <a href="UserController?action=loadRecipeManagement&page=public&userId=<%= userId%>">Public Recipes</a>
+                                    <a href="UserController?action=loadRecipeManagement&page=rejected&userId=<%= userId%>">Rejected Recipes</a>
                                 </div>
                             </div>
-                            <a href="userReviewManagement.jsp?userId=<%= userId%>">
+                            <a href="UserController?action=loadUserReview&userId=<%= userId%>">
                                 <img src="./assets/full-star-unchosen-icon.svg" alt="">
                                 My Reviews
                             </a>
@@ -145,6 +144,30 @@
                 </form>
             </div>
         </div>
+
+        <script>
+            // Get all file input elements
+            var fileInputs = document.querySelectorAll('input[type="file"]');
+
+            // Add event listeners for the "change" event
+            fileInputs.forEach(function (fileInput) {
+                fileInput.addEventListener('change', validateFile);
+            });
+
+            // File validation function
+            function validateFile(event) {
+                var file = event.target.files[0];
+                if (file) {
+                    if (file.type.startsWith('image/')) {
+                    } else {
+                        alert('Please select an image file.');
+                        event.target.value = ''; // Reset the file input value
+                    }
+                } else {
+                    alert('Please select a file.');
+                }
+            }
+        </script>
 
 
 

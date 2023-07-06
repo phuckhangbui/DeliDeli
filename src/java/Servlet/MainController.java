@@ -58,6 +58,9 @@ public class MainController extends HttpServlet {
                     case "getRecipeDetailById":
                         url = "RecipeDetailServlet";
                         break;
+                    case "loadNewsList":
+                        url = "LoadNewsListServlet";
+                        break;
                     case "getNewsDetail":
                         url = "NewsDetailServlet";
                         break;
@@ -66,6 +69,12 @@ public class MainController extends HttpServlet {
                         break;
                     case "editPlan":
                         url = "PlanEditServlet";
+                        break;
+                    case "loadPublicProfile":
+                        url = "LoadPublicProfileServlet";
+                        break;
+                    case "addFavorite":
+                        url = "addFavoriteServlet";
                         break;
                 }
             }

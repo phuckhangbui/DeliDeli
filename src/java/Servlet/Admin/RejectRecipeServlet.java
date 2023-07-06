@@ -20,15 +20,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class RejectRecipeServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -40,7 +31,6 @@ public class RejectRecipeServlet extends HttpServlet {
             String userId = request.getParameter("userId");
             String notificationType = request.getParameter("notificationType");
             String recipeId = request.getParameter("recipeId");
-
             
             NotificationDTO notification = new NotificationDTO(0, title, desc, sendDate, false, new Integer(userId), 
                                                                 new Integer(notificationType), new Integer(recipeId), 0, "");

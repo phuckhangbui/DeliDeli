@@ -19,7 +19,7 @@ import java.util.ArrayList;
  */
 public class DietDAO {
 
-    public static ArrayList<DietDTO> getAllDietType() throws Exception {
+    public static ArrayList<DietDTO> getAllDietType(){
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;

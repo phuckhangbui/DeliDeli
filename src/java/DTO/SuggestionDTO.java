@@ -23,5 +23,6 @@ import lombok.ToString;
 public class SuggestionDTO {
     private int id;
     private String title;
+    private int status;
     private int userId;
 }

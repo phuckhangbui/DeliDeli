@@ -5,10 +5,13 @@
 package Servlet.User;
 
 import DAO.DietDAO;
+import DAO.MealDAO;
 import DTO.DietDTO;
 import DAO.PlanDAO;
 import DTO.PlanDTO;
 import DAO.PlanDateDAO;
+import DTO.DisplayRecipeDTO;
+import DTO.MealDTO;
 import DTO.PlanDateDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -31,8 +34,9 @@ public class PlanEditServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String id = request.getParameter("id");
+        ArrayList<DisplayRecipeDTO> displayList = (ArrayList<DisplayRecipeDTO>) request.getAttribute("searchRecipesList");
+        
         boolean isSearch = Boolean.parseBoolean(request.getParameter("isSearch"));
-        System.out.println("isSearch result: " + isSearch);
 
         PlanDTO plan = PlanDAO.getUserPlanById(new Integer(id));
         request.setAttribute("plan", plan);
@@ -44,6 +48,7 @@ public class PlanEditServlet extends HttpServlet {
         request.setAttribute("planDate", planDate);
 
         if (isSearch) {
+            request.setAttribute("SEARCH_LIST", displayList);
             request.setAttribute("SEARCH_PLAN_REAL", true);
             RequestDispatcher rq = request.getRequestDispatcher("addRecipeToPlan.jsp");
             rq.forward(request, response);
@@ -52,7 +57,7 @@ public class PlanEditServlet extends HttpServlet {
             RequestDispatcher rq = request.getRequestDispatcher("addRecipeToPlan.jsp");
             rq.forward(request, response);
         }
-        
+
         response.sendRedirect("error.jsp");
     }
 

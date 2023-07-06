@@ -4,7 +4,6 @@
     Author     : Admin
 --%>
 
-<%@page import="DAO.NewsDAO"%>
 <%@page import="DTO.NewsDTO"%>
 <%@page import="DTO.UserDTO"%>
 <%@page import="java.util.ArrayList"%>
@@ -43,7 +42,7 @@
                         <img src="assets/Logo3.svg" alt="">
                     </a>
                     <div>
-                        <a href="admin.jsp" >
+                        <a href="AdminController?action=adminDashboard" >
                             <img src="./assets/public-unchosen-icon.svg" alt="">
                             Dashboard
                         </a>
@@ -73,21 +72,15 @@
                         </a>
                     </div>
                     <div>
-                        <a href="#">
-                            <img src="./assets/policies-unchosen-icon.svg" alt="">
-                            Policies
-                        </a>
-                    </div>
-                    <div>
-                        <a href="#">
+                        <a href="adminBroadcast.jsp">
                             <img src="./assets/broadcast-unchosen-icon.svg" alt="">
                             Broadcast
                         </a>
                     </div>
                     <div>
-                        <a href="#">
-                            <img src="./assets/bug-report-unchosen-icon.svg" alt="">
-                            Report
+                        <a href="MainController?action=logout">
+                            <img src="./assets/leave-icon.svg" alt="">
+                            Logout
                         </a>
                     </div>
                 </nav>
@@ -113,54 +106,36 @@
                         <a class="logo" href="">
                             <img src="assets/Logo3.svg" alt="">
                         </a>
-                        <!--                        <div>
-                                                    <a href="admin.jsp">
-                                                        <img src="./assets/public-unchose.svg" alt="">
-                                                        Dashboard
-                                                    </a>
-                                                </div>-->
                         <div>
-                            <a href="AdminController?action=manageAccount">
-                                <img src="./assets/user-unchose.svg" alt="">
+                            <a href="AdminController?action=manageAccount" >
+                                <img src="./assets/user-unchosen-icon.svg" alt="">
                                 User
                             </a>
                         </div>
                         <div>
-                            <a href="AdminController?action=manageRecipe">
-                                <img src="./assets/post-unchose.svg" alt="">
-                                Posts
+                            <a href="AdminController?action=manageRecipe" >
+                                <img src="./assets/post-unchosen-icon.svg" alt="">
+                                Recipe
                             </a>
                         </div>
                         <div>
-                            <a href="AdminController?action=manageSuggestion">
-                                <img src="./assets/content-unchose.svg" alt="">
+                            <a href="AdminController?action=manageSuggestion" >
+                                <img src="./assets/content-unchosen-icon.svg" alt="">
                                 Content
                             </a>
                         </div>
                         <div>
                             <a href="AdminController?action=manageNews" class="active">
-                                <img src="./assets/news.svg" alt="">
+                                <img src="./assets/news-icon.svg" alt="">
                                 News
                             </a>
                         </div>
-                        <!--                        <div>
-                                                    <a href="#">
-                                                        <img src="./assets/policies-unchose.svg" alt="">
-                                                        Policies
-                                                    </a>
-                                                </div>-->
                         <div>
-                            <a href="#">
-                                <img src="./assets/broadcast-unchose.svg" alt="">
-                                Broadcast
+                            <a href="MainController?action=logout">
+                                <img src="./assets/leave-icon.svg" alt="">
+                                Logout
                             </a>
                         </div>
-                        <!--                        <div>
-                                                    <a href="#">
-                                                        <img src="./assets/bug-report-unchose.svg" alt="">
-                                                        Report
-                                                    </a>
-                                                </div>-->
                     </nav>
 
                     <div class="col-md-10 recipe">
@@ -185,17 +160,22 @@
                                     <div class="container ">
                                         <%
                                             NewsDTO news = (NewsDTO) request.getAttribute("news");
+                                            String category = (String) request.getAttribute("category");
                                         %>
+                                        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                                            <ol class="breadcrumb">
+                                                <li class="breadcrumb-item"><a href="AdminController?action=manageNews">News List</a></li>
+                                                <li class="breadcrumb-item current-link" aria-current="page"><%= news.getTitle()%></li>
+                                            </ol>
+                                        </nav>
                                         <div class="row">
-                                            <p><%= NewsDAO.getNewsCategoryByNewsId(news.getId())%></p>
+                                            <p><%= category%></p>
                                             <header class="new-result-header">
                                                 <p><%= news.getTitle()%></p>
                                             </header>
                                         </div>
                                         <div class="row new-result-content new-result-content-link">
                                             <div>
-                                                <!--<p class="new-result-content-post-title"><%= news
-                                                        .getTitle()%></p>-->
                                                 <p class="new-result-content-post-title">By: <%= request.getAttribute("author")%></p>
                                                 <%
                                                     if (news.getCreateAt().equals(news.getUpdateAt())) {
@@ -217,7 +197,7 @@
                                     <div class="news-detail-admin-action">
                                         <form action="AdminController" method="post" class="news-detail-admin-button">
                                             <input type="hidden" value="<%= news.getId()%>" name="newsId">
-                                            <button><a href="updateNews.jsp?newsId=<%= news.getId()%>">Edit</a></button>
+                                            <button><a href="AdminController?action=loadNewsForUpdate&newsId=<%= news.getId()%>">Edit</a></button>
                                             <button type="submit" name="action" value="deleteNews" class="news-detail-admin-button-delete">Delete</a></button>
                                         </form>
                                     </div>

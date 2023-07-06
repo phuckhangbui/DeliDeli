@@ -14,6 +14,7 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import static java.sql.Types.INTEGER;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -204,6 +205,29 @@ public class NotificationDAO {
 
     }
 
+    public static void deleteNotificationByRecipeId(int id) {
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                String sql = "DELETE FROM Notification\n"
+                        + "WHERE recipe_id = ?";
+
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setInt(1, id);
+                pst.executeUpdate();
+
+                pst.close();
+                cn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
     public static int addNotification(NotificationDTO notification) {
         int result = -1;
         Connection cn = null;
@@ -230,10 +254,10 @@ public class NotificationDAO {
                 } else {
                     pst.setInt(7, notification.getRecipe_id());
                 }
-                
-                if (notification.getPlan_id() == 0){
+
+                if (notification.getPlan_id() == 0) {
                     pst.setNull(8, INTEGER);
-                }else{
+                } else {
                     pst.setInt(8, notification.getRecipe_id());
                 }
 
@@ -241,6 +265,67 @@ public class NotificationDAO {
 
                 result = pst.executeUpdate();
 
+                pst.close();
+                cn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public static int addBroadcast(NotificationDTO notification) {
+        int result = -1;
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                List<Integer> userIds = new ArrayList<>();
+                String sql = "SELECT id\n"
+                        + "FROM [RecipeManagement].[dbo].[User]\n"
+                        + "WHERE role_id = 1";
+                PreparedStatement pst = cn.prepareStatement(sql);
+                ResultSet resultSet = pst.executeQuery();
+                while (resultSet.next()) {
+                    int userId = resultSet.getInt("id");
+                    userIds.add(userId);
+                }
+
+                pst.close();
+                resultSet.close();
+
+                sql = "INSERT INTO Notification(title, description, send_date\n"
+                        + ", is_read, user_id, notification_type_id, recipe_id, plan_id, link)\n"
+                        + "VALUES\n"
+                        + "(?, ?,?, ?, ?, ?, ?, ?, ?)";
+                pst = cn.prepareStatement(sql);
+                for (int id : userIds) {
+
+                    pst.setString(1, notification.getTitle());
+                    pst.setString(2, notification.getDescription());
+                    pst.setTimestamp(3, notification.getSend_date());
+                    pst.setBoolean(4, notification.is_read());
+                    pst.setInt(5, id);
+                    pst.setInt(6, notification.getNotification_type());
+
+                    if (notification.getRecipe_id() == 0) {
+                        pst.setNull(7, INTEGER);
+                    } else {
+                        pst.setInt(7, notification.getRecipe_id());
+                    }
+
+                    if (notification.getPlan_id() == 0) {
+                        pst.setNull(8, INTEGER);
+                    } else {
+                        pst.setInt(8, notification.getRecipe_id());
+                    }
+
+                    pst.setString(9, notification.getLink());
+
+                    result = pst.executeUpdate();
+                }
                 pst.close();
                 cn.close();
             }

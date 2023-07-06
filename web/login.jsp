@@ -39,14 +39,11 @@
                         </div>
                         <div class="user-form-content-input">
                             <p>Email</p>
-                            <input type="text" name="txtEmail" required=""/>
+                            <input type="text" name="txtEmail" value="khang@gmail.com" required=""/>
                         </div>
                         <div class="user-form-content-input">
                             <p>Password</p>
-                            <input type="password" name="txtPass" required="" />
-                        </div>
-                        <div class="user-form-content-remember">
-                            <input type="checkbox" /><span>Remember me</span>
+                            <input type="password" name="txtPass" value="123" required="" />
                         </div>
 
                         <%

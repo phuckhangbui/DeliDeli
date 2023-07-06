@@ -22,15 +22,6 @@ import javax.servlet.http.HttpServletResponse;
         maxRequestSize = 1024 * 1024 * 50) // 50MB => maximum request from server.
 public class UserController extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     private String url = "errorpage.html";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -45,6 +36,15 @@ public class UserController extends HttpServlet {
                 url = "error.jsp";
             } else {
                 switch (action.trim()) {
+                    case "userPublicDetail":
+                        url = "UserPublicDetailServlet";
+                        break;
+                    case "userEmailSetting":
+                        url = "UserEmailSettingServlet";
+                        break;
+                    case "userPasswordSetting":
+                        url = "UserPasswordSettingServlet";
+                        break;
                     case "saveUserPublicDetail":
                         url = "SaveUserPublicDetailServlet";
                         break;
@@ -81,7 +81,31 @@ public class UserController extends HttpServlet {
                     case "editPlan":
                         url = "PlanEditServlet";
                         break;
-                    
+                    case "loadEditRecipe":
+                        url = "LoadEditRecipeServlet";
+                        break;
+                    case "loadRecipeManagement":
+                        url = "LoadRecipeManagementServlet";
+                        break;
+                    case "loadUserReview":
+                        url = "LoadUserReviewServlet";
+                        break;
+                    case "categoryLoadToPlan":
+                        url = "CategoryLoadServlet";
+                        break;
+                    case "planManagement":
+                        url = "PlanManagementServlet";
+                        break;
+                    case "recipePlanSearch":
+                        url = "PlanSearchServlet";
+                        break;
+                    case "addPlanRecipe":
+                        url = "PlanAddRecipeServlet";
+                        break;
+                    case "planNotification":
+                        url = "PlanRecipeNotificationServlet";
+                        break;
+
                 }
             }
             RequestDispatcher rd = request.getRequestDispatcher(url);
