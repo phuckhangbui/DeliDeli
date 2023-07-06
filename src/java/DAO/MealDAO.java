@@ -263,4 +263,31 @@ public class MealDAO {
         }
         return false;
     }
+    
+    public static void deleteMealByRecipeId(int id) {
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                String sql = "DELETE FROM Meal\n"
+                        + "WHERE recipe_id = ?";
+
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setInt(1, id);
+                pst.executeUpdate();
+
+                pst.close();
+                cn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+    
+    public static void main(String[] args) {
+        deleteMealByRecipeId(12);
+    }
 }
