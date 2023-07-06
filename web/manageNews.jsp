@@ -179,12 +179,11 @@
                                     <tr>
                                         <th>No.</th>
                                         <th>Title</th>
-                                        <th>Created</th>
-                                        <th>Updated</th>
                                         <th>Owner</th>
                                         <th>Category</th>
-                                        <th></th>
-                                        <!--<th>Edit</th>-->
+                                        <th>Created</th>
+                                        <th>Updated</th>
+
                                     </tr>
                                 </thead>
                                 <tbody class="table-group-divider">
@@ -196,17 +195,11 @@
                                     %>
                                     <tr>
                                         <td><%= news.getId()%></td>
-                                        <td  ><%= news.getTitle()%></td>
-                                        <td><%= news.getCreateAt()%></td>
-                                        <td><%= news.getUpdateAt()%></td>
+                                        <td class="recipe-and-user-link"><a href="AdminController?action=showNewsDetail&newsId=<%= news.getId()%>"><%= news.getTitle()%></a></td>
                                         <td><%= newsAuthor%></td>
                                         <td><%= newsCategory%></td>
-                                        <td class="news-action-button">
-                                            <form action="AdminController" method="post" class="news-table-button">
-                                                <input type="hidden" value="<%= news.getId()%>" name="newsId">
-                                                <button type="submit" value="showNewsDetail" name="action">Show</button>
-                                            </form>
-                                        </td>
+                                        <td><%= news.getCreateAt()%></td>
+                                        <td><%= news.getUpdateAt()%></td>
                                         <!--<td><a href="createNews.jsp?id=<%= news.getId()%>" >Edit</a></td>-->
                                     </tr>
                                     <%

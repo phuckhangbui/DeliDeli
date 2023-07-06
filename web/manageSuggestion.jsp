@@ -171,12 +171,11 @@
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr>
-                                    <th>No</th>
+                                    <th>No.</th>
                                     <th>Title</th>
-                                    <th>Total Recipe</th>
-                                    <td>Detail</td>
-                                    <td>Choose</td>
-                                    <td>Action</td>
+                                    <th>Amount</th>
+                                    <th>Choose</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody class="table-group-divider">
@@ -191,14 +190,9 @@
                                 %>
                                 <tr>
                                     <td><%= count%></td>
-                                    <td><%= key%></td>
-                                    <td><%= value%></td>
-                                    <td>
-                                        <form action="AdminController" method="post" class="recipe-table-button">
-                                            <input type="hidden" name="suggestion" value="<%= key%>">
-                                            <button type="submit" name="action" value="filterSuggestion">Show</button>
-                                        </form>
-                                    </td>
+                                    <td class="recipe-and-user-link"><a href="AdminController?action=filterSuggestion&suggestion=<%= key%>"><%= key%></a></td>
+
+                                    <td><%= value%> Recipe(s)</td>
                                     <td>
                                         <form action="AdminController" method="post" class="recipe-table-button">
                                             <input type="hidden" name="suggestion" value="<%= key%>">
@@ -258,12 +252,12 @@
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr>
-                                    <th>No</th>
+                                    <th>No.</th>
                                     <th>Title</th>
+                                    <th>Owner</th>
                                     <th>Create at</th>
                                     <th>Update at</th>
-                                    <th>Owner</th>
-                                    <th>Show</th>
+                                    
                                 </tr>
                             </thead>
                             <tbody class="table-group-divider">
@@ -273,11 +267,13 @@
                                 %>
                                 <tr>
                                     <td><%= count%></td>
-                                    <td><%= r.getTitle()%></td>
+                                    <td class="recipe-and-user-link"><a href="AdminController?action=showRecipeDetail&id=<%= r.getId()%>"><%= r.getTitle()%></a></td>
                                     <% Timestamp timestamp = r.getCreate_at();
                                         SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
                                         String createDate = dateFormat.format(timestamp);
                                     %>
+                                    <% UserDTO owner = RecipeDAO.getRecipeOwnerByRecipeId(r.getId());%>
+                                    <td class="recipe-and-user-link"><a href="AdminController?action=showUserDetail&username=<%= owner.getUserName()%>"><%= owner.getUserName()%></a></td>
                                     <td><%= createDate%></td>
                                     <%
                                         if (r.getUpdate_at() == null) {
@@ -294,14 +290,8 @@
                                             }
                                         %>
                                     </td>
-                                    <% UserDTO owner = RecipeDAO.getRecipeOwnerByRecipeId(r.getId());%>
-                                    <td><a href="AdminController?action=showUserDetail&username=<%= owner.getUserName()%>"><%= owner.getUserName()%></a></td>
-                                    <td>
-                                        <form action="AdminController" method="post" class="recipe-table-button">
-                                            <input type="hidden" value="<%= r.getId()%>" name="id">
-                                            <button type="submit" value="showRecipeDetail" name="action">Show</button>
-                                        </form>
-                                    </td>
+                                    
+                                    
                                 </tr>
                                 <%
                                             count++;

@@ -43,7 +43,12 @@ public class CreateSuggestionSerlvet extends HttpServlet {
                 request.getRequestDispatcher("createSuggestion.jsp").forward(request, response);
                 return;
             }
-
+            if (customSuggestionList == null){
+                request.setAttribute("emptyList", "Suggestion list is empty");
+                request.setAttribute("listRecipe", listRecipe);
+                request.getRequestDispatcher("createSuggestion.jsp").forward(request, response);
+                return;
+            }
             int suggestionId = SuggestionDAO.insertSuggestion(title, new Integer(txtUserId), DEFAULT_STATUS);
 
             for (RecipeDTO recipe : customSuggestionList) {

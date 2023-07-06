@@ -189,163 +189,122 @@
                                                 </div>
                         -->
 
-                        
+
                         <div class="nav-top-bar-search">
                             <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="AdminController?action=manageSuggestion">Content List</a></li>
-                                <li class="breadcrumb-item current-link" aria-current="page">Edit Content</li>
-                            </ol>
-                        </nav>
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="AdminController?action=manageSuggestion">Content List</a></li>
+                                    <li class="breadcrumb-item current-link" aria-current="page">Edit Content</li>
+                                </ol>
+                            </nav>
                         </div>
-                        <table class="table table-striped table-hover">
-                            <thead>
-                                <tr>
-                                    <th>No</th>
-                                    <th>Title</th>
-                                    <th>Create at</th>
-                                    <th>Update at</th>
-                                    <th>Owner</th>
-                                    <th>Show</th>
-                                    <th>Add</th>
-                                </tr>
-                            </thead>
-                            <tbody class="table-group-divider">
-                                <%
-                                    int count = 1;
-                                    for (RecipeDTO r : listRecipe) {
-                                %>
-                                <tr>
-                                    <td><%= count%></td>
-                                    <td><%= r.getTitle()%></td>
-                                    <% Timestamp timestamp = r.getCreate_at();
-                                        SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
-                                        String createDate = dateFormat.format(timestamp);
-                                    %>
-                                    <td><%= createDate%></td>
-                                    <%
-                                        if (r.getUpdate_at() == null) {
-                                    %>
-                                    <td><%= createDate%></td>
-                                    <%
-                                    } else {
-                                        timestamp = r.getUpdate_at();
-                                        dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
-                                        String updateDate = dateFormat.format(timestamp);
-                                    %>
-                                    <td><%= updateDate%>
+                        <div class="row">
+                            <div class="col-md-6 table-haft-division">
+                                <div class="user-header">
+                                    Recipes List
+                                </div>
+                                <table class="table table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Title</th>
+                                            <th>Owner</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="table-group-divider">
                                         <%
+                                            int count = 1;
+                                            for (RecipeDTO r : listRecipe) {
+                                        %>
+                                        <tr>
+                                            <td><%= count%></td>
+                                            <td class="recipe-and-user-link">
+                                                <a href="AdminController?action=showRecipeDetail&id=<%= r.getId()%>"><%= r.getTitle()%></a>
+                                            </td>
+                                            <% UserDTO owner = RecipeDAO.getRecipeOwnerByRecipeId(r.getId());%>
+                                            <td class="recipe-and-user-link"><a href="AdminController?action=showUserDetail&username=<%= owner.getUserName()%>"><%= owner.getUserName()%></a></td>
+
+                                            <td>
+                                                <form action="AdminController" method="post" class="recipe-table-button">
+                                                    <input type="hidden" value="<%= r.getId()%>" name="id">
+                                                    <input type="hidden" value="<%= customSuggestionList%>" name="customSuggestionList">
+                                                    <input type="hidden" value="update" name="update">
+                                                    <input type="hidden" value="<%= chosenSuggestion%>" name="chosenSuggestion">
+                                                    <input type="hidden" value="<%= suggestion%>" name="suggestion">
+                                                    <button type="submit" value="addSuggestion" name="action">Add</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                        <%
+                                                    count++;
+                                                }
                                             }
                                         %>
-                                    </td>
-                                    <% UserDTO owner = RecipeDAO.getRecipeOwnerByRecipeId(r.getId());%>
-                                    <td><a href="AdminController?action=showUserDetail&username=<%= owner.getUserName()%>"><%= owner.getUserName()%></a></td>
-                                    <td>
-                                        <form action="AdminController" method="post" class="recipe-table-button">
-                                            <input type="hidden" value="<%= r.getId()%>" name="id">
-                                            <button type="submit" value="showRecipeDetail" name="action">Show</button>
-                                        </form>
-                                    </td>
-                                    <td>
-                                        <form action="AdminController" method="post" class="recipe-table-button">
-                                            <input type="hidden" value="<%= r.getId()%>" name="id">
-                                            <input type="hidden" value="<%= customSuggestionList%>" name="customSuggestionList">
-                                            <input type="hidden" value="update" name="update">
-                                            <input type="hidden" value="<%= chosenSuggestion%>" name="chosenSuggestion">
-                                            <input type="hidden" value="<%= suggestion%>" name="suggestion">
-                                            <button type="submit" value="addSuggestion" name="action">Add</button>
-                                        </form>
-                                    </td>
-                                </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-6 ">
                                 <%
-                                            count++;
-                                        }
-                                    }
+                                    //ArrayList<RecipeDTO> customSuggestionList = (ArrayList) request.getAttribute("customSuggestionList");
+                                    if (customSuggestionList != null && customSuggestionList.size() > 0) {
                                 %>
-                            </tbody>
-                        </table>
 
-                        <%
-                            //ArrayList<RecipeDTO> customSuggestionList = (ArrayList) request.getAttribute("customSuggestionList");
-                            if (customSuggestionList != null && customSuggestionList.size() > 0) {
-                        %>
-                        <h3><%= suggestion%></h3>
-                        <table class="table table-striped table-hover">
-                            <thead>
-                                <tr>
-                                    <th>No</th>
-                                    <th>Title</th>
-                                    <th>Create at</th>
-                                    <th>Update at</th>
-                                    <th>Owner</th>
-                                    <th>Show</th>
-                                    <th>Remove</th>
-                                </tr>
-                            </thead>
-                            <tbody class="table-group-divider">
-                                <%
-                                    int count = 1;
-                                    for (RecipeDTO r : customSuggestionList) {
-                                %>
-                                <tr>
-                                    <td><%= count%></td>
-                                    <td><%= r.getTitle()%></td>
-                                    <% Timestamp timestamp = r.getCreate_at();
-                                        SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
-                                        String createDate = dateFormat.format(timestamp);
-                                    %>
-                                    <td><%= createDate%></td>
-                                    <%
-                                        if (r.getUpdate_at() == null) {
-                                    %>
-                                    <td><%= createDate%></td>
-                                    <%
-                                    } else {
-                                        timestamp = r.getUpdate_at();
-                                        dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
-                                        String updateDate = dateFormat.format(timestamp);
-                                    %>
-                                    <td><%= updateDate%>
+                                <div class="user-header">
+                                    <%= suggestion%>
+                                </div>
+                                <table class="table table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Title</th>
+                                            <th>Owner</th> 
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="table-group-divider">
                                         <%
+                                            int count = 1;
+                                            for (RecipeDTO r : customSuggestionList) {
+                                        %>
+                                        <tr>
+                                            <td><%= count%></td>
+                                            <td class="recipe-and-user-link">
+                                                <a href="AdminController?action=showRecipeDetail&id=<%= r.getId()%>"><%= r.getTitle()%></a>
+                                            </td>
+                                            <% UserDTO owner = RecipeDAO.getRecipeOwnerByRecipeId(r.getId());%>
+                                            <td><a href="AdminController?action=showUserDetail&username=<%= owner.getUserName()%>"><%= owner.getUserName()%></a></td>
+
+                                            <td>
+                                                <form action="AdminController" method="post" class="recipe-table-button">
+                                                    <input type="hidden" value="<%= r.getId()%>" name="id">
+                                                    <input type="hidden" value="<%= customSuggestionList%>" name="customSuggestionList">
+                                                    <input type="hidden" value="update" name="update">
+                                                    <input type="hidden" value="<%= chosenSuggestion%>" name="chosenSuggestion">
+                                                    <input type="hidden" value="<%= suggestion%>" name="suggestion">
+                                                    <button type="submit" value="removeSuggestion" name="action">Remove</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                        <%
+                                                    count++;
+                                                }
                                             }
                                         %>
-                                    </td>
-                                    <% UserDTO owner = RecipeDAO.getRecipeOwnerByRecipeId(r.getId());%>
-                                    <td><a href="AdminController?action=showUserDetail&username=<%= owner.getUserName()%>"><%= owner.getUserName()%></a></td>
-                                    <td>
-                                        <form action="AdminController" method="post" class="recipe-table-button">
-                                            <input type="hidden" value="<%= r.getId()%>" name="id">
-                                            <button type="submit" value="showRecipeDetail" name="action">Show</button>
-                                        </form>
-                                    </td>
-                                    <td>
-                                        <form action="AdminController" method="post" class="recipe-table-button">
-                                            <input type="hidden" value="<%= r.getId()%>" name="id">
-                                            <input type="hidden" value="<%= customSuggestionList%>" name="customSuggestionList">
-                                            <input type="hidden" value="update" name="update">
-                                            <input type="hidden" value="<%= chosenSuggestion%>" name="chosenSuggestion">
-                                            <input type="hidden" value="<%= suggestion%>" name="suggestion">
-                                            <button type="submit" value="removeSuggestion" name="action">Remove</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                                <%
-                                            count++;
-                                        }
-                                    }
-                                %>
-                            </tbody>
-                        </table>
-
-                        <form action="AdminController" method="post">
-                            <input type="hidden" name="txtUserId" value="<%= user.getId()%>">
-                            <input type="hidden" value="<%= customSuggestionList%>" name="customSuggestionList">
-                            <input type="hidden" value="<%= suggestion%>" name="suggestion">
-                            <input type="hidden" value="<%= chosenSuggestion%>" name="chosenSuggestion">
-                            <button type="submit" name="action" value="updateSuggestion">Update</button>
-                            <p class="error-popup">${requestScope.error}</p>
-                            <p class="error-popup">${requestScope.titleExist}</p>
-                        </form>
+                                    </tbody>
+                                </table>
+                                <form action="AdminController" method="post" class="update-suggestion">
+                                    <p class="error-popup">${requestScope.error}</p>
+                                    <p class="error-popup">${requestScope.titleExist}</p>
+                                    <input type="hidden" name="txtUserId" value="<%= user.getId()%>">
+                                    <input type="hidden" value="<%= customSuggestionList%>" name="customSuggestionList">
+                                    <input type="hidden" value="<%= suggestion%>" name="suggestion">
+                                    <input type="hidden" value="<%= chosenSuggestion%>" name="chosenSuggestion">
+                                    <button type="submit" name="action" value="updateSuggestion">Update</button>
+                                    
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

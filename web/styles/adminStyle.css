@@ -361,8 +361,10 @@ thead{
     color: white;
     background-color: #ec9131;
     border: none;
-    padding: 0 10px;
-    width: 85px;
+    padding: 0 20px;
+}
+.filter-table-button img{
+    width: 20px;
 }
 .recipe-and-user-link a{
     transition: all 0.2s;
@@ -603,4 +605,27 @@ thead{
 .unspecified{
     font-style: italic;
     color: rgb(0,0,0,0.5);
+}
+
+.table-haft-division{
+    border-right: 1px solid rgb(0,0,0,0.3);
+}
+.update-suggestion{
+    display: flex;
+    flex-direction: column;
+}
+
+.update-suggestion button{
+    align-self: center;
+    font-size: 20px;
+    border-radius: 20px;
+    color: white;
+    background-color: #ec9131;
+    border: none;
+    padding: 5px 10px;
+    width: 85px;
+}
+.update-suggestion p{
+    margin: 0px;
+    color: red;
 }
