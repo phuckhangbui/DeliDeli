@@ -11,10 +11,12 @@ import DTO.DisplayRecipeDTO;
 import DTO.NewsDTO;
 import DTO.RecipeDTO;
 import DTO.UserDTO;
+import Utils.NavigationBarUtils;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
@@ -156,6 +158,102 @@ public class LoadHomeFilter implements Filter {
 
         request.setAttribute("displayRecipeList", displayList);
 
+        //-- What's to eat today section --
+        LocalTime currentTime = LocalTime.now();
+        String time = "";
+        System.out.println("Current Time: " + currentTime);
+
+        ArrayList<RecipeDTO> recommendList = null;
+
+        //Time define
+        LocalTime MorningStartTime = LocalTime.of(6, 0);
+        LocalTime AfternoonStartTime = LocalTime.of(12, 0);
+        LocalTime EveningStartTime = LocalTime.of(17, 0);
+        LocalTime NightStartTime = LocalTime.of(20, 0);
+
+        //BREAKFAST
+        if (currentTime.isAfter(MorningStartTime) && currentTime.isBefore(AfternoonStartTime)) {
+            recommendList = NavigationBarUtils.searchRecipes("Breakfast", "Category");
+            ArrayList<DisplayRecipeDTO> timeRecommendDisplay = new ArrayList<>();
+
+            time = "breakfast";
+
+            for (RecipeDTO r : recommendList) {
+                String thumbnailPath = RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath();
+                String category = RecipeDAO.getCategoryByRecipeId(r.getId());
+                double rating = RecipeDAO.getRatingByRecipeId(r.getId());
+                UserDTO owner = RecipeDAO.getRecipeOwnerByRecipeId(r.getId());
+
+                DisplayRecipeDTO d = new DisplayRecipeDTO(r.getId(), r.getTitle(), thumbnailPath, category, rating, owner);
+                timeRecommendDisplay.add(d);
+            }
+
+            request.setAttribute("timeTitle", time);
+            request.setAttribute("timeRecommendDisplay", timeRecommendDisplay);
+
+            //LUNCH
+        } else if (currentTime.isAfter(AfternoonStartTime)
+                && currentTime.isBefore(EveningStartTime)) {
+            recommendList = NavigationBarUtils.searchRecipes("Lunch", "Category");
+            ArrayList<DisplayRecipeDTO> timeRecommendDisplay = new ArrayList<>();
+
+            time = "lunch";
+
+            for (RecipeDTO r : recommendList) {
+                String thumbnailPath = RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath();
+                String category = RecipeDAO.getCategoryByRecipeId(r.getId());
+                double rating = RecipeDAO.getRatingByRecipeId(r.getId());
+                UserDTO owner = RecipeDAO.getRecipeOwnerByRecipeId(r.getId());
+
+                DisplayRecipeDTO d = new DisplayRecipeDTO(r.getId(), r.getTitle(), thumbnailPath, category, rating, owner);
+                timeRecommendDisplay.add(d);
+            }
+
+            request.setAttribute("timeTitle", time);
+            request.setAttribute("timeRecommendDisplay", timeRecommendDisplay);
+
+            //DINNER
+        } else if (currentTime.isAfter(EveningStartTime)
+                && currentTime.isBefore(NightStartTime)) {
+            recommendList = NavigationBarUtils.searchRecipes("Dinner", "Category");
+            ArrayList<DisplayRecipeDTO> timeRecommendDisplay = new ArrayList<>();
+
+            time = "dinner";
+
+            for (RecipeDTO r : recommendList) {
+                String thumbnailPath = RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath();
+                String category = RecipeDAO.getCategoryByRecipeId(r.getId());
+                double rating = RecipeDAO.getRatingByRecipeId(r.getId());
+                UserDTO owner = RecipeDAO.getRecipeOwnerByRecipeId(r.getId());
+
+                DisplayRecipeDTO d = new DisplayRecipeDTO(r.getId(), r.getTitle(), thumbnailPath, category, rating, owner);
+                timeRecommendDisplay.add(d);
+            }
+
+            request.setAttribute("timeTitle", time);
+            request.setAttribute("timeRecommendDisplay", timeRecommendDisplay);
+            
+            //MIDNIGHT
+        } else if (currentTime.isAfter(NightStartTime)
+                || currentTime.isBefore(MorningStartTime)) {
+            recommendList = NavigationBarUtils.searchRecipes("Snack", "Category");
+            ArrayList<DisplayRecipeDTO> timeRecommendDisplay = new ArrayList<>();
+
+            time = "midnight snack";
+
+            for (RecipeDTO r : recommendList) {
+                String thumbnailPath = RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath();
+                String category = RecipeDAO.getCategoryByRecipeId(r.getId());
+                double rating = RecipeDAO.getRatingByRecipeId(r.getId());
+                UserDTO owner = RecipeDAO.getRecipeOwnerByRecipeId(r.getId());
+
+                DisplayRecipeDTO d = new DisplayRecipeDTO(r.getId(), r.getTitle(), thumbnailPath, category, rating, owner);
+                timeRecommendDisplay.add(d);
+            }
+
+            request.setAttribute("timeTitle", time);
+            request.setAttribute("timeRecommendDisplay", timeRecommendDisplay);
+        }
         //-- Suggestion section  --
         ArrayList<RecipeDTO> suggestionRecipeList;
         ArrayList<DisplayRecipeDTO> displaySuggestionList = new ArrayList<>();
