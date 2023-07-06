@@ -127,11 +127,28 @@
                         Time startTimeFromDB = currentPlanToday.getStart_time();
                         LocalTime startTime = startTimeFromDB.toLocalTime();
                         if (currentTime.isAfter(startTime) || currentTime.equals(startTime)) {
-                            System.out.println("Yahoo!");
+                            // Activate the servlet using AJAX
+                    %>
+                    <script>
+                        // Make an AJAX request to activate the servlet
+                        var xhr = new XMLHttpRequest();
+                        xhr.open("POST", "UserController?action=planNotification", true);
+                        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                        xhr.onreadystatechange = function () {
+                            if (xhr.readyState === 4 && xhr.status === 200) {
+                                // Request completed successfully
+                                console.log("Servlet activated!");
+                            }
+                        };
+                        xhr.send();
+                    </script>
+                    <%
+                        System.out.println("IT'S SHOW TIME");
                         } else {
                             System.out.println("It's not the correct time yet.");
                         }
                     %>
+
 
                     <!--                                  -->
 
