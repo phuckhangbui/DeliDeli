@@ -184,7 +184,9 @@
                                     <option value="moderator">Moderator</option>
                                     <option value="all">All</option>
                                 </select>
-                                <button type="submit" value="Filter" class="filter-table-button">Filter</button>
+                                <button type="submit" value="Filter" class="filter-table-button">
+                                    Filter
+                                </button>
                             </form>
                         </div>
 
@@ -230,11 +232,13 @@
                                             <input type="hidden" value="<%= currentRole%>" name="currentRole">
                                             <input type="hidden" value="<%= tag%>" name="tag">
                                             <%
-                                                if (tmp[u.getStatus()].equals("Deactivated") && user.getRole() != 1 && u.getRole() != 2) {
+                                                if (tmp[u.getStatus()].equals("Deactivated")) {
+                                                    if (user.getRole() != 1) {
                                             %>
-                                            <button type="submit" value="activateAcc" name="action" >Activate</button>
+                                            <button type="submit" value="activateAcc" name="action">Activate</button>
                                             <%
-                                            } else if (user.getRole() != 1 && u.getRole() != 2) {
+                                                }
+                                            } else if ((user.getRole() == 2 && u.getRole() != 2) || (user.getRole() == 3 && u.getRole() == 1)) {
                                             %>
                                             <button type="submit" value="deactivateAcc" name="action">Deactivate</button>
                                             <%

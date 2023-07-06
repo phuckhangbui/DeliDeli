@@ -42,10 +42,10 @@
                         <p><%= news.getTitle()%></p>
                     </header>
                     <div class="recipe-detail-info-user">
-                        <a href=""><img src="./assets/profile-pic.svg" alt=""></a>
+                        <a ><img src="./assets/profile-pic.svg" alt=""></a>
                         <div>
                             <span>By</span>
-                            <span><a href=""> <%= request.getAttribute("author")%></a></span>
+                            <span><a > <%= request.getAttribute("author")%></a></span>
                             <%
                                 if (news.getCreateAt().equals(news.getUpdateAt())) {
                             %>

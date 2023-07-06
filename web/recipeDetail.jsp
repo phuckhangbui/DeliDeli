@@ -43,6 +43,7 @@
             int ownerId = recipe.getUser_id();
             UserDTO owner = (UserDTO) request.getAttribute("owner");
             String link = "LoadPublicProfileServlet?accountName=" + owner.getUserName();
+            
         %>
 
         <%@include file="header.jsp" %>

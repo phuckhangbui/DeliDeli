@@ -181,7 +181,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-3 user-detail-admin-image">
-<!--                                            <img src="pictures/egg1.jpeg" alt="alt"/>-->
+                                            <!--                                            <img src="pictures/egg1.jpeg" alt="alt"/>-->
                                             <img src="ServletImageLoader?identifier=<%= account.getAvatar()%>" alt="alt"/>
                                         </div>
                                         <div class="col-md-9">
@@ -201,29 +201,29 @@
                                                 <div class="col-md-12 user-detail-admin-title">
                                                     <p>Specialties</p>
                                                     <%
-                                                        if ( userDetail.getSpecialty().equals("")) { %>
+                                                        if (userDetail.getSpecialty().equals("")) { %>
                                                     <p class="unspecified">Unspecified</p>
                                                     <%
                                                     } else {
                                                     %>
                                                     <p><%= userDetail.getSpecialty()%></p>
                                                     <%}%>
-                                                    
-                                                    
-                                                    
-                                                    
+
+
+
+
                                                 </div>
                                                 <div class="col-md-12 user-detail-admin-title">
                                                     <p>Bio</p>
                                                     <%
-                                                        if (  userDetail.getBio().equals("")) { %>
+                                                        if (userDetail.getBio().equals("")) { %>
                                                     <p class="unspecified">Unspecified</p>
                                                     <%
                                                     } else {
                                                     %>
-                                                    <p><%= userDetail.getBio() %></p>
+                                                    <p><%= userDetail.getBio()%></p>
                                                     <%}%>
-                                                    
+
                                                 </div>
                                             </div>
                                         </div>
@@ -240,11 +240,10 @@
                                             <table class="table table-striped table-hover">
                                                 <thead>
                                                     <tr>
-                                                        <th>ID</th>
+                                                        <th>No.</th>
                                                         <th>Title</th>
                                                         <th>Create at</th>
                                                         <th>Update at</th>
-                                                        <th>Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody class="table-group-divider">
@@ -253,7 +252,9 @@
                                                     %>
                                                     <tr>
                                                         <td><%= r.getId()%></td>
-                                                        <td><%= r.getTitle()%></td>
+                                                        <td class="recipe-and-user-link">
+                                                            <a href="AdminController?action=showRecipeDetail&id=<%= r.getId()%>"><%= r.getTitle()%></a>
+                                                        </td>
                                                         <% Timestamp timestamp = r.getCreate_at();
                                                             SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
                                                             String createDate = dateFormat.format(timestamp);
@@ -273,12 +274,6 @@
                                                             <%
                                                                 }
                                                             %>
-                                                        </td>
-                                                        <td>
-                                                            <form action="AdminController" method="post" class="user-detail-admin-button">
-                                                                <input type="hidden" value="<%= r.getId()%>" name="id">
-                                                                <button type="submit" value="showRecipeDetail" name="action">Show</button>
-                                                            </form>
                                                         </td>
                                                     </tr>
                                                     <% }

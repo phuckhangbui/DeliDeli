@@ -37,7 +37,8 @@
 //                ArrayList<ReviewDTO> reviewList = (ArrayList) request.getAttribute("reviewList");
             %>
 
-            <%  String activeScroll = request.getParameter("activeScroll");
+            <%  
+                String activeScroll = request.getParameter("activeScroll");
                 if (user != null) {
                     ReviewDTO userReview = ReviewDAO.getReviewByRecipeAndUser(user.getId(), recipe.getId());
                     if (userReview != null) {
@@ -177,9 +178,13 @@
                         for (ReviewDTO o : reviewList) {
                 %>
                 <div class="recipe-detail-review-others-info">
-                    <a href=""><img src="./assets/profile-pic.svg" alt=""></a>
+                    <a href="LoadPublicProfileServlet?accountName=<%= UserDAO.getUserByUserId(o.getUser_id()).getUserName()%>"> 
+                        <img src="ServletImageLoader?identifier=<%= UserDAO.getUserByUserId(o.getUser_id()).getAvatar() %>" alt="">
+                    </a>
                     <div class="recipe-detail-review-others-info-content">
-                        <a href=""><%= UserDAO.getUserByUserId(o.getUser_id()).getUserName()%></a>
+                        <a href="LoadPublicProfileServlet?accountName=<%= UserDAO.getUserByUserId(o.getUser_id()).getUserName()%>">
+                            <%= UserDAO.getUserByUserId(o.getUser_id()).getUserName()%>
+                        </a>
                         <div class="recipe-detail-review-others-info-review">
                             <%
                                 for (int i = 0; i < o.getRating(); i++) {
