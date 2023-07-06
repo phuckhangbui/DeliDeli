@@ -30,11 +30,11 @@ public class PlanRecipeNotificationServlet extends HttpServlet {
 
         HttpSession session = request.getSession();
         PlanDateDTO currentPlanToday = (PlanDateDTO) session.getAttribute("currentPlanToday");
-        System.out.println("currentPlanToday - " + currentPlanToday.getDate());
-        System.out.println("currentPlanToday - " + currentPlanToday.getStart_time());
+        System.out.println("[NOTIFICATION]: currentPlanToday - " + currentPlanToday.getDate());
+        System.out.println("[NOTIFICATION]: currentPlanToday - " + currentPlanToday.getStart_time());
         UserDTO user = (UserDTO) session.getAttribute("user");
         MealDTO currentMeal = MealDAO.getMealByDateId(currentPlanToday.getDate_id());
-        System.out.println("currentMeal - " + currentMeal.getRecipe_id());
+        System.out.println("[NOTIFICATION]: currentMeal - " + currentMeal.getRecipe_id());
 
         if (currentMeal != null) {
 
@@ -49,8 +49,16 @@ public class PlanRecipeNotificationServlet extends HttpServlet {
                 int notificationType = 3; // Plan type 3
                 int recipeId = currentMeal.getRecipe_id();
                 int planId = currentPlanToday.getPlan_id();
+                
+                System.out.println("[NOTIFICATION - REPORT]: UserID - " + userId);
+                System.out.println("[NOTIFICATION - REPORT]: Title - " + title);
+                System.out.println("[NOTIFICATION - REPORT]: Desc - " + desc);
+                System.out.println("[NOTIFICATION - REPORT]: SendDatee - " + sendDate);
+                System.out.println("[NOTIFICATION - REPORT]: recipeId - " + recipeId);
+                System.out.println("[NOTIFICATION - REPORT]: PlanID - " + planId);
+                        
 
-                NotificationDTO notification = new NotificationDTO(userId, title, desc, sendDate, false, userId, notificationType, recipeId, planId, "");
+                NotificationDTO notification = new NotificationDTO(0, title, desc, sendDate, false, userId, notificationType, recipeId, 0, "");
 
                 NotificationDAO.addNotification(notification);
                 

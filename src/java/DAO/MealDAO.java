@@ -186,8 +186,8 @@ public class MealDAO {
         PreparedStatement stm = null;
         ResultSet rs = null;
 
-        String sql = "INSERT INTO [Meal](date_id, recipe_id, start_time, end_time)\n"
-                + "VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO [Meal](date_id, recipe_id, start_time, end_time, status)\n"
+                + "VALUES (?, ?, ?, ?, ?)";
 
         try {
             con = DBUtils.getConnection();
@@ -197,6 +197,7 @@ public class MealDAO {
                 stm.setInt(2, recipe_id);
                 stm.setTime(3, start_time);
                 stm.setTime(4, end_time);
+                stm.setBoolean(5, false);
 
                 int effectRows = stm.executeUpdate();
                 if (effectRows > 0) {

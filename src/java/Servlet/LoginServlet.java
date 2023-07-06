@@ -68,18 +68,16 @@ public class LoginServlet extends HttpServlet {
                     // Get all plan for this current date.
                     LocalDate currentDate = LocalDate.now();
                     Date currentDateNow = Date.valueOf(currentDate);
-                    System.out.println("Current date - " + currentDateNow);
                     PlanDateDTO currentPlanToday = null; // Get all non-active schedules
-                    System.out.println("UserID - " + user.getId());
                     PlanDTO activePlan = PlanDAO.getCurrentActivePlan(user.getId()); // false status stands for non-active.
-                    System.out.println("Report activePlan - " + activePlan.getId());
+                    System.out.println("[LOGIN]: Report activePlan - " + activePlan.getId());
                     if (activePlan != null) {
                         currentPlanToday = PlanDateDAO.getAllCurrentDatePlan(currentDateNow, activePlan.getId());
                         session.setAttribute("currentPlanToday", currentPlanToday);
                         if (currentPlanToday != null) {
-                            System.out.println("Current active plan report - " + currentPlanToday.getId());
+                            System.out.println("[LOGIN]: Current active plan report - " + currentPlanToday.getId());
                         } else {
-                            System.out.println("THE PLAN IS REAL!!!!!!111!!!!");
+                            System.out.println("THE PLAN IS NOT REAL!!!!!!111!!!!");
                         }
                     }
 
