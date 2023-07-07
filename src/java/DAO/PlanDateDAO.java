@@ -68,7 +68,7 @@ public class PlanDateDAO {
     }
 
     // This will select all current date plan and then select the one that hasn't been notified.
-    public static PlanDateDTO getAllCurrentDatePlan(Date currentDate, int plan_id) {
+    public static PlanDateDTO getActiveRecipePlan(Date currentDate, int plan_id) {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;

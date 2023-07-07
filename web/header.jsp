@@ -121,14 +121,9 @@
                     <!--    TICK TOCK PLAN NOTIFICATION   -->
 
                     <%
-                        LocalTime currentTime = LocalTime.now();
-                        PlanDateDTO currentPlanToday = (PlanDateDTO) session.getAttribute("currentPlanToday");
-                        if (currentPlanToday.getStart_time() != null) {
-                            Time startTimeFromDB = currentPlanToday.getStart_time();
-                            LocalTime startTime = startTimeFromDB.toLocalTime();
-                            System.out.println("[HEADER]: START TIME - " + startTime);
-                            if (currentTime.isAfter(startTime) || currentTime.equals(startTime)) {
-                                // Activate the servlet using AJAX
+                        boolean isPlanNotificationActive = (boolean) request.getAttribute("planNotificationActivate");
+                        if (isPlanNotificationActive) {
+                            System.out.println("[HEADER]: Notification sent!");
                     %>
                     <script>
                         var xhr = new XMLHttpRequest();
@@ -143,11 +138,6 @@
                         xhr.send();
                     </script>
                     <%
-                            } else {
-                                System.out.println("[HEADER]: It's not the correct time yet.");
-                            }
-                        } else {
-                            System.out.println("[HEADER]: No plan yet.");
                         }
                     %>
 
@@ -183,8 +173,7 @@
                                 <div
                                     class="notification-content">
                                     <%
-                                        ArrayList<DisplayNotificationDTO> list
-                                                = (ArrayList<DisplayNotificationDTO>) request.getAttribute("displayList");
+                                        ArrayList<DisplayNotificationDTO> list = (ArrayList<DisplayNotificationDTO>) request.getAttribute("displayList");
                                         for (DisplayNotificationDTO n : list) {
                                             if (n.is_read()) {
 
@@ -701,7 +690,9 @@
 
         </script>
 
-        <% }%>
+        <%
+            }
+        %>
 
         <script src="bootstrap/js/bootstrap.min.js" ></script>
     </body>

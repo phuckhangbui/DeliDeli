@@ -6,14 +6,22 @@ package Filter;
 
 import DAO.NotificationDAO;
 import DAO.NotificationTypeDAO;
+import DAO.PlanDAO;
+import DAO.PlanDateDAO;
 import DTO.DisplayNotificationDTO;
 import DTO.NotificationDTO;
 import DTO.NotificationTypeDTO;
+import DTO.PlanDTO;
+import DTO.PlanDateDTO;
 import DTO.UserDTO;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.sql.Date;
+import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
@@ -121,29 +129,55 @@ public class LoadHeaderFilter implements Filter {
         HttpSession session = httpRequest.getSession();
         String includedJspPath = "/header.jsp";
 
-        
-            // Execute filter logic specific to the included JSP
-            UserDTO user = (UserDTO) session.getAttribute("user");
-            boolean login = false;
+        // Execute filter logic specific to the included JSP
+        UserDTO user = (UserDTO) session.getAttribute("user");
+        boolean login = false;
 
-            if (user != null) {
-                ArrayList<NotificationDTO> list = NotificationDAO.getNotificationList(user.getId());
-                ArrayList<DisplayNotificationDTO> displayList = new ArrayList<>();
+        if (user != null) {
+            ArrayList<NotificationDTO> list = NotificationDAO.getNotificationList(user.getId());
+            ArrayList<DisplayNotificationDTO> displayList = new ArrayList<>();
 
-                for (NotificationDTO n : list) {
-                    NotificationTypeDTO type = NotificationTypeDAO.getNotificationType(n.getNotification_type());
-                    DisplayNotificationDTO d = new DisplayNotificationDTO(n.getId(), n.getTitle(),
-                            n.getDescription(), n.getSend_date(), n.is_read(), n.getUser_id(),
-                            n.getRecipe_id(), n.getPlan_id(), n.getLink(), type);
-                    displayList.add(d);
+            for (NotificationDTO n : list) {
+                NotificationTypeDTO type = NotificationTypeDAO.getNotificationType(n.getNotification_type());
+                DisplayNotificationDTO d = new DisplayNotificationDTO(n.getId(), n.getTitle(),
+                        n.getDescription(), n.getSend_date(), n.is_read(), n.getUser_id(),
+                        n.getRecipe_id(), n.getPlan_id(), n.getLink(), type);
+                displayList.add(d);
+            }
+            int[] count = NotificationDAO.getNotificationCount(user.getId());
+
+            request.setAttribute("count", count);
+            request.setAttribute("displayList", displayList);
+
+            // Get all plan for this current date.
+            LocalDate currentDate = LocalDate.now();
+            Date currentDateNow = Date.valueOf(currentDate);
+            PlanDateDTO currentPlanActive = null;
+            PlanDTO activePlan = PlanDAO.getCurrentActivePlan(user.getId());
+//            System.out.println("[HEADER FILTER]: Report activePlan ID - " + activePlan.getId());
+            if (activePlan != null) {
+                currentPlanActive = PlanDateDAO.getActiveRecipePlan(currentDateNow, activePlan.getId());
+                LocalTime currentTime = LocalTime.now();
+                if (currentPlanActive.getStart_time() != null) {
+                    Time startTimeFromDB = currentPlanActive.getStart_time();
+                    LocalTime startTime = startTimeFromDB.toLocalTime();
+//                    System.out.println("[HEADER FILTER]: Time start of current/next recipe - " + startTime);
+//                    System.out.println("[HEADER FILTER]: CurrentTime - " + currentTime);
+                    if (currentTime.equals(startTime) || currentTime.isAfter(startTime)) {
+                        request.setAttribute("planNotificationActivate", true);
+                        session.setAttribute("currentPlanActivate", currentPlanActive);
+                    } else {
+//                        System.out.println("[HEADER FILTER]: It's not the correct time yet.");
+                        request.setAttribute("planNotificationActivate", false);
+                    }
+                } else {
+//                    System.out.println("[HEADER FILTER]: No recipe to notify.");
+                    request.setAttribute("planNotificationActivate", false);
                 }
-                int[] count = NotificationDAO.getNotificationCount(user.getId());
-
-                request.setAttribute("count", count);
-                request.setAttribute("displayList", displayList);
             }
 
-        
+        }
+
         Throwable problem = null;
         chain.doFilter(request, response);
 

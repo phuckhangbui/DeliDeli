@@ -64,23 +64,6 @@ public class LoginServlet extends HttpServlet {
                     session.setAttribute("user", user);
                     request.getRequestDispatcher(RECIPE_PAGE + recipeID + "&activeScroll=true").forward(request, response);
                 } else if (user.getRole() == 1) {
-
-                    // Get all plan for this current date.
-                    LocalDate currentDate = LocalDate.now();
-                    Date currentDateNow = Date.valueOf(currentDate);
-                    PlanDateDTO currentPlanToday = null; // Get all non-active schedules
-                    PlanDTO activePlan = PlanDAO.getCurrentActivePlan(user.getId()); // false status stands for non-active.
-                    System.out.println("[LOGIN]: Report activePlan - " + activePlan.getId());
-                    if (activePlan != null) {
-                        currentPlanToday = PlanDateDAO.getAllCurrentDatePlan(currentDateNow, activePlan.getId());
-                        session.setAttribute("currentPlanToday", currentPlanToday);
-                        if (currentPlanToday != null) {
-                            System.out.println("[LOGIN]: Current active plan report - " + currentPlanToday.getId());
-                        } else {
-                            System.out.println("THE PLAN IS NOT REAL!!!!!!111!!!!");
-                        }
-                    }
-
                     session.setAttribute("user", user);
                     request.getRequestDispatcher(HOME_PAGE).forward(request, response);
                 } else if (user.getRole() == 2) {

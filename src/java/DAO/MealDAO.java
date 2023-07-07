@@ -67,27 +67,31 @@ public class MealDAO {
         }
         return result;
     }
-    public static MealDTO getMealByDateId(int DateId) {
+
+    public static MealDTO getMealByTimeAndDate(Time start_time, int date_id) {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
         MealDTO result = new MealDTO();
-
+        
+        System.out.println("Start_time - " + start_time);
+        
         String sql = "SELECT * FROM [Meal]\n"
-                + "WHERE date_id = ?";
+                + "WHERE CAST(start_time AS time) = CAST(? AS time) AND date_id = ?";
 
         try {
             con = DBUtils.getConnection();
             if (con != null) {
                 stm = con.prepareStatement(sql);
-                stm.setInt(1, DateId);
+                stm.setTime(1, start_time);
+                stm.setInt(2, date_id);
                 rs = stm.executeQuery();
                 while (rs.next()) {
-
+                    
                     int id = rs.getInt("id");
-                    int date_id = rs.getInt("date_id");
+                    date_id = rs.getInt("date_id");
                     int recipe_id = rs.getInt("recipe_id");
-                    Time start_time = rs.getTime("start_time");
+                    start_time = rs.getTime("start_time");
                     Time end_time = rs.getTime("end_time");
 
                     result = new MealDTO(id, date_id, recipe_id, start_time, end_time);
@@ -223,21 +227,22 @@ public class MealDAO {
         }
         return false;
     }
-    
+
     public static boolean updateMealNotificationStatusById(int id) {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
 
         String sql = "UPDATE dbo.[Meal]\n"
-                + "SET [isNotified] = 1\n"
+                + "SET [isNotified] = ?\n"
                 + "WHERE id = ?";
 
         try {
             con = DBUtils.getConnection();
             if (con != null) {
                 stm = con.prepareStatement(sql);
-                stm.setInt(1, id);
+                stm.setBoolean(1, true);
+                stm.setInt(2, id);
 
                 int effectRows = stm.executeUpdate();
                 if (effectRows > 0) {
@@ -263,7 +268,7 @@ public class MealDAO {
         }
         return false;
     }
-    
+
     public static void deleteMealByRecipeId(int id) {
         Connection cn = null;
 
@@ -286,7 +291,7 @@ public class MealDAO {
         }
 
     }
-    
+
     public static void main(String[] args) {
         deleteMealByRecipeId(12);
     }
