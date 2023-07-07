@@ -45,9 +45,6 @@
                             <p>Password</p>
                             <input type="password" name="txtPass" value="123" required="" />
                         </div>
-                        <div class="user-form-content-remember">
-                            <input type="checkbox" name="remember"/><span>Remember me</span>
-                        </div>
 
                         <%
                             String recipeID = request.getParameter("recipeID");

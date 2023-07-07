@@ -85,21 +85,15 @@
                         </a>
                     </div>
                     <div>
-                        <a href="#">
-                            <img src="./assets/policies-unchosen-icon.svg" alt="">
-                            Policies
-                        </a>
-                    </div>
-                    <div>
                         <a href="adminBroadcast.jsp">
                             <img src="./assets/broadcast-unchosen-icon.svg" alt="">
                             Broadcast
                         </a>
                     </div>
                     <div>
-                        <a href="#">
-                            <img src="./assets/bug-report-unchosen-icon.svg" alt="">
-                            Report
+                        <a href="MainController?action=logout">
+                            <img src="./assets/leave-icon.svg" alt="">
+                            Logout
                         </a>
                     </div>
                 </nav>
@@ -125,12 +119,6 @@
                         <a class="logo" href="">
                             <img src="assets/Logo3.svg" alt="">
                         </a>
-                        <!--                        <div>
-                                                    <a href="admin.jsp">
-                                                        <img src="./assets/public-unchose.svg" alt="">
-                                                        Dashboard
-                                                    </a>
-                                                </div>-->
                         <div>
                             <a href="AdminController?action=manageAccount" class="active">
                                 <img src="./assets/user-icon.svg" alt="">
@@ -140,7 +128,7 @@
                         <div>
                             <a href="AdminController?action=manageRecipe">
                                 <img src="./assets/post-unchosen-icon.svg" alt="">
-                                Posts
+                                Recipe
                             </a>
                         </div>
                         <div>
@@ -155,24 +143,12 @@
                                 News
                             </a>
                         </div>
-                        <!--                        <div>
-                                                    <a href="#">
-                                                        <img src="./assets/policies-unchose.svg" alt="">
-                                                        Policies
-                                                    </a>
-                                                </div>-->
-<!--                        <div>
-                            <a href="#">
-                                <img src="./assets/broadcast-unchose.svg" alt="">
-                                Broadcast
+                        <div>
+                            <a href="MainController?action=logout">
+                                <img src="./assets/leave-icon.svg" alt="">
+                                Logout
                             </a>
-                        </div>-->
-                        <!--                        <div>
-                                                    <a href="#">
-                                                        <img src="./assets/bug-report-unchose.svg" alt="">
-                                                        Report
-                                                    </a>
-                                                </div>-->
+                        </div>
                     </nav>
 
                     <div class="col-md-10 recipe">
@@ -190,7 +166,7 @@
                         <%
                             }
                         %>
-                        
+
                         <div class="user-header">
                             Users List
                         </div>
@@ -208,7 +184,9 @@
                                     <option value="moderator">Moderator</option>
                                     <option value="all">All</option>
                                 </select>
-                                <button type="submit" value="Filter" class="filter-table-button">Filter</button>
+                                <button type="submit" value="Filter" class="filter-table-button">
+                                    Filter
+                                </button>
                             </form>
                         </div>
 
@@ -244,7 +222,7 @@
                                 %>
                                 <tr>
                                     <td><%= count%></td>
-                                    <td><a href="AdminController?action=showUserDetail&username=<%= u.getUserName()%>"><%= u.getUserName()%></a></td>
+                                    <td class="recipe-and-user-link"><a href="AdminController?action=showUserDetail&username=<%= u.getUserName()%>"><%= u.getUserName()%></a></td>
                                     <td><%= AdminDAO.getRoleByRoleId(u.getRole())%></td>
                                     <td><%= u.getEmail()%></td>
                                     <td><%= u.getCreateAt()%></td>
@@ -254,11 +232,13 @@
                                             <input type="hidden" value="<%= currentRole%>" name="currentRole">
                                             <input type="hidden" value="<%= tag%>" name="tag">
                                             <%
-                                                if (tmp[u.getStatus()].equals("Deactivated") && user.getRole() != 1 && u.getRole() != 2) {
+                                                if (tmp[u.getStatus()].equals("Deactivated")) {
+                                                    if (user.getRole() != 1) {
                                             %>
-                                            <button type="submit" value="activateAcc" name="action" >Activate</button>
+                                            <button type="submit" value="activateAcc" name="action">Activate</button>
                                             <%
-                                            } else if (user.getRole() != 1 && u.getRole() != 2) {
+                                                }
+                                            } else if ((user.getRole() == 2 && u.getRole() != 2) || (user.getRole() == 3 && u.getRole() == 1)) {
                                             %>
                                             <button type="submit" value="deactivateAcc" name="action">Deactivate</button>
                                             <%

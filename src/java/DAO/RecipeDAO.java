@@ -93,7 +93,7 @@ public class RecipeDAO {
                 ResultSet rs = pst.executeQuery();
                 if (rs != null) {
                     while (rs.next()) {
-                        int id = rs.getInt("id");
+                        int id = rs.getInt("user_id");
                         String userName = rs.getString("user_name");
                         String email = rs.getString("email");
                         String password = rs.getString("password");
@@ -567,7 +567,7 @@ public class RecipeDAO {
 
     public static void main(String[] args) {
         //RecipeDTO r = getRecipeByRecipeId(1);
-        System.out.println(getTop6LatestRecipes());
+        deleteRecipe(12);
     }
 
     public static boolean addFavoriteRecipe(int user_id, int recipe_id) {

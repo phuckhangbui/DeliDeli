@@ -6,7 +6,10 @@ package Servlet.User;
 
 import DAO.DirectionDAO;
 import DAO.IngredientDetailDAO;
+import DAO.MealDAO;
+import DAO.NotificationDAO;
 import DAO.RecipeDAO;
+import DAO.RecipeImageDAO;
 import DTO.UserDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -46,6 +49,9 @@ public class DeleteRecipeServlet extends HttpServlet {
             if(admin != null || user != null){
                 DirectionDAO.deleteDirection(recipeId);
                 IngredientDetailDAO.deleteIngredientDetails(recipeId);
+                RecipeImageDAO.deleteRecipeImages(recipeId);
+                NotificationDAO.deleteNotificationByRecipeId(recipeId);
+                MealDAO.deleteMealByRecipeId(recipeId);
                 RecipeDAO.deleteRecipe(recipeId);
             }
         }

@@ -272,14 +272,17 @@
                             </div>
                         </div>
                     </div>
-
+                    <!--                    <div class="account col-md-1">
+                                             <a href="UserController?action=userPublicDetail&userId=<%=user.getId()%>">
+                                                <img src="ServletImageLoader?identifier=<%= user.getAvatar()%>" alt="">
+                                            </a>
+                                        </div>-->
                     <div
                         class="account col-md-1">
                         <span>
-                            <div
-                                class="user-dropdown">
-                                <button
-                                    class="user-dropbtn">
+                            <div class="user-dropdown">
+                                <button class="user-dropbtn">
+                                    <img src="ServletImageLoader?identifier=<%= user.getAvatar()%>" alt="">
                                     <%=user.getUserName()%>
                                 </button>
                                 <div
@@ -601,7 +604,7 @@
                         </div>
                         <% switch (n.getType().getId()) {
                                 case 1:%>
-                        <a href="editRecipe.jsp?recipeId=<%=n.getRecipe_id()%>"
+                        <a href="UserController?action=loadEditRecipe&recipeId=<%=n.getRecipe_id()%>"
                            class="modal-link">Edit recipe</a>
 
                         <% break;

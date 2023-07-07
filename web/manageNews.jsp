@@ -71,21 +71,15 @@
                         </a>
                     </div>
                     <div>
-                        <a href="#">
-                            <img src="./assets/policies-unchosen-icon.svg" alt="">
-                            Policies
-                        </a>
-                    </div>
-                    <div>
                         <a href="adminBroadcast.jsp">
                             <img src="./assets/broadcast-unchosen-icon.svg" alt="">
                             Broadcast
                         </a>
                     </div>
                     <div>
-                        <a href="#">
-                            <img src="./assets/bug-report-unchosen-icon.svg" alt="">
-                            Report
+                        <a href="MainController?action=logout">
+                            <img src="./assets/leave-icon.svg" alt="">
+                            Logout
                         </a>
                     </div>
                 </nav>
@@ -111,12 +105,6 @@
                         <a class="logo" href="">
                             <img src="assets/Logo3.svg" alt="">
                         </a>
-                        <!--                        <div>
-                                                    <a href="admin.jsp">
-                                                        <img src="./assets/public-unchose.svg" alt="">
-                                                        Dashboard
-                                                    </a>
-                                                </div>-->
                         <div>
                             <a href="AdminController?action=manageAccount" >
                                 <img src="./assets/user-unchosen-icon.svg" alt="">
@@ -126,7 +114,7 @@
                         <div>
                             <a href="AdminController?action=manageRecipe" >
                                 <img src="./assets/post-unchosen-icon.svg" alt="">
-                                Posts
+                                Recipe
                             </a>
                         </div>
                         <div>
@@ -141,24 +129,12 @@
                                 News
                             </a>
                         </div>
-                        <!--                        <div>
-                                                    <a href="#">
-                                                        <img src="./assets/policies-unchose.svg" alt="">
-                                                        Policies
-                                                    </a>
-                                                </div>-->
-                        <!--                        <div>
-                                                    <a href="#">
-                                                        <img src="./assets/broadcast-unchose.svg" alt="">
-                                                        Broadcast
-                                                    </a>
-                                                </div>-->
-                        <!--                        <div>
-                                                    <a href="#">
-                                                        <img src="./assets/bug-report-unchose.svg" alt="">
-                                                        Report
-                                                    </a>
-                                                </div>-->
+                        <div>
+                            <a href="MainController?action=logout">
+                                <img src="./assets/leave-icon.svg" alt="">
+                                Logout
+                            </a>
+                        </div>
                     </nav>
 
                     <div class="col-md-10 recipe">
@@ -203,12 +179,11 @@
                                     <tr>
                                         <th>No.</th>
                                         <th>Title</th>
-                                        <th>Created</th>
-                                        <th>Updated</th>
                                         <th>Owner</th>
                                         <th>Category</th>
-                                        <th></th>
-                                        <!--<th>Edit</th>-->
+                                        <th>Created</th>
+                                        <th>Updated</th>
+
                                     </tr>
                                 </thead>
                                 <tbody class="table-group-divider">
@@ -220,17 +195,11 @@
                                     %>
                                     <tr>
                                         <td><%= news.getId()%></td>
-                                        <td  ><%= news.getTitle()%></td>
-                                        <td><%= news.getCreateAt()%></td>
-                                        <td><%= news.getUpdateAt()%></td>
+                                        <td class="recipe-and-user-link"><a href="AdminController?action=showNewsDetail&newsId=<%= news.getId()%>"><%= news.getTitle()%></a></td>
                                         <td><%= newsAuthor%></td>
                                         <td><%= newsCategory%></td>
-                                        <td class="news-action-button">
-                                            <form action="AdminController" method="post" class="news-table-button">
-                                                <input type="hidden" value="<%= news.getId()%>" name="newsId">
-                                                <button type="submit" value="showNewsDetail" name="action">Show</button>
-                                            </form>
-                                        </td>
+                                        <td><%= news.getCreateAt()%></td>
+                                        <td><%= news.getUpdateAt()%></td>
                                         <!--<td><a href="createNews.jsp?id=<%= news.getId()%>" >Edit</a></td>-->
                                     </tr>
                                     <%

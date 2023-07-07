@@ -34,8 +34,8 @@
                         <img src="assets/Logo3.svg" alt="">
                     </a>
                     <div>
-                        <a href="admin.jsp" class="active">
-                            <img src="./assets/public-icon.svg" alt="">
+                        <a href="AdminController?action=adminDashboard">
+                            <img src="./assets/public-unchosen-icon.svg" alt="">
                             Dashboard
                         </a>
                     </div>
@@ -64,21 +64,15 @@
                         </a>
                     </div>
                     <div>
-                        <a href="#">
-                            <img src="./assets/policies-unchosen-icon.svg" alt="">
-                            Policies
-                        </a>
-                    </div>
-                    <div>
-                        <a href="adminBroadcast.jsp">
-                            <img src="./assets/broadcast-unchosen-icon.svg" alt="">
+                        <a href="adminBroadcast.jsp" class="active">
+                            <img src="./assets/broadcast-icon.svg" alt="">
                             Broadcast
                         </a>
                     </div>
                     <div>
-                        <a href="#">
-                            <img src="./assets/bug-report-unchosen-icon.svg" alt="">
-                            Report
+                        <a href="MainController?action=logout">
+                            <img src="./assets/leave-icon.svg" alt="">
+                            Logout
                         </a>
                     </div>
 
@@ -106,7 +100,7 @@
                                 <%
                                     //UserDTO user = (UserDTO) session.getAttribute("user");
                                     //String id = request.getParameter("newsId");
-                                %>
+%>
                                 <form action="AdminController" method="post" class="news-create-button" enctype="multipart/form-data">
                                     <div class="add-news-header">
                                         <p>Make a Broadcast</p>
@@ -118,16 +112,16 @@
                                         </div>
                                     </div>
                                     <div class="news-content-info-header news-content-info-white-background">
-                                        <p>Image<span>(optional)</span> <input type="file" name="file"></p>
+                                        <p>Image<span class="news-content-info-optional">(optional)</span> <input type="file" name="file"></p>
                                     </div>
                                     <div class="news-content-info">
-                                        Broadcast body <span>*</span>
+                                        Content <span class="news-content-info-span">*</span>
                                         <textarea rows="10" cols="10" id="editor"></textarea>
                                     </div>
                                     <input type="hidden" name="editorContent" id="editorContent" value="">
 
                                     <div class="add-news-create">
-                                        <button disabled="" id="broadcastform" type="button" data-bs-toggle="modal" data-bs-target="#confirmModal">Broadcast</button>
+                                        <button disabled="" id="broadcastform" type="button" data-bs-toggle="modal" data-bs-target="#confirmModal">BROADCAST</button>
                                     </div>
                                 </form>
                             </div>

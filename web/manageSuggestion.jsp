@@ -77,21 +77,15 @@
                         </a>
                     </div>
                     <div>
-                        <a href="#">
-                            <img src="./assets/policies-unchosen-icon.svg" alt="">
-                            Policies
-                        </a>
-                    </div>
-                    <div>
                         <a href="adminBroadcast.jsp">
                             <img src="./assets/broadcast-unchosen-icon.svg" alt="">
                             Broadcast
                         </a>
                     </div>
                     <div>
-                        <a href="#">
-                            <img src="./assets/bug-report-unchosen-icon.svg" alt="">
-                            Report
+                        <a href="MainController?action=logout">
+                            <img src="./assets/leave-icon.svg" alt="">
+                            Logout
                         </a>
                     </div>
                 </nav>
@@ -117,12 +111,6 @@
                         <a class="logo" href="">
                             <img src="assets/Logo3.svg" alt="">
                         </a>
-                        <!--                        <div>
-                                                    <a href="admin.jsp">
-                                                        <img src="./assets/public-unchose.svg" alt="">
-                                                        Dashboard
-                                                    </a>
-                                                </div>-->
                         <div>
                             <a href="AdminController?action=manageAccount" >
                                 <img src="./assets/user-unchosen-icon.svg" alt="">
@@ -147,18 +135,12 @@
                                 News
                             </a>
                         </div>
-                        <!--                        <div>
-                                                    <a href="#">
-                                                        <img src="./assets/broadcast-unchose.svg" alt="">
-                                                        Broadcast
-                                                    </a>
-                                                </div>-->
-                        <!--                        <div>
-                                                    <a href="#">
-                                                        <img src="./assets/bug-report-unchose.svg" alt="">
-                                                        Report
-                                                    </a>
-                                                </div>-->
+                        <div>
+                            <a href="MainController?action=logout">
+                                <img src="./assets/leave-icon.svg" alt="">
+                                Logout
+                            </a>
+                        </div>
                     </nav>
 
                     <div class="col-md-10 recipe">
@@ -189,12 +171,11 @@
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr>
-                                    <th>No</th>
+                                    <th>No.</th>
                                     <th>Title</th>
-                                    <th>Total Recipe</th>
-                                    <td>Detail</td>
-                                    <td>Choose</td>
-                                    <td>Action</td>
+                                    <th>Amount</th>
+                                    <th>Choose</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody class="table-group-divider">
@@ -209,14 +190,9 @@
                                 %>
                                 <tr>
                                     <td><%= count%></td>
-                                    <td><%= key%></td>
-                                    <td><%= value%></td>
-                                    <td>
-                                        <form action="AdminController" method="post" class="recipe-table-button">
-                                            <input type="hidden" name="suggestion" value="<%= key%>">
-                                            <button type="submit" name="action" value="filterSuggestion">Show</button>
-                                        </form>
-                                    </td>
+                                    <td class="recipe-and-user-link"><a href="AdminController?action=filterSuggestion&suggestion=<%= key%>"><%= key%></a></td>
+
+                                    <td><%= value%> Recipe(s)</td>
                                     <td>
                                         <form action="AdminController" method="post" class="recipe-table-button">
                                             <input type="hidden" name="suggestion" value="<%= key%>">
@@ -236,10 +212,11 @@
                                     <td>
                                         <form action="AdminController" method="post" class="recipe-table-button">
                                             <input type="hidden" name="suggestion" value="<%= key%>">
+                                            <input type="hidden" name="chosenSuggestion" value="<%= chosenSuggestion%>">
                                             <%
                                                 if (map.size() > 1) {
                                             %>
-                                            <button><a href="AdminController?action=loadSuggestionForUpdate&suggestion=<%= key%>&chosenSuggestion=<%= chosenSuggestion%>">Edit</a></button>
+                                            <button type="submit" name="action" value="loadSuggestionForUpdate">Edit</button>
                                             <button type="submit" name="action" value="deleteSuggestion">Delete</button>
                                             <%
                                             } else if (map.size() == 1) {
@@ -275,12 +252,12 @@
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr>
-                                    <th>No</th>
+                                    <th>No.</th>
                                     <th>Title</th>
+                                    <th>Owner</th>
                                     <th>Create at</th>
                                     <th>Update at</th>
-                                    <th>Owner</th>
-                                    <th>Show</th>
+                                    
                                 </tr>
                             </thead>
                             <tbody class="table-group-divider">
@@ -290,11 +267,13 @@
                                 %>
                                 <tr>
                                     <td><%= count%></td>
-                                    <td><%= r.getTitle()%></td>
+                                    <td class="recipe-and-user-link"><a href="AdminController?action=showRecipeDetail&id=<%= r.getId()%>"><%= r.getTitle()%></a></td>
                                     <% Timestamp timestamp = r.getCreate_at();
                                         SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
                                         String createDate = dateFormat.format(timestamp);
                                     %>
+                                    <% UserDTO owner = RecipeDAO.getRecipeOwnerByRecipeId(r.getId());%>
+                                    <td class="recipe-and-user-link"><a href="AdminController?action=showUserDetail&username=<%= owner.getUserName()%>"><%= owner.getUserName()%></a></td>
                                     <td><%= createDate%></td>
                                     <%
                                         if (r.getUpdate_at() == null) {
@@ -311,14 +290,8 @@
                                             }
                                         %>
                                     </td>
-                                    <% UserDTO owner = RecipeDAO.getRecipeOwnerByRecipeId(r.getId());%>
-                                    <td><a href="AdminController?action=showUserDetail&username=<%= owner.getUserName()%>"><%= owner.getUserName()%></a></td>
-                                    <td>
-                                        <form action="AdminController" method="post" class="recipe-table-button">
-                                            <input type="hidden" value="<%= r.getId()%>" name="id">
-                                            <button type="submit" value="showRecipeDetail" name="action">Show</button>
-                                        </form>
-                                    </td>
+                                    
+                                    
                                 </tr>
                                 <%
                                             count++;

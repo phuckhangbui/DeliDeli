@@ -39,15 +39,14 @@
             String thumbnailPath = (String) request.getAttribute("thumbnailPath");
             NutritionDTO nutrition = (NutritionDTO) request.getAttribute("nutrition");
             DirectionDTO direction = (DirectionDTO) request.getAttribute("direction");
+            String category = (String) request.getAttribute("category");
             int ownerId = recipe.getUser_id();
             UserDTO owner = (UserDTO) request.getAttribute("owner");
-            String link = "userCommunityProfile.jsp?accountName=" + owner.getUserName();
+            String link = "LoadPublicProfileServlet?accountName=" + owner.getUserName();
+            
         %>
 
         <%@include file="header.jsp" %>
-
-
-
 
         <!--        Recipe Detail         -->
         <div class="blank-background">
@@ -55,8 +54,8 @@
                 <div class="row recipe-detail-info">
                     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item"><a href="#"> Recipe Type</a></li> 
+                            <li class="breadcrumb-item"><a href="home.jsp">Home</a></li>
+                            <li class="breadcrumb-item"><a href="SearchByType?type=Category&id=<%= recipe.getCategory_id()%>"> <%= category%></a></li> 
                             <li class="breadcrumb-item current-link" aria-current="page"><%= recipe.getTitle()%></li>
                         </ol>
                     </nav>
@@ -64,7 +63,9 @@
                         <%= recipe.getTitle()%>
                     </header>
                     <div class="recipe-detail-info-user">
-                        <a href="<%=link%>"><img src="./assets/profile-pic.svg" alt=""></a>
+                        <a href="<%=link%>">
+                            <img src="ServletImageLoader?identifier=<%= owner.getAvatar()%>" alt="">
+                        </a>
                         <div>
                             <span>By</span>
                             <span><a href="<%=link%>"><%= owner.getUserName()%></a></span>
@@ -114,9 +115,12 @@
                             <p>|</p>
                             <p class=""><%= request.getAttribute("totalReview")%> rating(s)</p>
                         </div>
+                        <%
+                            if (user != null) {
+                        %>
                         <form action="MainController" class="recipe-detail-info-button-add" method="POST">
-                            <input type="hidden" name="userId" value="<%= user.getId() %>" />
-                            <input type="hidden" name="recipeId" value="<%= recipe.getId() %>" />
+                            <input type="hidden" name="userId" value="<%= user.getId()%>" />
+                            <input type="hidden" name="recipeId" value="<%= recipe.getId()%>" />
                             <div>
                                 <button type="submit" name="action" value="addFavorite" class="like-button" >
                                     <img src="./assets/favorite-icon.svg" alt="">
@@ -124,6 +128,9 @@
                                 </button>
                             </div>
                         </form>
+                        <%
+                            }
+                        %>
                         <button class="share-button">
                             <img src="./assets/share-icon.svg" alt="">
                             Share

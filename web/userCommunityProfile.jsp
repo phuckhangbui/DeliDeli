@@ -56,7 +56,7 @@
                 <div class="row user-community-profile">
                     <div class="col-md-3 user-community-profile-avatar">
                         <div>
-                            <img src="ServletImageLoader?identifier=<%= user.getAvatar()%>" alt="">
+                            <img src="ServletImageLoader?identifier=<%= account.getAvatar()%>" alt="">
                         </div>
                         <div>
                             <p><%=account.getUserName()%></p>
@@ -66,18 +66,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <p>NAME</p>
-                                <%
-                                    if (fullname != null) {
-                                %> 
-                                <p><%=fullname%></p>
-                                <%
-                                } else {
-                                %>
-                                <p>Unspecified</p>
-                                <%
-                                    }
-                                %>
-
+                                <p id="userFullName"><%=fullname%></p>
                             </div>
                             <div class="col-md-6">
                                 <p>BIRTHDATE</p>
@@ -89,7 +78,7 @@
                                 <%
                                 } else {
                                 %>
-                                <p>Unspecified</p>
+                                <p class="unspecified">Unspecified</p>
                                 <%
                                     }
                                 %>
@@ -100,7 +89,7 @@
 
                                 <%
                                     if (accountDetail.getSpecialty().equals("")) { %>
-                                <p>Unspecified</p>
+                                <p class="unspecified">Unspecified</p>
                                 <%
                                 } else {
                                 %>
@@ -111,7 +100,7 @@
                                 <p>ABOUT</p>
                                 <%
                                     if (accountDetail.getBio().equals("")) { %>
-                                <p>Unspecified</p>
+                                <p class="unspecified">Unspecified</p>
                                 <%
                                 } else {
                                 %>
@@ -573,6 +562,7 @@
         <%@include file="footer.jsp" %>
 
         <!--      Bootstrap for JS         -->
+        <script src="./script/userCommunityProfileScript.js" defer></script>
         <script src="bootstrap/js/bootstrap.min.js" ></script>
     </body>
 </html>

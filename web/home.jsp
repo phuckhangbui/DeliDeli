@@ -38,11 +38,10 @@
         <div class="new">
             <div class="container">
                 <div class="row">
-                    <header>
-                        <a href="" class="header">
-                            <p>What's New</p>
-                            <img src="./assets/arrow.svg" alt="">
-                        </a>
+                    <header class="search-result-header">
+                        <p>
+                            What's New
+                        </p>
                     </header>
                 </div>
                 <div class="row">
@@ -69,7 +68,7 @@
                             <img src="ServletImageLoader?identifier=<%= news.getImage()%>" alt="">
                             <p><%= news.getTitle()%></p>
                         </a>
-                        
+
                         <%
                             news = listNews.get(1);
                             newsCategory = listNewsCategories.get(1);
@@ -152,6 +151,7 @@
                         </div>
                     </a>
                     <% }
+
                         } %>
                 </div>
             </div>
@@ -162,66 +162,42 @@
         <div class="recommendation-2">
             <div class="container">
                 <div class="row">
-                    <% LocalTime currentTime = LocalTime.now();
-                        String time = "";
-                        System.out.println("Current Time: " + currentTime);
-
-                        ArrayList<RecipeDTO> recommendList = null;
-                        //Time define
-                        LocalTime MorningStartTime = LocalTime.of(6, 0);
-                        LocalTime AfternoonStartTime = LocalTime.of(12, 0);
-                        LocalTime EveningStartTime = LocalTime.of(17, 0);
-                        LocalTime NightStartTime = LocalTime.of(20, 0);
-
-                        if (currentTime.isAfter(MorningStartTime) && currentTime.isBefore(AfternoonStartTime)) {
-                            recommendList = NavigationBarUtils.searchRecipes("Breakfast", "Category");
-                            time = "breakfast";
-                        } else if (currentTime.isAfter(AfternoonStartTime)
-                                && currentTime.isBefore(EveningStartTime)) {
-                            recommendList = NavigationBarUtils.searchRecipes("Snack", "Category"
-                            );
-                            time = "lunch";
-                        } else if (currentTime.isAfter(EveningStartTime)
-                                && currentTime.isBefore(NightStartTime)) {
-                            recommendList = NavigationBarUtils.searchRecipes("Dinner", "Category"
-                            );
-                            time = "dinner";
-                        } else if (currentTime.isAfter(NightStartTime)
-                                || currentTime.isBefore(MorningStartTime)) {
-                            recommendList = NavigationBarUtils.searchRecipes("Snack", "Category"
-                            );
-                            time = "midnight snacks";
-                        }%>
+                    <%
+                        ArrayList<DisplayRecipeDTO> timeRecommendDisplay = (ArrayList) request.getAttribute("timeRecommendDisplay");
+                        String time = (String) request.getAttribute("timeTitle");
+                    %>
                     <header class="search-result-header">
                         <p>What's for <%= time%> today? </p>
                     </header>
                 </div>
                 <div class="row recommendation-content">
-                    <% if (recommendList != null && recommendList.size() != 0) {
-                            for (RecipeDTO list : recommendList) {%>
-                    <a href=""
+                    <%
+                        if (timeRecommendDisplay != null && timeRecommendDisplay.size() != 0) {
+                            for (DisplayRecipeDTO r : timeRecommendDisplay) {
+                    %>
+                    <a href="MainController?action=getRecipeDetailById&id=<%= r.getId()%>"
                        class="col-md-4 recommendation-content-post">
                         <div class="recommendation-content-picture">
-                            <img src="<%= RecipeDAO.getThumbnailByRecipeId(list.getId()).getThumbnailPath()%>"
+                            <img src="ServletImageLoader?identifier=<%= r.getThumbnailPath()%>"
                                  alt="">
                         </div>
                         <div>
                             <p>
-                                <%=RecipeDAO.getCategoryByRecipeId(list.getId())%>
+                                <%=RecipeDAO.getCategoryByRecipeId(r.getId())%>
                             </p>
                             <p>
-                                <%= list.getTitle()%>
+                                <%= r.getTitle()%>
                             </p>
                         </div>
                         <div class="recommendation-content-reciew">
                             <% for (int i = 0; i
-                                        < RecipeDAO.getRatingByRecipeId(list.getId());
+                                        < RecipeDAO.getRatingByRecipeId(r.getId());
                                         i++) { %>
                             <img src="./assets/full-star-icon.svg">
                             <% }%>
                             <p
                                 class="recommendation-content-reciew-rating">
-                                <%=RecipeDAO.getRatingByRecipeId(list.getId())%>
+                                <%=RecipeDAO.getRatingByRecipeId(r.getId())%>
                             </p>
                         </div>
                     </a>
