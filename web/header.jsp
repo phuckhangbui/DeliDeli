@@ -124,8 +124,10 @@
                         LocalTime currentTime = LocalTime.now();
                         PlanDateDTO currentPlanToday = (PlanDateDTO) session.getAttribute("currentPlanToday");
                         if (currentPlanToday.getStart_time() != null) {
+                        System.out.println("RIGHT HERE");
                             Time startTimeFromDB = currentPlanToday.getStart_time();
                             LocalTime startTime = startTimeFromDB.toLocalTime();
+                            System.out.println("START TIME - " + startTime);
                             if (currentTime.isAfter(startTime) || currentTime.equals(startTime)) {
                                 // Activate the servlet using AJAX
                     %>
