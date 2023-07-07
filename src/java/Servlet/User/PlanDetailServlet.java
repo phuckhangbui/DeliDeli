@@ -36,14 +36,13 @@ public class PlanDetailServlet extends HttpServlet {
         PlanDTO plan = PlanDAO.getUserPlanById(new Integer(id));
         request.setAttribute("plan", plan);
         
-        DietDTO diet = DietDAO.getTypeById(plan.getDiet_id());
-        request.setAttribute("diet", diet);
-        
         ArrayList<PlanDateDTO> planDate = PlanDateDAO.getAllDateByPlanId(plan.getId());
         request.setAttribute("planDate", planDate);
         
-        //ArrayList<MealDTO> meal = MealDAO.getAllMealByDateId(planDate);
+        DietDTO diet = DietDAO.getTypeById(plan.getDiet_id());
+        request.setAttribute("diet", diet);
 
+        //ArrayList<MealDTO> meal = MealDAO.getAllMealByDateId(planDate);
         RequestDispatcher rq = request.getRequestDispatcher("userViewPlan.jsp");
         rq.forward(request, response);
     }
