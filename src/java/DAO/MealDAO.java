@@ -186,7 +186,7 @@ public class MealDAO {
         PreparedStatement stm = null;
         ResultSet rs = null;
 
-        String sql = "INSERT INTO [Meal](date_id, recipe_id, start_time, end_time, status)\n"
+        String sql = "INSERT INTO [Meal](date_id, recipe_id, start_time, end_time, isNotified)\n"
                 + "VALUES (?, ?, ?, ?, ?)";
 
         try {
@@ -205,7 +205,7 @@ public class MealDAO {
                 }
             }
         } catch (SQLException ex) {
-            System.out.println("Query error - insertPlan: " + ex.getMessage());
+            System.out.println("Query error - insertMeal: " + ex.getMessage());
         } finally {
             try {
                 if (rs != null) {
