@@ -40,7 +40,7 @@
                     <div class="row weekly-plans ">
                         <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item"><a href="home.jsp">Home</a></li>
                                 <li class="breadcrumb-item current-link" aria-current="page">Plan List</li>
                             </ol>
                         </nav>

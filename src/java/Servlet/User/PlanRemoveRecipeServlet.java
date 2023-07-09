@@ -4,18 +4,10 @@
  */
 package Servlet.User;
 
-import DAO.DietDAO;
-import DTO.DietDTO;
-import DAO.PlanDAO;
-import DTO.PlanDTO;
-import DAO.PlanDateDAO;
-import DTO.DisplayRecipeDTO;
-import DTO.PlanDateDTO;
+import DAO.MealDAO;
 import java.io.IOException;
-import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,44 +16,32 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Daiisuke
  */
-@WebServlet(name = "PlanEditServlet", urlPatterns = {"/PlanEditServlet"})
-public class PlanEditServlet extends HttpServlet {
+public class PlanRemoveRecipeServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String id = request.getParameter("id");
-        ArrayList<DisplayRecipeDTO> displayList = (ArrayList<DisplayRecipeDTO>) request.getAttribute("searchRecipesList");
-        boolean isSearch = Boolean.parseBoolean(request.getParameter("isSearch"));
+        response.setContentType("text/html;charset=UTF-8");
 
-        if (id != null && !id.isEmpty()) {
-            PlanDTO plan = PlanDAO.getUserPlanById(Integer.parseInt(id));
-            request.setAttribute("plan", plan);
+        boolean result = false;
+        int meal_id = Integer.parseInt(request.getParameter("meal_id"));
+        int plan_id = Integer.parseInt(request.getParameter("plan_id"));
 
-            DietDTO diet = DietDAO.getTypeById(plan.getDiet_id());
-            request.setAttribute("diet", diet);
+        String url = "error.jsp";
 
-            ArrayList<PlanDateDTO> planDate = PlanDateDAO.getAllDateByPlanId(plan.getId());
-            request.setAttribute("planDate", planDate);
-
-            if (isSearch) {
-                request.setAttribute("SEARCH_LIST", displayList);
-                request.setAttribute("SEARCH_PLAN_REAL", true);
-                RequestDispatcher rq = request.getRequestDispatcher("addRecipeToPlan.jsp");
-                rq.forward(request, response);
-                return;
+        if (meal_id > 0 && plan_id > 0) {
+            result = MealDAO.removeRecipeFromPlan(meal_id);
+            if (result) {
+                url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=false";
+                RequestDispatcher rd = request.getRequestDispatcher(url);
+                rd.forward(request, response);
             } else {
-                request.setAttribute("SEARCH_PLAN_REAL", false);
-                RequestDispatcher rq = request.getRequestDispatcher("addRecipeToPlan.jsp");
-                rq.forward(request, response);
-                return;
+                response.sendRedirect(url);
             }
         }
-
-        response.sendRedirect("error.jsp");
-
+        response.sendRedirect(url);
     }
 
-// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

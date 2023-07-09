@@ -5,6 +5,7 @@
 package DAO;
 
 import DTO.MealDTO;
+import DTO.NutritionDTO;
 import DTO.PlanDTO;
 import Utils.DBUtils;
 import java.sql.Connection;
@@ -73,9 +74,9 @@ public class MealDAO {
         PreparedStatement stm = null;
         ResultSet rs = null;
         MealDTO result = new MealDTO();
-        
+
         System.out.println("Start_time - " + start_time);
-        
+
         String sql = "SELECT * FROM [Meal]\n"
                 + "WHERE CAST(start_time AS time) = CAST(? AS time) AND date_id = ?";
 
@@ -87,7 +88,7 @@ public class MealDAO {
                 stm.setInt(2, date_id);
                 rs = stm.executeQuery();
                 while (rs.next()) {
-                    
+
                     int id = rs.getInt("id");
                     date_id = rs.getInt("date_id");
                     int recipe_id = rs.getInt("recipe_id");
@@ -269,6 +270,45 @@ public class MealDAO {
         return false;
     }
 
+    public static boolean removeRecipeFromPlan(int meal_id) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+
+        String sql = "DELETE FROM Meal\n"
+                + "WHERE id = ?";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, meal_id);
+
+                int effectRows = stm.executeUpdate();
+                if (effectRows > 0) {
+                    return true;
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error - removeRecipeFromPlanByMealID: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return false;
+    }
+
     public static void deleteMealByRecipeId(int id) {
         Connection cn = null;
 
@@ -295,4 +335,55 @@ public class MealDAO {
     public static void main(String[] args) {
         deleteMealByRecipeId(12);
     }
+
+    public static ArrayList<NutritionDTO> getSumNutritionValuesByDateId(int date_id) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        ArrayList<NutritionDTO> result = new ArrayList<>();
+
+        String sql = "SELECT SUM(n.calories) AS total_calories, SUM(n.fat) AS total_fat, SUM(n.carbs) AS total_carbs, SUM(n.protein) AS total_protein\n"
+                + "FROM Recipe r\n"
+                + "JOIN Meal m ON r.id = m.recipe_id\n"
+                + "JOIN Nutrition n ON r.id = n.recipe_id\n"
+                + "WHERE m.date_id = ?\n";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, date_id);
+
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    int total_calories = rs.getInt("total_calories");
+                    int total_fat = rs.getInt("total_fat");
+                    int total_carbs = rs.getInt("total_carbs");
+                    int total_protein = rs.getInt("total_protein");
+
+                    NutritionDTO recipeNutrition = new NutritionDTO(total_calories, total_fat, total_carbs, total_protein);
+                    result.add(recipeNutrition);
+
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error - getSumNutritionValuesByDateId: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return result;
+    }
+
 }
