@@ -283,7 +283,7 @@
                                     %>
                                     <button class="plan-table-week-recipe-content" type="button" data-bs-toggle="modal" data-bs-target="#recipeNutritionModal">
                                         <div class="plan-table-week-recipe-content-image">
-                                            <!---->    <img src="" alt="">
+                                            <img src="" alt="">
                                         </div>
                                         <div class="plan-table-week-recipe-content-des">
                                             <p class="plan-table-week-recipe-content-des-title"><%= recipe.getTitle()%></p>
