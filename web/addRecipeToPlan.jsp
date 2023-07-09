@@ -160,7 +160,7 @@
                                     %>
                                     <button class="plan-table-week-recipe-content" type="button" data-bs-toggle="modal" data-bs-target="#recipeNutritionModal">
                                         <div class="plan-table-week-recipe-content-image">
-                                            <img src="" alt="">
+                                            <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
                                         </div>
                                         <div class="plan-table-week-recipe-content-des">
                                             <p class="plan-table-week-recipe-content-des-title"><%= recipe.getTitle()%></p>
@@ -184,7 +184,7 @@
                                                 </div>
                                                 <div class="modal-body recipe-nutriton-modal">
                                                     <div class="recipe-nutriton-modal-image">
-                                                        <img src="./pictures/egg1.jpeg" alt="">
+                                                        <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
@@ -222,7 +222,7 @@
                                     %>
                                     <button class="plan-table-week-recipe-content" type="button" data-bs-toggle="modal" data-bs-target="#recipeNutritionModal">
                                         <div class="plan-table-week-recipe-content-image">
-                                            <img src="" alt="">
+                                            <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
                                         </div>
                                         <div class="plan-table-week-recipe-content-des">
                                             <p class="plan-table-week-recipe-content-des-title"><%= recipe.getTitle()%></p>
@@ -246,7 +246,7 @@
                                                 </div>
                                                 <div class="modal-body recipe-nutriton-modal">
                                                     <div class="recipe-nutriton-modal-image">
-                                                        <img src="./pictures/egg1.jpeg" alt="">
+                                                        <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
@@ -283,7 +283,7 @@
                                     %>
                                     <button class="plan-table-week-recipe-content" type="button" data-bs-toggle="modal" data-bs-target="#recipeNutritionModal">
                                         <div class="plan-table-week-recipe-content-image">
-                                            <img src="" alt="">
+                                            <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
                                         </div>
                                         <div class="plan-table-week-recipe-content-des">
                                             <p class="plan-table-week-recipe-content-des-title"><%= recipe.getTitle()%></p>
@@ -307,7 +307,7 @@
                                                 </div>
                                                 <div class="modal-body recipe-nutriton-modal">
                                                     <div class="recipe-nutriton-modal-image">
-                                                        <img src="./pictures/egg1.jpeg" alt="">
+                                                        <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
