@@ -30,8 +30,7 @@
         <div class="a1">
             <!--         The navigation bar       -->
             <%@include file="header.jsp" %>
-            <%
-                ArrayList<DietDTO> dietList = (ArrayList<DietDTO>) request.getAttribute("dietList");
+            <%                ArrayList<DietDTO> dietList = (ArrayList<DietDTO>) request.getAttribute("dietList");
             %>
 
             <!--         Recipe Plan       -->
@@ -83,14 +82,14 @@
                                     <input type="text" name="name" class="input-full" placeholder="What's your plan called ?">
                                 </div>
                             </div>
-                            
-                            
-<!--                            <div class="add-plan-info-header-picture add-plan-info">
-                                Thumbnail Picture <span>*</span>
-                                <div>
-                                    <input type="file" id="image" name="thumbnail" required>
-                                </div>    
-                            </div>-->
+
+
+                            <!--                            <div class="add-plan-info-header-picture add-plan-info">
+                                                            Thumbnail Picture <span>*</span>
+                                                            <div>
+                                                                <input type="file" id="image" name="thumbnail" required>
+                                                            </div>    
+                                                        </div>-->
 
 
                             <div class="add-plan-info-header add-plan-info">
@@ -125,13 +124,14 @@
                     </div>
                 </div>
             </div>
+        </div>
 
 
 
 
-            <!--         Footer       -->
-            <%@include file="footer.jsp" %>
+        <!--         Footer       -->
+        <%@include file="footer.jsp" %>
 
-            <script src="bootstrap/js/bootstrap.min.js" ></script>
+        <script src="bootstrap/js/bootstrap.min.js" ></script>
     </body>
 </html>

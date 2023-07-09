@@ -5,16 +5,13 @@
 package Servlet.User;
 
 import DAO.DietDAO;
-import DAO.MealDAO;
 import DTO.DietDTO;
 import DAO.PlanDAO;
 import DTO.PlanDTO;
 import DAO.PlanDateDAO;
 import DTO.DisplayRecipeDTO;
-import DTO.MealDTO;
 import DTO.PlanDateDTO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
