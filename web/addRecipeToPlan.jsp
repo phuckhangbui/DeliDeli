@@ -545,7 +545,7 @@
                                         <br>
                                         <input type="time" id="start_time" name="start_time">
                                         <br>
-                                        <label for="eating-time">What time of the day do you want to have this meal ?</label>
+                                        <label for="eating-time">Time to stop having this meal ?</label>
                                         <br>
                                         <input type="time" id="end_time" name="end_time">
                                     </div>
