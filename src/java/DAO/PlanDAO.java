@@ -4,10 +4,7 @@
  */
 package DAO;
 
-import DAO.DietDAO;
-import DTO.DietDTO;
 import DTO.PlanDTO;
-import Utils.EncodePass;
 import Utils.DBUtils;
 import java.sql.Connection;
 import java.sql.Date;

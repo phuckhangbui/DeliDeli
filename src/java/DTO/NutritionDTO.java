@@ -25,6 +25,13 @@ public class NutritionDTO {
     private int fat;
     private int carbs;
     private int protein;
+
+    public NutritionDTO(int calories, int fat, int carbs, int protein) {
+        this.calories = calories;
+        this.fat = fat;
+        this.carbs = carbs;
+        this.protein = protein;
+    }
    
     
 }

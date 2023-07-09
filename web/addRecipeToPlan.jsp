@@ -4,6 +4,7 @@
     Author     : Walking Bag
 --%>
 
+<%@page import="DTO.NutritionDTO"%>
 <%@page import="DTO.DisplayRecipeDTO"%>
 <%@page import="DAO.DietDAO"%>
 <%@page import="DTO.DietDTO"%>
@@ -118,8 +119,7 @@
                     </div>
 
 
-                    <%
-                        PlanDTO plan = (PlanDTO) request.getAttribute("plan");
+                    <%                        PlanDTO plan = (PlanDTO) request.getAttribute("plan");
                         boolean SEARCH_PLAN_REAL = (boolean) request.getAttribute("SEARCH_PLAN_REAL");
                     %>
                     <div class=" plan-table">
@@ -129,10 +129,11 @@
                                 ArrayList<MealDTO> breakfastMeals = MealDAO.getAllMealsTimeBased(plan.getId(), dateList.getId(), true, false, false);
                                 ArrayList<MealDTO> lunchMeals = MealDAO.getAllMealsTimeBased(plan.getId(), dateList.getId(), false, true, false);
                                 ArrayList<MealDTO> dinnerMeals = MealDAO.getAllMealsTimeBased(plan.getId(), dateList.getId(), false, false, true);
+                                ArrayList<NutritionDTO> recipeNutrition = MealDAO.getSumNutritionValuesByDateId(dateList.getId());
                         %>
                         <div class="row plan-table-week">
                             <div class="col-md-12 plan-table-week-day">
-                                <%
+                                <%                                    
                                     SimpleDateFormat dayOfWeekFormat = new SimpleDateFormat("EEEE");
                                     String dayOfWeek = dayOfWeekFormat.format(dateList.getDate());
                                 %>
@@ -140,12 +141,18 @@
                             </div>
                             <div class="col-md-3 plan-table-week-column">
                                 <div class="plan-table-week-nutrition-header">Total Nutrition</div>
+                                <%
+                                    for (NutritionDTO nutrition : recipeNutrition) {
+                                %>
                                 <div class="plan-table-week-nutrition">
-                                    <p class="plan-table-calories">Calories: 12312</p>
-                                    <p class="plan-table-protein">Protein: 232g</p>
-                                    <p class="plan-table-carb">Carbs: 236g</p>
-                                    <p class="plan-table-fat">Fat: 643g</p>
+                                    <p class="plan-table-calories">Calories: <%= nutrition.getCalories() %></p>
+                                    <p class="plan-table-protein">Protein: <%= nutrition.getProtein()%></p>
+                                    <p class="plan-table-carb">Carbs: <%= nutrition.getCarbs()%></p>
+                                    <p class="plan-table-fat">Fat: <%= nutrition.getFat()%></p>
                                 </div>
+                                <%
+                                    }
+                                %>
                             </div>
 
 

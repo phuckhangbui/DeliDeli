@@ -154,15 +154,15 @@ public class LoadHeaderFilter implements Filter {
             Date currentDateNow = Date.valueOf(currentDate);
             PlanDateDTO currentPlanActive = null;
             PlanDTO activePlan = PlanDAO.getCurrentActivePlan(user.getId());
-            System.out.println("[HEADER FILTER]: Report activePlan ID - " + activePlan.getId());
+//            System.out.println("[HEADER FILTER]: Report activePlan ID - " + activePlan.getId());
             if (activePlan != null) {
                 currentPlanActive = PlanDateDAO.getActiveRecipePlan(currentDateNow, activePlan.getId());
                 LocalTime currentTime = LocalTime.now();
                 if (currentPlanActive.getStart_time() != null) {
                     Time startTimeFromDB = currentPlanActive.getStart_time();
                     LocalTime startTime = startTimeFromDB.toLocalTime();
-                    System.out.println("[HEADER FILTER]: Time start of current/next recipe - " + startTime);
-                    System.out.println("[HEADER FILTER]: CurrentTime - " + currentTime);
+//                    System.out.println("[HEADER FILTER]: Time start of current/next recipe - " + startTime);
+//                    System.out.println("[HEADER FILTER]: CurrentTime - " + currentTime);
                     if (currentTime.equals(startTime) || currentTime.isAfter(startTime)) {
                         request.setAttribute("planNotificationActivate", true);
                         session.setAttribute("currentPlanActivate", currentPlanActive);

@@ -4,6 +4,8 @@
     Author     : Walking Bag
 --%>
 
+<%@page import="DAO.PlanDAO"%>
+<%@page import="DTO.NutritionDTO"%>
 <%@page import="java.io.IOException"%>
 <%@page import="java.util.TimerTask"%>
 <%@page import="java.util.Timer"%>
@@ -85,11 +87,13 @@
                     </div>
 
                     <div class=" plan-table">
-                        <%                            ArrayList<PlanDateDTO> planDate = (ArrayList<PlanDateDTO>) request.getAttribute("planDate");
+                        <%                            
+                            ArrayList<PlanDateDTO> planDate = (ArrayList<PlanDateDTO>) request.getAttribute("planDate");
                             for (PlanDateDTO dateList : planDate) {
                                 ArrayList<MealDTO> breakfastMeals = MealDAO.getAllMealsTimeBased(plan.getId(), dateList.getId(), true, false, false);
                                 ArrayList<MealDTO> lunchMeals = MealDAO.getAllMealsTimeBased(plan.getId(), dateList.getId(), false, true, false);
                                 ArrayList<MealDTO> dinnerMeals = MealDAO.getAllMealsTimeBased(plan.getId(), dateList.getId(), false, false, true);
+                                ArrayList<NutritionDTO> recipeNutrition = MealDAO.getSumNutritionValuesByDateId(dateList.getId());
                         %>
                         <div class="row plan-table-week">
                             <div class="col-md-12 plan-table-week-day">
@@ -101,12 +105,18 @@
                             </div>
                             <div class="col-md-3 plan-table-week-column">
                                 <div class="plan-table-week-nutrition-header">Total Nutrition</div>
+                                <%
+                                    for (NutritionDTO nutrition : recipeNutrition) {
+                                %>
                                 <div class="plan-table-week-nutrition">
-                                    <p class="plan-table-calories">Calories: 12312</p>
-                                    <p class="plan-table-protein">Protein: 232g</p>
-                                    <p class="plan-table-carb">Carbs: 236g</p>
-                                    <p class="plan-table-fat">Fat: 643g</p>
+                                    <p class="plan-table-calories">Calories: <%= nutrition.getCalories() %></p>
+                                    <p class="plan-table-protein">Protein: <%= nutrition.getProtein()%></p>
+                                    <p class="plan-table-carb">Carbs: <%= nutrition.getCarbs()%></p>
+                                    <p class="plan-table-fat">Fat: <%= nutrition.getFat()%></p>
                                 </div>
+                                <%
+                                    }
+                                %>
                             </div>
 
 
