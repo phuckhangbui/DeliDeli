@@ -192,16 +192,19 @@
                                                 </select>
                                             </p>
                                         </div>
-                                        <div class="news-content-info news-content-info-white-background">
-                                            <!--<p>Image: <input type="file" name="file"></p>-->
-                                        </div>
+                                        <!--                                            <div class="news-content-info news-content-info-white-background">
+                                                                                <p>Image: <input type="file" name="file"></p>
+                                                                                </div> -->
                                         <div class="news-content-info">
                                             Description
                                             <textarea rows="10" cols="10" id="editor" value=""><%= news.getDesc()%></textarea>
                                         </div>
                                         <input type="hidden" name="editorContent" id="editorContent" value="">
                                         <input type="hidden" name="newsId" value="<%= news.getId()%>">
-                                        <button type="submit" value="updateNews" name="action">Update</button>
+                                        <div class="news-create-button-update">
+                                            <button type="submit" value="updateNews" name="action">UPDATE</button>
+                                        </div>
+                                        
                                         <!--<button type="submit" value="deleteNews" name="action">Delete</button>-->
                                     </form>
                                 </div>

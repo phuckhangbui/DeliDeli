@@ -19,6 +19,7 @@
         <!--      CSS         -->
         <link rel="stylesheet" href="./styles/userStyle.css">
         <link rel="stylesheet" href="./styles/adminStyle.css">
+        <link rel="stylesheet" href="./styles/notificationStyle.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link
@@ -169,7 +170,6 @@
                                             </ol>
                                         </nav>
                                         <div class="row">
-                                            <p><%= category%></p>
                                             <header class="new-result-header">
                                                 <p><%= news.getTitle()%></p>
                                             </header>
@@ -180,11 +180,11 @@
                                                 <%
                                                     if (news.getCreateAt().equals(news.getUpdateAt())) {
                                                 %>
-                                                <p>Created at: <%= news.getCreateAt()%></p>
+                                                <p>Published on: <%= news.getCreateAt()%></p>
                                                 <%
                                                 } else {
                                                 %>
-                                                <p>Updated at: <%= news.getUpdateAt()%></p>
+                                                <p>Updated on: <%= news.getUpdateAt()%></p>
                                                 <%
                                                     }
                                                 %>
@@ -197,10 +197,34 @@
                                     <div class="news-detail-admin-action">
                                         <form action="AdminController" method="post" class="news-detail-admin-button">
                                             <input type="hidden" value="<%= news.getId()%>" name="newsId">
-                                            <button><a href="AdminController?action=loadNewsForUpdate&newsId=<%= news.getId()%>">Edit</a></button>
-                                            <button type="submit" name="action" value="deleteNews" class="news-detail-admin-button-delete">Delete</a></button>
+                                            <button type="submit" name="action" value="loadNewsForUpdate">EDIT</button>
+                                            <button type="button"  data-bs-toggle="modal" data-bs-target="#exampleModal" class="news-detail-admin-button-delete">DELETE</button>
+                                            
                                         </form>
                                     </div>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog ">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header form-header">
+                                                            <div class="form-title disapprove-style" id="exampleModalLabel">
+                                                                Delete Confirmation
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            Are you sure you want to delete this suggestion ?
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, I've changed my mind</button>
+                                                            <button type="button" class="btn btn-danger">
+                                                                <a href="AdminController?action=deleteNews&newsId=<%= news.getId()%>">
+                                                                    Yes, delete it
+                                                                </a>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                 </div>
                             </div>
                         </div>
