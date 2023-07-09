@@ -270,6 +270,45 @@ public class MealDAO {
         return false;
     }
 
+    public static boolean removeRecipeFromPlan(int meal_id) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+
+        String sql = "DELETE FROM Meal\n"
+                + "WHERE id = ?";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, meal_id);
+
+                int effectRows = stm.executeUpdate();
+                if (effectRows > 0) {
+                    return true;
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error - removeRecipeFromPlanByMealID: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return false;
+    }
+
     public static void deleteMealByRecipeId(int id) {
         Connection cn = null;
 
@@ -302,7 +341,7 @@ public class MealDAO {
         PreparedStatement stm = null;
         ResultSet rs = null;
         ArrayList<NutritionDTO> result = new ArrayList<>();
-        
+
         String sql = "SELECT SUM(n.calories) AS total_calories, SUM(n.fat) AS total_fat, SUM(n.carbs) AS total_carbs, SUM(n.protein) AS total_protein\n"
                 + "FROM Recipe r\n"
                 + "JOIN Meal m ON r.id = m.recipe_id\n"
@@ -346,5 +385,5 @@ public class MealDAO {
         }
         return result;
     }
-   
+
 }

@@ -207,9 +207,6 @@
                                                         <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
                                                     </div>
                                                 </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="remove-recipe-from-plan-button">Remove</button>
-                                                </div>
                                             </div>
                                         </form>
                                     </div>
@@ -261,9 +258,6 @@
                                                     <div class="recipe-nutriton-modal-image">
                                                         <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
                                                     </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="remove-recipe-from-plan-button">Remove</button>
                                                 </div>
                                             </div>
                                         </form>

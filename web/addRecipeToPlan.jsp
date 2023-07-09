@@ -163,8 +163,8 @@
                                     <% if (breakfastMeals != null && breakfastMeals.size() != 0) {
                                             for (MealDTO list : breakfastMeals) {
                                                 RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(list.getRecipe_id());
-                                                String modalId = "recipeNutritionModal" + list.getId(); // Generate unique modal ID for each recipe
-%>
+                                                String modalId = "recipeNutritionModal" + list.getId();
+                                    %>
                                     <button class="plan-table-week-recipe-content" type="button" data-bs-toggle="modal" data-bs-target="#<%= modalId%>">
                                         <div class="plan-table-week-recipe-content-image">
                                             <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
@@ -191,8 +191,12 @@
                                                         <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
                                                     </div>
                                                 </div>
+
+                                                <input type="hidden" id="recipeIdInput<%= list.getId()%>" name="meal_id" value="<%= list.getId()%>">
+                                                <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
+
                                                 <div class="modal-footer">
-                                                    <button type="button" class="remove-recipe-from-plan-button">Remove</button>
+                                                    <button type="submit" name="action" value="removePlanRecipe" class="remove-recipe-from-plan-button" data-recipeid="<%= list.getId()%>" onclick="setRecipeId(this, '<%= list.getId()%>')">Remove</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -220,8 +224,8 @@
                                     <% if (lunchMeals != null && lunchMeals.size() != 0) {
                                             for (MealDTO list : lunchMeals) {
                                                 RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(list.getRecipe_id());
-                                                String modalId = "recipeNutritionModal" + list.getId(); // Generate unique modal ID for each recipe
-%>
+                                                String modalId = "recipeNutritionModal" + list.getId();
+                                    %>
                                     <button class="plan-table-week-recipe-content" type="button" data-bs-toggle="modal" data-bs-target="#<%= modalId%>">
                                         <div class="plan-table-week-recipe-content-image">
                                             <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
@@ -248,8 +252,12 @@
                                                         <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
                                                     </div>
                                                 </div>
+
+                                                <input type="hidden" id="recipeIdInput<%= list.getId()%>" name="meal_id" value="<%= list.getId()%>">
+                                                <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
+
                                                 <div class="modal-footer">
-                                                    <button type="button" class="remove-recipe-from-plan-button">Remove</button>
+                                                    <button type="submit" name="action" value="removePlanRecipe" class="remove-recipe-from-plan-button" data-recipeid="<%= list.getId()%>" onclick="setRecipeId(this, '<%= list.getId()%>')">Remove</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -276,8 +284,8 @@
                                     <% if (dinnerMeals != null && dinnerMeals.size() != 0) {
                                             for (MealDTO list : dinnerMeals) {
                                                 RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(list.getRecipe_id());
-                                                String modalId = "recipeNutritionModal" + list.getId(); // Generate unique modal ID for each recipe
-%>
+                                                String modalId = "recipeNutritionModal" + list.getId();
+                                    %>
                                     <button class="plan-table-week-recipe-content" type="button" data-bs-toggle="modal" data-bs-target="#<%= modalId%>">
                                         <div class="plan-table-week-recipe-content-image">
                                             <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
@@ -293,7 +301,7 @@
 
                                     <!-- Modal -->
                                     <div class="modal fade" id="<%= modalId%>" tabindex="-1" aria-labelledby="recipeNutritionModalLabel" aria-hidden="true">
-                                        <form class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                        <form class="modal-dialog modal-dialog-centered modal-dialog-scrollable" >
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <h1 class="modal-title fs-5" id="exampleModalLabel"><%= recipe.getTitle()%></h1>
@@ -304,8 +312,12 @@
                                                         <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
                                                     </div>
                                                 </div>
+
+                                                <input type="hidden" id="recipeIdInput<%= list.getId()%>" name="meal_id" value="<%= list.getId()%>">
+                                                <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
+
                                                 <div class="modal-footer">
-                                                    <button type="button" class="remove-recipe-from-plan-button">Remove</button>
+                                                    <button type="submit" name="action" value="removePlanRecipe" class="remove-recipe-from-plan-button" data-recipeid="<%= list.getId()%>" onclick="setRecipeId(this, '<%= list.getId()%>')">Remove</button>
                                                 </div>
                                             </div>
                                         </form>

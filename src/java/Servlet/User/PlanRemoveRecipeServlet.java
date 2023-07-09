@@ -4,7 +4,9 @@
  */
 package Servlet.User;
 
+import DAO.MealDAO;
 import java.io.IOException;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,12 +21,24 @@ public class PlanRemoveRecipeServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
-        String recipe_id = request.getParameter("recipe_id");
-        
-        System.out.println("recipe_id recieved: " + recipe_id);
-        
-        response.sendRedirect("home.jsp");
+
+        boolean result = false;
+        int meal_id = Integer.parseInt(request.getParameter("meal_id"));
+        int plan_id = Integer.parseInt(request.getParameter("plan_id"));
+
+        String url = "error.jsp";
+
+        if (meal_id > 0 && plan_id > 0) {
+            result = MealDAO.removeRecipeFromPlan(meal_id);
+            if (result) {
+                url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=false";
+                RequestDispatcher rd = request.getRequestDispatcher(url);
+                rd.forward(request, response);
+            } else {
+                response.sendRedirect(url);
+            }
+        }
+        response.sendRedirect(url);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
