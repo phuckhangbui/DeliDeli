@@ -32,36 +32,39 @@ public class PlanEditServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
         String id = request.getParameter("id");
         ArrayList<DisplayRecipeDTO> displayList = (ArrayList<DisplayRecipeDTO>) request.getAttribute("searchRecipesList");
-        
         boolean isSearch = Boolean.parseBoolean(request.getParameter("isSearch"));
 
-        PlanDTO plan = PlanDAO.getUserPlanById(new Integer(id));
-        request.setAttribute("plan", plan);
+        if (id != null && !id.isEmpty()) {
+            PlanDTO plan = PlanDAO.getUserPlanById(Integer.parseInt(id));
+            request.setAttribute("plan", plan);
 
-        DietDTO diet = DietDAO.getTypeById(plan.getDiet_id());
-        request.setAttribute("diet", diet);
+            DietDTO diet = DietDAO.getTypeById(plan.getDiet_id());
+            request.setAttribute("diet", diet);
 
-        ArrayList<PlanDateDTO> planDate = PlanDateDAO.getAllDateByPlanId(plan.getId());
-        request.setAttribute("planDate", planDate);
+            ArrayList<PlanDateDTO> planDate = PlanDateDAO.getAllDateByPlanId(plan.getId());
+            request.setAttribute("planDate", planDate);
 
-        if (isSearch) {
-            request.setAttribute("SEARCH_LIST", displayList);
-            request.setAttribute("SEARCH_PLAN_REAL", true);
-            RequestDispatcher rq = request.getRequestDispatcher("addRecipeToPlan.jsp");
-            rq.forward(request, response);
-        } else {
-            request.setAttribute("SEARCH_PLAN_REAL", false);
-            RequestDispatcher rq = request.getRequestDispatcher("addRecipeToPlan.jsp");
-            rq.forward(request, response);
+            if (isSearch) {
+                request.setAttribute("SEARCH_LIST", displayList);
+                request.setAttribute("SEARCH_PLAN_REAL", true);
+                RequestDispatcher rq = request.getRequestDispatcher("addRecipeToPlan.jsp");
+                rq.forward(request, response);
+                return;
+            } else {
+                request.setAttribute("SEARCH_PLAN_REAL", false);
+                RequestDispatcher rq = request.getRequestDispatcher("addRecipeToPlan.jsp");
+                rq.forward(request, response);
+                return;
+            }
         }
 
         response.sendRedirect("error.jsp");
+
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
