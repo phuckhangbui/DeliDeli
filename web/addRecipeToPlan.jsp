@@ -346,8 +346,8 @@
 
 
 
-
-                <form class="plan-edit">
+                <!-- plan-edit -->
+                <form action="UserController" method="post" class="plan-edit">
                     <div class="plan-edit-header">
                         Info Section
                     </div>
@@ -359,7 +359,7 @@
                         <div class="col-md-6 add-plan-info-date">
                             Starting Date: <span>*</span>
                             <div>
-                                <input type="date" id="startingDate" value="<%= plan.getStart_at()%>" onchange="calculateNewDate()">
+                                <input type="date" id="startingDate" name="start_date" value="<%= plan.getStart_at()%>" onchange="calculateNewDate()">
                             </div>
                         </div>
                         <div class="col-md-6 add-plan-info-date">
@@ -388,7 +388,7 @@
                     <div class="add-plan-info-header add-plan-info">
                         Plan Title <span>*</span>
                         <div>
-                            <input type="text" class="input-full" value="<%= plan.getName()%>" placeholder="What's your plan called ?">
+                            <input type="text" class="input-full" name="plan_title" value="<%= plan.getName()%>" placeholder="What's your plan called ?">
                         </div>
                     </div>
 
@@ -418,17 +418,20 @@
                     </div>
                     <div class="add-plan-info-header add-plan-info">
                         Description <span>*</span>
-                        <textarea class="input-full" rows="2" name="description" required
+                        <textarea class="input-full" rows="2" name="plan_description" required
                                   placeholder="Give a small description of your plan" maxlength="200"><%= plan.getDescription()%></textarea>
                     </div>
                     <div class="add-plan-info-header add-plan-info" >
                         Note <span >*</span>
-                        <textarea class="input-full" rows="2" name="description" required
-                                  placeholder="Anything that needs to note ?" maxlength="200"></textarea>
+                        <textarea class="input-full" rows="2" name="plan_note" required
+                                  placeholder="Anything that needs to note ?" maxlength="200"> <%= plan.getNote() %> </textarea>
 
                     </div>
+
+                    <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
+
                     <div class="plan-edit-button" >
-                        <button>SAVE</button>
+                        <button type="submit" name="action" value="editPlanSave">SAVE</button>
                     </div>
                 </form>   
 

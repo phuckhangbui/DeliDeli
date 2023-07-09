@@ -4,6 +4,7 @@
  */
 package DAO;
 
+import DTO.DateDTO;
 import DTO.PlanDTO;
 import Utils.DBUtils;
 import java.sql.Connection;
@@ -89,65 +90,6 @@ public class PlanDAO {
             }
         } catch (SQLException ex) {
             System.out.println("Query error - insertWeek: " + ex.getMessage());
-        } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (stm != null) {
-                    stm.close();
-                }
-                if (con != null) {
-                    con.close();
-                }
-            } catch (SQLException ex) {
-                System.out.println("Error closing database resources: " + ex.getMessage());
-            }
-        }
-        return false;
-    }
-
-    public static boolean insertAllDatesWithinAWeek(Date start_date, Date end_date, int week_id, int plan_id) {
-        Connection con = null;
-        PreparedStatement stm = null;
-        ResultSet rs = null;
-        int effectRows = 0;
-
-        String sql = "INSERT INTO [Date](date, week_id, plan_id)\n"
-                + "VALUES (?, ?, ?)";
-
-        try {
-            con = DBUtils.getConnection();
-            if (con != null) {
-
-                List<Date> dates = new ArrayList<>();
-
-                // Iterate through calendar
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(start_date);
-
-                // Iterate from start_date until end_date, we add each date into a list.
-                while (!calendar.getTime().after(end_date)) {
-                    Date currentDate = new Date(calendar.getTime().getTime()); // Convert java.util.Date to java.sql.Date
-                    dates.add(currentDate);
-                    calendar.add(Calendar.DAY_OF_MONTH, 1);
-                }
-
-                // Insert each date into the database
-                for (Date date : dates) {
-                    stm = con.prepareStatement(sql);
-                    stm.setDate(1, date);
-                    stm.setInt(2, week_id);
-                    stm.setInt(3, plan_id);
-                    effectRows = stm.executeUpdate();
-                }
-
-                if (effectRows > 0) {
-                    return true;
-                }
-            }
-        } catch (SQLException ex) {
-            System.out.println("Query error - insertAllDatesWithinAWeek: " + ex.getMessage());
         } finally {
             try {
                 if (rs != null) {
@@ -399,4 +341,88 @@ public class PlanDAO {
         }
         return 0;
     }
+
+    public static boolean updatePlanByID(int plan_id, int diet_id, String plan_title, String plan_description, String plan_note, Date start_at, Date end_at) throws Exception {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+
+        String sql = "UPDATE [Plan]\n"
+                + "SET name = ?, description = ?, note = ?, start_at = ?, end_at = ?, diet_id = ?\n"
+                + "WHERE id = ?";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setString(1, plan_title);
+                stm.setString(2, plan_description);
+                stm.setString(3, plan_note);
+                stm.setDate(4, start_at);
+                stm.setDate(5, end_at);
+                stm.setInt(6, diet_id);
+                stm.setInt(7, plan_id);
+
+                int rowsAffected = stm.executeUpdate();
+                return rowsAffected > 0;
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error - updatePlanByID: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return false;
+    }
+
+    public static boolean updateWeekByPlanID(int plan_id, Date start_at) throws Exception {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+
+        String sql = "UPDATE [Week]\n"
+                + "SET start_at = ?\n"
+                + "WHERE plan_id = ?";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setDate(1, start_at);
+                stm.setInt(2, plan_id);
+
+                int rowsAffected = stm.executeUpdate();
+                return rowsAffected > 0;
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error - updatePlanByID: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return false;
+    }
+
 }

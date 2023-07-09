@@ -6,11 +6,11 @@ package Servlet.User;
 
 import DAO.DateDAO;
 import DAO.PlanDAO;
-import DTO.PlanDTO;
+import DTO.DateDTO;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.sql.Date;
 import java.time.LocalDate;
-import javax.servlet.RequestDispatcher;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -20,57 +20,57 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Daiisuke
  */
-public class AddPlanServlet extends HttpServlet {
+public class PlanInformationEditServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
-        // Miscellaneous variables
+        int plan_id = Integer.parseInt(request.getParameter("plan_id"));
         boolean result = false;
-        boolean checkAddDate = false;
-        boolean checkAddWeek = false;
+        boolean checkWeek = false;
+        boolean checkDate = false;
+        String url = "error.jsp";
 
-        // Basic Information
-        int id = 0;
-        String name = request.getParameter("name");
-        String description = request.getParameter("description");
-        String note = request.getParameter("note");
-        int dietID = Integer.parseInt(request.getParameter("recipeDietId"));
-        int userID = Integer.parseInt(request.getParameter("userId"));
-        boolean status = false;
-
-        // Simple week calculator 
         String start_date_str = request.getParameter("start_date");
         java.sql.Date start_date = java.sql.Date.valueOf(start_date_str);
         LocalDate startDate = LocalDate.parse(start_date_str);
         LocalDate end_date_str = startDate.plusDays(6);
         java.sql.Date end_date = java.sql.Date.valueOf(end_date_str);
 
-        // Adding plan
-        try {
-            result = PlanDAO.insertPlan(name, description, note, start_date, end_date, status, userID, dietID);
-            id = PlanDAO.getPlanByUserIdAndName(userID, name);
-        } catch (Exception ex) {
-            System.out.println("[addPlanServlet - ERROR]: " + ex.getMessage());
-        }
+        String plan_title = request.getParameter("plan_title");
+        int diet_id = Integer.parseInt(request.getParameter("recipeDietId"));
+        String plan_description = request.getParameter("plan_description");
+        String plan_note = request.getParameter("plan_note");
 
-        // Creating each day in that particular week.
-        try {
-            checkAddWeek = PlanDAO.insertWeek(id, start_date);
-            int weekId = PlanDAO.getWeekIDByPlanId(id);
-            checkAddDate = DateDAO.insertAllDatesWithinAWeek(start_date, end_date, weekId, id);
-        } catch (Exception ex) {
-            System.out.println("[addPlanServlet - ERROR]: " + ex.getMessage());
-        }
+        ArrayList<DateDTO> dateBeforeUpdate = DateDAO.getAllDateByPlanID(plan_id);
 
-        if (result) {
-            request.setAttribute("USER_PLAN", result);
-            RequestDispatcher rq = request.getRequestDispatcher("addRecipeToPlan.jsp");
-            rq.forward(request, response);
-        } else {
-            response.sendRedirect("errorpage.html");
+        try {
+            if (plan_id > 0) {
+                result = PlanDAO.updatePlanByID(plan_id, diet_id, plan_title, plan_description, plan_note, start_date, end_date);
+                if (result) {
+                    checkWeek = PlanDAO.updateWeekByPlanID(plan_id, start_date);
+                    if (checkWeek) {
+                        for (DateDTO list : dateBeforeUpdate) {
+//                            System.out.println("Date List - " + list.getId());
+                            checkDate = DateDAO.updateDate(list.getId(), start_date);
+                            startDate = startDate.plusDays(1);
+                            start_date = java.sql.Date.valueOf(startDate);
+//                            System.out.println("Date reiterate - " + start_date);
+                        }
+                    }
+                }
+            }
+
+            if (result && checkWeek && checkDate) {
+                url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=false";
+            }
+            
+        } catch (Exception ex) {
+            System.out.println("[PlanInformationEditServlet - ERROR]: " + ex.getMessage());
+            response.sendRedirect(url);
         }
+        response.sendRedirect(url);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
