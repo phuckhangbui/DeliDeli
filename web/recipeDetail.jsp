@@ -67,7 +67,7 @@
                             <img src="ServletImageLoader?identifier=<%= owner.getAvatar()%>" alt="">
                         </a>
                         <div>
-                            <span>By</span>
+                            <span>By:</span>
                             <span><a href="<%=link%>"><%= owner.getUserName()%></a></span>
                                 <%
                                     Timestamp timestamp = null;
@@ -79,7 +79,7 @@
                                     SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
                                     String date = dateFormat.format(timestamp);
                                 %>
-                            <p>Published on <%=date%></p>
+                            <p>Published on: <%=date%></p>
                         </div>
                     </div>
                     <div class="recipe-detail-info-interaction">

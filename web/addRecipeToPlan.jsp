@@ -118,8 +118,7 @@
                     </div>
 
 
-                    <%
-                        PlanDTO plan = (PlanDTO) request.getAttribute("plan");
+                    <%                        PlanDTO plan = (PlanDTO) request.getAttribute("plan");
                         boolean SEARCH_PLAN_REAL = (boolean) request.getAttribute("SEARCH_PLAN_REAL");
                     %>
                     <div class=" plan-table">
@@ -476,29 +475,27 @@
                         if (searchRecipesList != null && !searchRecipesList.isEmpty()) {
                             for (DisplayRecipeDTO list : searchRecipesList) {
                     %>
-                    <div class="col-md-3">
-                        <div href="" class="add-recipe-to-plan-content-recipe">
-                            <div class="add-recipe-to-plan-content-recipe-image">
-                                <img src="./pictures/egg1.jpeg" alt="">
-                            </div>
-                            <div class="add-recipe-to-plan-content-recipe-title"><%= list.getTitle()%></div>
-                            <%
-                                System.out.println("Title - " + list.getTitle());
-                            %>
-                            <div class="add-recipe-to-plan-content-recipe-nutrients">
-                                <p><span class="plan-table-calories">Cals</span>20</p>
-                                <p><span class="plan-table-protein">P</span> 29g</p>
-                                <p><span class="plan-table-carb">C</span> 24g</p>
-                                <p><span class="plan-table-fat">F</span> 434g</p>
-                            </div>
-                            <div class="add-recipe-to-plan-content-recipe-button">
-                                <button type="button" class="" data-bs-toggle="modal" data-bs-target="#addRecipeToPlan<%= list.getId()%>">
-                                    Add
-                                </button>
-                                <button type="button">
-                                    <a href="MainController?action=getRecipeDetailById&id=" target="_blank">View</a>
-                                </button>
-                            </div>
+                    <div href="" class=" col-md-3 add-recipe-to-plan-content-recipe">
+                        <div class="add-recipe-to-plan-content-recipe-image">
+                            <img src="./pictures/egg1.jpeg" alt="">
+                        </div>
+                        <div class="add-recipe-to-plan-content-recipe-title"><%= list.getTitle()%></div>
+                        <%
+                            System.out.println("Title - " + list.getTitle());
+                        %>
+                        <div class="add-recipe-to-plan-content-recipe-nutrients">
+                            <p><span class="plan-table-calories">Cals</span>20</p>
+                            <p><span class="plan-table-protein">P</span> 29g</p>
+                            <p><span class="plan-table-carb">C</span> 24g</p>
+                            <p><span class="plan-table-fat">F</span> 434g</p>
+                        </div>
+                        <div class="add-recipe-to-plan-content-recipe-button">
+                            <button type="button" class="" data-bs-toggle="modal" data-bs-target="#addRecipeToPlan<%= list.getId()%>">
+                                Add
+                            </button>
+                            <button type="button">
+                                <a href="MainController?action=getRecipeDetailById&id=" target="_blank">View</a>
+                            </button>
                         </div>
                     </div>
 

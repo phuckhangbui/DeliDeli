@@ -301,7 +301,6 @@
                                     <input type="hidden" value="<%= suggestion%>" name="suggestion">
                                     <input type="hidden" value="<%= chosenSuggestion%>" name="chosenSuggestion">
                                     <button type="submit" name="action" value="updateSuggestion">Update</button>
-                                    
                                 </form>
                             </div>
                         </div>

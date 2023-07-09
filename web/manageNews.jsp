@@ -163,10 +163,19 @@
                                                                     <input type="text" name="txtSearch" placeholder="What are you searching for ?">
                                                                     <input type="hidden" value="Title" name="">
                                                                 </form>-->
-                                <div class="news-create-button">
+<!--                                <div class="news-create-button">
                                     <button><a href="createNews.jsp">Create</a></button>
+                                </div>-->
+                                <div class="content-create-button">
+                                    <button>
+                                        <a href="createNews.jsp">
+                                            <img src="assets/add-icon-white.svg" alt="alt" />
+                                        </a>
+                                    </button>
                                 </div>
                             </div>
+
+
 
                             <%
                                 ArrayList<NewsDTO> listNews = (ArrayList) request.getAttribute("listNews");
@@ -181,8 +190,8 @@
                                         <th>Title</th>
                                         <th>Owner</th>
                                         <th>Category</th>
-                                        <th>Created</th>
-                                        <th>Updated</th>
+                                        <th>Create at</th>
+                                        <th>Update at</th>
 
                                     </tr>
                                 </thead>

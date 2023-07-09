@@ -219,7 +219,7 @@
                 <div class="row">
                     <header class="search-result-header">
                         <p>
-                            <%= selectedSuggestion%> Recipe(s)
+                            <%= selectedSuggestion%>
                         </p>
                     </header>
                 </div>

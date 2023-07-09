@@ -196,7 +196,7 @@
 }
 
 .form-title{
-    padding: 16px;
+    padding: 15px;
     width: 100%;
 }
 
@@ -206,8 +206,8 @@
 }
 
 .disapprove-style{
-    background-color: red;
-    color:#fff;
+    background-color: rgb(220, 0, 0);
+    color:white;
     text-align: center;
     font-size: 26px;
     border-radius: 0.325rem;

@@ -403,13 +403,21 @@ thead{
 .news-create-button button{
     background-color: #ec9131;
     border-radius: 100rem;
-    padding: 5px 20px;
+    font-size: 20px;
+    padding: 10px 15px;
     border: none;
     color: #fff;
 }
-
+.news-create-button img{
+    width: 30px;
+}
+.news-create-button-update{
+    align-self: center;
+}
 .news-create-button {
     padding: 0;
+    display: flex;
+    flex-direction: column;
 }
 
 .news-detail-admin-button a,
@@ -433,6 +441,9 @@ thead{
 .news-content-info{
     font-size: 24px;
     margin-bottom: 20px;
+}
+.news-content-info p{
+    margin: 0px;
 }
 .news-content-info-header span:first-child, .news-content-info-span{
     color: red;
@@ -482,6 +493,8 @@ thead{
     border-radius: 100rem;
     padding: 5px 20px;
     border: none;
+    font-size: 20px;
+    color: white;
 }
 
 .news-detail-admin-button > .news-detail-admin-button-delete {
@@ -498,8 +511,10 @@ thead{
     color: white;
     background-color: #ec9131;
     border: none;
-    padding: 0 10px;
-    width: 85px;
+    font-size: 20px;
+    padding: 5px 10px;
+    width: 100px;
+    margin: 0 5px;
 }
 .news-action-button form{
     display: inline-block;
@@ -517,7 +532,6 @@ thead{
 .new-result{
     background-color: white;
 }
-
 
 
 
@@ -562,6 +576,8 @@ thead{
     background-color: rgb(200, 0, 0);
     color: #fff;
     margin-left: 5px;
+    font-size: 20px;
+    padding: 5px 10px;
 }
 
 /* User */
@@ -628,4 +644,72 @@ thead{
 .update-suggestion p{
     margin: 0px;
     color: red;
+}
+.error-popup{
+    color: red;
+}
+.add-to-suggestion img{
+    width: 25px;
+    height: 25px;
+}
+.add-to-suggestion button{
+    border: none;
+    background-color: transparent;
+}
+.create-suggestion{
+    display: flex;
+    flex-direction: column;
+}
+.create-suggestion-title span{
+   margin-left: 5px; 
+   color: red;
+}
+.create-suggestion-title{
+    font-size: 24px;
+    margin-top: 10px;
+}
+.create-suggestion-title input {
+    font-size: 20px;
+    padding: 5px;
+    border-radius: 10px;
+    background-color: #f8f8f8;
+    width: 400px;
+}
+.create-suggestion button{
+    align-self: center;
+    font-size: 20px;
+    border-radius: 20px;
+    color: white;
+    background-color: #ec9131;
+    border: none;
+    padding: 5px 10px;
+    width: 85px;
+}
+.in-use{
+    color: green;
+}
+
+.content-create-button button{
+    background-color: #ec9131;
+    border-radius: 100rem;
+    padding: 10px;
+    border: none;
+    color: #fff;
+}
+.content-create-button img{
+    width: 30px;
+}
+.btn-danger a{
+    color: white
+}
+
+.choose-button button {
+    display: inline-block;
+    border-radius: 20px;
+    color: white;
+    background-color: #ec9131;
+    border: none;
+    padding: 2px 5px;
+    width: 80px;
+    margin: 0 5px;
 }

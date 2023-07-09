@@ -44,16 +44,16 @@
                     <div class="recipe-detail-info-user">
                         <a ><img src="./assets/profile-pic.svg" alt=""></a>
                         <div>
-                            <span>By</span>
+                            <span>By:</span>
                             <span><a > <%= request.getAttribute("author")%></a></span>
                             <%
                                 if (news.getCreateAt().equals(news.getUpdateAt())) {
                             %>
-                            <p>Create at: <%= news.getCreateAt()%></p>
+                            <p>Published on: <%= news.getCreateAt()%></p>
                             <%
                             } else {
                             %>
-                            <p>Update at: <%= news.getUpdateAt()%></p>
+                            <p>Updated on: <%= news.getUpdateAt()%></p>
                             <%
                                 }
                             %>
