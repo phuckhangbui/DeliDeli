@@ -42,17 +42,22 @@
     </head>
 
     <body>
+
+        <%
+            PlanDTO plan = (PlanDTO) request.getAttribute("plan");
+        %>
+
         <!--         The navigation bar       -->
         <%@include file="header.jsp" %>
 
         <!--         Recipe Plan       -->
         <div class="blank-background">
             <div class="container">
-                <div class="row plan">
+                <div class="row plan">  
                     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item"><a href="#"> Plan</a></li> 
+                            <li class="breadcrumb-item"><a href="home.jsp">Home</a></li>
+                            <li class="breadcrumb-item"><a href="UserController?action=editPlan&id=<%= plan.getId()%>&isSearch=false"> Plan - <%= plan.getName() %> </a></li> 
                             <li class="breadcrumb-item current-link" aria-current="page">Edit Plan</li>
                         </ol>
                     </nav>
@@ -119,7 +124,7 @@
                     </div>
 
 
-                    <%                        PlanDTO plan = (PlanDTO) request.getAttribute("plan");
+                    <%
                         boolean SEARCH_PLAN_REAL = (boolean) request.getAttribute("SEARCH_PLAN_REAL");
                     %>
                     <div class=" plan-table">
@@ -424,7 +429,7 @@
                     <div class="add-plan-info-header add-plan-info" >
                         Note <span >*</span>
                         <textarea class="input-full" rows="2" name="plan_note" required
-                                  placeholder="Anything that needs to note ?" maxlength="200"> <%= plan.getNote() %> </textarea>
+                                  placeholder="Anything that needs to note ?" maxlength="200"> <%= plan.getNote()%> </textarea>
 
                     </div>
 
@@ -484,34 +489,32 @@
                             for (DisplayRecipeDTO list : searchRecipesList) {
                                 ArrayList<NutritionDTO> recipeNutrition = RecipeDAO.getNutritionValuesByRecipeID(list.getId());
                     %>
-                    <div class="col-md-3">
-                        <div href="" class="add-recipe-to-plan-content-recipe">
-                            <div class="add-recipe-to-plan-content-recipe-image">
-                                <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(list.getId()).getThumbnailPath()%>" alt="">
-                            </div>
-                            <div class="add-recipe-to-plan-content-recipe-title"><%= list.getTitle()%></div>
+                    <div href="" class=" col-md-3 add-recipe-to-plan-content-recipe">
+                        <div class="add-recipe-to-plan-content-recipe-image">
+                            <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(list.getId()).getThumbnailPath()%>" alt="">
+                        </div>
+                        <div class="add-recipe-to-plan-content-recipe-title"><%= list.getTitle()%></div>
 
-                            <%
-                                for (NutritionDTO nutrition : recipeNutrition) {
-                            %>
-                            <div class="add-recipe-to-plan-content-recipe-nutrients">
-                                <p class="plan-table-calories">Calories: <%= nutrition.getCalories()%></p>
-                                <p class="plan-table-protein">Protein: <%= nutrition.getProtein()%></p>
-                                <p class="plan-table-carb">Carbs: <%= nutrition.getCarbs()%></p>
-                                <p class="plan-table-fat">Fat: <%= nutrition.getFat()%></p>
-                            </div>
-                            <%
-                                }
-                            %>
+                        <%
+                            for (NutritionDTO nutrition : recipeNutrition) {
+                        %>
+                        <div class="add-recipe-to-plan-content-recipe-nutrients">
+                            <p class="plan-table-calories">Calories: <%= nutrition.getCalories()%></p>
+                            <p class="plan-table-protein">Protein: <%= nutrition.getProtein()%></p>
+                            <p class="plan-table-carb">Carbs: <%= nutrition.getCarbs()%></p>
+                            <p class="plan-table-fat">Fat: <%= nutrition.getFat()%></p>
+                        </div>
+                        <%
+                            }
+                        %>
 
-                            <div class="add-recipe-to-plan-content-recipe-button">
-                                <button type="button" class="" data-bs-toggle="modal" data-bs-target="#addRecipeToPlan<%= list.getId()%>">
-                                    Add
-                                </button>
-                                <button type="button">
-                                    <a href="MainController?action=getRecipeDetailById&id=<%= list.getId()%>" target="_blank">View</a>
-                                </button>
-                            </div>
+                        <div class="add-recipe-to-plan-content-recipe-button">
+                            <button type="button" class="" data-bs-toggle="modal" data-bs-target="#addRecipeToPlan<%= list.getId()%>">
+                                Add
+                            </button>
+                            <button type="button">
+                                <a href="MainController?action=getRecipeDetailById&id=<%= list.getId()%>" target="_blank">View</a>
+                            </button>
                         </div>
                     </div>
 
