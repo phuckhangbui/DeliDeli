@@ -58,7 +58,7 @@
                                 <div class="col-md-6 add-plan-info-date">
                                     Starting Date: <span>*</span>
                                     <div>
-                                        <input type="date" id="startingDate" name="start_date" onchange="calculateNewDate()">
+                                        <input type="date" id="startingDate" name="start_date" onchange="calculateNewDate()" min="<%= LocalDate.now()%>">
                                     </div>
                                 </div>
                                 <div class="col-md-6 add-plan-info-date">

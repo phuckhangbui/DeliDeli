@@ -4,6 +4,9 @@
     Author     : Walking Bag
 --%>
 
+<%@page import="DTO.DietDTO"%>
+<%@page import="DAO.DietDAO"%>
+<%@page import="Utils.DateNameChanger"%>
 <%@page import="DAO.PlanDAO"%>
 <%@page import="DTO.NutritionDTO"%>
 <%@page import="java.io.IOException"%>
@@ -68,10 +71,38 @@
                             <li class="breadcrumb-item current-link" aria-current="page">Current Plan Name Insert Here</li>
                         </ol>
                     </nav>
-                    <div class="edit-plan-header">
-                        <p>Title insert here</p>
-                        <p>Description insert here</p>
+                    <div class="plan-header">
+                        This Week's Plan
                     </div>
+                    <div class="plan-info">
+                        <div class="row">
+
+                            <%                                // Simple date format converter -> 06-23 => June 23rd
+                                Date start_date = plan.getStart_at();
+                                Date end_date = plan.getEnd_at();
+                                SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM d", Locale.ENGLISH);
+                                String formattedStartDate = DateNameChanger.formatDateWithOrdinalIndicator(start_date, dateFormat);
+                                String formattedEndDate = DateNameChanger.formatDateWithOrdinalIndicator(end_date, dateFormat);
+                            %>
+
+                            <div class="plan-info-period col-md-6">
+                                <p>
+                                    <span>Period:</span>                                           
+                                    <%= formattedStartDate%> - <%= formattedEndDate%>
+                                </p>
+                            </div>
+                            <div class="plan-info-type col-md-6">
+                                <%
+                                    DietDTO diet = DietDAO.getTypeById(plan.getDiet_id());
+                                %>
+                                <p><span>Type:</span><%= diet.getTitle() %></p>
+                            </div>
+                        </div>
+                        <div class="plan-info-description">
+                            <p><span>Description:</span> <%= plan.getDescription() %></p>
+                        </div>
+                    </div>
+
 
 
                     <div class="plan-navbar">
@@ -87,7 +118,8 @@
                     </div>
 
                     <div class=" plan-table">
-                        <%                            ArrayList<PlanDateDTO> planDate = (ArrayList<PlanDateDTO>) request.getAttribute("planDate");
+                        <%
+                            ArrayList<PlanDateDTO> planDate = (ArrayList<PlanDateDTO>) request.getAttribute("planDate");
                             for (PlanDateDTO dateList : planDate) {
                                 ArrayList<MealDTO> breakfastMeals = MealDAO.getAllMealsTimeBased(plan.getId(), dateList.getId(), true, false, false);
                                 ArrayList<MealDTO> lunchMeals = MealDAO.getAllMealsTimeBased(plan.getId(), dateList.getId(), false, true, false);

@@ -77,8 +77,8 @@
                                         <img src="./pictures/plan1.jpg" alt="">
                                     </div>
                                     <div class="weekly-plans-plan-content-des">
-                                        <p class="active-plan-content"><%= list.getName()%></p>
-                                        <p><span>Description:</span> <%= list.getDescription()%></p>
+                                        <p class="active-plan-content"><%= list.getName() %></p>
+                                        <p><span>Description:</span> <%= list.getDescription() %></p>
                                         <%
                                             // Simple date format converter -> 06-23 => June 23rd
                                             Date start_date = list.getStart_at();
