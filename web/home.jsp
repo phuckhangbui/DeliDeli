@@ -61,22 +61,30 @@
                     %>
                     <div class="col-md-4 other-news">
                         <%
-                            news = listNews.get(0);
-                            newsCategory = listNewsCategories.get(0);
+                            if (listNews.size() == 1) {
+                                news = listNews.get(0);
+                                newsCategory = listNewsCategories.get(0);
                         %>
                         <a href="MainController?action=getNewsDetail&id=<%= news.getId()%>" class="second-new">
                             <img src="ServletImageLoader?identifier=<%= news.getImage()%>" alt="">
                             <p><%= news.getTitle()%></p>
                         </a>
-
                         <%
-                            news = listNews.get(1);
-                            newsCategory = listNewsCategories.get(1);
+                            }
+                        %>
+                        
+                        <%
+                            if (listNews.size() > 1) {
+                                news = listNews.get(1);
+                                newsCategory = listNewsCategories.get(1);
                         %>
                         <a href="MainController?action=getNewsDetail&id=<%= news.getId()%>" class="third-new">
                             <img src="ServletImageLoader?identifier=<%= news.getImage()%>" alt="">
                             <p><%= news.getTitle()%></p>
                         </a>
+                        <%
+                            }
+                        %>
                     </div>
                     <%
                         }
