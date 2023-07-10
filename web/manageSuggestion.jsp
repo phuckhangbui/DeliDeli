@@ -239,6 +239,7 @@
                                                             if (chosenSuggestion.equals(key)) {
                                                     %>
                                                     <!--                                            <button type="submit" name="action" value="loadSuggestionForUpdate">Edit</button>-->
+                                                   
                                                     <a href="AdminController?action=loadSuggestionForUpdate&chosenSuggestion=<%= chosenSuggestion%>&suggestion=<%= key%>" class="add-to-suggestion">
                                                         <img src="assets/edit-icon.svg" alt="alt" />
                                                     </a>
