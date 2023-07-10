@@ -1885,7 +1885,20 @@ span {
     border-right: 1px solid black;
     border-radius: 0 0 20px 20px;
 }
-
+.plan-table-week-empty-recipe{
+    color:  rgb(0,0,0,0.07);
+    font-size: 30px;
+    background-color: white;
+    height: 100px;
+    padding: 10px;
+    border-radius: 0 0 20px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.plan-table-week-empty-recipe div{
+    
+}
 .plan-table-week-nutrition{
     font-size: 18px;
     display: grid;
@@ -2030,11 +2043,11 @@ span {
     border: 2px solid #e87e0c;
 }
 
-.active-plan:hover .active-plan-content {
-    text-decoration: underline;
+.weekly-plans-plan:hover:not(.active-plan ){
+    background-color: rgb(0,0,0,0.1);
 }
-.weekly-plans-plan:hover{
-    background-color: rgb(232, 126, 12, 0.2);
+.active-plan:hover{
+    background-color: rgb(232, 126, 12, 0.2) !important;
 }
 .active-plan-content{
     color: #e87e0c;

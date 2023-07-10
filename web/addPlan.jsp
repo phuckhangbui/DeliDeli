@@ -109,7 +109,7 @@
                             <div class="add-plan-info-header add-plan-info">
                                 Description <span>*</span>
                                 <textarea class="input-full" rows="2" name="description" required
-                                          placeholder="Give a small description of your plan" maxlength="200"></textarea>
+                                          placeholder="Give a small description of your plan (Max: 200)" maxlength="200"></textarea>
                             </div>
 
                             <!-- Hidden Attributes -->
