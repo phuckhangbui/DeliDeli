@@ -57,8 +57,10 @@
                     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="home.jsp">Home</a></li>
-                            <li class="breadcrumb-item"><a href="UserController?action=editPlan&id=<%= plan.getId()%>&isSearch=false"> Plan - <%= plan.getName()%> </a></li> 
-                            <li class="breadcrumb-item current-link" aria-current="page">Edit Plan</li>
+<!--                            <li class="breadcrumb-item"><a href="UserController?action=editPlan&id=<%= plan.getId()%>&isSearch=false"> Plan - <%= plan.getName()%> </a></li>-->
+                            <li class="breadcrumb-item"><a href="UserController?action=planManagement&userId=<%=user.getId()%>"> Plans List </a></li> 
+                            <li class="breadcrumb-item" aria-current="page"><a href="UserController?action=getPlanDetailById&id=<%= plan.getId()%>"> <%= plan.getName()%> </a></li>
+                            <li class="breadcrumb-item current-link" aria-current="page">Edit</li>
                         </ol>
                     </nav>
                     <div class="edit-plan-header">
@@ -358,8 +360,7 @@
                         </div>
                         <div class="row add-plan-date ">
                             <div class="add-plan-info-header">
-                                Plan Period <span class="add-plan-info-header-des">(Each plan will have a fixed period of 1
-                                    week)</span>
+                                Plan Period <span class="add-plan-info-header-des">(Each plan will have a fixed period of 1 week)</span>
                             </div>
                             <div class="col-md-6 add-plan-info-date">
                                 Starting Date: <span>*</span>
@@ -429,7 +430,7 @@
                         <div class="add-plan-info-header add-plan-info" >
                             Note
                             <textarea class="input-full" rows="2" name="plan_note"
-                                      placeholder="Anything that needs to note ?" maxlength="200"> <%= plan.getNote()%> </textarea>
+                                      placeholder="Anything that needs to note ?" maxlength="200"><%= plan.getNote()%></textarea>
 
                         </div>
 
@@ -478,108 +479,110 @@
                         </div>
                     </div>
                     <div id="scrollTarget"></div> <!-- Added scrollTarget element -->
-                </div>
 
 
 
-                <div class="row add-recipe-to-plan-content">
-                    <%
-                        ArrayList<DisplayRecipeDTO> searchRecipesList = (ArrayList<DisplayRecipeDTO>) request.getAttribute("SEARCH_LIST");
-                        if (searchRecipesList != null && !searchRecipesList.isEmpty()) {
-                            for (DisplayRecipeDTO list : searchRecipesList) {
-                                ArrayList<NutritionDTO> recipeNutrition = RecipeDAO.getNutritionValuesByRecipeID(list.getId());
-                    %>
-                    <div href="" class=" col-md-3 add-recipe-to-plan-content-recipe">
-                        <div class="add-recipe-to-plan-content-recipe-image">
-                            <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(list.getId()).getThumbnailPath()%>" alt="">
-                        </div>
-                        <div class="add-recipe-to-plan-content-recipe-title"><%= list.getTitle()%></div>
 
+                    <div class="row add-recipe-to-plan-content">
                         <%
-                            for (NutritionDTO nutrition : recipeNutrition) {
+                            ArrayList<DisplayRecipeDTO> searchRecipesList = (ArrayList<DisplayRecipeDTO>) request.getAttribute("SEARCH_LIST");
+                            if (searchRecipesList != null && !searchRecipesList.isEmpty()) {
+                                for (DisplayRecipeDTO list : searchRecipesList) {
+                                    ArrayList<NutritionDTO> recipeNutrition = RecipeDAO.getNutritionValuesByRecipeID(list.getId());
                         %>
-                        <div class="add-recipe-to-plan-content-recipe-nutrients">
-                            <p class="plan-table-calories">Calories: <%= nutrition.getCalories()%></p>
-                            <p class="plan-table-protein">Protein: <%= nutrition.getProtein()%></p>
-                            <p class="plan-table-carb">Carbs: <%= nutrition.getCarbs()%></p>
-                            <p class="plan-table-fat">Fat: <%= nutrition.getFat()%></p>
-                        </div>
-                        <%
-                            }
-                        %>
-
-                        <div class="add-recipe-to-plan-content-recipe-button">
-                            <button type="button" class="" data-bs-toggle="modal" data-bs-target="#addRecipeToPlan<%= list.getId()%>">
-                                Add
-                            </button>
-                            <button type="button">
-                                <a href="MainController?action=getRecipeDetailById&id=<%= list.getId()%>" target="_blank">View</a>
-                            </button>
-                        </div>
-                    </div>
-
-
-                    <!-- Modal -->
-                    <div class="modal fade" id="addRecipeToPlan<%= list.getId()%>" tabindex="-1"
-                         aria-labelledby="addRecipeToPlanModalLabel<%= list.getId()%>" aria-hidden="true">
-                        <form action="UserController" method="post" class="modal-dialog add-recipe-to-plan-modal">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel<%= list.getId()%>">Adding Recipe To Plan</h1>
+                        <div href="" class=" col-md-3 add-recipe-to-plan-content-recipe">
+                            <a href="MainController?action=getRecipeDetailById&id=<%= list.getId()%>" target="_blank">
+                                <div class="add-recipe-to-plan-content-recipe-image">
+                                    <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(list.getId()).getThumbnailPath()%>" alt="">
                                 </div>
-                                <div class="modal-body">
-                                    <div>
-                                        <div>What day do you want to cook this recipe ?</div>
-                                        <div class="row">
-                                            <%
-                                                for (PlanDateDTO dateList : planDate) {
-                                                    SimpleDateFormat dayOfWeekFormat = new SimpleDateFormat("EEEE");
-                                                    String dayOfWeek = dayOfWeekFormat.format(dateList.getDate());
+                                <div class="add-recipe-to-plan-content-recipe-title"><%= list.getTitle()%></div>
 
-                                                    SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd");
-                                                    String formattedDate = dateFormat.format(dateList.getDate());
-                                            %>
-                                            <div class="col-md-6">
-                                                <input type="checkbox" id="date_id<%= dateList.getId()%>" name="date_id" value="<%= dateList.getId()%>">
-                                                <label for="dateOfWeek<%= dateList.getId()%>"> <%= dayOfWeek%> (<%= formattedDate%>) </label>
+                                <%
+                                    for (NutritionDTO nutrition : recipeNutrition) {
+                                %>
+                                <div class="add-recipe-to-plan-content-recipe-nutrients">
+                                    <p class="plan-table-calories">Calories: <%= nutrition.getCalories()%></p>
+                                    <p class="plan-table-protein">Protein: <%= nutrition.getProtein()%></p>
+                                    <p class="plan-table-carb">Carbs: <%= nutrition.getCarbs()%></p>
+                                    <p class="plan-table-fat">Fat: <%= nutrition.getFat()%></p>
+                                </div>
+                                <%
+                                    }
+                                %>
+                            </a>
+                            <div class="add-recipe-to-plan-content-recipe-button">
+                                <button type="button" class="" data-bs-toggle="modal" data-bs-target="#addRecipeToPlan<%= list.getId()%>">
+                                    Add
+                                </button>
+                           <!--     <button type="button">
+                                    View
+                                </button>
+                           -->
+                            </div>
+                        </div>
+
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="addRecipeToPlan<%= list.getId()%>" tabindex="-1"
+                             aria-labelledby="addRecipeToPlanModalLabel<%= list.getId()%>" aria-hidden="true">
+                            <form action="UserController" method="post" class="modal-dialog add-recipe-to-plan-modal">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel<%= list.getId()%>">Adding Recipe To Plan</h1>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div>
+                                            <div>What day do you want to cook this recipe ?</div>
+                                            <div class="row choose-week-day">
+                                                <%
+                                                    for (PlanDateDTO dateList : planDate) {
+                                                        SimpleDateFormat dayOfWeekFormat = new SimpleDateFormat("EEEE");
+                                                        String dayOfWeek = dayOfWeekFormat.format(dateList.getDate());
+
+                                                        SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd");
+                                                        String formattedDate = dateFormat.format(dateList.getDate());
+                                                %>
+                                                <div class="col-md-4">
+                                                    <input type="checkbox" id="date_id<%= dateList.getId()%>" name="date_id" value="<%= dateList.getId()%>">
+                                                    <label for="dateOfWeek<%= dateList.getId()%>"> <%= dayOfWeek%> (<%= formattedDate%>) </label>
+                                                </div>
+                                                <%
+                                                    }
+                                                %>
                                             </div>
-                                            <%
-                                                }
-                                            %>
+                                            <label for="eating-time">What time of the day do you want to have this meal ?</label>
+                                            <br>
+                                            <input type="time" id="start_time" name="start_time">
+                                            <br>
+                                            <label for="eating-time">Time to stop having this meal ?</label>
+                                            <br>
+                                            <input type="time" id="end_time" name="end_time">
                                         </div>
-                                        <label for="eating-time">What time of the day do you want to have this meal ?</label>
-                                        <br>
-                                        <input type="time" id="start_time" name="start_time">
-                                        <br>
-                                        <label for="eating-time">Time to stop having this meal ?</label>
-                                        <br>
-                                        <input type="time" id="end_time" name="end_time">
+                                    </div>
+
+                                    <input type="hidden" id="recipeIdInput<%= list.getId()%>" name="recipe_id" value="<%= list.getId()%>">
+                                    <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" name="action" value="addPlanRecipe" class="add-recipe-to-plan-modal-button" data-recipeid="<%= list.getId()%>" onclick="setRecipeId(this, '<%= list.getId()%>')">
+                                            Add
+                                        </button>
                                     </div>
                                 </div>
-
-                                <input type="hidden" id="recipeIdInput<%= list.getId()%>" name="recipe_id" value="<%= list.getId()%>">
-                                <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
-
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" name="action" value="addPlanRecipe" class="add-recipe-to-plan-modal-button" data-recipeid="<%= list.getId()%>" onclick="setRecipeId(this, '<%= list.getId()%>')">
-                                        Add
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <%
+                            </form>
+                        </div>
+                        <%
+                                }
+                            } else {
+                                System.out.println("The search list is null");
                             }
-                        } else {
-                            System.out.println("The search list is null");
-                        }
-                    %>
+                        %>
+                    </div>
                 </div>
+
             </div>
-
-
 
 
 
