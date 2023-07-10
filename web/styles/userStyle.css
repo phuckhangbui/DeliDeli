@@ -1823,24 +1823,23 @@ span {
 
 /*    Recipe Plan     */
 .plan {
-    padding: 10px 20px 20px 20px;
+    padding: 20px;
     background-color: white;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.plan-header {
-    font-size: 48px;
-    text-align: center;
-}
 
 .plan-navbar {
     display: flex;
     justify-content: flex-end;
     padding: 0px;
 }
-
+.plan-navbar img{
+    width: 40px;
+    margin-right: 10px;
+}
 .plan-navbar-edit {
     border: none;
     background-color: transparent;
@@ -2025,7 +2024,7 @@ span {
 
 .weekly-plans,
 .add-plan {
-    padding: 10px 20px 20px 20px;
+    padding: 20px;
     background-color: white;
     margin-bottom: auto;
 }
@@ -2033,7 +2032,6 @@ span {
 .weekly-plans-plan {
     margin: 10px 0;
     display: grid;
-    background: #c6c7c8;
     padding: 0px;
     border-radius: 15px;
     border: 2px solid;
@@ -2042,7 +2040,6 @@ span {
 
 .active-plan {
     border: 2px solid #e87e0c;
-    background:#ffffff;
 }
 
 .weekly-plans-plan:hover:not(.active-plan ){
@@ -2051,9 +2048,9 @@ span {
 .active-plan:hover{
     background-color: rgb(232, 126, 12, 0.2) !important;
 }
-.active-plan-content{
+/*.active-plan-content{
     color: #e87e0c;
-}
+}*/
 
 
 .weekly-plans-plan-content-thumbnail img {
@@ -2178,19 +2175,19 @@ span {
     text-align: center;
     color: rgba(0, 0, 0, 0.5);
 }
-.edit-plan-header p:first-child {
+.edit-plan-header p:first-child, .plan-header p:first-child {
     font-size: 48px;
     text-align: center;
     margin: 0px;
 }
 
-.edit-plan-header p:last-child {
+.edit-plan-header p:last-child, .plan-header p:last-child {
     text-align: center;
     color: rgba(0, 0, 0, 0.5);
 }
-.edit-plan-header{
+/*.edit-plan-header, .plan-header{
     padding-top: 20px;
-}
+}*/
 .add-plan {
     background-color: white;
     height: 100%;

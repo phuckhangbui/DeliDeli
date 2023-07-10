@@ -67,12 +67,13 @@
                     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="home.jsp">Home</a></li>
-                            <li class="breadcrumb-item"><a href="#"> Plan Management </a></li> 
-                            <li class="breadcrumb-item current-link" aria-current="page">Current Plan Name Insert Here</li>
+                            <li class="breadcrumb-item"><a href="UserController?action=planManagement&userId=<%=user.getId()%>"> Plans List </a></li> 
+                            <li class="breadcrumb-item current-link" aria-current="page"><%= plan.getName()%></li>
                         </ol>
                     </nav>
                     <div class="plan-header">
-                       <%= plan.getName() %>
+                        <p><%= plan.getName()%></p>
+                        <p>View your eating schedule that you have planned out for yourself</p>
                     </div>
                     <div class="plan-info">
                         <div class="row">
@@ -106,11 +107,11 @@
 
 
                     <div class="plan-navbar">
-                        <button type="button" class="plan-navbar-remove" data-bs-toggle="modal"
+<!--                        <button type="button" class="plan-navbar-remove" data-bs-toggle="modal"
                                 data-bs-target="#removeAllRecipes" onclick="redirectToEditPlan()">
                             Edit Plan
-                        </button>
-
+                        </button>-->
+                        <a href="UserController?action=editPlan&id=<%= plan.getId()%>&isSearch=false"><img src="./assets/edit-icon.svg" alt=""></a>
 
                         <!-- <button class="plan-navbar-edit">
                                 <a href="userViewPlan.html"><img src="./assets/leave.svg" alt=""></a>
@@ -320,6 +321,19 @@
                             }
                         %>
                     </div>
+                    <%
+                        if (plan.getNote() == null || plan.getNote().equals("")) {
+                        } else {
+                    %>
+                    <div class="plan-note">
+                        <p>Note:</p>
+                        <p><%= plan.getNote()%></p>
+                    </div>
+                    <%
+                        }
+                    %>
+
+
                 </div>
             </div>
         </div>
