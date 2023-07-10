@@ -6,6 +6,8 @@ package Servlet;
 
 import Utils.email;
 import DAO.UserDAO;
+import DTO.UserDTO;
+import Utils.ValidateEmail;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -17,6 +19,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import Utils.tokenGenerator;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -43,6 +47,7 @@ public class EmailConfirmServlet extends HttpServlet {
         HttpSession session = request.getSession();
         tokenGenerator token = new tokenGenerator();
         UserDAO userDAO = new UserDAO();
+        List<String> errorList = new ArrayList<>();
 
         String generatedToken = token.tokenGenerate();
         String userEmail = (String) request.getParameter("txtEmail");
@@ -50,10 +55,9 @@ public class EmailConfirmServlet extends HttpServlet {
 
         userType = (userType == null) ? "ForgotPassUser" : userType;
 
-        System.out.println("[EMAIL - CONF]: User email: " + userEmail);
-        System.out.println("[EMAIL - CONF]: User type: " + userType);
-        System.out.println("[EMAIL - CONF]: User generated token: " + generatedToken);
-
+//        System.out.println("[EMAIL - CONF]: User email: " + userEmail);
+//        System.out.println("[EMAIL - CONF]: User type: " + userType);
+//        System.out.println("[EMAIL - CONF]: User generated token: " + generatedToken);
         userDAO.updateTokenByEmail(userEmail, generatedToken);
 
         String recipient = userEmail; // After that add the user email.
@@ -61,6 +65,31 @@ public class EmailConfirmServlet extends HttpServlet {
         String subject = "";
         String content = "";
         String result = "There's nothing here .3.";
+
+        if (userEmail != null) {
+            ValidateEmail validate = new ValidateEmail();
+            boolean exists = validate.isAddressValid(userEmail);
+            if (exists == false) {
+                errorList.add("The email address does not exist.");
+                request.setAttribute("errorList", errorList);
+                request.getRequestDispatcher("forgotPassword.jsp").forward(request, response);
+                return;
+            }
+        }
+        
+        if (!UserDAO.checkUserEmailDB(userEmail)) {
+            errorList.add("The email address does not exist.");
+            request.setAttribute("errorList", errorList);
+            request.getRequestDispatcher("forgotPassword.jsp").forward(request, response);
+            return;
+        }
+        
+        if (!UserDAO.checkUserStatusByEmail(userEmail)) {
+            errorList.add("Your account is blocked.");
+            request.setAttribute("errorList", errorList);
+            request.getRequestDispatcher("forgotPassword.jsp").forward(request, response);
+            return;
+        }
 
         if (userType != null && userType.equals("ForgotPassUser")) {
             subject = "[NOTICE] DeliDeli ID Password Reset Confirmation"; // Title of the email
