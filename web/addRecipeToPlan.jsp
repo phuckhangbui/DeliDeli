@@ -378,7 +378,7 @@
                                         const dateObj = new Date(inputDate);
 
                                         // Add 7 days to the input date
-                                        dateObj.setDate(dateObj.getDate() + 7);
+                                        dateObj.setDate(dateObj.getDate() + 6);
 
                                         // Format the new date as "YYYY-MM-DD"
                                         const newDate = dateObj.toISOString().split('T')[0];
@@ -396,6 +396,7 @@
                             <div>
                                 <input type="text" class="input-full" name="plan_title" value="<%= plan.getName()%>" placeholder="What's your plan called ?">
                             </div>
+                            <p class="error-popup">${requestScope.errorList[0]}</p>
                         </div>
 
 
@@ -427,19 +428,22 @@
                             <textarea class="input-full" rows="2" name="plan_description" required
                                       placeholder="Give a small description of your plan" maxlength="200"><%= plan.getDescription()%></textarea>
                         </div>
-                        <div class="add-plan-info-header add-plan-info" >
+                        <div class="add-plan-info-header add-plan-info">
                             Note
-                            <textarea class="input-full" rows="2" name="plan_note"
-                                      placeholder="Anything that needs to note ?" maxlength="200"><%= plan.getNote()%></textarea>
-
+                            <textarea class="input-full" rows="2" name="plan_note" maxlength="200"
+                                      placeholder="Anything that needs to note ?"
+                                      ><%= (plan.getNote() != null) ? plan.getNote() : ""%>
+                            </textarea>
                         </div>
 
+
                         <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
+                        <input type="hidden" name="user_id" value="<%= user.getId()%>" />
 
                         <div class="plan-edit-button" >
                             <button type="submit" name="action" value="editPlanSave">SAVE</button>
                         </div>
-                    </form>   
+                    </form> 
                 </div>
 
 
@@ -514,10 +518,10 @@
                                 <button type="button" class="" data-bs-toggle="modal" data-bs-target="#addRecipeToPlan<%= list.getId()%>">
                                     Add
                                 </button>
-                           <!--     <button type="button">
-                                    View
-                                </button>
-                           -->
+                                <!--     <button type="button">
+                                         View
+                                     </button>
+                                -->
                             </div>
                         </div>
 

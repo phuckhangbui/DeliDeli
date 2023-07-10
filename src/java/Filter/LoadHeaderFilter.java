@@ -173,6 +173,10 @@ public class LoadHeaderFilter implements Filter {
                     isPlanStatus = PlanDAO.updateStatusByPlanID(activePlan.getId(), false);
                 }
 
+                if (!currentDate.isEqual(activePlan.getStart_at().toLocalDate())) {
+                    isPlanStatus = PlanDAO.updateStatusByPlanID(activePlan.getId(), false);
+                }
+
                 // Plan Notification
                 currentPlanActive = PlanDateDAO.getActiveRecipePlan(currentDateNow, activePlan.getId());
                 LocalTime currentTime = LocalTime.now();

@@ -268,6 +268,50 @@ public class PlanDAO {
         }
         return result;
     }
+    
+    public static boolean checkPlanTitleDuplicateByUserID(String plan_title, int user_id) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        String name = "";
+
+        String sql = "SELECT name FROM [User]\n"
+                + "WHERE name like ? AND user_id = ?";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setString(1, plan_title);
+                stm.setInt(2, user_id);
+                rs = stm.executeQuery();
+                if (rs.next()) {
+                    name = rs.getString("name");
+                }
+
+                if (name.isEmpty()) {
+                    return true;
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return false;
+    }
 
     public static PlanDTO getUserPlanById(int id) {
         Connection con = null;

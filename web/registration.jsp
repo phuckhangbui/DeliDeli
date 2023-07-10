@@ -59,7 +59,7 @@
                             <span>Re-enter Password</span> <span>*</span>
                             <input type="password" name="txtConfirmPass" value="" placeholder="Re-enter your password" />
                         </div>
-                        <p class="error-popup">${requestScope.errorList[0]}</p>
+                            <p class="error-popup">${requestScope.errorList[0]}</p>
                         <button type="submit" value="signup" name="action" class="user-form-content-button">SIGN UP</button>
                         <a href="forgotPassword.jsp" class="user-form-content-forgot">
                             Forgot password?

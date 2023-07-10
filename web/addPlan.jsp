@@ -114,6 +114,8 @@
                             <!-- Hidden Attributes -->
                             <input type="hidden" name="userId" value="<%= user.getId()%>" />
 
+                            <p class="error-popup">${requestScope.errorList[0]}</p>
+
                             <div class=" add-recipe-info-submit">
                                 <button type="submit" name="action" value="addPlan">
                                     CREATE

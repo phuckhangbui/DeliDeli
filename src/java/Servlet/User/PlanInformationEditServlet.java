@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -22,15 +24,20 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class PlanInformationEditServlet extends HttpServlet {
 
+    private static final String ERROR = "error.jsp";
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
         int plan_id = Integer.parseInt(request.getParameter("plan_id"));
+        int user_id = Integer.parseInt(request.getParameter("user_id"));
+        List<String> errorList = new ArrayList<>();
+
         boolean result = false;
         boolean checkWeek = false;
         boolean checkDate = false;
-        String url = "error.jsp";
+        String url = ERROR;
 
         String start_date_str = request.getParameter("start_date");
         java.sql.Date start_date = java.sql.Date.valueOf(start_date_str);
@@ -44,6 +51,15 @@ public class PlanInformationEditServlet extends HttpServlet {
         String plan_note = request.getParameter("plan_note");
 
         ArrayList<DateDTO> dateBeforeUpdate = DateDAO.getAllDateByPlanID(plan_id);
+
+        if (!PlanDAO.checkPlanTitleDuplicateByUserID(plan_title, user_id)) {
+            errorList.add("Recipe title must be unique !");
+            request.setAttribute("errorList", errorList);
+            url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=false";
+            RequestDispatcher rd = request.getRequestDispatcher(url);
+            rd.forward(request, response);
+            return;
+        }
 
         try {
             if (plan_id > 0) {
@@ -65,7 +81,7 @@ public class PlanInformationEditServlet extends HttpServlet {
             if (result && checkWeek && checkDate) {
                 url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=false";
             }
-            
+
         } catch (Exception ex) {
             System.out.println("[PlanInformationEditServlet - ERROR]: " + ex.getMessage());
             response.sendRedirect(url);

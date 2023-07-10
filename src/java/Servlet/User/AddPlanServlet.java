@@ -26,6 +26,7 @@ public class AddPlanServlet extends HttpServlet {
 
 //    private static final String ADD_PLAN = "addPlan.jsp";
     private static final String ERROR = "error.jsp";
+    private static final String ADD_PLAN = "UserController?action=categoryLoadToPlan";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -57,19 +58,15 @@ public class AddPlanServlet extends HttpServlet {
             LocalDate end_date_str = startDate.plusDays(6);
             java.sql.Date end_date = java.sql.Date.valueOf(end_date_str);
 
-//            if (name.isEmpty()) {
-//                errorList.add("Recipe title must not be empty !");
-//                request.setAttribute("ERROR_LIST", errorList);
-//                RequestDispatcher rd = request.getRequestDispatcher(ADD_PLAN);
-//                rd.forward(request, response);
-//            }
-//            
-//            if (description.isEmpty()) {
-//                errorList.add("Recipe description must not be empty !");
-//                request.setAttribute("ERROR_LIST", errorList);
-//                RequestDispatcher rd = request.getRequestDispatcher(ADD_PLAN);
-//                rd.forward(request, response);
-//            }
+            if (!PlanDAO.checkPlanTitleDuplicateByUserID(name, userID)) {
+                errorList.add("Recipe title must be unique !");
+                request.setAttribute("errorList", errorList);
+                url = ADD_PLAN;
+                RequestDispatcher rd = request.getRequestDispatcher(url);
+                rd.forward(request, response);
+                return;
+            }
+
             // Adding plan
             if (!name.isEmpty() && !description.isEmpty()) {
                 try {
