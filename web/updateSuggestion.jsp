@@ -278,18 +278,26 @@
                                             <td><a href="AdminController?action=showUserDetail&username=<%= owner.getUserName()%>"><%= owner.getUserName()%></a></td>
 
                                             <td>
-<!--                                                <form action="AdminController" method="post" class="recipe-table-button">
-                                                    <input type="hidden" value="<%= r.getId()%>" name="id">
-                                                    <input type="hidden" value="<%= customSuggestionList%>" name="customSuggestionList">
-                                                    <input type="hidden" value="update" name="update">
-                                                    <input type="hidden" value="<%= chosenSuggestion%>" name="chosenSuggestion">
-                                                    <input type="hidden" value="<%= suggestion%>" name="suggestion">
-                                                    <button type="submit" value="removeSuggestion" name="action">Remove //</button>
-                                                </form>
--->
+                                                <!--                                                <form action="AdminController" method="post" class="recipe-table-button">
+                                                                                                    <input type="hidden" value="<%= r.getId()%>" name="id">
+                                                                                                    <input type="hidden" value="<%= customSuggestionList%>" name="customSuggestionList">
+                                                                                                    <input type="hidden" value="update" name="update">
+                                                                                                    <input type="hidden" value="<%= chosenSuggestion%>" name="chosenSuggestion">
+                                                                                                    <input type="hidden" value="<%= suggestion%>" name="suggestion">
+                                                                                                    <button type="submit" value="removeSuggestion" name="action">Remove //</button>
+                                                                                                </form>
+                                                -->                                             
+                                                <%
+                                                    if (customSuggestionList.size() > 1) {
+                                                %>
                                                 <a href="AdminController?action=removeSuggestion&chosenSuggestion=<%= chosenSuggestion%>&suggestion=<%= suggestion%>&update=update&id=<%= r.getId()%>&customSuggestionList=<%= java.net.URLEncoder.encode(customSuggestionList.toString(), "UTF-8")%>" class="add-to-suggestion">
                                                     <img src="assets/close-icon.svg" alt="alt" />
                                                 </a>
+                                                <%
+                                                    }
+                                                %>
+
+
                                             </td>
                                         </tr>
                                         <%

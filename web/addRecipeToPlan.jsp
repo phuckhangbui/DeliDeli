@@ -57,7 +57,7 @@
                     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="home.jsp">Home</a></li>
-                            <li class="breadcrumb-item"><a href="UserController?action=editPlan&id=<%= plan.getId()%>&isSearch=false"> Plan - <%= plan.getName() %> </a></li> 
+                            <li class="breadcrumb-item"><a href="UserController?action=editPlan&id=<%= plan.getId()%>&isSearch=false"> Plan - <%= plan.getName()%> </a></li> 
                             <li class="breadcrumb-item current-link" aria-current="page">Edit Plan</li>
                         </ol>
                     </nav>
@@ -347,99 +347,99 @@
                             }
                         %>
                     </div>
-                </div>
 
 
 
-                <!-- plan-edit -->
-                <form action="UserController" method="post" class="plan-edit">
-                    <div class="plan-edit-header">
-                        Info Section
-                    </div>
-                    <div class="row add-plan-date ">
-                        <div class="add-plan-info-header">
-                            Plan Period <span class="add-plan-info-header-des">(Each plan will have a fixed period of 1
-                                week)</span>
+
+                    <!-- plan-edit -->
+                    <form action="UserController" method="post" class="plan-edit">
+                        <div class="plan-edit-header">
+                            Info Section
                         </div>
-                        <div class="col-md-6 add-plan-info-date">
-                            Starting Date: <span>*</span>
-                            <div>
-                                <input type="date" id="startingDate" name="start_date" value="<%= plan.getStart_at()%>" onchange="calculateNewDate()" min="<%= LocalDate.now()%>">
+                        <div class="row add-plan-date ">
+                            <div class="add-plan-info-header">
+                                Plan Period <span class="add-plan-info-header-des">(Each plan will have a fixed period of 1
+                                    week)</span>
                             </div>
-                        </div>
-                        <div class="col-md-6 add-plan-info-date">
-                            Ending Date:
-                            <script>
-                                function calculateNewDate() {
-                                    const inputDate = document.getElementById("startingDate").value;
-
-                                    // Convert the input date to a JavaScript Date object
-                                    const dateObj = new Date(inputDate);
-
-                                    // Add 7 days to the input date
-                                    dateObj.setDate(dateObj.getDate() + 7);
-
-                                    // Format the new date as "YYYY-MM-DD"
-                                    const newDate = dateObj.toISOString().split('T')[0];
-
-                                    // Display the new date
-                                    document.getElementById("endingDate").textContent = newDate;
-                                }
-                            </script>
-                            <div class="add-plan-info-header-date" id="endingDate">
+                            <div class="col-md-6 add-plan-info-date">
+                                Starting Date: <span>*</span>
+                                <div>
+                                    <input type="date" id="startingDate" name="start_date" value="<%= plan.getStart_at()%>" onchange="calculateNewDate()" min="<%= LocalDate.now()%>">
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="add-plan-info-header add-plan-info">
-                        Plan Title <span>*</span>
-                        <div>
-                            <input type="text" class="input-full" name="plan_title" value="<%= plan.getName()%>" placeholder="What's your plan called ?">
-                        </div>
-                    </div>
+                            <div class="col-md-6 add-plan-info-date">
+                                Ending Date:
+                                <script>
+                                    function calculateNewDate() {
+                                        const inputDate = document.getElementById("startingDate").value;
 
+                                        // Convert the input date to a JavaScript Date object
+                                        const dateObj = new Date(inputDate);
 
-                    <!--            <div class="add-plan-info-header-picture add-plan-info">
-                                    Thumbnail Picture <span>*</span>
-                                    <div>
-                                        <input type="file" id="image" name="thumbnail" required>
-                                    </div>    
-                                </div>-->
+                                        // Add 7 days to the input date
+                                        dateObj.setDate(dateObj.getDate() + 7);
 
+                                        // Format the new date as "YYYY-MM-DD"
+                                        const newDate = dateObj.toISOString().split('T')[0];
 
-                    <div class="add-plan-info-header add-plan-info">
-                        Plan Type <span>*</span>
-                        <select name="recipeDietId" id="" class="add-plan-info-header-type" required>
-                            <%
-                                ArrayList<DietDTO> dietList = DietDAO.getAllDietType();
-                                if (dietList != null && dietList.size() != 0) {
-                                    for (DietDTO list : dietList) {
-                            %>
-                            <option value="<%= list.getId()%>"> <%= list.getTitle()%> </option>
-                            <%
+                                        // Display the new date
+                                        document.getElementById("endingDate").textContent = newDate;
                                     }
-                                }
-                            %>
-                        </select>
-                    </div>
-                    <div class="add-plan-info-header add-plan-info">
-                        Description <span>*</span>
-                        <textarea class="input-full" rows="2" name="plan_description" required
-                                  placeholder="Give a small description of your plan" maxlength="200"><%= plan.getDescription()%></textarea>
-                    </div>
-                    <div class="add-plan-info-header add-plan-info" >
-                        Note <span >*</span>
-                        <textarea class="input-full" rows="2" name="plan_note" required
-                                  placeholder="Anything that needs to note ?" maxlength="200"> <%= plan.getNote()%> </textarea>
+                                </script>
+                                <div class="add-plan-info-header-date" id="endingDate">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="add-plan-info-header add-plan-info">
+                            Plan Title <span>*</span>
+                            <div>
+                                <input type="text" class="input-full" name="plan_title" value="<%= plan.getName()%>" placeholder="What's your plan called ?">
+                            </div>
+                        </div>
 
-                    </div>
 
-                    <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
+                        <!--            <div class="add-plan-info-header-picture add-plan-info">
+                                        Thumbnail Picture <span>*</span>
+                                        <div>
+                                            <input type="file" id="image" name="thumbnail" required>
+                                        </div>    
+                                    </div>-->
 
-                    <div class="plan-edit-button" >
-                        <button type="submit" name="action" value="editPlanSave">SAVE</button>
-                    </div>
-                </form>   
 
+                        <div class="add-plan-info-header add-plan-info">
+                            Plan Type <span>*</span>
+                            <select name="recipeDietId" id="" class="add-plan-info-header-type" required>
+                                <%
+                                    ArrayList<DietDTO> dietList = DietDAO.getAllDietType();
+                                    if (dietList != null && dietList.size() != 0) {
+                                        for (DietDTO list : dietList) {
+                                %>
+                                <option value="<%= list.getId()%>"> <%= list.getTitle()%> </option>
+                                <%
+                                        }
+                                    }
+                                %>
+                            </select>
+                        </div>
+                        <div class="add-plan-info-header add-plan-info">
+                            Description <span>*</span>
+                            <textarea class="input-full" rows="2" name="plan_description" required
+                                      placeholder="Give a small description of your plan" maxlength="200"><%= plan.getDescription()%></textarea>
+                        </div>
+                        <div class="add-plan-info-header add-plan-info" >
+                            Note
+                            <textarea class="input-full" rows="2" name="plan_note"
+                                      placeholder="Anything that needs to note ?" maxlength="200"> <%= plan.getNote()%> </textarea>
+
+                        </div>
+
+                        <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
+
+                        <div class="plan-edit-button" >
+                            <button type="submit" name="action" value="editPlanSave">SAVE</button>
+                        </div>
+                    </form>   
+                </div>
 
 
 
