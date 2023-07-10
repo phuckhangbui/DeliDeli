@@ -10,6 +10,8 @@ import DTO.PlanDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -22,18 +24,22 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class AddPlanServlet extends HttpServlet {
 
+//    private static final String ADD_PLAN = "addPlan.jsp";
+    private static final String ERROR = "error.jsp";
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
-        String url = "error.jsp";
+        String url = ERROR;
 
         // Check if the form was submitted with POST method
         if (request.getMethod().equals("POST")) {
             // Miscellaneous variables
             boolean result = false;
-            boolean checkAddDate = false;
-            boolean checkAddWeek = false;
+            boolean isWeekAdded = false;
+            boolean areDatesAdded = false;
+            List<String> errorList = new ArrayList<>();
 
             // Basic Information
             int id = 0;
@@ -51,29 +57,43 @@ public class AddPlanServlet extends HttpServlet {
             LocalDate end_date_str = startDate.plusDays(6);
             java.sql.Date end_date = java.sql.Date.valueOf(end_date_str);
 
+//            if (name.isEmpty()) {
+//                errorList.add("Recipe title must not be empty !");
+//                request.setAttribute("ERROR_LIST", errorList);
+//                RequestDispatcher rd = request.getRequestDispatcher(ADD_PLAN);
+//                rd.forward(request, response);
+//            }
+//            
+//            if (description.isEmpty()) {
+//                errorList.add("Recipe description must not be empty !");
+//                request.setAttribute("ERROR_LIST", errorList);
+//                RequestDispatcher rd = request.getRequestDispatcher(ADD_PLAN);
+//                rd.forward(request, response);
+//            }
             // Adding plan
-            try {
-                result = PlanDAO.insertPlan(name, description, note, start_date, end_date, status, userID, dietID);
-                id = PlanDAO.getPlanByUserIdAndName(userID, name);
-            } catch (Exception ex) {
-                System.out.println("[addPlanServlet - ERROR]: " + ex.getMessage());
+            if (!name.isEmpty() && !description.isEmpty()) {
+                try {
+                    result = PlanDAO.insertPlan(name, description, note, start_date, end_date, status, userID, dietID);
+                    id = PlanDAO.getPlanByUserIdAndName(userID, name);
+                } catch (Exception ex) {
+                    System.out.println("[addPlanServlet - ERROR]: " + ex.getMessage());
+                    response.sendRedirect(ERROR);
+                }
+
+                try {
+                    isWeekAdded = PlanDAO.insertWeek(id, start_date);
+                    int weekId = PlanDAO.getWeekIDByPlanId(id);
+                    areDatesAdded = DateDAO.insertAllDatesWithinAWeek(start_date, end_date, weekId, id);
+                } catch (Exception ex) {
+                    System.out.println("[addPlanServlet - ERROR]: " + ex.getMessage());
+                    response.sendRedirect(ERROR);
+                }
             }
 
-            // Creating each day in that particular week.
-            try {
-                checkAddWeek = PlanDAO.insertWeek(id, start_date);
-                int weekId = PlanDAO.getWeekIDByPlanId(id);
-                checkAddDate = DateDAO.insertAllDatesWithinAWeek(start_date, end_date, weekId, id);
-            } catch (Exception ex) {
-                System.out.println("[addPlanServlet - ERROR]: " + ex.getMessage());
-            }
-
-            if (result) {
-                // Redirect to the success page
+            if (result && isWeekAdded && areDatesAdded) {
                 url = "UserController?action=getPlanDetailById&id=" + id;
                 response.sendRedirect(url);
-                return; 
-                // Stop further execution of the servlet
+                return;
             }
         }
 

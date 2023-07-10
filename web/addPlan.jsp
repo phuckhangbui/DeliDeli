@@ -58,7 +58,7 @@
                                 <div class="col-md-6 add-plan-info-date">
                                     Starting Date: <span>*</span>
                                     <div>
-                                        <input type="date" id="startingDate" name="start_date" onchange="calculateNewDate()" min="<%= LocalDate.now()%>">
+                                        <input type="date" id="startingDate" name="start_date" onchange="calculateNewDate()" min="<%= LocalDate.now()%>" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6 add-plan-info-date">
@@ -79,10 +79,9 @@
                             <div class="add-plan-info-header add-plan-info">
                                 Plan Title <span>*</span>
                                 <div>
-                                    <input type="text" name="name" class="input-full" placeholder="What's your plan called ?">
+                                    <input type="text" name="name" class="input-full" placeholder="What's your plan called ?" required>
                                 </div>
                             </div>
-
 
                             <!--                            <div class="add-plan-info-header-picture add-plan-info">
                                                             Thumbnail Picture <span>*</span>

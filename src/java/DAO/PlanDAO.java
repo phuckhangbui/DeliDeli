@@ -12,6 +12,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -27,6 +28,8 @@ public class PlanDAO {
         PreparedStatement stm = null;
         ResultSet rs = null;
 
+        LocalDate today = LocalDate.now();
+
         String sql = "INSERT INTO [Plan](name, description, note, start_at, end_at, status, user_id, diet_id)\n"
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -39,6 +42,11 @@ public class PlanDAO {
                 stm.setString(3, note);
                 stm.setDate(4, start_at);
                 stm.setDate(5, end_at);
+
+                if (today.isEqual(start_at.toLocalDate())) {
+                    status = true;
+                }
+                
                 stm.setBoolean(6, status);
                 stm.setInt(7, user_id);
                 stm.setInt(8, diet_id);
@@ -166,7 +174,8 @@ public class PlanDAO {
         ArrayList<PlanDTO> result = new ArrayList<>();
 
         String sql = "SELECT * FROM [Plan]\n"
-                + "WHERE user_id = ?";
+                + "WHERE user_id = ?\n"
+                + "ORDER BY status DESC";
 
         try {
             con = DBUtils.getConnection();
