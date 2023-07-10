@@ -6,9 +6,11 @@ package Servlet.User;
 
 import DAO.MealDAO;
 import DAO.NotificationDAO;
+import DAO.RecipeDAO;
 import DTO.MealDTO;
 import DTO.NotificationDTO;
 import DTO.PlanDateDTO;
+import DTO.RecipeDTO;
 import DTO.UserDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -37,38 +39,26 @@ public class PlanRecipeNotificationServlet extends HttpServlet {
         UserDTO user = (UserDTO) session.getAttribute("user");
 
         MealDTO currentMeal = MealDAO.getMealByTimeAndDate(currentPlanToday.getStart_time(), currentPlanToday.getDate_id());
-//        System.out.println("[NOTIFICATION]: currentMeal - " + currentMeal.getRecipe_id());
+        System.out.println("[NOTIFICATION]: currentMeal - " + currentMeal.getRecipe_id());
 
-        if (currentMeal != null) {
+        boolean result = MealDAO.updateMealNotificationStatusById(currentMeal.getId());
+        RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(currentMeal.getRecipe_id());
 
-            boolean result = MealDAO.updateMealNotificationStatusById(currentMeal.getId());
+        if (result) {
 
-            if (result) {
+            String title = "PLAN SYSTEM - Your meal at " + currentMeal.getStart_time() + " is ready";
+            String desc = "You've planned your schedule ahead, what you'll be eating now: " + recipe.getTitle();
+            java.sql.Timestamp sendDate = new java.sql.Timestamp(System.currentTimeMillis());
+            int userId = user.getId();
+            int notificationType = 3;
+            int recipeId = currentMeal.getRecipe_id();
+            System.out.println("RecipeID: " + recipeId);
+            int planId = currentPlanToday.getPlan_id();
 
-                String title = "It's " + currentMeal.getStart_time() + " ! Time to eat";
-                String desc = "Your plan schedule calling you ! ";
-                java.sql.Timestamp sendDate = new java.sql.Timestamp(System.currentTimeMillis());
-                int userId = user.getId();
-                int notificationType = 3;
-                int recipeId = currentMeal.getRecipe_id();
-                int planId = currentPlanToday.getPlan_id();
+            NotificationDTO notification = new NotificationDTO(0, title, desc, sendDate, false, userId, notificationType, recipeId, 0, "");
 
-//                System.out.println("[NOTIFICATION - REPORT]: UserID - " + userId);
-//                System.out.println("[NOTIFICATION - REPORT]: Title - " + title);
-//                System.out.println("[NOTIFICATION - REPORT]: Desc - " + desc);
-//                System.out.println("[NOTIFICATION - REPORT]: SendDatee - " + sendDate);
-//                System.out.println("[NOTIFICATION - REPORT]: recipeId - " + recipeId);
-//                System.out.println("[NOTIFICATION - REPORT]: PlanID - " + planId);
+            NotificationDAO.addNotification(notification);
 
-                NotificationDTO notification = new NotificationDTO(0, title, desc, sendDate, false, userId, notificationType, recipeId, 0, "");
-
-                NotificationDAO.addNotification(notification);
-
-//                System.out.println("Notification SENT!");
-
-            } else {
-                System.out.println("There's something wrong with updateMealNotificationStatusById");
-            }
         }
 
     }

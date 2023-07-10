@@ -63,7 +63,7 @@ public class LoadPublicProfileServlet extends HttpServlet {
                     double rating = RecipeDAO.getRatingByRecipeId(r.getRecipe_id());
                     UserDTO owner = RecipeDAO.getRecipeOwnerByRecipeId(r.getRecipe_id());
                     
-                    DisplayRecipeDTO d = new DisplayRecipeDTO(r.getId(), title, thumbnailPath, category, rating, owner);
+                    DisplayRecipeDTO d = new DisplayRecipeDTO(r.getRecipe_id(), title, thumbnailPath, category, rating, owner);
                     favoriteList.add(d);
                 }
 

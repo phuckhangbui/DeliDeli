@@ -149,31 +149,47 @@ public class LoadHeaderFilter implements Filter {
             request.setAttribute("count", count);
             request.setAttribute("displayList", displayList);
 
-            // Get all plan for this current date.
+            // Plan Notification & Auto Activator
             LocalDate currentDate = LocalDate.now();
             Date currentDateNow = Date.valueOf(currentDate);
             PlanDateDTO currentPlanActive = null;
+            boolean isPlanStatus = false;
+            boolean isActivatePlan = false;
+            // Get activated plan
             PlanDTO activePlan = PlanDAO.getCurrentActivePlan(user.getId());
-//            System.out.println("[HEADER FILTER]: Report activePlan ID - " + activePlan.getId());
+            // Get plan about to get activated today.
+            PlanDTO planToActivate = PlanDAO.getTodayPlan(user.getId(), currentDateNow);
+
+            //Activate plan
+            if (planToActivate != null) {
+                if (currentDate.isEqual(planToActivate.getStart_at().toLocalDate()) && !isPlanStatus) {
+                    isActivatePlan = PlanDAO.updateStatusByPlanID(planToActivate.getId(), true);
+                }
+            }
+
             if (activePlan != null) {
+                // Deactivate plan
+                if (activePlan.getEnd_at() != null && currentDate.isAfter(activePlan.getEnd_at().toLocalDate())) {
+                    isPlanStatus = PlanDAO.updateStatusByPlanID(activePlan.getId(), false);
+                }
+
+                // Plan Notification
                 currentPlanActive = PlanDateDAO.getActiveRecipePlan(currentDateNow, activePlan.getId());
                 LocalTime currentTime = LocalTime.now();
-                if (currentPlanActive.getStart_time() != null) {
+                if (currentPlanActive != null && currentPlanActive.getStart_time() != null) {
                     Time startTimeFromDB = currentPlanActive.getStart_time();
                     LocalTime startTime = startTimeFromDB.toLocalTime();
-//                    System.out.println("[HEADER FILTER]: Time start of current/next recipe - " + startTime);
-//                    System.out.println("[HEADER FILTER]: CurrentTime - " + currentTime);
                     if (currentTime.equals(startTime) || currentTime.isAfter(startTime)) {
                         request.setAttribute("planNotificationActivate", true);
                         session.setAttribute("currentPlanActivate", currentPlanActive);
                     } else {
-//                        System.out.println("[HEADER FILTER]: It's not the correct time yet.");
                         request.setAttribute("planNotificationActivate", false);
                     }
                 } else {
-//                    System.out.println("[HEADER FILTER]: No recipe to notify.");
                     request.setAttribute("planNotificationActivate", false);
                 }
+            } else {
+                request.setAttribute("planNotificationActivate", false);
             }
 
         }
