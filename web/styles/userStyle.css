@@ -2020,6 +2020,7 @@ span {
 .weekly-plans-plan {
     margin: 10px 0;
     display: grid;
+    background: #c6c7c8;
     padding: 0px;
     border-radius: 15px;
     border: 2px solid;
@@ -2028,6 +2029,7 @@ span {
 
 .active-plan {
     border: 2px solid #e87e0c;
+    background:#ffffff;
 }
 
 .active-plan:hover .active-plan-content {

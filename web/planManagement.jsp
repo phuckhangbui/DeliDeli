@@ -64,21 +64,27 @@
                                 </div>
                             </a>
                         </div>
-                        <%
-                            ArrayList<PlanDTO> planList = (ArrayList<PlanDTO>) request.getAttribute("planList");
+                        <%                            ArrayList<PlanDTO> planList = (ArrayList<PlanDTO>) request.getAttribute("planList");
                             if (planList != null && planList.size() != 0) {
                                 for (PlanDTO list : planList) {
                         %>
                         <div class="col-md-6 ">
-                            <div class="weekly-plans-plan active-plan">
-
+                            <div class="weekly-plans-plan
+                                 <%
+                                     if (list.isStatus()) {
+                                 %>
+                                 active-plan
+                                 <%
+                                     }
+                                 %>
+                                 ">
                                 <a href="UserController?action=getPlanDetailById&id=<%= list.getId()%>" class="weekly-plans-plan-content ">
                                     <div class="weekly-plans-plan-content-thumbnail">
                                         <img src="./pictures/plan1.jpg" alt="">
                                     </div>
                                     <div class="weekly-plans-plan-content-des">
-                                        <p class="active-plan-content"><%= list.getName() %></p>
-                                        <p><span>Description:</span> <%= list.getDescription() %></p>
+                                        <p class="active-plan-content"><%= list.getName()%></p>
+                                        <p><span>Description:</span> <%= list.getDescription()%></p>
                                         <%
                                             // Simple date format converter -> 06-23 => June 23rd
                                             Date start_date = list.getStart_at();

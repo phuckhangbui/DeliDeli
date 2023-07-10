@@ -118,11 +118,11 @@
                         <%
                             if (user != null) {
                         %>
-                        <form action="MainController" class="recipe-detail-info-button-add" method="POST">
+                        <form action="UserController" class="recipe-detail-info-button-add" method="POST">
                             <input type="hidden" name="userId" value="<%= user.getId()%>" />
                             <input type="hidden" name="recipeId" value="<%= recipe.getId()%>" />
                             <div>
-                                <button type="submit" name="action" value="addFavorite" class="like-button" >
+                                <button type="submit" name="action" value="saveUserRecipe" class="like-button" >
                                     <img src="./assets/favorite-icon.svg" alt="">
                                     Save
                                 </button>

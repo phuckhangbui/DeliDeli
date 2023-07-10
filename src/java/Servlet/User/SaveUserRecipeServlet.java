@@ -1,8 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
-package Servlet;
+package Servlet.User;
 
 import DAO.RecipeDAO;
 import java.io.IOException;
@@ -14,22 +10,25 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author Daiisuke
+ * @author Walking Bag
  */
-public class AddFavoriteRecipe extends HttpServlet {
+public class SaveUserRecipeServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+
+        String url = "error.jsp";
         int user_id = Integer.parseInt(request.getParameter("userId"));
         int recipe_id = Integer.parseInt(request.getParameter("recipeId"));
-        
+
         boolean result = RecipeDAO.addFavoriteRecipe(user_id, recipe_id);
-        
+
         if (result) {
-            response.sendRedirect("MainController?action=getRecipeDetailById&id=" + recipe_id);
+            url = "MainController?action=getRecipeDetailById&id=" + recipe_id;
+            response.sendRedirect(url);
         } else {
-            response.sendRedirect("errorpage.html");
+            response.sendRedirect(url);
         }
     }
 
