@@ -275,7 +275,7 @@ public class PlanDAO {
         ResultSet rs = null;
         String name = "";
 
-        String sql = "SELECT name FROM [User]\n"
+        String sql = "SELECT name FROM [Plan]\n"
                 + "WHERE name like ? AND user_id = ?";
 
         try {
