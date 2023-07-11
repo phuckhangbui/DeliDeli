@@ -50,7 +50,7 @@ public class EditRecipeServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-
+            request.setCharacterEncoding("UTF-8");
             Timestamp currentDate = new Timestamp(System.currentTimeMillis());
             String title = request.getParameter("title");
             String description = request.getParameter("description");

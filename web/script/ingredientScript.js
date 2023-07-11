@@ -94,7 +94,7 @@ btnAddIngredient.addEventListener('click', () => {
 
 		// Create an <img> element
 		const deleteImage = document.createElement('img');
-		deleteImage.src = './assets/close.svg';
+		deleteImage.src = './assets/close-icon.svg';
 		deleteImage.alt = 'Delete';
 
 		// Append the <img> element to the button
