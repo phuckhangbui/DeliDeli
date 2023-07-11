@@ -352,7 +352,7 @@
                                             <%
                                                 if (recipe.getStatus() != 4) {
                                             %>
-                                            <button type="button" value="rejectRecipe" name="action" class="recipe-table-button-delete btn-disapprove" data-bs-toggle="modal" data-bs-target="#disapprove">Reject</button>
+                                            <button type="button" value="rejectRecipe" name="action" class="recipe-table-button-delete btn-disapprove" data-bs-toggle="modal" data-bs-target="#disapprove">REJECT</button>
                                             <%
                                                 }
                                             %>
@@ -360,7 +360,7 @@
                                             <%
                                                 if (recipe.getStatus() == 2 || recipe.getStatus() == 4) {
                                             %>
-                                            <button type="submit" value="confirmRecipe" name="action">Confirm</button>
+                                            <button type="submit" value="confirmRecipe" name="action">APPROVE</button>
                                             <%
                                                 }
                                             %> 
@@ -384,11 +384,10 @@
                         </div>
                         <div class="modal-body">
 
-                            <p class="title-text">Message Title:<br><input type="text" class="title" maxlength="100" name="txtTitle">
+                            <p class="title-text">Message Title:<br><input type="text" class="title" maxlength="100" name="txtTitle" placeholder="Title for rejection notification">
                             </p>
                             <p>Message body: </p>
-                            <textarea rows="4" class="form-body-content" name="txtDesc">
-                            </textarea>
+                            <textarea rows="4" class="form-body-content" name="txtDesc" placeholder="Why did you reject this recipe ?"></textarea>
                             <!-- Here to store hidden input base on the type of the notification-->
                             <!-- Should always have userId, except system notification-->
                             <input type="text" name="userId" value="<%= ownerId%>" hidden>
@@ -397,7 +396,7 @@
                             <input type="text" name="recipeId" value="<%= recipe.getId()%>" hidden>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                             <button type="submit" class="btn btn-danger" data-bs-dismiss="modal" name="action"
                                     value="rejectRecipe">Reject</button>
                         </div>

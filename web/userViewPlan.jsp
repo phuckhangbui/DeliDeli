@@ -4,6 +4,11 @@
     Author     : Walking Bag
 --%>
 
+<%@page import="DTO.DietDTO"%>
+<%@page import="DAO.DietDAO"%>
+<%@page import="Utils.DateNameChanger"%>
+<%@page import="DAO.PlanDAO"%>
+<%@page import="DTO.NutritionDTO"%>
 <%@page import="java.io.IOException"%>
 <%@page import="java.util.TimerTask"%>
 <%@page import="java.util.Timer"%>
@@ -52,7 +57,7 @@
 
         <!-- Tick Tock -->
 
-        
+
 
         <!--         Recipe Plan       -->
 
@@ -62,22 +67,51 @@
                     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="home.jsp">Home</a></li>
-                            <li class="breadcrumb-item"><a href="planManagement.jsp"> Plan Management </a></li> 
-                            <li class="breadcrumb-item current-link" aria-current="page">Current Plan Name Insert Here</li>
+                            <li class="breadcrumb-item"><a href="UserController?action=planManagement&userId=<%=user.getId()%>"> Plans List </a></li> 
+                            <li class="breadcrumb-item current-link" aria-current="page"><%= plan.getName()%></li>
                         </ol>
                     </nav>
-                    <div class="edit-plan-header">
-                        <p>Title insert here</p>
-                        <p>Description insert here</p>
+                    <div class="plan-header">
+                        <p><%= plan.getName()%></p>
+                        <p>View your eating schedule that you have planned out for yourself</p>
+                    </div>
+                    <div class="plan-info">
+                        <div class="row">
+
+                            <%                                // Simple date format converter -> 06-23 => June 23rd
+                                Date start_date = plan.getStart_at();
+                                Date end_date = plan.getEnd_at();
+                                SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM d", Locale.ENGLISH);
+                                String formattedStartDate = DateNameChanger.formatDateWithOrdinalIndicator(start_date, dateFormat);
+                                String formattedEndDate = DateNameChanger.formatDateWithOrdinalIndicator(end_date, dateFormat);
+                            %>
+
+                            <div class="plan-info-period col-md-6">
+                                <p>
+                                    <span>Period:</span>                                           
+                                    <%= formattedStartDate%> - <%= formattedEndDate%>
+                                </p>
+                            </div>
+                            <div class="plan-info-type col-md-6">
+                                <%
+                                    DietDTO diet = DietDAO.getTypeById(plan.getDiet_id());
+                                %>
+                                <p><span>Type:</span><%= diet.getTitle()%></p>
+                            </div>
+                        </div>
+                        <div class="plan-info-description">
+                            <p><span>Description:</span> <%= plan.getDescription()%></p>
+                        </div>
                     </div>
 
 
+
                     <div class="plan-navbar">
-                        <button type="button" class="plan-navbar-remove" data-bs-toggle="modal"
+<!--                        <button type="button" class="plan-navbar-remove" data-bs-toggle="modal"
                                 data-bs-target="#removeAllRecipes" onclick="redirectToEditPlan()">
                             Edit Plan
-                        </button>
-
+                        </button>-->
+                        <a href="UserController?action=editPlan&id=<%= plan.getId()%>&isSearch=false"><img src="./assets/edit-icon.svg" alt=""></a>
 
                         <!-- <button class="plan-navbar-edit">
                                 <a href="userViewPlan.html"><img src="./assets/leave.svg" alt=""></a>
@@ -88,10 +122,10 @@
                         <%
                             ArrayList<PlanDateDTO> planDate = (ArrayList<PlanDateDTO>) request.getAttribute("planDate");
                             for (PlanDateDTO dateList : planDate) {
-                                System.out.println("DateID: " + dateList.getId());
                                 ArrayList<MealDTO> breakfastMeals = MealDAO.getAllMealsTimeBased(plan.getId(), dateList.getId(), true, false, false);
                                 ArrayList<MealDTO> lunchMeals = MealDAO.getAllMealsTimeBased(plan.getId(), dateList.getId(), false, true, false);
                                 ArrayList<MealDTO> dinnerMeals = MealDAO.getAllMealsTimeBased(plan.getId(), dateList.getId(), false, false, true);
+                                ArrayList<NutritionDTO> recipeNutrition = MealDAO.getSumNutritionValuesByDateId(dateList.getId());
                         %>
                         <div class="row plan-table-week">
                             <div class="col-md-12 plan-table-week-day">
@@ -103,42 +137,44 @@
                             </div>
                             <div class="col-md-3 plan-table-week-column">
                                 <div class="plan-table-week-nutrition-header">Total Nutrition</div>
+                                <%
+                                    for (NutritionDTO nutrition : recipeNutrition) {
+                                %>
                                 <div class="plan-table-week-nutrition">
-                                    <p class="plan-table-calories">Calories: 12312</p>
-                                    <p class="plan-table-protein">Protein: 232g</p>
-                                    <p class="plan-table-carb">Carbs: 236g</p>
-                                    <p class="plan-table-fat">Fat: 643g</p>
+                                    <p class="plan-table-calories">Calories: <%= nutrition.getCalories()%></p>
+                                    <p class="plan-table-protein">Protein: <%= nutrition.getProtein()%>g</p>
+                                    <p class="plan-table-carb">Carbs: <%= nutrition.getCarbs()%>g</p>
+                                    <p class="plan-table-fat">Fat: <%= nutrition.getFat()%>g</p>
                                 </div>
+                                <%
+                                    }
+                                %>
                             </div>
-
 
                             <div class="col-md-3 plan-table-week-column">
                                 <div class="plan-table-week-header">Breakfast</div>
 
                                 <div class="plan-table-week-recipe">
-                                    <%
-                                        if (breakfastMeals != null && breakfastMeals.size() != 0) {
+                                    <% if (breakfastMeals != null && breakfastMeals.size() != 0) {
                                             for (MealDTO list : breakfastMeals) {
                                                 RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(list.getRecipe_id());
-                                    %>
-                                    <button class="plan-table-week-recipe-content" type="button" data-bs-toggle="modal" data-bs-target="#recipeNutritionModal">
+                                                String modalId = "recipeNutritionModal" + list.getId(); // Generate unique modal ID for each recipe
+%>
+                                    <button class="plan-table-week-recipe-content" type="button" data-bs-toggle="modal" data-bs-target="#<%= modalId%>">
                                         <div class="plan-table-week-recipe-content-image">
                                             <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
                                         </div>
                                         <div class="plan-table-week-recipe-content-des">
                                             <p class="plan-table-week-recipe-content-des-title"><%= recipe.getTitle()%></p>
-                                            <%
-                                                SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
+                                            <% SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
                                                 String formattedTime = timeFormat.format(list.getStart_time());
                                             %>
                                             <p class="plan-table-week-recipe-content-des-time"><%= formattedTime%></p>
                                         </div>
                                     </button>
 
-
-
                                     <!-- Modal -->
-                                    <div class="modal fade" id="recipeNutritionModal" tabindex="-1" aria-labelledby="recipeNutritionModalLabel" aria-hidden="true">
+                                    <div class="modal fade" id="<%= modalId%>" tabindex="-1" aria-labelledby="recipeNutritionModalLabel" aria-hidden="true">
                                         <form class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                                             <div class="modal-content">
                                                 <div class="modal-header">
@@ -147,18 +183,25 @@
                                                 </div>
                                                 <div class="modal-body recipe-nutriton-modal">
                                                     <div class="recipe-nutriton-modal-image">
-                                                        <img src="./pictures/egg1.jpeg" alt="">
+                                                        <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
                                                     </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="remove-recipe-from-plan-button">Remove</button>
                                                 </div>
                                             </div>
                                         </form>
                                     </div>
-                                    <%                                            }
+                                    <%
                                         }
+                                    } else {
                                     %>
+
+                                    <div class="plan-table-week-empty-recipe">
+                                        <div>
+                                            No Recipe
+                                        </div>
+                                    </div>
+
+
+                                    <% } %>
                                 </div>
                             </div>
 
@@ -168,29 +211,26 @@
                                 <div class="plan-table-week-header">Lunch</div>
 
                                 <div class="plan-table-week-recipe">
-                                    <%
-                                        if (lunchMeals != null && lunchMeals.size() != 0) {
+                                    <% if (lunchMeals != null && lunchMeals.size() != 0) {
                                             for (MealDTO list : lunchMeals) {
                                                 RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(list.getRecipe_id());
-                                    %>
-                                    <button class="plan-table-week-recipe-content" type="button" data-bs-toggle="modal" data-bs-target="#recipeNutritionModal">
+                                                String modalId = "recipeNutritionModal" + list.getId(); // Generate unique modal ID for each recipe
+%>
+                                    <button class="plan-table-week-recipe-content" type="button" data-bs-toggle="modal" data-bs-target="#<%= modalId%>">
                                         <div class="plan-table-week-recipe-content-image">
                                             <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
                                         </div>
                                         <div class="plan-table-week-recipe-content-des">
                                             <p class="plan-table-week-recipe-content-des-title"><%= recipe.getTitle()%></p>
-                                            <%
-                                                SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
+                                            <% SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
                                                 String formattedTime = timeFormat.format(list.getStart_time());
                                             %>
                                             <p class="plan-table-week-recipe-content-des-time"><%= formattedTime%></p>
                                         </div>
                                     </button>
 
-
-
                                     <!-- Modal -->
-                                    <div class="modal fade" id="recipeNutritionModal" tabindex="-1" aria-labelledby="recipeNutritionModalLabel" aria-hidden="true">
+                                    <div class="modal fade" id="<%= modalId%>" tabindex="-1" aria-labelledby="recipeNutritionModalLabel" aria-hidden="true">
                                         <form class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                                             <div class="modal-content">
                                                 <div class="modal-header">
@@ -199,20 +239,27 @@
                                                 </div>
                                                 <div class="modal-body recipe-nutriton-modal">
                                                     <div class="recipe-nutriton-modal-image">
-                                                        <img src="./pictures/egg1.jpeg" alt="">
+                                                        <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
                                                     </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="remove-recipe-from-plan-button">Remove</button>
                                                 </div>
                                             </div>
                                         </form>
                                     </div>
-                                    <%                                            }
-                                        }
-                                    %>
-                                </div>
+                                    <%
 
+                                        }
+                                    } else {
+                                    %>
+
+                                    <div class="plan-table-week-empty-recipe">
+                                        <div>
+                                            No Recipe
+                                        </div>
+                                    </div>
+
+
+                                    <% } %>
+                                </div>
                             </div>
 
 
@@ -220,29 +267,26 @@
                                 <div class="plan-table-week-header">Dinner</div>
 
                                 <div class="plan-table-week-recipe">
-                                    <%
-                                        if (dinnerMeals != null && dinnerMeals.size() != 0) {
+                                    <% if (dinnerMeals != null && dinnerMeals.size() != 0) {
                                             for (MealDTO list : dinnerMeals) {
                                                 RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(list.getRecipe_id());
+                                                String modalId = "recipeNutritionModal" + list.getId(); // Generate unique modal ID for each recipe
                                     %>
-                                    <button class="plan-table-week-recipe-content" type="button" data-bs-toggle="modal" data-bs-target="#recipeNutritionModal">
+                                    <button class="plan-table-week-recipe-content" type="button" data-bs-toggle="modal" data-bs-target="#<%= modalId%>">
                                         <div class="plan-table-week-recipe-content-image">
                                             <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
                                         </div>
                                         <div class="plan-table-week-recipe-content-des">
                                             <p class="plan-table-week-recipe-content-des-title"><%= recipe.getTitle()%></p>
-                                            <%
-                                                SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
+                                            <% SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
                                                 String formattedTime = timeFormat.format(list.getStart_time());
                                             %>
                                             <p class="plan-table-week-recipe-content-des-time"><%= formattedTime%></p>
                                         </div>
                                     </button>
 
-
-
                                     <!-- Modal -->
-                                    <div class="modal fade" id="recipeNutritionModal" tabindex="-1" aria-labelledby="recipeNutritionModalLabel" aria-hidden="true">
+                                    <div class="modal fade" id="<%= modalId%>" tabindex="-1" aria-labelledby="recipeNutritionModalLabel" aria-hidden="true">
                                         <form class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                                             <div class="modal-content">
                                                 <div class="modal-header">
@@ -251,19 +295,23 @@
                                                 </div>
                                                 <div class="modal-body recipe-nutriton-modal">
                                                     <div class="recipe-nutriton-modal-image">
-                                                        <img src="./pictures/egg1.jpeg" alt="">
+                                                        <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
                                                     </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="remove-recipe-from-plan-button">Remove</button>
                                                 </div>
                                             </div>
                                         </form>
                                     </div>
                                     <%
-                                            }
                                         }
+                                    } else {
                                     %>
+
+                                    <div class="plan-table-week-empty-recipe">
+                                        <div>
+                                            No Recipe
+                                        </div>
+                                    </div>
+                                    <% } %>
                                 </div>
                             </div>
 
@@ -273,6 +321,19 @@
                             }
                         %>
                     </div>
+                    <%
+                        if (plan.getNote() == null || plan.getNote().equals("")) {
+                        } else {
+                    %>
+                    <div class="plan-note">
+                        <p>Note:</p>
+                        <p><%= plan.getNote()%></p>
+                    </div>
+                    <%
+                        }
+                    %>
+
+
                 </div>
             </div>
         </div>

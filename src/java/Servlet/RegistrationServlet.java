@@ -15,13 +15,20 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
+import javax.mail.Address;
+import javax.mail.PasswordAuthentication;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 /**
  *
@@ -120,7 +127,7 @@ public class RegistrationServlet extends HttpServlet {
             String defaultAvatarFilePath = "C:/project-swp/pictures/user/0/profile-pic.svg";
             File defaultAvatarFile = new File(defaultAvatarFilePath);
 
-            String userAvatarFileName = AVATAR; 
+            String userAvatarFileName = AVATAR;
             File userAvatarFile = new File(uploadPath, userAvatarFileName);
 
             try ( InputStream inputStream = new FileInputStream(defaultAvatarFile);  OutputStream outputStream = new FileOutputStream(userAvatarFile)) {
@@ -133,7 +140,7 @@ public class RegistrationServlet extends HttpServlet {
 
             } catch (IOException e) {
                 e.printStackTrace();
-                
+
             }
 
             userDAO.updateStatusFalse(userName); //Patched this shit up.

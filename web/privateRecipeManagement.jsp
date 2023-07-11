@@ -67,7 +67,7 @@
                                 <img src="./assets/password-unchosen-icon.svg" alt="">
                                 Change Password
                             </a>
-                            <a href="userSavedRecipes.html">
+                            <a href="#">
                                 <img src="./assets/favorite-unchosen-icon.svg" alt="">
                                 Saved Recipes
                             </a>

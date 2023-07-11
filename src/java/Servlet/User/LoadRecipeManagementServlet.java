@@ -77,7 +77,7 @@ public class LoadRecipeManagementServlet extends HttpServlet {
             // Remove the protocol, domain, and port from the URL
 
             HttpSession session = request.getSession();
-            String managementUrl = "UserController?action=loadRecipeManagement&userId=3&page=" + page.trim();
+            String managementUrl = "UserController?action=loadRecipeManagement&userId="+userId + "&page=" + page.trim();
             session.setAttribute("managementUrl", managementUrl);
             request.setAttribute("displayRecipeList", displayList);
 

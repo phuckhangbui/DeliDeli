@@ -388,7 +388,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                         <div class="add-recipe-info-header">Direction <span>*</span></div>
                         <p><textarea name="direction" rows="10" cols="10" id="editor" value="<%=user.getId()%>"></textarea></p>
                         <script>
-                            CKEDITOR.replace('editor');
+                            CKEDITOR.replace('editor', {
+                language: 'vi',
+                entities_latin: false,
+                entities_greek: false
+            });
                         </script>
 
 

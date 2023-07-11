@@ -26,7 +26,7 @@
         <%@include file="header.jsp" %>
 
         <!--        Forgot Password         -->
-        
+
         <div class="blank-background">
             <div class="container user-form">
                 <form class="row" action="MainController" method="POST">
@@ -41,6 +41,7 @@
                             <span>Email</span> <span>*</span>
                             <input class="" type="email" name="txtEmail" required=""/>
                         </div>
+                        <p class="error-popup">${requestScope.errorList[0]}</p>
                         <p class="user-form-content-description">We will send a request to reset your password via entered email</p>
                         <button  type='submit' value='forgotPass' name='action' class="user-form-content-button">SEND</button>
                         <div class="user-form-content-sign-up">
@@ -57,7 +58,7 @@
         <!--         Footer       -->
         <%@include file="footer.jsp" %>
 
-        
+
         <script src="bootstrap/js/bootstrap.min.js" ></script>
     </body>
 

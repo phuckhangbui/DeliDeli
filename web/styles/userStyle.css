@@ -500,7 +500,7 @@ span {
 .error-popup {
     color: rgb(255, 0, 0);
     font-size: 20px;
-    width: 90%;
+    width: 100%;
 }
 
 .user-form-content-sign-up {
@@ -613,7 +613,7 @@ span {
 .recipe-detail-main-pic {
     display: flex;
     justify-content: center;
-    margin: 30px 0;
+    margin: 20px 0;
 }
 
 .recipe-detail-info-review img {
@@ -642,7 +642,7 @@ span {
 .recipe-detail-info-user {
     display: flex;
     align-items: center;
-    margin: 10px 0 0 0;
+    margin: 0;
 }
 .recipe-detail-info-user img{
     width: 50px;
@@ -1075,7 +1075,6 @@ span {
     display: flex;
     justify-content: center;
     font-size: 48px;
-    margin-bottom: 20px;
 }
 
 .new-result-content-picture img {
@@ -1824,24 +1823,23 @@ span {
 
 /*    Recipe Plan     */
 .plan {
-    padding: 10px 20px 20px 20px;
+    padding: 20px;
     background-color: white;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.plan-header {
-    font-size: 48px;
-    text-align: center;
-}
 
 .plan-navbar {
     display: flex;
     justify-content: flex-end;
     padding: 0px;
 }
-
+.plan-navbar img{
+    width: 40px;
+    margin-right: 10px;
+}
 .plan-navbar-edit {
     border: none;
     background-color: transparent;
@@ -1886,7 +1884,20 @@ span {
     border-right: 1px solid black;
     border-radius: 0 0 20px 20px;
 }
-
+.plan-table-week-empty-recipe{
+    color:  rgb(0,0,0,0.07);
+    font-size: 30px;
+    background-color: white;
+    height: 100px;
+    padding: 10px;
+    border-radius: 0 0 20px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.plan-table-week-empty-recipe div{
+    
+}
 .plan-table-week-nutrition{
     font-size: 18px;
     display: grid;
@@ -2013,7 +2024,7 @@ span {
 
 .weekly-plans,
 .add-plan {
-    padding: 10px 20px 20px 20px;
+    padding: 20px;
     background-color: white;
     margin-bottom: auto;
 }
@@ -2031,15 +2042,15 @@ span {
     border: 2px solid #e87e0c;
 }
 
-.active-plan:hover .active-plan-content {
-    text-decoration: underline;
+.weekly-plans-plan:hover:not(.active-plan ){
+    background-color: rgb(0,0,0,0.1);
 }
-.weekly-plans-plan:hover{
-    background-color: rgb(232, 126, 12, 0.2);
+.active-plan:hover{
+    background-color: rgb(232, 126, 12, 0.2) !important;
 }
-.active-plan-content{
+/*.active-plan-content{
     color: #e87e0c;
-}
+}*/
 
 
 .weekly-plans-plan-content-thumbnail img {
@@ -2164,19 +2175,19 @@ span {
     text-align: center;
     color: rgba(0, 0, 0, 0.5);
 }
-.edit-plan-header p:first-child {
+.edit-plan-header p:first-child, .plan-header p:first-child {
     font-size: 48px;
     text-align: center;
     margin: 0px;
 }
 
-.edit-plan-header p:last-child {
+.edit-plan-header p:last-child, .plan-header p:last-child {
     text-align: center;
     color: rgba(0, 0, 0, 0.5);
 }
-.edit-plan-header{
+/*.edit-plan-header, .plan-header{
     padding-top: 20px;
-}
+}*/
 .add-plan {
     background-color: white;
     height: 100%;
@@ -2338,32 +2349,33 @@ span {
 }
 
 
-.add-recipe-to-plan-content-recipe:not(:last-child){
-    margin-right: 15px;
-}
-
 .add-recipe-to-plan-content-recipe {
-    border: 1px solid;
     border-radius: 10px;
     transition: transform 0.5s;
-    margin-bottom: 20px;
+    padding: 10px;
+    transition: all 0.4s;
+}   
+.add-recipe-to-plan-content-recipe:hover{
+    transform: translateX(-20px) translateY(-20px);
+    box-shadow: 10px 10px 3px #ec9131;
+    border: 1px solid #000000;
+    background-color: white;
 }
-
 .add-recipe-to-plan-content-recipe-image img {
     width: 100%;
     height: 150px;
     object-fit: cover;
     border-radius: 10px 10px 0 0;
+    
 }
-
 .add-recipe-to-plan-content-recipe-image {
     margin-right: 0px;
 }
 .add-recipe-to-plan-content-recipe-title {
-    width: 150px;
-    white-space: nowrap;
+    width: 100%;
+/*    white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis;
+    text-overflow: ellipsis;*/
     padding: 0px 5px;
     font-size: 24px;
 }

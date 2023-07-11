@@ -343,10 +343,6 @@
         <servlet-class>Servlet.LoadNewsListServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>AddFavoriteServlet</servlet-name>
-        <servlet-class>Servlet.AddFavoriteServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>CreateBroadcastServlet</servlet-name>
         <servlet-class>Servlet.Admin.CreateBroadcastServlet</servlet-class>
     </servlet>
@@ -373,6 +369,18 @@
     <servlet>
         <servlet-name>PlanRecipeNotificationServlet</servlet-name>
         <servlet-class>Servlet.User.PlanRecipeNotificationServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PlanRemoveRecipeServlet</servlet-name>
+        <servlet-class>Servlet.User.PlanRemoveRecipeServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PlanInformationEditServlet</servlet-name>
+        <servlet-class>Servlet.User.PlanInformationEditServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SaveUserRecipeServlet</servlet-name>
+        <servlet-class>Servlet.User.SaveUserRecipeServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
@@ -643,10 +651,6 @@
         <url-pattern>/UploadBroadcastImageServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>AddFavoriteServlet</servlet-name>
-        <url-pattern>/AddFavoriteServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>PlanManagementServlet</servlet-name>
         <url-pattern>/PlanManagementServlet</url-pattern>
     </servlet-mapping>
@@ -665,6 +669,18 @@
     <servlet-mapping>
         <servlet-name>PlanRecipeNotificationServlet</servlet-name>
         <url-pattern>/PlanRecipeNotificationServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PlanRemoveRecipeServlet</servlet-name>
+        <url-pattern>/PlanRemoveRecipeServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PlanInformationEditServlet</servlet-name>
+        <url-pattern>/PlanInformationEditServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SaveUserRecipeServlet</servlet-name>
+        <url-pattern>/SaveUserRecipeServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

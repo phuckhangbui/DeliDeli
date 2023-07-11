@@ -67,7 +67,7 @@
                             <img src="ServletImageLoader?identifier=<%= owner.getAvatar()%>" alt="">
                         </a>
                         <div>
-                            <span>By</span>
+                            <span>By:</span>
                             <span><a href="<%=link%>"><%= owner.getUserName()%></a></span>
                                 <%
                                     Timestamp timestamp = null;
@@ -79,7 +79,7 @@
                                     SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
                                     String date = dateFormat.format(timestamp);
                                 %>
-                            <p>Published on <%=date%></p>
+                            <p>Published on: <%=date%></p>
                         </div>
                     </div>
                     <div class="recipe-detail-info-interaction">
@@ -118,11 +118,11 @@
                         <%
                             if (user != null) {
                         %>
-                        <form action="MainController" class="recipe-detail-info-button-add" method="POST">
+                        <form action="UserController" class="recipe-detail-info-button-add" method="POST">
                             <input type="hidden" name="userId" value="<%= user.getId()%>" />
                             <input type="hidden" name="recipeId" value="<%= recipe.getId()%>" />
                             <div>
-                                <button type="submit" name="action" value="addFavorite" class="like-button" >
+                                <button type="submit" name="action" value="saveUserRecipe" class="like-button" >
                                     <img src="./assets/favorite-icon.svg" alt="">
                                     Save
                                 </button>

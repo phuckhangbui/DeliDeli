@@ -42,5 +42,5 @@ public class PlanDTO {
         this.end_at = end_at;
         this.user_id = user_id;
         this.diet_id = diet_id;
-    }
+    } 
 }

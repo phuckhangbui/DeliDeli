@@ -454,7 +454,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                         <p><textarea name="direction" rows="10" cols="10" id="editor" 
                                      value="<%=user.getId()%>"><%= request.getAttribute("direction")%></textarea></p>
                         <script>
-                            CKEDITOR.replace('editor');
+                            CKEDITOR.replace('editor', {
+                language: 'vi',
+                entities_latin: false,
+                entities_greek: false
+            });
                         </script>
 
                         <div class=" add-recipe-info-status">

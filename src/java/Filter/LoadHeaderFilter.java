@@ -6,14 +6,22 @@ package Filter;
 
 import DAO.NotificationDAO;
 import DAO.NotificationTypeDAO;
+import DAO.PlanDAO;
+import DAO.PlanDateDAO;
 import DTO.DisplayNotificationDTO;
 import DTO.NotificationDTO;
 import DTO.NotificationTypeDTO;
+import DTO.PlanDTO;
+import DTO.PlanDateDTO;
 import DTO.UserDTO;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.sql.Date;
+import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
@@ -121,29 +129,75 @@ public class LoadHeaderFilter implements Filter {
         HttpSession session = httpRequest.getSession();
         String includedJspPath = "/header.jsp";
 
-        
-            // Execute filter logic specific to the included JSP
-            UserDTO user = (UserDTO) session.getAttribute("user");
-            boolean login = false;
+        // Execute filter logic specific to the included JSP
+        UserDTO user = (UserDTO) session.getAttribute("user");
+        boolean login = false;
 
-            if (user != null) {
-                ArrayList<NotificationDTO> list = NotificationDAO.getNotificationList(user.getId());
-                ArrayList<DisplayNotificationDTO> displayList = new ArrayList<>();
+        if (user != null) {
+            ArrayList<NotificationDTO> list = NotificationDAO.getNotificationList(user.getId());
+            ArrayList<DisplayNotificationDTO> displayList = new ArrayList<>();
 
-                for (NotificationDTO n : list) {
-                    NotificationTypeDTO type = NotificationTypeDAO.getNotificationType(n.getNotification_type());
-                    DisplayNotificationDTO d = new DisplayNotificationDTO(n.getId(), n.getTitle(),
-                            n.getDescription(), n.getSend_date(), n.is_read(), n.getUser_id(),
-                            n.getRecipe_id(), n.getPlan_id(), n.getLink(), type);
-                    displayList.add(d);
+            for (NotificationDTO n : list) {
+                NotificationTypeDTO type = NotificationTypeDAO.getNotificationType(n.getNotification_type());
+                DisplayNotificationDTO d = new DisplayNotificationDTO(n.getId(), n.getTitle(),
+                        n.getDescription(), n.getSend_date(), n.is_read(), n.getUser_id(),
+                        n.getRecipe_id(), n.getPlan_id(), n.getLink(), type);
+                displayList.add(d);
+            }
+            int[] count = NotificationDAO.getNotificationCount(user.getId());
+
+            request.setAttribute("count", count);
+            request.setAttribute("displayList", displayList);
+
+            // Plan Notification & Auto Activator
+            LocalDate currentDate = LocalDate.now();
+            Date currentDateNow = Date.valueOf(currentDate);
+            PlanDateDTO currentPlanActive = null;
+            boolean isPlanStatus = false;
+            boolean isActivatePlan = false;
+            // Get activated plan
+            PlanDTO activePlan = PlanDAO.getCurrentActivePlan(user.getId());
+            // Get plan about to get activated today.
+            PlanDTO planToActivate = PlanDAO.getTodayPlan(user.getId(), currentDateNow);
+
+            //Activate plan
+            if (planToActivate != null) {
+                if (currentDate.isEqual(planToActivate.getStart_at().toLocalDate()) && !isPlanStatus) {
+                    isActivatePlan = PlanDAO.updateStatusByPlanID(planToActivate.getId(), true);
                 }
-                int[] count = NotificationDAO.getNotificationCount(user.getId());
-
-                request.setAttribute("count", count);
-                request.setAttribute("displayList", displayList);
             }
 
-        
+            if (activePlan != null) {
+                // Deactivate plan
+                if (activePlan.getEnd_at() != null && currentDate.isAfter(activePlan.getEnd_at().toLocalDate())) {
+                    isPlanStatus = PlanDAO.updateStatusByPlanID(activePlan.getId(), false);
+                }
+
+                if (!currentDate.isEqual(activePlan.getStart_at().toLocalDate())) {
+                    isPlanStatus = PlanDAO.updateStatusByPlanID(activePlan.getId(), false);
+                }
+
+                // Plan Notification
+                currentPlanActive = PlanDateDAO.getActiveRecipePlan(currentDateNow, activePlan.getId());
+                LocalTime currentTime = LocalTime.now();
+                if (currentPlanActive != null && currentPlanActive.getStart_time() != null) {
+                    Time startTimeFromDB = currentPlanActive.getStart_time();
+                    LocalTime startTime = startTimeFromDB.toLocalTime();
+                    if (currentTime.equals(startTime) || currentTime.isAfter(startTime)) {
+                        request.setAttribute("planNotificationActivate", true);
+                        session.setAttribute("currentPlanActivate", currentPlanActive);
+                    } else {
+                        request.setAttribute("planNotificationActivate", false);
+                    }
+                } else {
+                    request.setAttribute("planNotificationActivate", false);
+                }
+            } else {
+                request.setAttribute("planNotificationActivate", false);
+            }
+
+        }
+
         Throwable problem = null;
         chain.doFilter(request, response);
 

@@ -128,7 +128,7 @@
                         %>
                         <a href="MainController?action=getRecipeDetailById&id=<%= r.getId()%>" class="col-md-4 recommendation-content-post">
                             <div class="recommendation-content-picture">
-                                <img src="<%= r.getThumbnailPath()%>" alt="">
+                                <img src="ServletImageLoader?identifier=<%= r.getThumbnailPath()%>" alt="">
                             </div>
                             <div>
                                 <p><%= r.getCategory()%></p>

@@ -5,6 +5,7 @@
  */
 package DAO;
 
+import DTO.PlanDTO;
 import DTO.UserDTO;
 import Utils.EncodePass;
 import Utils.DBUtils;
@@ -21,7 +22,7 @@ import java.util.ArrayList;
  * @author Daiisuke
  */
 public class UserDAO {
-    
+
     public static int updateAvatarImage(int userId, String image) {
         int result = 0;
         Connection cn = null;
@@ -231,6 +232,49 @@ public class UserDAO {
         return false;
     }
 
+    public static boolean checkUserStatusByEmail(String email) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        int status = 0;
+
+        String sql = "SELECT status FROM [User]\n"
+                + "WHERE email = ? ";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setString(1, email);
+                rs = stm.executeQuery();
+                if (rs.next()) {
+                    status = rs.getInt("status");
+                }
+
+                if (status == 1) {
+                    return true;
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return false;
+    }
+
     public static boolean checkEmailExist(String email) throws Exception {
         boolean check = false;
         Connection cn = DBUtils.getConnection();
@@ -252,10 +296,48 @@ public class UserDAO {
                 user = new UserDTO(userName, email, password, avatar, createAt, status, role, setting);
             }
         }
-        if (user != null){
+        if (user != null) {
             check = true;
         }
         return check;
+    }
+
+    public static boolean checkUserEmailDB(String email) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+
+        String sql = "SELECT * FROM [User] WHERE email = ?";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setString(1, email);
+                rs = stm.executeQuery();
+                if (rs.next()) {
+                    // Email exists in the database
+                    return true;
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return false;
     }
 
     public static boolean checkUsernameExist(String userName) throws Exception {
@@ -362,10 +444,10 @@ public class UserDAO {
                 ResultSet rs = pst.executeQuery();
                 if (rs != null) {
                     while (rs.next()) {
-                        userId= rs.getInt("id");
+                        userId = rs.getInt("id");
                     }
                 }
-                
+
                 sql = "INSERT INTO UserDetail(user_id, first_name, last_name, specialty, birthdate, bio) \n"
                         + "VALUES (?, ?, ?, ?, ?, ?)";
 
@@ -567,7 +649,6 @@ public class UserDAO {
 //        }
 //        return false;
 //    }
-    
     public static UserDTO getAccountByToken(String token) throws Exception {
         UserDTO user = null;
         Connection cn;
@@ -597,7 +678,7 @@ public class UserDAO {
         }
         return user;
     }
-    
+
     public static Boolean checkToken(String token) {
         Connection con = null;
         PreparedStatement stm = null;
@@ -643,7 +724,7 @@ public class UserDAO {
         }
         return false;
     }
-    
+
     public static boolean updateToken(String email, String tokenReceived) {
         Connection con = null;
         PreparedStatement stm = null;
@@ -685,8 +766,7 @@ public class UserDAO {
         }
         return false;
     }
-    
-    
+
     public boolean updateTokenByEmail(String email, String tokenReceived) {
         Connection con = null;
         PreparedStatement stm = null;

@@ -40,7 +40,7 @@
                     <div class="row weekly-plans ">
                         <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item"><a href="home.jsp">Home</a></li>
                                 <li class="breadcrumb-item current-link" aria-current="page">Plan List</li>
                             </ol>
                         </nav>
@@ -64,14 +64,20 @@
                                 </div>
                             </a>
                         </div>
-                        <%
-                            ArrayList<PlanDTO> planList = (ArrayList<PlanDTO>) request.getAttribute("planList");
+                        <%                            ArrayList<PlanDTO> planList = (ArrayList<PlanDTO>) request.getAttribute("planList");
                             if (planList != null && planList.size() != 0) {
                                 for (PlanDTO list : planList) {
                         %>
                         <div class="col-md-6 ">
-                            <div class="weekly-plans-plan active-plan">
-
+                            <div class="weekly-plans-plan
+                                 <%
+                                     if (list.isStatus()) {
+                                 %>
+                                 active-plan
+                                 <%
+                                     }
+                                 %>
+                                 ">
                                 <a href="UserController?action=getPlanDetailById&id=<%= list.getId()%>" class="weekly-plans-plan-content ">
                                     <div class="weekly-plans-plan-content-thumbnail">
                                         <img src="./pictures/plan1.jpg" alt="">
@@ -123,7 +129,8 @@
                         <%
                                 }
                             }
-                        %>               
+                        %>   
+                        
                     </div>
                 </div>
             </div>

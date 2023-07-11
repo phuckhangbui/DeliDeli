@@ -207,7 +207,7 @@
                             <thead>
                                 <tr>
                                     <th>No.</th>
-                                    <th>User name</th>
+                                    <th>User Name</th>
                                     <th>Role</th>
                                     <th>Email</th>
                                     <th>Create at</th>

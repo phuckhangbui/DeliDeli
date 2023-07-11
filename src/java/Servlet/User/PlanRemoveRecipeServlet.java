@@ -5,62 +5,40 @@
 package Servlet.User;
 
 import DAO.MealDAO;
-import DAO.NotificationDAO;
-import DAO.RecipeDAO;
-import DTO.MealDTO;
-import DTO.NotificationDTO;
-import DTO.PlanDateDTO;
-import DTO.RecipeDTO;
-import DTO.UserDTO;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.Time;
-import java.time.LocalTime;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author Daiisuke
  */
-public class PlanRecipeNotificationServlet extends HttpServlet {
+public class PlanRemoveRecipeServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
-        HttpSession session = request.getSession();
-        PlanDateDTO currentPlanToday = (PlanDateDTO) session.getAttribute("currentPlanActivate");
-//        System.out.println("[NOTIFICATION]: currentPlanToday - " + currentPlanToday.getDate());
-//        System.out.println("[NOTIFICATION]: PlanRecipeNotificationServlet - " + currentPlanToday.getStart_time());
-        UserDTO user = (UserDTO) session.getAttribute("user");
+        boolean result = false;
+        int meal_id = Integer.parseInt(request.getParameter("meal_id"));
+        int plan_id = Integer.parseInt(request.getParameter("plan_id"));
 
-        MealDTO currentMeal = MealDAO.getMealByTimeAndDate(currentPlanToday.getStart_time(), currentPlanToday.getDate_id());
-        System.out.println("[NOTIFICATION]: currentMeal - " + currentMeal.getRecipe_id());
+        String url = "error.jsp";
 
-        boolean result = MealDAO.updateMealNotificationStatusById(currentMeal.getId());
-        RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(currentMeal.getRecipe_id());
-
-        if (result) {
-
-            String title = "PLAN SYSTEM - Your meal at " + currentMeal.getStart_time() + " is ready";
-            String desc = "You've planned your schedule ahead, what you'll be eating now: " + recipe.getTitle();
-            java.sql.Timestamp sendDate = new java.sql.Timestamp(System.currentTimeMillis());
-            int userId = user.getId();
-            int notificationType = 3;
-            int recipeId = currentMeal.getRecipe_id();
-            System.out.println("RecipeID: " + recipeId);
-            int planId = currentPlanToday.getPlan_id();
-
-            NotificationDTO notification = new NotificationDTO(0, title, desc, sendDate, false, userId, notificationType, recipeId, 0, "");
-
-            NotificationDAO.addNotification(notification);
-
+        if (meal_id > 0 && plan_id > 0) {
+            result = MealDAO.removeRecipeFromPlan(meal_id);
+            if (result) {
+                url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=false";
+                RequestDispatcher rd = request.getRequestDispatcher(url);
+                rd.forward(request, response);
+            } else {
+                response.sendRedirect(url);
+            }
         }
-
+        response.sendRedirect(url);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -161,7 +161,6 @@ public class LoadHomeFilter implements Filter {
         //-- What's to eat today section --
         LocalTime currentTime = LocalTime.now();
         String time = "";
-        System.out.println("Current Time: " + currentTime);
 
         ArrayList<RecipeDTO> recommendList = null;
 
@@ -254,6 +253,7 @@ public class LoadHomeFilter implements Filter {
             request.setAttribute("timeTitle", time);
             request.setAttribute("timeRecommendDisplay", timeRecommendDisplay);
         }
+        
         //-- Suggestion section  --
         ArrayList<RecipeDTO> suggestionRecipeList;
         ArrayList<DisplayRecipeDTO> displaySuggestionList = new ArrayList<>();

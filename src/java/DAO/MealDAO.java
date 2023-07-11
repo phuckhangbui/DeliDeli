@@ -5,6 +5,7 @@
 package DAO;
 
 import DTO.MealDTO;
+import DTO.NutritionDTO;
 import DTO.PlanDTO;
 import Utils.DBUtils;
 import java.sql.Connection;
@@ -67,27 +68,31 @@ public class MealDAO {
         }
         return result;
     }
-    public static MealDTO getMealByDateId(int DateId) {
+
+    public static MealDTO getMealByTimeAndDate(Time start_time, int date_id) {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
         MealDTO result = new MealDTO();
 
+        System.out.println("Start_time - " + start_time);
+
         String sql = "SELECT * FROM [Meal]\n"
-                + "WHERE date_id = ?";
+                + "WHERE CAST(start_time AS time) = CAST(? AS time) AND date_id = ?";
 
         try {
             con = DBUtils.getConnection();
             if (con != null) {
                 stm = con.prepareStatement(sql);
-                stm.setInt(1, DateId);
+                stm.setTime(1, start_time);
+                stm.setInt(2, date_id);
                 rs = stm.executeQuery();
                 while (rs.next()) {
 
                     int id = rs.getInt("id");
-                    int date_id = rs.getInt("date_id");
+                    date_id = rs.getInt("date_id");
                     int recipe_id = rs.getInt("recipe_id");
-                    Time start_time = rs.getTime("start_time");
+                    start_time = rs.getTime("start_time");
                     Time end_time = rs.getTime("end_time");
 
                     result = new MealDTO(id, date_id, recipe_id, start_time, end_time);
@@ -186,7 +191,7 @@ public class MealDAO {
         PreparedStatement stm = null;
         ResultSet rs = null;
 
-        String sql = "INSERT INTO [Meal](date_id, recipe_id, start_time, end_time, status)\n"
+        String sql = "INSERT INTO [Meal](date_id, recipe_id, start_time, end_time, isNotified)\n"
                 + "VALUES (?, ?, ?, ?, ?)";
 
         try {
@@ -205,7 +210,7 @@ public class MealDAO {
                 }
             }
         } catch (SQLException ex) {
-            System.out.println("Query error - insertPlan: " + ex.getMessage());
+            System.out.println("Query error - insertMeal: " + ex.getMessage());
         } finally {
             try {
                 if (rs != null) {
@@ -223,21 +228,22 @@ public class MealDAO {
         }
         return false;
     }
-    
+
     public static boolean updateMealNotificationStatusById(int id) {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
 
         String sql = "UPDATE dbo.[Meal]\n"
-                + "SET [isNotified] = 1\n"
+                + "SET [isNotified] = ?\n"
                 + "WHERE id = ?";
 
         try {
             con = DBUtils.getConnection();
             if (con != null) {
                 stm = con.prepareStatement(sql);
-                stm.setInt(1, id);
+                stm.setBoolean(1, true);
+                stm.setInt(2, id);
 
                 int effectRows = stm.executeUpdate();
                 if (effectRows > 0) {
@@ -263,4 +269,121 @@ public class MealDAO {
         }
         return false;
     }
+
+    public static boolean removeRecipeFromPlan(int meal_id) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+
+        String sql = "DELETE FROM Meal\n"
+                + "WHERE id = ?";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, meal_id);
+
+                int effectRows = stm.executeUpdate();
+                if (effectRows > 0) {
+                    return true;
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error - removeRecipeFromPlanByMealID: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return false;
+    }
+
+    public static void deleteMealByRecipeId(int id) {
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+
+            if (cn != null) {
+                String sql = "DELETE FROM Meal\n"
+                        + "WHERE recipe_id = ?";
+
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setInt(1, id);
+                pst.executeUpdate();
+
+                pst.close();
+                cn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static void main(String[] args) {
+        deleteMealByRecipeId(12);
+    }
+
+    public static ArrayList<NutritionDTO> getSumNutritionValuesByDateId(int date_id) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        ArrayList<NutritionDTO> result = new ArrayList<>();
+
+        String sql = "SELECT SUM(n.calories) AS total_calories, SUM(n.fat) AS total_fat, SUM(n.carbs) AS total_carbs, SUM(n.protein) AS total_protein\n"
+                + "FROM Recipe r\n"
+                + "JOIN Meal m ON r.id = m.recipe_id\n"
+                + "JOIN Nutrition n ON r.id = n.recipe_id\n"
+                + "WHERE m.date_id = ?\n";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, date_id);
+
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    int total_calories = rs.getInt("total_calories");
+                    int total_fat = rs.getInt("total_fat");
+                    int total_carbs = rs.getInt("total_carbs");
+                    int total_protein = rs.getInt("total_protein");
+
+                    NutritionDTO recipeNutrition = new NutritionDTO(total_calories, total_fat, total_carbs, total_protein);
+                    result.add(recipeNutrition);
+
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error - getSumNutritionValuesByDateId: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return result;
+    }
+
 }

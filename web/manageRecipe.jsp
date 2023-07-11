@@ -175,7 +175,7 @@
                                 currentStatus = "all";
                             }
 
-                            String[] tmp = {"", "", "Pending...", "Approved", "Rejected"};
+                            String[] tmp = {"", "", "Pending", "Approved", "Rejected"};
 
                             if (listRecipe != null && listRecipe.size() > 0) {
                         %>
