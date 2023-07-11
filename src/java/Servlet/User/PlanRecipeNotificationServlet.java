@@ -45,8 +45,7 @@ public class PlanRecipeNotificationServlet extends HttpServlet {
         RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(currentMeal.getRecipe_id());
 
         if (result) {
-
-            String title = "PLAN SYSTEM - Your meal at " + currentMeal.getStart_time() + " is ready";
+            String title = "Your meal at " + currentMeal.getStart_time() + " is ready";
             String desc = "You've planned your schedule ahead, what you'll be eating now: " + recipe.getTitle();
             java.sql.Timestamp sendDate = new java.sql.Timestamp(System.currentTimeMillis());
             int userId = user.getId();

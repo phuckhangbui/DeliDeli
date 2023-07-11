@@ -333,7 +333,7 @@ public class MealDAO {
     }
 
     public static void main(String[] args) {
-        deleteMealByRecipeId(12);
+        System.out.println(getMealByTimeAndDate(new java.sql.Time(System.currentTimeMillis()) , 5));
     }
 
     public static ArrayList<NutritionDTO> getSumNutritionValuesByDateId(int date_id) {

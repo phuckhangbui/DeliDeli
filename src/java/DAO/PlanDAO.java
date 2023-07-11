@@ -567,4 +567,12 @@ public class PlanDAO {
         return false;
     }
 
+    public static void main(String[] args) {
+//        ArrayList<UserDTO> list = AdminDAO.searchAccount("a");
+//        for (UserDTO o : list) {
+//            System.out.println(o);
+//        }
+        System.out.println(getTodayPlan(3, Date.valueOf(LocalDate.now())));
+        System.out.println(getCurrentActivePlan(3));
+    }
 }

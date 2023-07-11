@@ -73,7 +73,24 @@
     </filter-mapping>
     <filter-mapping>
         <filter-name>LoadHeaderFilter</filter-name>
-        <url-pattern>/*</url-pattern>
+        <servlet-name>UserController</servlet-name>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>LoadHeaderFilter</filter-name>
+        <url-pattern>/home.jsp</url-pattern>
+        <url-pattern>/userCommunityProfile.jsp</url-pattern>
+        <url-pattern>/recipeDetail.jsp</url-pattern>
+        <url-pattern>/addRecipe.jsp</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>LoadHeaderFilter</filter-name>
+        <servlet-name>RecipeDetailServlet</servlet-name>
         <dispatcher>REQUEST</dispatcher>
         <dispatcher>FORWARD</dispatcher>
         <dispatcher>INCLUDE</dispatcher>
