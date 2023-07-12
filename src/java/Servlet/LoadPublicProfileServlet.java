@@ -55,7 +55,7 @@ public class LoadPublicProfileServlet extends HttpServlet {
                 accountDetail = UserDetailDAO.getUserDetailByUserId(account.getId());
 
                 // Get account favorite recipes list
-                ArrayList<FavoriteDTO> favoriteRecipeList = FavoriteDAO.getAllFavoriteRecipeByUserId(account.getId());
+                ArrayList<FavoriteDTO> favoriteRecipeList = FavoriteDAO.getAvailabeFavoriteRecipeByUserId(account.getId());
                 for (FavoriteDTO r : favoriteRecipeList) {
                     String title = RecipeDAO.getRecipeByRecipeId(r.getRecipe_id()).getTitle();
                     String thumbnailPath = RecipeDAO.getThumbnailByRecipeId(r.getRecipe_id()).getThumbnailPath();
@@ -68,7 +68,7 @@ public class LoadPublicProfileServlet extends HttpServlet {
                 }
 
                 //get accountPublicRecipeList
-                ArrayList<RecipeDTO> recipeList = RecipeDAO.getRecipeByUserIdAndType(account.getId(), 2);
+                ArrayList<RecipeDTO> recipeList = RecipeDAO.getRecipeByUserIdAndType(account.getId(), 3);
                 for (RecipeDTO r : recipeList) {
                     String thumbnailPath = RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath();
                     String category = RecipeDAO.getCategoryByRecipeId(r.getId());

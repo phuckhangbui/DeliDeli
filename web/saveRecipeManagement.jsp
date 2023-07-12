@@ -1,8 +1,9 @@
 <%-- 
-    Document   : privateRecipeManagement
-    Created on : Jun 8, 2023, 9:15:37 PM
+    Document   : saveRecipeManagement
+    Created on : Jul 12, 2023, 3:04:32 PM
     Author     : khang
 --%>
+
 
 <%@page import="DTO.DisplayRecipeDTO"%>
 <%@page import="DAO.RecipeDAO"%>
@@ -69,19 +70,19 @@
                                 <img src="./assets/password-unchosen-icon.svg" alt="">
                                 Change Password
                             </a>
-                            <a href="UserController?action=loadSavedRecipe&userId=<%=user.getId()%>">
-                                <img src="./assets/favorite-unchosen-icon.svg" alt="">
+                            <a href="UserController?action=loadSavedRecipe&userId=<%=user.getId()%>" class="active-link">
+                                <img src="./assets/favorite-icon.svg" alt="">
                                 Saved Recipes
                             </a>
                             <div class="dropdown" id="dropdownUserRecipe">
-                                <a href="#" class="active-link">
-                                    <img src="./assets/my-recipe-icon.svg" alt="">
+                                <a href="#">
+                                    <img src="./assets/my-recipe-unchosen-icon.svg" alt="">
                                     My Own Recipes
                                 </a>
                                 <div class="dropdown-content-right">
                                     <a href="UserController?action=loadRecipeManagement&page=private&userId=<%= userId%>" >Private Recipes</a>
                                     <a href="UserController?action=loadRecipeManagement&page=pending&userId=<%= userId%>">Pending Recipes</a>
-                                    <a href="UserController?action=loadRecipeManagement&page=public&userId=<%= userId%>" class="active-link">Public Recipes</a>
+                                    <a href="UserController?action=loadRecipeManagement&page=public&userId=<%= userId%>">Public Recipes</a>
                                     <a href="UserController?action=loadRecipeManagement&page=rejected&userId=<%= userId%>">Rejected Recipes</a>
                                 </div>
                             </div>
@@ -102,10 +103,10 @@
                     <div class="col-md-5 user-profile-column-2">
                         <div class="user-profile-header">
                             <div>
-                                Public Recipes
+                                Saved Recipes
                             </div>
                             <p>
-                                View your own recipes that you made for everyone to see
+                                View your favorite recipes
                             </p>
                         </div>
                         <div class="row user-profile-recipes">
@@ -113,7 +114,7 @@
                                 for (DisplayRecipeDTO r : displayList) {
                             %>
                             <div  class="col-md-6 user-profile-recipe-post">
-                                <a href="MainController?aprofilection=getRecipeDetailById&id=<%= r.getId()%>"
+                                <a href="MainController?action=getRecipeDetailById&id=<%= r.getId()%>"
                                    class="user-profile-recipe-post-picture" data-page="editRecipe.jsp?recipeId=<%=r.getId()%>">
                                     <img src="ServletImageLoader?identifier=<%= r.getThumbnailPath() %>" alt="">
                                 </a>
@@ -121,8 +122,8 @@
                                 <div>
                                     <div class="user-profile-recipe-post-description">
                                         <p><%= r.getCategory() %></p>
-                                        <a href="UserController?action=loadEditRecipe&recipeId=<%=r.getId()%>">
-                                            <img src="./assets/edit-icon.svg"/>
+                                        <a href="UserController?action=deleteSavedRecipe&recipeId=<%=r.getId()%>">
+                                            <img src="./assets/close-icon.svg"/>
                                         </a>
                                     </div>
                                     <a href="MainController?action=getRecipeDetailById&id=<%= r.getId()%>"><%= r.getTitle()%></a>
@@ -208,3 +209,4 @@
 
     </body>
 </html>
+

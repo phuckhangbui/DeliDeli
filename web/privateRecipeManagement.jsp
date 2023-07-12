@@ -67,7 +67,7 @@
                                 <img src="./assets/password-unchosen-icon.svg" alt="">
                                 Change Password
                             </a>
-                            <a href="#">
+                            <a href="UserController?action=loadSavedRecipe&userId=<%=user.getId()%>">
                                 <img src="./assets/favorite-unchosen-icon.svg" alt="">
                                 Saved Recipes
                             </a>
