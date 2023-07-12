@@ -6,8 +6,6 @@
 <%@page import="DTO.NotificationTypeDTO"%>
 <%@page import="DTO.NotificationDTO"%>
 <%@page import="DTO.UserDTO"%>
-<%-- Document : header Created on : May 24, 2023, 7:23:26 PM Author : khang --%>
-
 <%@page import="java.time.format.DateTimeFormatter" %>
 <%@page import="java.util.Locale" %>
 <%@page import="java.time.LocalDateTime" %>
@@ -151,7 +149,14 @@
                             <button
                                 class="dropbtn-notification"
                                 onclick="toggleDropdown()">
+                                <% 
+                                    if(count[2] >0 ){
+                                    %>
+                                    <img src="assets/notification-active-icon.svg">
+                                    <%}else{
+                                %>
                                 <img src="assets/notification-icon.svg">
+                                <% }%>
                             </button>
                             <div class="dropdown-content-notification"
                                  id="dropdownContent">
@@ -689,7 +694,6 @@
 
 
         </script>
-
         <%
             }
         %>

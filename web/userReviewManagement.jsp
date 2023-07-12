@@ -71,7 +71,7 @@
                                 <img src="./assets/password-unchosen-icon.svg" alt="">
                                 Change Password
                             </a>
-                            <a href="#">
+                            <a href="UserController?action=loadSavedRecipe&userId=<%=user.getId()%>">
                                 <img src="./assets/favorite-unchosen-icon.svg" alt="">
                                 Saved Recipes
                             </a>
@@ -112,7 +112,7 @@
 
                                 for (DisplayReviewDTO review : displayList) {
                             %>
-                            <a href="MainController?action=getRecipeDetailById&id=<%= review.getRecipeId()%>&activeScroll=true" class="col-md-6 user-profile-recipe-review">
+                            <a href="MainController?action=getRecipeDetailById&id=<%= review.getRecipeId()%>&activeScroll=true" class="col-md-6 user-profile-recipe-post">
                                 <div class="user-profile-recipe-post-picture">
                                     <img src="ServletImageLoader?identifier=<%= review.getThumbnailPath() %>" alt="">
                                 </div>
@@ -121,9 +121,27 @@
                                 </div>
                                 <div class="recommendation-content-reciew">
                                     <%
-                                        for (int i = 0; i < review.getReviewRating(); i++) {
+                                        double avaRating = review.getReviewRating();
+                                        int fullStars = (int) avaRating;
+                                        boolean hasHalfStar = avaRating - fullStars >= 0.5;
+
+                                        for (int i = 0; i < fullStars; i++) {
                                     %>
                                     <img src="./assets/full-star-icon.svg" alt="">
+                                    <%
+                                        }
+
+                                        if (hasHalfStar) {
+                                    %>
+                                    <img src="./assets/half-star-icon.svg" alt="" style="width: 17px">
+                                    <%
+                                        }
+
+                                        int remainingStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+                                        for (int i = 0; i < remainingStars; i++) {
+                                    %>
+                                    <img src="./assets/empty-star-icon.svg" alt="">
                                     <%
                                         }
                                     %>

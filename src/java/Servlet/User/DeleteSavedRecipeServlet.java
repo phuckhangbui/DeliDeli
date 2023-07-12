@@ -4,13 +4,7 @@
  */
 package Servlet.User;
 
-import DAO.DirectionDAO;
 import DAO.FavoriteDAO;
-import DAO.IngredientDetailDAO;
-import DAO.MealDAO;
-import DAO.NotificationDAO;
-import DAO.RecipeDAO;
-import DAO.RecipeImageDAO;
 import DTO.UserDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -24,7 +18,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author khang
  */
-public class DeleteRecipeServlet extends HttpServlet {
+public class DeleteSavedRecipeServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,22 +34,13 @@ public class DeleteRecipeServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            String admin = request.getParameter("admin");
-            HttpSession session = request.getSession();
-            UserDTO user =(UserDTO) session.getAttribute("user");
-            
             int recipeId = Integer.parseInt(request.getParameter("recipeId"));
-            int userId = Integer.parseInt(request.getParameter("userId"));
-
-            if(admin != null || user != null){
-                DirectionDAO.deleteDirection(recipeId);
-                IngredientDetailDAO.deleteIngredientDetails(recipeId);
-                RecipeImageDAO.deleteRecipeImages(recipeId);
-                NotificationDAO.deleteNotificationByRecipeId(recipeId);
-                MealDAO.deleteMealByRecipeId(recipeId);
-                FavoriteDAO.deleteSaveRecipe(recipeId);
-                RecipeDAO.deleteRecipe(recipeId);
-            }
+            HttpSession session = request.getSession();
+            UserDTO user = (UserDTO) session.getAttribute("user");
+            
+            FavoriteDAO.deleteSaveRecipe(recipeId);
+            
+            request.getRequestDispatcher("UserController?action=loadSavedRecipe&userId=" + user.getId()).forward(request, response);
         }
     }
 

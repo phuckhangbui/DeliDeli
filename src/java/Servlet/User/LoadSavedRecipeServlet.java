@@ -4,16 +4,15 @@
  */
 package Servlet.User;
 
-import DAO.DirectionDAO;
 import DAO.FavoriteDAO;
-import DAO.IngredientDetailDAO;
-import DAO.MealDAO;
-import DAO.NotificationDAO;
 import DAO.RecipeDAO;
-import DAO.RecipeImageDAO;
+import DTO.DisplayRecipeDTO;
+import DTO.FavoriteDTO;
+import DTO.RecipeDTO;
 import DTO.UserDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +23,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author khang
  */
-public class DeleteRecipeServlet extends HttpServlet {
+public class LoadSavedRecipeServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,22 +39,31 @@ public class DeleteRecipeServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            String admin = request.getParameter("admin");
-            HttpSession session = request.getSession();
-            UserDTO user =(UserDTO) session.getAttribute("user");
-            
-            int recipeId = Integer.parseInt(request.getParameter("recipeId"));
             int userId = Integer.parseInt(request.getParameter("userId"));
 
-            if(admin != null || user != null){
-                DirectionDAO.deleteDirection(recipeId);
-                IngredientDetailDAO.deleteIngredientDetails(recipeId);
-                RecipeImageDAO.deleteRecipeImages(recipeId);
-                NotificationDAO.deleteNotificationByRecipeId(recipeId);
-                MealDAO.deleteMealByRecipeId(recipeId);
-                FavoriteDAO.deleteSaveRecipe(recipeId);
-                RecipeDAO.deleteRecipe(recipeId);
-            }
+            ArrayList<DisplayRecipeDTO> displayList = new ArrayList<>();
+
+            String url = "saveRecipeManagement.jsp";
+
+            ArrayList<FavoriteDTO> favoriteRecipeList = FavoriteDAO.getAllFavoriteRecipeByUserId(userId);
+
+            for (FavoriteDTO r : favoriteRecipeList) {
+                    String title = RecipeDAO.getRecipeByRecipeId(r.getRecipe_id()).getTitle();
+                    String thumbnailPath = RecipeDAO.getThumbnailByRecipeId(r.getRecipe_id()).getThumbnailPath();
+                    String category = RecipeDAO.getCategoryByRecipeId(r.getRecipe_id());
+                    double rating = RecipeDAO.getRatingByRecipeId(r.getRecipe_id());
+                    UserDTO owner = RecipeDAO.getRecipeOwnerByRecipeId(r.getRecipe_id());
+                    
+                    DisplayRecipeDTO d = new DisplayRecipeDTO(r.getRecipe_id(), title, thumbnailPath, category, rating, owner);
+                    displayList.add(d);
+                }
+
+            String requestURI = request.getRequestURI();
+
+            // Remove the protocol, domain, and port from the URL
+            request.setAttribute("displayRecipeList", displayList);
+
+            request.getRequestDispatcher(url).forward(request, response);
         }
     }
 

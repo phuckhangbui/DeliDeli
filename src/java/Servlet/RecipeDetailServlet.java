@@ -5,6 +5,7 @@
 package Servlet;
 
 import DAO.DirectionDAO;
+import DAO.FavoriteDAO;
 import DTO.DirectionDTO;
 import DAO.IngredientDetailDAO;
 import DTO.IngredientDetailDTO;
@@ -106,7 +107,11 @@ public class RecipeDetailServlet extends HttpServlet {
 
                 }
                 request.setAttribute("userDisplayReview", userDisplayReview);
-
+                
+            //check save recipe
+                boolean isSave = FavoriteDAO.isSaveRecipe(user.getId(), recipe.getId());
+                request.setAttribute("isSaveRecipe", isSave);
+                
             }
 
             request.setAttribute("reviewList", reviewList);

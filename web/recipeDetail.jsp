@@ -117,7 +117,13 @@
                         </div>
                         <%
                             if (user != null) {
-                        %>
+                                boolean isSaveRecipe = (boolean) request.getAttribute("isSaveRecipe");
+                                if(isSaveRecipe){ %>
+                                <button class="like-button" disabled="" >
+                                    <img src="./assets/favorite-icon.svg" alt="">
+                                    Is Saved!
+                                </button>
+                            <%}else{ %>
                         <form action="UserController" class="recipe-detail-info-button-add" method="POST">
                             <input type="hidden" name="userId" value="<%= user.getId()%>" />
                             <input type="hidden" name="recipeId" value="<%= recipe.getId()%>" />
@@ -129,7 +135,7 @@
                             </div>
                         </form>
                         <%
-                            }
+                            }}
                         %>
                         <button class="share-button">
                             <img src="./assets/share-icon.svg" alt="">

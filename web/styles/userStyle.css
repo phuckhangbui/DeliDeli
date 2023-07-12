@@ -1353,6 +1353,13 @@ span {
 .user-profile-recipe-post {
     display: flex;
     flex-direction: column;
+    transition : all 0.4s;
+}
+.user-profile-recipe-post:hover{
+    transform: translateX(-20px) translateY(-20px);
+    box-shadow: 10px 10px 3px #ec9131;
+    border: 1px solid #000000;
+    background-color: white;
 }
 
 .user-profile-recipe-post-picture img {
