@@ -67,6 +67,51 @@ public class DateDAO {
         return result;
     }
 
+    public static DateDTO getDateByPlanID(int plan_id) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        DateDTO result = new DateDTO();
+
+        String sql = "SELECT * FROM [Date]\n"
+                + "WHERE [plan_id] = ?";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, plan_id);
+
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    Date date = rs.getDate("date");
+                    int week_id = rs.getInt("week_id");
+                    plan_id = rs.getInt("plan_id");
+
+                    result = new DateDTO(id, date, week_id, plan_id);
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error - getPlanIdByUserIdAndDate: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return result;
+    }
+
     public static boolean insertAllDatesWithinAWeek(Date start_date, Date end_date, int week_id, int plan_id) {
         Connection con = null;
         PreparedStatement stm = null;

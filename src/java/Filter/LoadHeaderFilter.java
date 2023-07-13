@@ -4,10 +4,12 @@
  */
 package Filter;
 
+import DAO.DateDAO;
 import DAO.NotificationDAO;
 import DAO.NotificationTypeDAO;
 import DAO.PlanDAO;
 import DAO.PlanDateDAO;
+import DTO.DateDTO;
 import DTO.DisplayNotificationDTO;
 import DTO.NotificationDTO;
 import DTO.NotificationTypeDTO;
@@ -152,7 +154,7 @@ public class LoadHeaderFilter implements Filter {
             // Plan Notification & Auto Activator
             LocalDate currentDate = LocalDate.now();
             Date currentDateNow = Date.valueOf(currentDate);
-            PlanDateDTO currentPlanActive = null;
+            PlanDateDTO currentPlanRecipeActive = null;
             boolean isPlanStatus = false;
             boolean isActivatePlan = false;
             // Get activated plan
@@ -168,24 +170,25 @@ public class LoadHeaderFilter implements Filter {
             }
 
             if (activePlan != null) {
-                // Deactivate plan
-                if (activePlan.getEnd_at() != null && currentDate.isAfter(activePlan.getEnd_at().toLocalDate())) {
-                    isPlanStatus = PlanDAO.updateStatusByPlanID(activePlan.getId(), false);
-                }
-
-                if (!currentDate.isEqual(activePlan.getStart_at().toLocalDate())) {
-                    isPlanStatus = PlanDAO.updateStatusByPlanID(activePlan.getId(), false);
-                }
+//                // Deactivate plan
+//                if (activePlan.getEnd_at() != null && currentDate.isAfter(activePlan.getEnd_at().toLocalDate())) {
+//                    isPlanStatus = PlanDAO.updateStatusByPlanID(activePlan.getId(), false);
+//                }
+//
+//                if (!currentDate.isEqual(activePlan.getStart_at().toLocalDate())) {
+//                    isPlanStatus = PlanDAO.updateStatusByPlanID(activePlan.getId(), false);
+//                }
 
                 // Plan Notification
-                currentPlanActive = PlanDateDAO.getActiveRecipePlan(currentDateNow, activePlan.getId());
+                currentPlanRecipeActive = PlanDateDAO.getActiveRecipePlan(currentDateNow, activePlan.getId());
+                System.out.println("Current plan active - " + activePlan.getId());
                 LocalTime currentTime = LocalTime.now();
-                if (currentPlanActive != null && currentPlanActive.getStart_time() != null) {
-                    Time startTimeFromDB = currentPlanActive.getStart_time();
+                if (currentPlanRecipeActive != null && currentPlanRecipeActive.getStart_time() != null) {
+                    Time startTimeFromDB = currentPlanRecipeActive.getStart_time();
                     LocalTime startTime = startTimeFromDB.toLocalTime();
                     if (currentTime.equals(startTime) || currentTime.isAfter(startTime)) {
                         request.setAttribute("planNotificationActivate", true);
-                        session.setAttribute("currentPlanActivate", currentPlanActive);
+                        session.setAttribute("currentPlanActivate", currentPlanRecipeActive);
                     } else {
                         request.setAttribute("planNotificationActivate", false);
                     }
@@ -196,9 +199,22 @@ public class LoadHeaderFilter implements Filter {
                 request.setAttribute("planNotificationActivate", false);
             }
 
+            // Check user plan date & update date based on current time. (daily)
+            // Currently, only one plan can be active.
+            if (activePlan != null) {
+                if (currentDateNow.equals(activePlan.getEnd_at()) || currentDateNow.after(activePlan.getEnd_at())) {
+                    isPlanStatus = PlanDAO.updateStatusByPlanID(activePlan.getId(), false);
+                } else {
+                    DateDTO date = DateDAO.getDateByPlanID(activePlan.getId());
+                    if (date != null) {
+                        DateDAO.updateDate(date.getId(), currentDateNow);
+                    }
+                }
+            }
         }
 
         Throwable problem = null;
+
         chain.doFilter(request, response);
 
         //code
@@ -206,7 +222,8 @@ public class LoadHeaderFilter implements Filter {
 
         // If there was a problem, we want to rethrow it if it is
         // a known type, otherwise log it.
-        if (problem != null) {
+        if (problem
+                != null) {
             if (problem instanceof ServletException) {
                 throw (ServletException) problem;
             }
