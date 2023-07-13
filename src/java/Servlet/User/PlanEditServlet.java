@@ -9,8 +9,12 @@ import DTO.DietDTO;
 import DAO.PlanDAO;
 import DTO.PlanDTO;
 import DAO.PlanDateDAO;
+import DAO.RecipeDAO;
 import DTO.DisplayRecipeDTO;
 import DTO.PlanDateDTO;
+import DTO.RecipeDTO;
+import DTO.UserDTO;
+import Utils.NavigationBarUtils;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
@@ -50,11 +54,24 @@ public class PlanEditServlet extends HttpServlet {
                 rq.forward(request, response);
                 return;
             } else {
+                ArrayList<RecipeDTO> list = RecipeDAO.getRecipeByDietTitle(diet.getTitle());
+                displayList = new ArrayList<>();
+                for (RecipeDTO r : list) {
+                    String thumbnailPath = RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath();
+                    String category = RecipeDAO.getCategoryByRecipeId(r.getId());
+                    double rating = RecipeDAO.getRatingByRecipeId(r.getId());
+                    UserDTO owner = RecipeDAO.getRecipeOwnerByRecipeId(r.getId());
+
+                    DisplayRecipeDTO d = new DisplayRecipeDTO(r.getId(), r.getTitle(), thumbnailPath, category, rating, owner);
+                    displayList.add(d);
+                }
+                request.setAttribute("SEARCH_LIST", displayList);
                 request.setAttribute("SEARCH_PLAN_REAL", false);
                 RequestDispatcher rq = request.getRequestDispatcher("addRecipeToPlan.jsp");
                 rq.forward(request, response);
                 return;
             }
+
         }
 
         response.sendRedirect("error.jsp");

@@ -181,7 +181,6 @@ public class LoadHeaderFilter implements Filter {
 
                 // Plan Notification
                 currentPlanRecipeActive = PlanDateDAO.getActiveRecipePlan(currentDateNow, activePlan.getId());
-                System.out.println("Current plan active - " + activePlan.getId());
                 LocalTime currentTime = LocalTime.now();
                 if (currentPlanRecipeActive != null && currentPlanRecipeActive.getStart_time() != null) {
                     Time startTimeFromDB = currentPlanRecipeActive.getStart_time();
@@ -202,7 +201,7 @@ public class LoadHeaderFilter implements Filter {
             // Check user plan date & update date based on current time. (daily)
             // Currently, only one plan can be active.
             if (activePlan != null) {
-                if (currentDateNow.equals(activePlan.getEnd_at()) || currentDateNow.after(activePlan.getEnd_at())) {
+                if (currentDateNow.after(activePlan.getEnd_at())) {
                     isPlanStatus = PlanDAO.updateStatusByPlanID(activePlan.getId(), false);
                 } else {
                     DateDTO date = DateDAO.getDateByPlanID(activePlan.getId());

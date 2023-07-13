@@ -30,7 +30,8 @@
         <div class="a1">
             <!--         The navigation bar       -->
             <%@include file="header.jsp" %>
-            <%                ArrayList<DietDTO> dietList = (ArrayList<DietDTO>) request.getAttribute("dietList");
+            <%                
+                ArrayList<DietDTO> dietList = (ArrayList<DietDTO>) request.getAttribute("dietList");
             %>
 
             <!--         Recipe Plan       -->
