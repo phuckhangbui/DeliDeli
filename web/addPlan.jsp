@@ -53,7 +53,7 @@
                             </div>
                             <div class="row add-plan-date">
                                 <div class="add-plan-info-header">
-                                    Plan Period <span class="add-plan-info-header-des">(Each plan will have a fixed period of 1 week)</span>
+                                    Plan Period <span class="add-plan-info-header-des">(Weekly plan will have a fixed period of 1 week)</span>
                                 </div>
                                 <div class="col-md-6 add-plan-info-date">
                                     Period:
