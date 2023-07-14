@@ -22,7 +22,6 @@ public class CategoryLoadServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         ArrayList<DietDTO> dietList = DietDAO.getAllDietType();
         request.setAttribute("dietList", dietList);
-        System.out.println("I'm here!");
         RequestDispatcher rd = request.getRequestDispatcher("addPlan.jsp");
         rd.forward(request, response);
     }

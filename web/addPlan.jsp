@@ -30,7 +30,8 @@
         <div class="a1">
             <!--         The navigation bar       -->
             <%@include file="header.jsp" %>
-            <%                ArrayList<DietDTO> dietList = (ArrayList<DietDTO>) request.getAttribute("dietList");
+            <%                
+                ArrayList<DietDTO> dietList = (ArrayList<DietDTO>) request.getAttribute("dietList");
             %>
 
             <!--         Recipe Plan       -->
@@ -53,29 +54,83 @@
                             </div>
                             <div class="row add-plan-date">
                                 <div class="add-plan-info-header">
-                                    Plan Period <span class="add-plan-info-header-des">(Each plan will have a fixed period of 1 week)</span>
+                                    Plan Period <span class="add-plan-info-header-des">(Weekly plan will have a fixed period of 1 week)</span>
+                                </div>
+                                <div class="col-md-6 add-plan-info-date">
+                                    Period:
+                                    <div>
+                                        <input type="radio" id="dailyOption" name="period" value="daily" onchange="toggleEndDateField()"> Daily
+                                    </div>
+                                </div>
+                                <div class="col-md-6 add-plan-info-date">
+                                    <input type="radio" id="weeklyOption" name="period" value="weekly" onchange="toggleEndDateField()"> Weekly
                                 </div>
                                 <div class="col-md-6 add-plan-info-date">
                                     Starting Date: <span>*</span>
                                     <div>
-                                        <input type="date" id="startingDate" name="start_date" onchange="calculateNewDate()" min="<%= LocalDate.now()%>" required>
+                                        <input type="date" id="startingDate" name="start_date" onchange="" min="<%= LocalDate.now()%>" required>
                                     </div>
                                 </div>
-                                <div class="col-md-6 add-plan-info-date">
-                                    Ending Date:
-                                    <script>
-                                        function calculateNewDate() {
-                                            const inputDate = document.getElementById("startingDate").value;
-                                            const dateObj = new Date(inputDate);
-                                            dateObj.setDate(dateObj.getDate() + 6);
-                                            const newDate = dateObj.toISOString().split('T')[0];
-                                            document.getElementById("endingDate").textContent = newDate;
-                                        }
-                                    </script>
-                                    <div class="add-plan-info-header-date" id="endingDate">
+                                <div class="col-md-6 add-plan-info-date" id="endDateField" style="display: none;">
+                                    Ending Date: <span>*</span>
+                                    <div>
+                                        <input type="date" id="endingDateWeekly" name="end_date" onchange="" min="<%= LocalDate.now()%>" required>
                                     </div>
                                 </div>
                             </div>
+
+                            <script>
+                                function toggleEndDateField() {
+                                    const dailyOption = document.getElementById("dailyOption");
+                                    const endDateField = document.getElementById("endDateField");
+                                    endDateField.style.display = dailyOption.checked ? "block" : "none";
+                                }
+//
+//                                function calculateEndDate() {
+//                                    const startingDate = document.getElementById("startingDate").value;
+//                                    const periodOption = document.querySelector('input[name="period"]:checked').value;
+//
+//                                    if (periodOption === "daily") {
+//                                        const endDateDaily = startingDate;
+//                                        document.getElementById("endingDateWeekly").value = "";  // Clear the weekly end date
+//                                        document.getElementById("endingDateDaily").value = endDateDaily;
+//                                    } else if (periodOption === "weekly") {
+//                                        const dateObj = new Date(startingDate);
+//                                        dateObj.setDate(dateObj.getDate() + 6);
+//                                        const endDateWeekly = dateObj.toISOString().split('T')[0];
+//                                        document.getElementById("endingDateDaily").value = "";  // Clear the daily end date
+//                                        document.getElementById("endingDateWeekly").value = endDateWeekly;
+//                                    }
+//                                }
+                            </script>
+
+
+                            <script>
+                                function toggleEndDateField() {
+                                    const dailyOption = document.getElementById("dailyOption");
+                                    const endDateField = document.getElementById("endDateField");
+                                    endDateField.style.display = dailyOption.checked ? "block" : "none";
+                                }
+
+                                function calculateEndDate() {
+                                    const startingDate = document.getElementById("startingDate").value;
+                                    const periodOption = document.querySelector('input[name="period"]:checked').value;
+
+                                    if (periodOption === "daily") {
+                                        const endDateDaily = startingDate;
+                                        document.getElementById("endingDateWeekly").value = "";  // Clear the weekly end date
+                                        document.getElementById("endingDateDaily").value = endDateDaily;
+                                    } else if (periodOption === "weekly") {
+                                        const dateObj = new Date(startingDate);
+                                        dateObj.setDate(dateObj.getDate() + 6);
+                                        const endDateWeekly = dateObj.toISOString().split('T')[0];
+                                        document.getElementById("endingDateDaily").value = "";  // Clear the daily end date
+                                        document.getElementById("endingDateWeekly").value = endDateWeekly;
+                                    }
+                                }
+                            </script>
+
+
                             <div class="add-plan-info-header add-plan-info">
                                 Plan Title <span>*</span>
                                 <div>

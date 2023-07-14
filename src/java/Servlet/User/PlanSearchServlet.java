@@ -32,15 +32,10 @@ public class PlanSearchServlet extends HttpServlet {
         String searchBy = request.getParameter("searchBy").toLowerCase();
         String plan_id = request.getParameter("planId").toLowerCase();
 
-        System.out.println("isPlan - " + isPlan);
-        System.out.println("txtSearch - " + txtsearch);
-        System.out.println("searchBy - " + searchBy);
-        System.out.println("plan_id - " + plan_id);
-
         if (isPlan != null && isPlan) {
             ArrayList<RecipeDTO> list = NavigationBarUtils.searchRecipes(txtsearch, searchBy);
             ArrayList<DisplayRecipeDTO> displayList = new ArrayList<>();
-            for (RecipeDTO r     : list) {
+            for (RecipeDTO r : list) {
                 String thumbnailPath = RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath();
                 String category = RecipeDAO.getCategoryByRecipeId(r.getId());
                 double rating = RecipeDAO.getRatingByRecipeId(r.getId());
@@ -49,7 +44,7 @@ public class PlanSearchServlet extends HttpServlet {
                 DisplayRecipeDTO d = new DisplayRecipeDTO(r.getId(), r.getTitle(), thumbnailPath, category, rating, owner);
                 displayList.add(d);
             }
-            request.setAttribute("searchRecipesList", displayList); 
+            request.setAttribute("searchRecipesList", displayList);
             String url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=true";
             request.getRequestDispatcher(url).forward(request, response);
         }

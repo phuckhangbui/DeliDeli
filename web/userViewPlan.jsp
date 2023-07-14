@@ -78,7 +78,8 @@
                     <div class="plan-info">
                         <div class="row">
 
-                            <%                                // Simple date format converter -> 06-23 => June 23rd
+                            <%
+                                // Simple date format converter -> 06-23 => June 23rd
                                 Date start_date = plan.getStart_at();
                                 Date end_date = plan.getEnd_at();
                                 SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM d", Locale.ENGLISH);
@@ -107,10 +108,10 @@
 
 
                     <div class="plan-navbar">
-<!--                        <button type="button" class="plan-navbar-remove" data-bs-toggle="modal"
-                                data-bs-target="#removeAllRecipes" onclick="redirectToEditPlan()">
-                            Edit Plan
-                        </button>-->
+                        <!--                        <button type="button" class="plan-navbar-remove" data-bs-toggle="modal"
+                                                        data-bs-target="#removeAllRecipes" onclick="redirectToEditPlan()">
+                                                    Edit Plan
+                                                </button>-->
                         <a href="UserController?action=editPlan&id=<%= plan.getId()%>&isSearch=false"><img src="./assets/edit-icon.svg" alt=""></a>
 
                         <!-- <button class="plan-navbar-edit">
@@ -159,7 +160,7 @@
                                             for (MealDTO list : breakfastMeals) {
                                                 RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(list.getRecipe_id());
                                                 String modalId = "recipeNutritionModal" + list.getId(); // Generate unique modal ID for each recipe
-%>
+                                    %>
                                     <button class="plan-table-week-recipe-content" type="button" data-bs-toggle="modal" data-bs-target="#<%= modalId%>">
                                         <div class="plan-table-week-recipe-content-image">
                                             <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
@@ -215,7 +216,7 @@
                                             for (MealDTO list : lunchMeals) {
                                                 RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(list.getRecipe_id());
                                                 String modalId = "recipeNutritionModal" + list.getId(); // Generate unique modal ID for each recipe
-%>
+                                    %>
                                     <button class="plan-table-week-recipe-content" type="button" data-bs-toggle="modal" data-bs-target="#<%= modalId%>">
                                         <div class="plan-table-week-recipe-content-image">
                                             <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
@@ -271,7 +272,7 @@
                                             for (MealDTO list : dinnerMeals) {
                                                 RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(list.getRecipe_id());
                                                 String modalId = "recipeNutritionModal" + list.getId(); // Generate unique modal ID for each recipe
-                                    %>
+%>
                                     <button class="plan-table-week-recipe-content" type="button" data-bs-toggle="modal" data-bs-target="#<%= modalId%>">
                                         <div class="plan-table-week-recipe-content-image">
                                             <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">

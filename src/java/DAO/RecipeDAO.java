@@ -75,6 +75,65 @@ public class RecipeDAO {
         return result;
     }
 
+    public static ArrayList<RecipeDTO> getRecipeByDietTitle(String diet_title) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        ArrayList<RecipeDTO> result = new ArrayList<>();
+
+        String sql = "SELECT r.*\n"
+                + "FROM Recipe r\n"
+                + "JOIN RecipeDiet rd ON rd.recipe_id = r.id\n"
+                + "JOIN Diet d ON d.id = rd.diet_id\n"
+                + "WHERE d.title = ?";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setString(1, diet_title);
+
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    String title = rs.getString("title");
+                    String description = rs.getString("description");
+                    int prep_time = rs.getInt("prep_time");
+                    int cook_time = rs.getInt("cook_time");
+                    int servings = rs.getInt("servings");
+                    Timestamp create_at = rs.getTimestamp("create_at");
+                    Timestamp update_at = rs.getTimestamp("update_at");
+                    int status = rs.getInt("status");
+                    int cuisine_id = rs.getInt("cuisine_id");
+                    int category_id = rs.getInt("category_id");
+                    int user_id = rs.getInt("user_id"); 
+                    int level_id = rs.getInt("level_id");
+
+                    RecipeDTO recipe = new RecipeDTO(id, title, description, prep_time, cook_time, servings, create_at, update_at, cuisine_id, category_id, user_id, level_id, status);
+                    result.add(recipe);
+
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error - getRecipeByDietTitle: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return result;
+    }
+
     public static UserDTO getRecipeOwnerByRecipeId(int recipeId) {
         UserDTO owner = new UserDTO();
         Connection cn = null;
