@@ -10,7 +10,6 @@ import java.io.PrintWriter;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -18,65 +17,49 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author Daiisuke
+ * @author Admin
  */
-public class PlanAddRecipeServlet extends HttpServlet {
+public class EditStartTimeRecipeServlet extends HttpServlet {
 
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-
         try ( PrintWriter out = response.getWriter()) {
-
-            boolean result = false;
-
+            /* TODO output your page here. You may use following sample code. */
             int date_id = Integer.parseInt(request.getParameter("date_id"));
             int plan_id = Integer.parseInt(request.getParameter("plan_id"));
-            int recipe_id = Integer.parseInt(request.getParameter("recipe_id"));
+            int meal_id = Integer.parseInt(request.getParameter("meal_id"));
             String start_timeStr = request.getParameter("start_time");
-            String meal = request.getParameter("meal");
-            int recipe_count = Integer.parseInt(request.getParameter("recipe_count"));
-            //String end_timeStr = request.getParameter("end_time");
 
             Time start_time = null;
-            Time end_time = null;
 
             SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
             java.util.Date parsedStart = timeFormat.parse(start_timeStr);
-            //java.util.Date parsedEnd = timeFormat.parse(end_timeStr);
 
             start_time = new Time(parsedStart.getTime());
-            //end_time = new Time(parsedEnd.getTime());
 
-//            System.out.println("recipe_id recieved - " + recipe_id);
-//            System.out.println("plan_id recieved - " + plan_id);
-//            System.out.println("date_id recieved - " + date_id);
-//            System.out.println("start_time recieved - " + start_time);
-//            System.out.println("end_time recieved - " + end_time);
-            if (date_id != 0 && plan_id != 0 && recipe_id != 0 && start_timeStr != null) {
-                for (int i = 0; i < recipe_count; i++) {
-                    // Add the recipe to the plan with the current start time
-                    result = MealDAO.addMealById(date_id, recipe_id, start_time);
-
-                    // Increment the start time by 1 hour for the next recipe
-                    Calendar cal = Calendar.getInstance();
-                    cal.setTime(start_time);
-                    cal.add(Calendar.HOUR_OF_DAY, 1);
-                    start_time = new Time(cal.getTime().getTime());
-                }
-            }
-
-//            out.println(date_id);
-//            out.println(plan_id);
-//            out.println(recipe_id);
-//            out.println(start_timeStr);
-//            out.println(recipe_count);
+            boolean result = MealDAO.changeStartTimeOfRecipe(meal_id, date_id, start_time);
 
             if (result) {
                 response.sendRedirect("UserController?action=editPlan&id=" + plan_id + "&isSearch=false");
             } else {
                 response.sendRedirect("error.jsp");
             }
+
+//            System.out.println("Success");
+//            out.println(date_id);
+//            out.println(plan_id);
+//            out.println(meal_id);
+//            out.println(start_timeStr);
         } catch (ParseException e) {
             e.printStackTrace();
         }

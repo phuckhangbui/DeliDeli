@@ -120,6 +120,9 @@ public class UserController extends HttpServlet {
                     case "deleteSavedRecipe":
                         url = "DeleteSavedRecipeServlet";
                         break;
+                    case "editStartTimeRecipe":
+                        url = "EditStartTimeRecipeServlet";
+                        break;
                 }
             }
             RequestDispatcher rd = request.getRequestDispatcher(url);
