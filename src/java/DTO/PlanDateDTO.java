@@ -29,7 +29,6 @@ public class PlanDateDTO {
     private int week_id;
     private int plan_id;
     private Time start_time;
-    private Time end_time;
 
     public PlanDateDTO(int id, Date date, int week_id, int plan_id) {
         this.id = id;
@@ -38,13 +37,12 @@ public class PlanDateDTO {
         this.plan_id = plan_id;
     }
 
-    public PlanDateDTO(int id, Date date, int week_id, int plan_id, Time start_time, Time end_time) {
+    public PlanDateDTO(int id, Date date, int week_id, int plan_id, Time start_time) {
         this.id = id;
         this.date = date;
         this.week_id = week_id;
         this.plan_id = plan_id;
         this.start_time = start_time;
-        this.end_time = end_time;
     }
     
     

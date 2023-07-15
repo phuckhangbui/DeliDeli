@@ -35,7 +35,6 @@ public class PlanAddRecipeServlet extends HttpServlet {
             String start_timeStr = request.getParameter("start_time");
 
             Time start_time = null;
-            Time end_time = null;
 
             SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
             java.util.Date parsedStart = timeFormat.parse(start_timeStr);

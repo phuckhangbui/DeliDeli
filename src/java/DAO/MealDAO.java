@@ -43,9 +43,8 @@ public class MealDAO {
                     int date_id = rs.getInt("date_id");
                     int recipe_id = rs.getInt("recipe_id");
                     Time start_time = rs.getTime("start_time");
-                    Time end_time = rs.getTime("end_time");
 
-                    MealDTO meal = new MealDTO(id, date_id, recipe_id, start_time, end_time, date_id);
+                    MealDTO meal = new MealDTO(id, date_id, recipe_id, start_time, date_id);
                     result.add(meal);
                 }
             }
@@ -93,9 +92,8 @@ public class MealDAO {
                     date_id = rs.getInt("date_id");
                     int recipe_id = rs.getInt("recipe_id");
                     start_time = rs.getTime("start_time");
-                    Time end_time = rs.getTime("end_time");
 
-                    result = new MealDTO(id, date_id, recipe_id, start_time, end_time);
+                    result = new MealDTO(id, date_id, recipe_id, start_time);
                     return result;
                 }
             }
@@ -144,23 +142,22 @@ public class MealDAO {
                     date_id = rs.getInt("date_id");
                     int recipe_id = rs.getInt("recipe_id");
                     Time start_time = rs.getTime("start_time");
-                    Time end_time = rs.getTime("end_time");
                     plan_id = rs.getInt("plan_id");
 
                     // Time filter
                     if (breakfast) {
                         if (start_time.getHours() >= 5 && start_time.getHours() < 12) {
-                            MealDTO meal = new MealDTO(id, date_id, recipe_id, start_time, end_time, plan_id);
+                            MealDTO meal = new MealDTO(id, date_id, recipe_id, start_time, plan_id);
                             result.add(meal);
                         }
                     } else if (lunch) {
                         if (start_time.getHours() >= 12 && start_time.getHours() < 17) {
-                            MealDTO meal = new MealDTO(id, date_id, recipe_id, start_time, end_time, plan_id);
+                            MealDTO meal = new MealDTO(id, date_id, recipe_id, start_time, plan_id);
                             result.add(meal);
                         }
                     } else if (dinner) {
                         if (start_time.getHours() >= 17 && start_time.getHours() < 24) {
-                            MealDTO meal = new MealDTO(id, date_id, recipe_id, start_time, end_time, plan_id);
+                            MealDTO meal = new MealDTO(id, date_id, recipe_id, start_time, plan_id);
                             result.add(meal);
                         }
                     }
