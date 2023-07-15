@@ -89,11 +89,11 @@
                                         <button type="button" class="btn btn-secondary"
                                                 data-bs-dismiss="modal">No, I changed my mind</button>
                                         
-                                        <input type="text" name="plan_id" value="<%= plan.getId() %>" />
+                                        <input type="hidden" name="plan_id" value="<%= plan.getId() %>" />
                                         
-                                        <button type="button" action="removeAllRecipeConfirmed" class="remove-recipe-from-plan-button">Yes, remove all of them</button>
+                                        <button type="submit" name="action" value="removeAllRecipeConfirmed" class="remove-recipe-from-plan-button">Yes, remove all of them</button>
                                     </div>
-                                </div>
+                                </div>  
                             </form>
                         </div>
 
