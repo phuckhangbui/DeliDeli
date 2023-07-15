@@ -71,7 +71,55 @@ public class AddPlanServlet extends HttpServlet {
             }
 
             if (period.equalsIgnoreCase("daily")) {
-                url = DAILY_PlAN;
+
+                int id = 0;
+                String name = request.getParameter("name");
+                String description = request.getParameter("description");
+                String note = request.getParameter("note");
+                int dietID = Integer.parseInt(request.getParameter("recipeDietId"));
+                int userID = Integer.parseInt(request.getParameter("userId"));
+                boolean status = false;
+                boolean isDaily = true;
+
+                String start_date_str = request.getParameter("start_date");
+                java.sql.Date start_date = java.sql.Date.valueOf(start_date_str);
+                String end_date_str = request.getParameter("end_date");
+                java.sql.Date end_date = java.sql.Date.valueOf(end_date_str);
+
+                if (!PlanDAO.checkPlanTitleDuplicateByUserID(name, userID)) {
+                    errorList.add("Recipe title must be unique !");
+                    request.setAttribute("errorList", errorList);
+                    url = ADD_PLAN;
+                    RequestDispatcher rd = request.getRequestDispatcher(url);
+                    rd.forward(request, response);
+                    return;
+                }
+
+                if (!name.isEmpty() && !description.isEmpty()) {
+                    try {
+                        result = PlanDAO.insertPlan(name, description, note, start_date, end_date, status, userID, dietID, isDaily);
+                        id = PlanDAO.getPlanByUserIdAndName(userID, name);
+                    } catch (Exception ex) {
+                        System.out.println("[addPlanServlet - ERROR]: " + ex.getMessage());
+                        response.sendRedirect(ERROR);
+                    }
+
+                    try {
+//                        isWeekAdded = PlanDAO.insertWeek(id, start_date);
+//                        int weekId = PlanDAO.getWeekIDByPlanId(id);
+                        areDatesAdded = DateDAO.insertDateForDaily(start_date, id);
+                    } catch (Exception ex) {
+                        System.out.println("[addPlanServlet - ERROR]: " + ex.getMessage());
+                        response.sendRedirect(ERROR);
+                    }
+                }   
+
+                if (result && areDatesAdded) {
+                    url = "UserController?action=editPlan&id=" + id + "&isSearch=false";
+                    response.sendRedirect(url);
+                    return;
+                }
+
             } else {
                 url = WEEKLY_PlAN;
             }

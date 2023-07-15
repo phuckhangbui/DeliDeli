@@ -95,9 +95,8 @@ public class PlanDateDAO {
                     int week_id = rs.getInt("week_id");
                     plan_id = rs.getInt("plan_id");
                     Time start_time = rs.getTime("start_time");
-                    Time end_time = rs.getTime("end_time");
 
-                    result = new PlanDateDTO(id, date, date_id, week_id, plan_id, start_time, end_time);
+                    result = new PlanDateDTO(id, date, date_id, week_id, plan_id, start_time);
                     return result;
                 }
             }
@@ -119,6 +118,44 @@ public class PlanDateDAO {
             }
         }
         return result;
+    }
+
+    public static boolean deleteDateByPlanId(int plan_id) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+
+        String sql = "DELETE d\n"
+                + "FROM [Date] d\n"
+                + "WHERE d.plan_id = ?";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, plan_id);
+
+                int rowsAffected = stm.executeUpdate();
+                return rowsAffected > 0;
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error - deleteDateByPlanId: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return false;
     }
 
 }

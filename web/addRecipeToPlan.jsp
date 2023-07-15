@@ -80,7 +80,7 @@
                         <!-- Modal -->
                         <div class="modal fade" id="removeAllRecipes" tabindex="-1"
                              aria-labelledby="removeAllRecipesModalLabel" aria-hidden="true">
-                            <form class="modal-dialog">
+                            <form action="UserController" method="POST" class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h1 class="modal-title fs-5" id="removeAllRecipesModalLabel">Remove All Recipes</h1>
@@ -91,12 +91,14 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
                                                 data-bs-dismiss="modal">No, I changed my mind</button>
-                                        <button type="button" class="remove-recipe-from-plan-button">Yes, remove all of them</button>
+
+                                        <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
+
+                                        <button type="submit" name="action" value="removeAllRecipeConfirmed" class="remove-recipe-from-plan-button">Yes, remove all of them</button>
                                     </div>
-                                </div>
+                                </div>  
                             </form>
                         </div>
-
 
                         <button type="button" class="plan-navbar-delete" data-bs-toggle="modal"
                                 data-bs-target="#deletePlanConfirm">
@@ -105,7 +107,7 @@
                         <!-- Modal -->
                         <div class="modal fade" id="deletePlanConfirm" tabindex="-1"
                              aria-labelledby="deletePlanConfirmModalLabel" aria-hidden="true">
-                            <form class="modal-dialog">
+                            <form action="UserController" method="POST" class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h1 class="modal-title fs-5" id="removeAllRecipesModalLabel">Delete Plan</h1>
@@ -116,11 +118,53 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
                                                 data-bs-dismiss="modal">No, I changed my mind</button>
-                                        <button type="button" class="remove-recipe-from-plan-button">Yes, delete it</button>
+
+                                        <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
+                                        <input type="hidden" name="user_id" value="<%= user.getId()%>" />
+
+                                        <button type="submit" name="action" value="deletePlanConfirmed" class="remove-recipe-from-plan-button">Yes, delete it</button>
                                     </div>
                                 </div>
                             </form>
                         </div>
+
+                        <button id="planButton" type="button" class="plan-navbar-disable" onclick="disableActivatePlan()">
+                            <% if (plan.isStatus()) { %>
+                            Disable Plan
+                            <% } else { %>
+                            Activate Plan
+                            <% }%>
+                        </button>
+
+                        <script>
+                            // Disable/Activate the plan using AJAX
+                            function disableActivatePlan() {
+                                var planId = '<%= plan.getId()%>';
+                                var button = document.getElementById("planButton");
+
+                                var xhr = new XMLHttpRequest();
+                                xhr.open("POST", "DisablePlanServlet", true);
+                                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+                                xhr.onload = function () {
+                                    if (xhr.status === 200) {
+                                        // Update button text based on the response
+                                        if (button.innerText === "Disable Plan") {
+                                            button.innerText = "Activate Plan";
+                                        } else {
+                                            button.innerText = "Disable Plan";
+                                        }
+                                    } else {
+                                        console.error("Failed to disable/activate the plan.");
+                                    }
+                                };
+
+                                xhr.send("plan_id=" + encodeURIComponent(planId));
+                            }
+                        </script>
+
+
+
 
 
                         <!-- <button class="plan-navbar-edit">

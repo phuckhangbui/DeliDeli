@@ -27,7 +27,6 @@ public class MealDTO {
     private int date_id;
     private int recipe_id;
     private Time start_time; 
-    //private Time end_time; 
     private int plan_id; 
 
     //w/o plan_id
@@ -36,7 +35,6 @@ public class MealDTO {
         this.date_id = date_id;
         this.recipe_id = recipe_id;
         this.start_time = start_time;
-        //this.end_time = end_time;
     }
 
     

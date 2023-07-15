@@ -39,14 +39,10 @@ public class PlanAddRecipeServlet extends HttpServlet {
             //String end_timeStr = request.getParameter("end_time");
 
             Time start_time = null;
-            Time end_time = null;
 
             SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
             java.util.Date parsedStart = timeFormat.parse(start_timeStr);
-            //java.util.Date parsedEnd = timeFormat.parse(end_timeStr);
-
             start_time = new Time(parsedStart.getTime());
-            //end_time = new Time(parsedEnd.getTime());
 
 //            System.out.println("recipe_id recieved - " + recipe_id);
 //            System.out.println("plan_id recieved - " + plan_id);

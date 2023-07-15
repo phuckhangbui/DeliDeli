@@ -92,7 +92,6 @@ public class MealDAO {
                     date_id = rs.getInt("date_id");
                     int recipe_id = rs.getInt("recipe_id");
                     start_time = rs.getTime("start_time");
-                    //Time end_time = rs.getTime("end_time");
 
                     result = new MealDTO(id, date_id, recipe_id, start_time);
                     return result;
@@ -143,7 +142,6 @@ public class MealDAO {
                     date_id = rs.getInt("date_id");
                     int recipe_id = rs.getInt("recipe_id");
                     Time start_time = rs.getTime("start_time");
-                    //Time end_time = rs.getTime("end_time");
                     plan_id = rs.getInt("plan_id");
 
                     // Time filter
@@ -291,7 +289,7 @@ public class MealDAO {
                 }
             }
         } catch (SQLException ex) {
-            System.out.println("Query error - insertMeal: " + ex.getMessage());
+            System.out.println("Query error - addMealById: " + ex.getMessage());
         } finally {
             try {
                 if (rs != null) {
@@ -372,6 +370,45 @@ public class MealDAO {
             }
         } catch (SQLException ex) {
             System.out.println("Query error - removeRecipeFromPlanByMealID: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return false;
+    }
+
+    public static boolean deleteAllMealByPlanID(int plan_id) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+
+        String sql = "DELETE m\n"
+                + "FROM Meal m\n"
+                + "INNER JOIN [Date] d ON d.id = m.date_id\n"
+                + "WHERE d.plan_id = ?";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, plan_id);
+
+                int rowsAffected = stm.executeUpdate();
+                return rowsAffected > 0;
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error - deleteAllRecipeByPlanID: " + ex.getMessage());
         } finally {
             try {
                 if (rs != null) {
