@@ -171,14 +171,14 @@ public class DateDAO {
         return false;
     }
 
-    public static boolean insertDate(Date date, int week_id, int plan_id) {
+    public static boolean insertDateForDaily(Date date, int plan_id) {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
         int effectRows = 0;
 
-        String sql = "INSERT INTO [Date](date, week_id, plan_id)\n"
-                + "VALUES (?, ?, ?)";
+        String sql = "INSERT INTO [Date](date,plan_id)\n"
+                + "VALUES (?, ?)";
 
         try {
             con = DBUtils.getConnection();
@@ -186,8 +186,7 @@ public class DateDAO {
 
                 stm = con.prepareStatement(sql);
                 stm.setDate(1, date);
-                stm.setInt(2, week_id);
-                stm.setInt(3, plan_id);
+                stm.setInt(2, plan_id);
                 effectRows = stm.executeUpdate();
 
                 if (effectRows > 0) {

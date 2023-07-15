@@ -418,6 +418,10 @@
         <servlet-name>DeleteSavedRecipeServlet</servlet-name>
         <servlet-class>Servlet.User.DeleteSavedRecipeServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DisablePlanServlet</servlet-name>
+        <servlet-class>Servlet.User.DisablePlanServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -729,6 +733,10 @@
     <servlet-mapping>
         <servlet-name>DeleteSavedRecipeServlet</servlet-name>
         <url-pattern>/DeleteSavedRecipeServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DisablePlanServlet</servlet-name>
+        <url-pattern>/DisablePlanServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

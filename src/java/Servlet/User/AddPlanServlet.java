@@ -51,6 +51,7 @@ public class AddPlanServlet extends HttpServlet {
                 int dietID = Integer.parseInt(request.getParameter("recipeDietId"));
                 int userID = Integer.parseInt(request.getParameter("userId"));
                 boolean status = false;
+                boolean isDaily = true;
 
                 String start_date_str = request.getParameter("start_date");
                 java.sql.Date start_date = java.sql.Date.valueOf(start_date_str);
@@ -68,7 +69,7 @@ public class AddPlanServlet extends HttpServlet {
 
                 if (!name.isEmpty() && !description.isEmpty()) {
                     try {
-                        result = PlanDAO.insertPlan(name, description, note, start_date, end_date, status, userID, dietID);
+                        result = PlanDAO.insertPlan(name, description, note, start_date, end_date, status, userID, dietID, isDaily);
                         id = PlanDAO.getPlanByUserIdAndName(userID, name);
                     } catch (Exception ex) {
                         System.out.println("[addPlanServlet - ERROR]: " + ex.getMessage());
@@ -76,17 +77,17 @@ public class AddPlanServlet extends HttpServlet {
                     }
 
                     try {
-                        isWeekAdded = PlanDAO.insertWeek(id, start_date);
-                        int weekId = PlanDAO.getWeekIDByPlanId(id);
-                        areDatesAdded = DateDAO.insertDate(start_date, weekId, id);
+//                        isWeekAdded = PlanDAO.insertWeek(id, start_date);
+//                        int weekId = PlanDAO.getWeekIDByPlanId(id);
+                        areDatesAdded = DateDAO.insertDateForDaily(start_date, id);
                     } catch (Exception ex) {
                         System.out.println("[addPlanServlet - ERROR]: " + ex.getMessage());
                         response.sendRedirect(ERROR);
                     }
-                }
+                }   
 
-                if (result && isWeekAdded && areDatesAdded) {
-                    url = "UserController?action=getPlanDetailById&id=" + id;
+                if (result && areDatesAdded) {
+                    url = "UserController?action=editPlan&id=" + id + "&isSearch=false";
                     response.sendRedirect(url);
                     return;
                 }

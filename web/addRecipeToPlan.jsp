@@ -94,7 +94,6 @@
                             </form>
                         </div>
 
-
                         <button type="button" class="plan-navbar-delete" data-bs-toggle="modal"
                                 data-bs-target="#deletePlanConfirm">
                             Delete Plan
@@ -118,6 +117,44 @@
                                 </div>
                             </form>
                         </div>
+
+                        <button id="planButton" type="button" class="plan-navbar-disable" onclick="disableActivatePlan()">
+                            <% if (plan.isStatus()) { %>
+                            Disable Plan
+                            <% } else { %>
+                            Activate Plan
+                            <% }%>
+                        </button>
+
+                        <script>
+                            // Disable/Activate the plan using AJAX
+                            function disableActivatePlan() {
+                                var planId = '<%= plan.getId()%>';
+                                var button = document.getElementById("planButton");
+
+                                var xhr = new XMLHttpRequest();
+                                xhr.open("POST", "DisablePlanServlet", true);
+                                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+                                xhr.onload = function () {
+                                    if (xhr.status === 200) {
+                                        // Update button text based on the response
+                                        if (button.innerText === "Disable Plan") {
+                                            button.innerText = "Activate Plan";
+                                        } else {
+                                            button.innerText = "Disable Plan";
+                                        }
+                                    } else {
+                                        console.error("Failed to disable/activate the plan.");
+                                    }
+                                };
+
+                                xhr.send("plan_id=" + encodeURIComponent(planId));
+                            }
+                        </script>
+
+
+
 
 
                         <!-- <button class="plan-navbar-edit">
