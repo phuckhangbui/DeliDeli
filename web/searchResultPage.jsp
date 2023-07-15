@@ -27,7 +27,7 @@
     </head>
 
     <body>
-        <%@include file="header.jsp" %>
+        <%@include file="homeHeader.jsp" %>
 
         <!--         The banner       -->
         <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">

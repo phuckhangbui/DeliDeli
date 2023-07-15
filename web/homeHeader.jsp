@@ -1,9 +1,3 @@
-<%-- 
-    Document   : header
-    Created on : Jul 15, 2023, 8:35:29 AM
-    Author     : khang
---%>
-
 <%-- Document : header Created on : May 24, 2023, 7:23:26 PM Author : khang --%>
 <%@page import="java.sql.Time"%>
 <%@page import="java.time.LocalTime"%>
@@ -119,9 +113,166 @@
                         </form>
                     </div>
                     <%if (user != null) {%>
-                    
+                    <% int[] count = (int[]) request.getAttribute("count");
+                    %>
+
+                    <!--    TICK TOCK PLAN NOTIFICATION   -->
+
+                    <%
+                        boolean isPlanNotificationActive = (boolean) request.getAttribute("planNotificationActivate");
+                        if (isPlanNotificationActive) {
+                            System.out.println("[HEADER]: Notification sent!");
+                    %>
+                    <script>
+                        var xhr = new XMLHttpRequest();
+                        xhr.open("POST", "UserController?action=planNotification", true);
+                        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                        // This means execute when request is successful (status === 200).
+                        xhr.onreadystatechange = function () {
+                            if (xhr.readyState === 4 && xhr.status === 200) {
+                                console.log("Servlet activated!");
+                            }
+                        };
+                        xhr.send();
+                    </script>
+                    <%
+                        }
+                    %>
+
+
+                    <!--                                  -->
+
                     <div
-                        class="account col-md-2">
+                        class="notification col-md-1">
+                        <div
+                            class="dropdown-notification">
+                            <button
+                                class="dropbtn-notification"
+                                onclick="toggleDropdown()">
+                                <% 
+                                    if(count[2] >0 ){
+                                    %>
+                                    <img src="assets/notification-active-icon.svg">
+                                    <%}else{
+                                %>
+                                <img src="assets/notification-icon.svg">
+                                <% }%>
+                            </button>
+                            <div class="dropdown-content-notification"
+                                 id="dropdownContent">
+                                <div>
+                                    <div
+                                        class="status-bar-notification">
+                                        <p
+                                            id="totalCount">
+                                            Total:
+                                            <%=count[0]%>
+                                        </p>
+                                        <p
+                                            id="unreadCount">
+                                            Unread:
+                                            <%=count[2]%>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div
+                                    class="notification-content">
+                                    <%
+                                        ArrayList<DisplayNotificationDTO> list = (ArrayList<DisplayNotificationDTO>) request.getAttribute("displayList");
+                                        for (DisplayNotificationDTO n : list) {
+                                            if (n.is_read()) {
+
+                                    %>
+                                    <button
+                                        type="button"
+                                        class="a-notification "
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#<%= n.getId()%>">
+                                        <% } else {%>
+                                        <button
+                                            type="button"
+                                            class="a-notification notification-disable"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#<%= n.getId()%>">
+                                            <%
+                                                }%>
+                                            <div
+                                                class="notification-first-row">
+                                                <img src="assets/delideli-website-favicon-color.png"
+                                                     alt="img">
+                                                <p>
+                                                    <%=n.getType().getSender()%>
+                                                </p>
+                                            </div>
+                                            <div
+                                                class="text">
+                                                <p>
+                                                    <%=n.getTitle()%>
+                                                </p>
+                                            </div>
+                                            <p
+                                                class="date">
+                                                <% Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
+                                                    Timestamp sendTimestamp = n.getSend_date();
+
+                                                    LocalDateTime currentDateTime = currentTimestamp.toLocalDateTime();
+                                                    LocalDateTime sendDateTime = sendTimestamp.toLocalDateTime();
+                                                    Duration duration = Duration.between(sendDateTime,
+                                                            currentDateTime); %>
+                                                <%
+                                                    if (duration.toMinutes() == 0) {
+                                                %>
+                                                now
+                                                <%
+                                                } else if (duration.toDays() > 0) {
+                                                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd yyyy", Locale.ENGLISH);
+                                                    String formattedDateTime
+                                                            = sendDateTime.format(formatter);
+                                                %>
+                                                <%=formattedDateTime%>
+                                                <% } else {
+                                                    long minutesDiff = Math.abs(duration.toMinutes());
+                                                    if (minutesDiff < 60) {
+                                                        String minuteString = (minutesDiff == 1)
+                                                                ? "minute"
+                                                                : "minutes";
+                                                %>
+                                                <%=minutesDiff%>
+                                                <%=minuteString%>
+                                                ago
+                                                <% } else {
+                                                    long hoursDiff = Math.abs(duration.toHours());
+                                                    String hourString = (hoursDiff == 1)
+                                                            ? "hour"
+                                                            : "hours";
+                                                %>
+                                                <%=hoursDiff%>
+                                                <%=hourString%>
+                                                ago
+                                                <%      }
+                                                    }
+                                                %>
+                                            </p>
+
+
+                                        </button>
+                                        <!-- Add closing tag for <a> element -->
+                                        <%
+                                            }%>
+
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!--                    <div class="account col-md-1">
+                                             <a href="UserController?action=userPublicDetail&userId=<%=user.getId()%>">
+                                                <img src="ServletImageLoader?identifier=<%= user.getAvatar()%>" alt="">
+                                            </a>
+                                        </div>-->
+                    <div
+                        class="account col-md-1">
                         <span>
                             <div class="user-dropdown">
                                 <button class="user-dropbtn">
@@ -361,9 +512,191 @@
                         </li>
                     </ul>
                 </div>
-            </div>+
+            </div>
         </div>
 
+
+
+
+        <% if (user != null) {
+                ArrayList<DisplayNotificationDTO> list
+                        = (ArrayList<DisplayNotificationDTO>) request.getAttribute("displayList");
+                for (DisplayNotificationDTO n : list) {
+
+        %>
+        <!-- Modal -->
+        <div class="modal fade"
+             id="<%= n.getId()%>"
+             data-bs-keyboard="false"
+             tabindex="-1"
+             aria-labelledby="deletePlanModalLabel"
+             aria-hidden="true">
+            <div
+                class="modal-dialog modal-sm">
+                <div
+                    class="modal-content">
+                    <div
+                        class="modal-header">
+                        <div class="modal-title fs-5 modal-title-self"
+                             id="exampleModalLabel">
+                            <p
+                                class="modal-title-text">
+                                <%=n.getTitle()%>
+                            </p>
+                            <p class="modal-title-date">
+                                <% Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
+                                    Timestamp sendTimestamp = n.getSend_date();
+
+                                    LocalDateTime currentDateTime = currentTimestamp.toLocalDateTime();
+                                    LocalDateTime sendDateTime = sendTimestamp.toLocalDateTime();
+                                    Duration duration = Duration.between(sendDateTime,
+                                            currentDateTime); %>
+                                <%
+                                    if (duration.toMinutes() == 0) {
+                                %>
+                                now
+                                <%
+                                } else if (duration.toDays()
+                                        > 0) {
+                                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd yyyy", Locale.ENGLISH);
+                                    String formattedDateTime
+                                            = sendDateTime.format(formatter);
+                                %>
+                                <%=formattedDateTime%>
+                                <% } else {
+                                    long minutesDiff = Math.abs(duration.toMinutes());
+                                    if (minutesDiff
+                                            < 60) {
+                                        String minuteString = (minutesDiff == 1)
+                                                ? "minute"
+                                                : "minutes";
+                                %>
+                                <%=minutesDiff%>
+                                <%=minuteString%>
+                                ago
+                                <% } else {
+                                    long hoursDiff = Math.abs(duration.toHours());
+                                    String hourString = (hoursDiff == 1)
+                                            ? "hour"
+                                            : "hours";
+                                %>
+                                <%=hoursDiff%>
+                                <%=hourString%>
+                                ago
+                                <% }
+                                    }
+                                %>
+                            </p>
+
+                        </div>
+                    </div>
+                    <div
+                        class="modal-body">
+                        <div
+                            class="modal-body-content">
+                            <%=n.getDescription()%>
+                        </div>
+                        <% switch (n.getType().getId()) {
+                                case 1:%>
+                        <a href="UserController?action=loadEditRecipe&recipeId=<%=n.getRecipe_id()%>"
+                           class="modal-link">Edit recipe</a>
+
+                        <% break;
+                            case 2:%>
+                        <a href="MainController?action=getRecipeDetailById&id=<%=n.getRecipe_id()%>"
+                           class="modal-link">View recipe</a>
+
+                        <% break;
+                            case 3:%>
+                        <a href="MainController?action=getRecipeDetailById&id=<%=n.getRecipe_id()%>"
+                           class="modal-link">View recipe</a>
+
+                        <% break;
+                            case 4:
+                        %>
+                        <a href="#"
+                           class="modal-link">View plan</a>
+                        <% break;
+                            case 5:
+                                if (n.getLink() != "") {%>
+                        <img src="ServletImageLoader?identifier=<%=n.getImgPath()%>" alt="" style="width:100%; border-radius: 5px">
+                        <%}
+                                    break;
+                            }
+                        %>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            class="btn btn-danger deleteBtn"
+                            data-bs-dismiss="modal">Delete</button>
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <% } %>
+        <script>
+
+            // Get all delete buttons on the page
+            const deleteButtons = document.querySelectorAll('.deleteBtn');
+            const totalCountElement = document.getElementById('totalCount');
+
+            // Iterate over each delete button and add the event listener
+            deleteButtons.forEach((button) => {
+                button.addEventListener('click', () => {
+                    // Get the id of the parent modal
+                    const notificationId = button.closest('.modal').id;
+                    // Find the corresponding delete notification button
+                    let selector = 'button[data-bs-target="#' + notificationId + '"]';
+                    console.log(selector);
+
+                    let deleteNotificationButton = document.querySelector(selector);
+
+                    if (deleteNotificationButton.classList.contains("notification-disable")) {
+                        // Update the unread count
+
+                        var unreadCount = parseInt(unreadCountElement.textContent.split(":")[1].trim());
+                        unreadCount--;
+                        unreadCountElement.textContent = "Unread: " + unreadCount;
+                    }
+
+                    var totalCount = parseInt(totalCountElement.textContent.split(":")[1].trim());
+                    totalCount--;
+                    totalCountElement.textContent = "Total: " + totalCount;
+
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("POST", "DeleteNotificationServlet");
+                    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                            console.log("Delete notification sucessfully");
+                        }
+                    };
+                    xhr.send("notificationId=" + encodeURIComponent(notificationId));
+
+                    deleteNotificationButton.remove();
+
+
+
+
+                    // Find the modal element and close it
+                    const modalElement = document.getElementById(notificationId);
+                    const bootstrapModal = new bootstrap.Modal(modalElement);
+                    bootstrapModal.hide();
+                });
+            });
+
+
+        </script>
+        <%
+            }
+        %>
 
         <script src="bootstrap/js/bootstrap.min.js" ></script>
     </body>

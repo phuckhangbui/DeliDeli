@@ -26,7 +26,9 @@ public class AddPlanServlet extends HttpServlet {
 
 //    private static final String ADD_PLAN = "addPlan.jsp";
     private static final String ERROR = "error.jsp";
-        private static final String ADD_PLAN = "UserController?action=categoryLoadToPlan";
+    private static final String ADD_PLAN = "UserController?action=categoryLoadToPlan";
+    private static final String DAILY_PlAN = "UserController?action=addDailyPlan";
+    private static final String WEEKLY_PlAN = "UserController?action=addWeeklyPlan";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
