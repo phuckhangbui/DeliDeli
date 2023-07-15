@@ -27,16 +27,16 @@ public class MealDTO {
     private int date_id;
     private int recipe_id;
     private Time start_time; 
-    private Time end_time; 
+    //private Time end_time; 
     private int plan_id; 
 
     //w/o plan_id
-    public MealDTO(int id, int date_id, int recipe_id, Time start_time, Time end_time) {
+    public MealDTO(int id, int date_id, int recipe_id, Time start_time) {
         this.id = id;
         this.date_id = date_id;
         this.recipe_id = recipe_id;
         this.start_time = start_time;
-        this.end_time = end_time;
+        //this.end_time = end_time;
     }
 
     

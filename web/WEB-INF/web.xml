@@ -421,6 +421,14 @@
         <servlet-name>AddDailyPlanFinalServlet</servlet-name>
         <servlet-class>Servlet.User.AddDailyPlanFinalServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>EditStartTimeRecipeServlet</servlet-name>
+        <servlet-class>Servlet.User.EditStartTimeRecipeServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddPlanMultiplesMealServlet</servlet-name>
+        <servlet-class>Servlet.User.AddPlanMultiplesMealServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -744,6 +752,14 @@
     <servlet-mapping>
         <servlet-name>AddDailyPlanFinalServlet</servlet-name>
         <url-pattern>/AddDailyPlanFinalServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditStartTimeRecipeServlet</servlet-name>
+        <url-pattern>/EditStartTimeRecipeServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddPlanMultiplesMealServlet</servlet-name>
+        <url-pattern>/AddPlanMultiplesMealServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
