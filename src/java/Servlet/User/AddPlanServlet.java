@@ -40,9 +40,6 @@ public class AddPlanServlet extends HttpServlet {
 
         if (request.getMethod().equals("POST")) {
             // Miscellaneous variables
-            boolean result = false;
-            boolean isWeekAdded = false;
-            boolean areDatesAdded = false;
             String period = request.getParameter("period");
             String error = "";
 
@@ -50,10 +47,6 @@ public class AddPlanServlet extends HttpServlet {
             String description = request.getParameter("description");
             int dietID = Integer.parseInt(request.getParameter("recipeDietId"));
 
-            System.out.println(title);
-            System.out.println(description);
-            System.out.println(dietID);
-            System.out.println(period);
             HttpSession session = request.getSession();
             
             session.setAttribute("createPlanTitle", title);
@@ -72,52 +65,52 @@ public class AddPlanServlet extends HttpServlet {
 
             if (period.equalsIgnoreCase("daily")) {
 
-                int id = 0;
-                String name = request.getParameter("name");
-                description = request.getParameter("description");
-                String note = request.getParameter("note");
-                dietID = Integer.parseInt(request.getParameter("recipeDietId"));
-                int userID = Integer.parseInt(request.getParameter("userId"));
-                boolean status = false;
-                boolean isDaily = true;
-
-                String start_date_str = request.getParameter("start_date");
-                java.sql.Date start_date = java.sql.Date.valueOf(start_date_str);
-                String end_date_str = request.getParameter("end_date");
-                java.sql.Date end_date = java.sql.Date.valueOf(end_date_str);
-
-                if (!PlanDAO.checkPlanTitleDuplicateByUserID(name, userID)) {
-                    error = "Recipe title must be unique !";
-                    request.setAttribute("errorList", error);
-                    url = ADD_PLAN;
-                    RequestDispatcher rd = request.getRequestDispatcher(url);
-                    rd.forward(request, response);
-                    return;
-                }
-
-                if (!name.isEmpty() && !description.isEmpty()) {
-                    try {
-                        result = PlanDAO.insertPlan(name, description, note, start_date, end_date, status, userID, dietID, isDaily);
-                        id = PlanDAO.getPlanByUserIdAndName(userID, name);
-                    } catch (Exception ex) {
-                        System.out.println("[addPlanServlet - ERROR]: " + ex.getMessage());
-                        response.sendRedirect(ERROR);
-                    }
-
-                    try {
-                        areDatesAdded = DateDAO.insertDateForDaily(start_date, id);
-                    } catch (Exception ex) {
-                        System.out.println("[addPlanServlet - ERROR]: " + ex.getMessage());
-                        response.sendRedirect(ERROR);
-                    }
-                }   
-
-                if (result && areDatesAdded) {
-                    url = "UserController?action=editPlan&id=" + id + "&isSearch=false";
-                    response.sendRedirect(url);
-                    return;
-                }
-
+//                int id = 0;
+//                String name = request.getParameter("name");
+//                description = request.getParameter("description");
+//                String note = request.getParameter("note");
+//                dietID = Integer.parseInt(request.getParameter("recipeDietId"));
+//                int userID = Integer.parseInt(request.getParameter("userId"));
+//                boolean status = false;
+//                boolean isDaily = true;
+//
+//                String start_date_str = request.getParameter("start_date");
+//                java.sql.Date start_date = java.sql.Date.valueOf(start_date_str);
+//                String end_date_str = request.getParameter("end_date");
+//                java.sql.Date end_date = java.sql.Date.valueOf(end_date_str);
+//
+//                if (!PlanDAO.checkPlanTitleDuplicateByUserID(name, userID)) {
+//                    error = "Recipe title must be unique !";
+//                    request.setAttribute("errorList", error);
+//                    url = ADD_PLAN;
+//                    RequestDispatcher rd = request.getRequestDispatcher(url);
+//                    rd.forward(request, response);
+//                    return;
+//                }
+//
+//                if (!name.isEmpty() && !description.isEmpty()) {
+//                    try {
+//                        result = PlanDAO.insertPlan(name, description, note, start_date, end_date, status, userID, dietID, isDaily);
+//                        id = PlanDAO.getPlanByUserIdAndName(userID, name);
+//                    } catch (Exception ex) {
+//                        System.out.println("[addPlanServlet - ERROR]: " + ex.getMessage());
+//                        response.sendRedirect(ERROR);
+//                    }
+//
+//                    try {
+//                        areDatesAdded = DateDAO.insertDateForDaily(start_date, id);
+//                    } catch (Exception ex) {
+//                        System.out.println("[addPlanServlet - ERROR]: " + ex.getMessage());
+//                        response.sendRedirect(ERROR);
+//                    }
+//                }   
+//
+//                if (result && areDatesAdded) {
+//                    url = "UserController?action=editPlan&id=" + id + "&isSearch=false";
+//                    response.sendRedirect(url);
+//                    return;
+//                }
+                url = DAILY_PlAN;
             } else {
                 url = WEEKLY_PlAN;
             }

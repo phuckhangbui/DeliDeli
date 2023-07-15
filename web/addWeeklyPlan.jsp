@@ -67,9 +67,13 @@
 
                             <script>
                                 function isMonday(date) {
-                                    return date.getDay() === 1; // 0 for Sunday, 1 for Monday, 2 for Tuesday, etc.
+                                    if (date.getDay() === 1) {
+                                        return true; // Monday
+                                    } else {
+                                        alert("Please select a Monday as the start date.");
+                                        return false;
+                                    }
                                 }
-
                                 function calculateEndDate() {
                                     var startDate = new Date(document.getElementById("startDateInput").value);
                                     var planLength = parseInt(document.getElementById("length").value);

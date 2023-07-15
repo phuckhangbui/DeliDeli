@@ -34,9 +34,7 @@ public class AddDailyPlanFinalServlet extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             HttpSession session = request.getSession();
 
-            String name = (String) session.getAttribute("createPlanName");
-            String description = (String) session.getAttribute("createPlanDescription");
-            String dietId = (String) session.getAttribute("createPlanDietId");out.println("<!DOCTYPE html>");
+            response.sendRedirect("UserController?action=planManagement");
             
         }
     }

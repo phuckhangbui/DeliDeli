@@ -131,12 +131,17 @@ public class UserController extends HttpServlet {
                     case "deleteSavedRecipe":
                         url = "DeleteSavedRecipeServlet";
                         break;
-
                     case "addDailyPlan":
                         url = "AddDailyPlanServlet";
                         break;
+                    case "addDailyPlanFinal":
+                        url = "AddDailyPlanFinalServlet";
+                        break;
                     case "addWeeklyPlan":
                         url = "AddWeeklyPlanServlet";
+                        break;
+                    case "addWeeklyPlanFinal":
+                        url = "AddWeeklyPlanFinalServlet";
                         break;
                     case "editStartTimeRecipe":
                         url = "EditStartTimeRecipeServlet";

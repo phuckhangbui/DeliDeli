@@ -4,12 +4,17 @@
  */
 package Servlet.User;
 
+import DAO.DateDAO;
+import DAO.PlanDAO;
+import DTO.UserDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Calendar;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -31,15 +36,49 @@ public class AddWeeklyPlanServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet AddWeeklyPlanServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet AddWeeklyPlanServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            HttpSession session = request.getSession();
+            UserDTO user = (UserDTO) session.getAttribute("user");
+
+            String start_date_str = request.getParameter("start_date");
+            java.sql.Date start_date = java.sql.Date.valueOf(start_date_str);
+            int planLength = Integer.parseInt(request.getParameter("planLength"));
+
+            // Calculate end date
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(start_date);
+            calendar.add(Calendar.DATE, planLength * 7);
+
+            java.sql.Date end_date = new java.sql.Date(calendar.getTimeInMillis());
+
+            
+
+            String name = (String) session.getAttribute("createPlanTitle");  // title in fe, name in be lmao
+            String description = (String) session.getAttribute("createPlanDescription");
+            int dietId = (int) session.getAttribute("createPlanDietId");
+            boolean status = false;
+            boolean result = false;
+            int id = 0;
+
+            try {
+                result = PlanDAO.insertPlan(name, description, "", start_date, end_date, status, user.getId(), dietId, false);
+                id = PlanDAO.getPlanByUserIdAndName(user.getId(), name);
+            } catch (Exception ex) {
+                System.out.println("[addPlanServlet - ERROR]: " + ex.getMessage());
+                response.sendRedirect("error.jsp");
+            }
+
+            try {
+//                boolean areDatesAdded = DateDAO.insertDateForDaily(start_date, id); weeklly plan 
+            } catch (Exception ex) {
+                System.out.println("[addPlanServlet - ERROR]: " + ex.getMessage());
+                response.sendRedirect("error.jsp");
+            }
+
+            
+            session.setAttribute("createPlanTitle", null);
+            session.setAttribute("createPlanDescription", null);
+            session.setAttribute("createPlanDietId", null);
+            request.getRequestDispatcher("addWeeklyPlanFinal.jsp").forward(request, response);
         }
     }
 
