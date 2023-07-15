@@ -37,11 +37,18 @@
                     <div class="row add-plan">
                         <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item"><a href="#"> Plan</a></li> 
+                                <li class="breadcrumb-item"><a href="home.jsp">Home</a></li>
+                                <li class="breadcrumb-item"><a href="UserController?action=planManagement"> Plan</a></li> 
                                 <li class="breadcrumb-item current-link" aria-current="page">Add Plan</li>
                             </ol>
                         </nav>
+                        <%
+                            
+                            String title = (String) session.getAttribute("createPlanTitle");
+                            String des = (String) session.getAttribute("createPlanDescription");
+
+
+                        %>
                         <form action="UserController" method="POST">
                             <div class="add-plan-header">
                                 <p>Add a Plan</p>
@@ -50,109 +57,33 @@
                                 </p>
                             </div>
 
-                            <!--                            <div class="row add-plan-date">
-                                                            <div class="add-plan-info-header">
-                                                                Plan Period <span class="add-plan-info-header-des">(Weekly plan will have a fixed period of 1 week)</span>
-                                                            </div>
-                                                            <div class="col-md-6 add-plan-info-date">
-                                                                Period:
-                                                                <div>
-                                                                    <input type="radio" id="dailyOption" name="period" value="daily" onchange="toggleEndDateField()"> Daily
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6 add-plan-info-date">
-                                                                <input type="radio" id="weeklyOption" name="period" value="weekly" onchange="toggleEndDateField()"> Weekly
-                                                            </div>
-                                                            <div class="col-md-6 add-plan-info-date">
-                                                                Starting Date: <span>*</span>
-                                                                <div>
-                                                                    <input type="date" id="startingDate" name="start_date" onchange="" min="<%= LocalDate.now()%>" required>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6 add-plan-info-date" id="endDateField" style="display: none;">
-                                                                Ending Date: <span>*</span>
-                                                                <div>
-                                                                    <input type="date" id="endingDateWeekly" name="end_date" onchange="" min="<%= LocalDate.now()%>" required>
-                                                                </div>
-                                                            </div>
-                                                        </div>-->
-
-                            <script>
-//                                function toggleEndDateField() {
-//                                    const dailyOption = document.getElementById("dailyOption");
-//                                    const endDateField = document.getElementById("endDateField");
-//                                    endDateField.style.display = dailyOption.checked ? "block" : "none";
-//                                }
-//
-//                                function calculateEndDate() {
-//                                    const startingDate = document.getElementById("startingDate").value;
-//                                    const periodOption = document.querySelector('input[name="period"]:checked').value;
-//
-//                                    if (periodOption === "daily") {
-//                                        const endDateDaily = startingDate;
-//                                        document.getElementById("endingDateWeekly").value = "";  // Clear the weekly end date
-//                                        document.getElementById("endingDateDaily").value = endDateDaily;
-//                                    } else if (periodOption === "weekly") {
-//                                        const dateObj = new Date(startingDate);
-//                                        dateObj.setDate(dateObj.getDate() + 6);
-//                                        const endDateWeekly = dateObj.toISOString().split('T')[0];
-//                                        document.getElementById("endingDateDaily").value = "";  // Clear the daily end date
-//                                        document.getElementById("endingDateWeekly").value = endDateWeekly;
-//                                    }
-//                                }
-                            </script>
-
-
-                            <script>
-//                                function toggleEndDateField() {
-//                                    const dailyOption = document.getElementById("dailyOption");
-//                                    const endDateField = document.getElementById("endDateField");
-//                                    endDateField.style.display = dailyOption.checked ? "block" : "none";
-//                                }
-//
-//                                function calculateEndDate() {
-//                                    const startingDate = document.getElementById("startingDate").value;
-//                                    const periodOption = document.querySelector('input[name="period"]:checked').value;
-//
-//                                    if (periodOption === "daily") {
-//                                        const endDateDaily = startingDate;
-//                                        document.getElementById("endingDateWeekly").value = "";  // Clear the weekly end date
-//                                        document.getElementById("endingDateDaily").value = endDateDaily;
-//                                    } else if (periodOption === "weekly") {
-//                                        const dateObj = new Date(startingDate);
-//                                        dateObj.setDate(dateObj.getDate() + 6);
-//                                        const endDateWeekly = dateObj.toISOString().split('T')[0];
-//                                        document.getElementById("endingDateDaily").value = "";  // Clear the daily end date
-//                                        document.getElementById("endingDateWeekly").value = endDateWeekly;
-//                                    }
-//                                }
-                            </script>
-
-
                             <div class="add-plan-info-header add-plan-info">
                                 Plan Title <span>*</span>
                                 <div>
-                                    <input type="text" name="name" class="input-full" placeholder="What's your plan called ?" required>
+                                    <% if (title != null) {%>
+                                    <input type="text" name="title" class="input-full" value="<%=title%>" maxlength="100" required>
+                                    <% } else {%>
+
+                                    <input type="text" name="title" class="input-full" placeholder="What's your plan called ?" maxlength="100" required>
+                                    <%}%>
                                 </div>
                             </div>
 
-                            <!--                            <div class="add-plan-info-header-picture add-plan-info">
-                                                            Thumbnail Picture <span>*</span>
-                                                            <div>
-                                                                <input type="file" id="image" name="thumbnail" required>
-                                                            </div>    
-                                                        </div>-->
+
                             <div class="add-plan-info-header add-plan-info">
                                 Description <span>*</span>
-                                <textarea class="input-full" rows="2" name="description" required
-                                          placeholder="Give a small description of your plan (Max: 200)" maxlength="200"></textarea>
+                                <% if (title != null) {%>
+                                <textarea class="input-full" rows="2" name="description" required maxlength="200"><%= des%></textarea>
+                                <% } else { %>
+                                <textarea class="input-full" rows="2" name="description" required placeholder="Give a small description of your plan (Max: 200)" maxlength="200"></textarea>
+                                <% } %>
+
                             </div>
 
                             <div class="add-plan-info-header add-plan-info">
                                 Plan Diet <span>*</span>
                                 <select name="recipeDietId" id="" class="add-plan-info-header-type" required>
-                                    <%
-                                        for (Map.Entry<Integer, String> entry
+                                    <%  for (Map.Entry<Integer, String> entry
                                                 : dietMap.entrySet()) {
                                             Integer key
                                                     = entry.getKey();
@@ -167,27 +98,18 @@
                                 </select>
                             </div>
 
-                            <div class="row add-plan-date"> <!-- change cai nay thanh select -->
+                            <div class="add-plan-info-header add-plan-info"> <!-- change cai nay thanh select -->
                                 <div class="add-plan-info-header">
-                                    Plan Period <span class="add-plan-info-header-des">(Weekly plan will have a fixed period of 1 week)</span>
+                                    Plan Period <span>*</span> <span class="add-plan-info-header-des">(Weekly plan will only start at Monday)</span>
                                 </div>
-                                <div class="col-md-6 add-plan-info-date">
-                                    Period:
-                                    <div>
-                                        <input type="radio" id="dailyOption" name="period" value="daily" onchange="toggleEndDateField()"> Daily
-                                    </div>
+                                <select name="period" id="" class="add-plan-info-header-type" required>
+                                    <option value="daily" selected="">Daily</option>
+                                    <option value="weekly">Weekly</option>
+                                </select>
 
-                                    <div class="col-md-6 add-plan-info-date">
-                                        <input type="radio" id="weeklyOption" name="period" value="weekly" onchange="toggleEndDateField()"> Weekly
-                                    </div>
-                                </div>
                             </div>
 
-
-                            <!-- Hidden Attributes -->
-                            <input type="hidden" name="userId" value="<%= user.getId()%>" />
-
-                            <p class="error-popup">${requestScope.errorList[0]}</p>
+                            <p class="error-popup">${requestScope.createPlanError}</p>
 
                             <div class=" add-recipe-info-submit">
                                 <button type="submit" name="action" value="addPlan">
