@@ -74,9 +74,9 @@ public class AddPlanServlet extends HttpServlet {
 
                 int id = 0;
                 String name = request.getParameter("name");
-                String description = request.getParameter("description");
+                description = request.getParameter("description");
                 String note = request.getParameter("note");
-                int dietID = Integer.parseInt(request.getParameter("recipeDietId"));
+                dietID = Integer.parseInt(request.getParameter("recipeDietId"));
                 int userID = Integer.parseInt(request.getParameter("userId"));
                 boolean status = false;
                 boolean isDaily = true;
@@ -87,8 +87,8 @@ public class AddPlanServlet extends HttpServlet {
                 java.sql.Date end_date = java.sql.Date.valueOf(end_date_str);
 
                 if (!PlanDAO.checkPlanTitleDuplicateByUserID(name, userID)) {
-                    errorList.add("Recipe title must be unique !");
-                    request.setAttribute("errorList", errorList);
+                    error = "Recipe title must be unique !";
+                    request.setAttribute("errorList", error);
                     url = ADD_PLAN;
                     RequestDispatcher rd = request.getRequestDispatcher(url);
                     rd.forward(request, response);
@@ -105,8 +105,6 @@ public class AddPlanServlet extends HttpServlet {
                     }
 
                     try {
-//                        isWeekAdded = PlanDAO.insertWeek(id, start_date);
-//                        int weekId = PlanDAO.getWeekIDByPlanId(id);
                         areDatesAdded = DateDAO.insertDateForDaily(start_date, id);
                     } catch (Exception ex) {
                         System.out.println("[addPlanServlet - ERROR]: " + ex.getMessage());
