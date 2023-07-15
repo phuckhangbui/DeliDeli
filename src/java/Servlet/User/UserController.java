@@ -92,6 +92,9 @@ public class UserController extends HttpServlet {
                     case "removeAllRecipeConfirmed":
                         url = "RemoveAllRecipeServlet";
                         break;
+                    case "deletePlanConfirmed":
+                        url = "DeletePlanServlet";
+                        break;
                     case "loadEditRecipe":
                         url = "LoadEditRecipeServlet";
                         break;

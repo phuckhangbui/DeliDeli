@@ -622,16 +622,15 @@ public class PlanDAO {
         }
         return false;
     }
-
-    public static boolean deleteAllRecipeByPlanID(int plan_id) {
+    
+    public static boolean deletePlanById(int plan_id) {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
 
-        String sql = "DELETE m\n"
-                + "FROM Meal m\n"
-                + "INNER JOIN [Date] d ON d.id = m.date_id\n"
-                + "WHERE d.plan_id = ?";
+        String sql = "DELETE d\n"
+                + "FROM Plan d\n"
+                + "WHERE d.id = ?";
 
         try {
             con = DBUtils.getConnection();
@@ -643,7 +642,7 @@ public class PlanDAO {
                 return rowsAffected > 0;
             }
         } catch (SQLException ex) {
-            System.out.println("Query error - deleteAllRecipeByPlanID: " + ex.getMessage());
+            System.out.println("Query error - deletePlanById: " + ex.getMessage());
         } finally {
             try {
                 if (rs != null) {

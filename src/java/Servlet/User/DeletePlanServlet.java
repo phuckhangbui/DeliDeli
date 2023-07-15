@@ -5,6 +5,8 @@
 package Servlet.User;
 
 import DAO.MealDAO;
+import DAO.PlanDAO;
+import DAO.PlanDateDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -16,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Daiisuke
  */
-public class RemoveAllRecipeServlet extends HttpServlet {
+public class DeletePlanServlet extends HttpServlet {
 
     private final static String ERROR = "error.jsp";
 
@@ -25,17 +27,21 @@ public class RemoveAllRecipeServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
 
         int plan_id = Integer.parseInt(request.getParameter("plan_id"));
+        int user_id = Integer.parseInt(request.getParameter("user_id"));
         boolean result = false;
 
         if (plan_id > 0) {
             result = MealDAO.deleteAllMealByPlanID(plan_id);
+            result = PlanDateDAO.deleteDateByPlanId(plan_id);
+            result = PlanDAO.deletePlanById(plan_id);
         }
 
         if (result) {
-            response.sendRedirect("UserController?action=editPlan&id=" + plan_id + "&isSearch=false");
+            response.sendRedirect("UserController?action=planManagement&userId=" + user_id);
         } else {
             response.sendRedirect(ERROR);
         }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

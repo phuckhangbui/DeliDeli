@@ -305,6 +305,45 @@ public class MealDAO {
         return false;
     }
 
+    public static boolean deleteAllMealByPlanID(int plan_id) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+
+        String sql = "DELETE m\n"
+                + "FROM Meal m\n"
+                + "INNER JOIN [Date] d ON d.id = m.date_id\n"
+                + "WHERE d.plan_id = ?";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, plan_id);
+
+                int rowsAffected = stm.executeUpdate();
+                return rowsAffected > 0;
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error - deleteAllRecipeByPlanID: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return false;
+    }
+
     public static void deleteMealByRecipeId(int id) {
         Connection cn = null;
 
@@ -329,7 +368,7 @@ public class MealDAO {
     }
 
     public static void main(String[] args) {
-        System.out.println(getMealByTimeAndDate(new java.sql.Time(System.currentTimeMillis()) , 5));
+        System.out.println(getMealByTimeAndDate(new java.sql.Time(System.currentTimeMillis()), 5));
     }
 
     public static ArrayList<NutritionDTO> getSumNutritionValuesByDateId(int date_id) {
