@@ -4,6 +4,7 @@
     Author     : Walking Bag
 --%>
 
+<%@page import="java.util.Calendar"%>
 <%@page import="DAO.DateDAO"%>
 <%@page import="DTO.DateDTO"%>
 <%@page import="DTO.NutritionDTO"%>
@@ -551,8 +552,95 @@
                                 <button type="button" class="" data-bs-toggle="modal" data-bs-target="#addRecipeToPlan<%= list.getId()%>">
                                     Add
                                 </button>
+                                <button type="button" class="" data-bs-toggle="modal" data-bs-target="#addMultiplesMealToPlan<%= list.getId()%>">
+                                    Add multiples
+                                </button>
                             </div>
                         </div>
+
+                        <!-- Multiples Meal-->
+                        <div class="modal fade" id="addMultiplesMealToPlan<%= list.getId()%>" tabindex="-1"
+                             aria-labelledby="addRecipeToPlanModalLabel<%= list.getId()%>" aria-hidden="true">
+                            <form action="UserController" method="post" class="modal-dialog add-recipe-to-plan-modal">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel<%= list.getId()%>">Adding Multiples Meals To Plan</h1>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div>What day do you want to cook this recipe?</div>
+                                        <div class="row choose-week-day flex-column">
+                                            <% for (PlanDateDTO dateList : planDate) {
+                                                    SimpleDateFormat dayOfWeekFormat = new SimpleDateFormat("EEEE");
+                                                    String dayOfWeek = dayOfWeekFormat.format(dateList.getDate());
+
+                                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                                                    String formattedDate = dateFormat.format(dateList.getDate());
+
+                                                    // Get the end date of the plan
+                                                    Date endDate = plan.getEnd_at();
+                                                    Calendar calendar = Calendar.getInstance();
+                                                    calendar.setTime(dateList.getDate());
+
+                                                    // Loop through the days between the selected day and the end date
+                                                    while (calendar.getTime().before(endDate) || calendar.getTime().equals(endDate)) {
+                                                        // Generate the checkboxes
+                                            %>
+                                            <div class="col-md-4">
+                                                <div class="d-flex">
+                                                    <input type="checkbox" id="date_id<%= dateList.getId()%>" name="date_id" value="<%= formattedDate%>">
+                                                    <label for="dateOfWeek<%= dateList.getId()%>"> <%= dayOfWeek%> (<%= formattedDate%>) </label>
+                                                </div>
+                                            </div>
+                                            <%
+
+                                                        // Increment the calendar by 1 day
+                                                        calendar.add(Calendar.DAY_OF_MONTH, 1);
+                                                        dayOfWeek = dayOfWeekFormat.format(calendar.getTime());
+                                                        formattedDate = dateFormat.format(calendar.getTime());
+                                                    }
+                                                }%>
+                                        </div>
+                                        <label>Select Meal:</label>
+                                        <div>
+                                            <input type="checkbox" id="breakfastCheckbox" name="meal" value="breakfast" onchange="updateTimeOptions()">
+                                            <label for="breakfastCheckbox">Breakfast</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" id="lunchCheckbox" name="meal" value="lunch" onchange="updateTimeOptions()">
+                                            <label for="lunchCheckbox">Lunch</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" id="dinnerCheckbox" name="meal" value="dinner" onchange="updateTimeOptions()">
+                                            <label for="dinnerCheckbox">Dinner</label>
+                                        </div>
+                                        <label for="recipe_count">Number of Recipes per meal:</label>
+                                        <select id="recipe_count" name="recipe_count">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                        </select>
+                                        <br><br>
+                                        <!--                                        <label for="start_time">Select Start Time:</label>
+                                                                                <select id="start_time" name="start_time"></select>
+                                                                                <input type="time" id="start_time" name="start_time">
+                                                                                <br><br>-->
+                                    </div>
+
+                                    <input type="hidden" id="recipeIdInput<%= list.getId()%>" name="recipe_id" value="<%= list.getId()%>">
+                                    <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
+                                    <% DateDTO date = DateDAO.getDateByPlanID(plan.getId());%>
+                                    <input type="hidden" name="week_id" value="<%= date.getWeek_id()%>" />
+                                    <input type="hidden" name="plan_start" value="<%= plan.getStart_at()%>" />
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" name="action" value="addPlanMultiplesMeal" class="add-recipe-to-plan-modal-button"
+                                                data-recipeid="<%= list.getId()%>" onclick="setRecipeId(this, '<%= list.getId()%>');">Add</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
                         <!-- Modal -->
                         <div class="modal fade" id="addRecipeToPlan<%= list.getId()%>" tabindex="-1"
                              aria-labelledby="addRecipeToPlanModalLabel<%= list.getId()%>" aria-hidden="true">
@@ -603,7 +691,7 @@
 
                                     <input type="hidden" id="recipeIdInput<%= list.getId()%>" name="recipe_id" value="<%= list.getId()%>">
                                     <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
-                                    <% DateDTO date = DateDAO.getDateByPlanID(plan.getId());%>
+                                    <% //DateDTO date = DateDAO.getDateByPlanID(plan.getId());%>
                                     <input type="hidden" name="date_id" value="<%= date.getId()%>" />
 
                                     <div class="modal-footer">

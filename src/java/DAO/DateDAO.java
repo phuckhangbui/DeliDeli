@@ -11,6 +11,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -169,6 +170,59 @@ public class DateDAO {
             }
         }
         return false;
+    }
+
+    public static int insertMultiplesDate(Date date, int week_id, int plan_id) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        int result = 0;
+
+        String sqlRemoveDuplicates = "DELETE FROM [Date] WHERE date = ? AND plan_id = ?";
+        String sqlInsert = "INSERT INTO [Date] (date, week_id, plan_id) VALUES (?, ?, ?)";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                // Remove duplicates
+                PreparedStatement duplicateRemovalStm = con.prepareStatement(sqlRemoveDuplicates);
+                duplicateRemovalStm.setDate(1, date);
+                duplicateRemovalStm.setInt(2, plan_id);
+                duplicateRemovalStm.executeUpdate();
+                duplicateRemovalStm.close();
+
+                // Insert the date
+                stm = con.prepareStatement(sqlInsert, Statement.RETURN_GENERATED_KEYS);
+                stm.setDate(1, date);
+                stm.setInt(2, week_id);
+                stm.setInt(3, plan_id);
+                stm.executeUpdate();
+
+                // Retrieve the generated keys
+                rs = stm.getGeneratedKeys();
+                if (rs.next()) {
+                    result = rs.getInt(1); // Retrieve the generated ID
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error - insertMultiplesDate: " + ex.getMessage());
+        } finally {
+            // Close database resources
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return result;
     }
 
     public static boolean insertDate(Date date, int week_id, int plan_id) {
