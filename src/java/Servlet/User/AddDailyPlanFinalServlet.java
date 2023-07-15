@@ -2,19 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package Servlet;
+package Servlet.User;
 
-import DAO.NewsDAO;
-import DAO.RecipeDAO;
-import DAO.SuggestionDAO;
-import DTO.DisplayRecipeDTO;
-import DTO.NewsDTO;
-import DTO.RecipeDTO;
-import DTO.UserDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +16,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author khang
  */
-public class TriggerAppServlet extends HttpServlet {
+public class AddDailyPlanFinalServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,25 +33,11 @@ public class TriggerAppServlet extends HttpServlet {
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             HttpSession session = request.getSession();
-            session.invalidate(); // Invalidate the current session
 
-            HashMap<Integer, String> cateMap = Utils.NavigationBarUtils.getMap("Category");
-            HashMap<Integer, String> cuisineMap = Utils.NavigationBarUtils.getMap("Cuisine");
-            HashMap<Integer, String> levelMap = Utils.NavigationBarUtils.getMap("Level");
-            HashMap<Integer, String> ingredientMap = Utils.NavigationBarUtils.getMap("Ingredient");
-            HashMap<Integer, String> dietMap = Utils.NavigationBarUtils.getMap("Diet");
-            HashMap<Integer, String> newsMap = Utils.NavigationBarUtils.getMap("NewsCategory");
-
-            HttpSession newSession = request.getSession(); // Create a new session
-            newSession.setAttribute("cateMap", cateMap);
-            newSession.setAttribute("cuisineMap", cuisineMap);
-            newSession.setAttribute("levelMap", levelMap);
-            newSession.setAttribute("ingredientMap", ingredientMap);
-            newSession.setAttribute("dietMap", dietMap);
-            newSession.setAttribute("newsMap", newsMap);
-
-            request.getRequestDispatcher("home.jsp").forward(request, response);
-
+            String name = (String) session.getAttribute("createPlanName");
+            String description = (String) session.getAttribute("createPlanDescription");
+            String dietId = (String) session.getAttribute("createPlanDietId");out.println("<!DOCTYPE html>");
+            
         }
     }
 

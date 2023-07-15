@@ -409,6 +409,18 @@
         <servlet-name>DeleteSavedRecipeServlet</servlet-name>
         <servlet-class>Servlet.User.DeleteSavedRecipeServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddDailyPlanServlet</servlet-name>
+        <servlet-class>Servlet.User.AddDailyPlanServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddWeeklyPlanServlet</servlet-name>
+        <servlet-class>Servlet.User.AddWeeklyPlanServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddDailyPlanFinalServlet</servlet-name>
+        <servlet-class>Servlet.User.AddDailyPlanFinalServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -721,6 +733,18 @@
         <servlet-name>DeleteSavedRecipeServlet</servlet-name>
         <url-pattern>/DeleteSavedRecipeServlet</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddDailyPlanServlet</servlet-name>
+        <url-pattern>/AddDailyPlanServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddWeeklyPlanServlet</servlet-name>
+        <url-pattern>/AddWeeklyPlanServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddDailyPlanFinalServlet</servlet-name>
+        <url-pattern>/AddDailyPlanFinalServlet</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             1000
@@ -729,4 +753,8 @@
     <welcome-file-list>
         <welcome-file>TriggerAppServlet</welcome-file>
     </welcome-file-list>
+    <error-page>
+        <exception-type>java.lang.Throwable</exception-type>
+        <location>/error.jsp</location>
+    </error-page>
 </web-app>

@@ -8,13 +8,39 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Something went wrong!</title>
+        <title>Delideli</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!--      Bootstrap         -->
+        <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css"/>
+        <!--      CSS         -->
+        <link rel="stylesheet" href="./styles/userStyle.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed:wght@300;400;500&family=Pacifico&display=swap"
+            rel="stylesheet">
     </head>
     <body>
-        <h1>Uh oh! Something went wrong!</h1>
-        <h1>You should've reconsidering where you were going...</h1>
-        <h1>Entering the prohibited lair, YOU SHALL BE EXTERMINATED</h1>
-        Click here to go back to home <a href="home.jsp"> Home </a>
+        <div class="error-background">
+            <div class="error-background-404">
+                500
+            </div>
+            <div class="error-background-message">
+                Oops, Delideli's Server Error
+            </div>
+            <div class="error-background-explaination">
+                It's seem that the server is hitting a brick wall, go back before to late!!!
+            </div>
+            <a class="error-background-go-back" href="TriggerAppServlet" onclick="redirectToServlet()">
+                Back To Home<span>></span>
+            </a>
+
+            <script>
+                function redirectToServlet() {
+                    window.location.href = "TriggerAppServlet";
+                }
+            </script>
+        </div>
     </body>
 </html>
