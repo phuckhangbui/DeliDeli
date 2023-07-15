@@ -422,6 +422,10 @@
         <servlet-name>DisablePlanServlet</servlet-name>
         <servlet-class>Servlet.User.DisablePlanServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>RemoveAllRecipeServlet</servlet-name>
+        <servlet-class>Servlet.User.RemoveAllRecipeServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -737,6 +741,10 @@
     <servlet-mapping>
         <servlet-name>DisablePlanServlet</servlet-name>
         <url-pattern>/DisablePlanServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RemoveAllRecipeServlet</servlet-name>
+        <url-pattern>/RemoveAllRecipeServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

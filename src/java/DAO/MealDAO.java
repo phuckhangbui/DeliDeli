@@ -186,13 +186,13 @@ public class MealDAO {
         return result;
     }
 
-    public static boolean addMealById(int date_id, int recipe_id, Time start_time, Time end_time) {
+    public static boolean addMealById(int date_id, int recipe_id, Time start_time) {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
 
-        String sql = "INSERT INTO [Meal](date_id, recipe_id, start_time, end_time, isNotified)\n"
-                + "VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO [Meal](date_id, recipe_id, start_time, isNotified)\n"
+                + "VALUES (?, ?, ?, ?)";
 
         try {
             con = DBUtils.getConnection();
@@ -201,8 +201,7 @@ public class MealDAO {
                 stm.setInt(1, date_id);
                 stm.setInt(2, recipe_id);
                 stm.setTime(3, start_time);
-                stm.setTime(4, end_time);
-                stm.setBoolean(5, false);
+                stm.setBoolean(4, false);
 
                 int effectRows = stm.executeUpdate();
                 if (effectRows > 0) {
@@ -210,7 +209,7 @@ public class MealDAO {
                 }
             }
         } catch (SQLException ex) {
-            System.out.println("Query error - insertMeal: " + ex.getMessage());
+            System.out.println("Query error - addMealById: " + ex.getMessage());
         } finally {
             try {
                 if (rs != null) {

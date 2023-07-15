@@ -31,7 +31,6 @@ public class DisablePlanServlet extends HttpServlet {
         plan.setStatus(newStatus);
         
         PlanDAO.updateStatusByPlanID(plan_id, newStatus);
-        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

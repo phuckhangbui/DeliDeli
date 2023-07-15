@@ -77,7 +77,7 @@
                         <!-- Modal -->
                         <div class="modal fade" id="removeAllRecipes" tabindex="-1"
                              aria-labelledby="removeAllRecipesModalLabel" aria-hidden="true">
-                            <form class="modal-dialog">
+                            <form action="UserController" class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h1 class="modal-title fs-5" id="removeAllRecipesModalLabel">Remove All Recipes</h1>
@@ -88,7 +88,10 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
                                                 data-bs-dismiss="modal">No, I changed my mind</button>
-                                        <button type="button" class="remove-recipe-from-plan-button">Yes, remove all of them</button>
+                                        
+                                        <input type="text" name="plan_id" value="<%= plan.getId() %>" />
+                                        
+                                        <button type="button" action="removeAllRecipeConfirmed" class="remove-recipe-from-plan-button">Yes, remove all of them</button>
                                     </div>
                                 </div>
                             </form>
@@ -594,10 +597,6 @@
                                             <label for="eating-time">What time of the day do you want to have this meal ?</label>
                                             <br>
                                             <input type="time" id="start_time" name="start_time">
-                                            <br>
-                                            <label for="eating-time">Time to stop having this meal ?</label>
-                                            <br>
-                                            <input type="time" id="end_time" name="end_time">
                                         </div>
                                     </div>
 

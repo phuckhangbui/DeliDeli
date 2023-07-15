@@ -621,6 +621,44 @@ public class PlanDAO {
         }
         return false;
     }
+    
+//    public static boolean removeAllRecipeByPlanID(int plan_id) {
+//        Connection con = null;
+//        PreparedStatement stm = null;
+//        ResultSet rs = null;
+//
+//        String sql = "UPDATE [Plan]\n"
+//                + "SET status = ?\n"
+//                + "WHERE id = ?";
+//
+//        try {
+//            con = DBUtils.getConnection();
+//            if (con != null) {
+//                stm = con.prepareStatement(sql);
+//                stm.setBoolean(1, plan_id);
+//
+//                int rowsAffected = stm.executeUpdate();
+//                return rowsAffected > 0;
+//            }
+//        } catch (SQLException ex) {
+//            System.out.println("Query error - updatePlanByID: " + ex.getMessage());
+//        } finally {
+//            try {
+//                if (rs != null) {
+//                    rs.close();
+//                }
+//                if (stm != null) {
+//                    stm.close();
+//                }
+//                if (con != null) {
+//                    con.close();
+//                }
+//            } catch (SQLException ex) {
+//                System.out.println("Error closing database resources: " + ex.getMessage());
+//            }
+//        }
+//        return false;
+//    }
 
     public static void main(String[] args) {
 //        ArrayList<UserDTO> list = AdminDAO.searchAccount("a");
