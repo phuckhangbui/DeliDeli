@@ -29,7 +29,7 @@
 
     <body>
         <!--         The navigation bar       -->
-        <%@include file="header.jsp" %>
+        <%@include file="homeHeader.jsp" %>
 
         <!--         The banner       -->
         <%@include file="banner.jsp" %>
