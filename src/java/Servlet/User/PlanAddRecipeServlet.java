@@ -4,13 +4,16 @@
  */
 package Servlet.User;
 
+import DAO.DateDAO;
 import DAO.MealDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -30,35 +33,37 @@ public class PlanAddRecipeServlet extends HttpServlet {
 
             boolean result = false;
 
-            int date_id = Integer.parseInt(request.getParameter("date_id"));
-            int plan_id = Integer.parseInt(request.getParameter("plan_id"));
+            String dateId = request.getParameter("date_id");
+            String[] timeId = request.getParameterValues("timeId");
             int recipe_id = Integer.parseInt(request.getParameter("recipe_id"));
-            String start_timeStr = request.getParameter("start_time");
-            String meal = request.getParameter("meal");
             int recipe_count = Integer.parseInt(request.getParameter("recipe_count"));
-            //String end_timeStr = request.getParameter("end_time");
+            int plan_id = Integer.parseInt(request.getParameter("plan_id"));
+            int week_id = Integer.parseInt(request.getParameter("week_id"));
+            String plantStart = request.getParameter("plan_start");
 
-            Time start_time = null;
+            //List<Integer> dateIdList = new ArrayList<>();
+            List<Time> timeList = new ArrayList<>();
 
-            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-            java.util.Date parsedStart = timeFormat.parse(start_timeStr);
-            start_time = new Time(parsedStart.getTime());
+//            if (selectedDates != null) {
+//                for (String dateString : selectedDates) {
+//                    java.sql.Date date = java.sql.Date.valueOf(dateString);
+//                    int date_id = DateDAO.insertMultiplesDate(date, week_id, plan_id);
+//                    dateIdList.add(date_id);
+//                }
+//            }
+            if (timeId != null) {
+                for (String timeStr : timeId) {
+                    SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+                    java.util.Date parsedStart = timeFormat.parse(timeStr);
+                    Time time = new Time(parsedStart.getTime());
+                    timeList.add(time);
+                }
+            }
 
-//            System.out.println("recipe_id recieved - " + recipe_id);
-//            System.out.println("plan_id recieved - " + plan_id);
-//            System.out.println("date_id recieved - " + date_id);
-//            System.out.println("start_time recieved - " + start_time);
-//            System.out.println("end_time recieved - " + end_time);
-            if (date_id != 0 && plan_id != 0 && recipe_id != 0 && start_timeStr != null) {
+            for (Time time : timeList) {
                 for (int i = 0; i < recipe_count; i++) {
-                    // Add the recipe to the plan with the current start time
-                    result = MealDAO.addMealById(date_id, recipe_id, start_time);
-
-                    // Increment the start time by 1 hour for the next recipe
-                    Calendar cal = Calendar.getInstance();
-                    cal.setTime(start_time);
-                    cal.add(Calendar.HOUR_OF_DAY, 1);
-                    start_time = new Time(cal.getTime().getTime());
+                    result = MealDAO.addMealById(new Integer(dateId), recipe_id, time);
+//                    System.out.println("Success");
                 }
             }
 
@@ -67,7 +72,6 @@ public class PlanAddRecipeServlet extends HttpServlet {
 //            out.println(recipe_id);
 //            out.println(start_timeStr);
 //            out.println(recipe_count);
-
             if (result) {
                 response.sendRedirect("UserController?action=editPlan&id=" + plan_id + "&isSearch=false");
             } else {
