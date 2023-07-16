@@ -32,10 +32,11 @@ public class PlanSearchServlet extends HttpServlet {
         String txtsearch = request.getParameter("txtsearch").toLowerCase();
         String searchBy = request.getParameter("searchBy");
         String plan_id = request.getParameter("planId").toLowerCase();
+        int dietId = Integer.parseInt(request.getParameter("dietId"));
         int user_id = Integer.parseInt(request.getParameter("user_id"));
 
         if (isPlan) {
-            ArrayList<RecipeDTO> list = RecipeDAO.searchRecipeForPlan(txtsearch, searchBy, user_id);
+            ArrayList<RecipeDTO> list = NavigationBarUtils.searchRecipeForPlan(txtsearch, searchBy, user_id, dietId);
             ArrayList<DisplayRecipeDTO> displayList = new ArrayList<>();
             for (RecipeDTO r : list) {
                 String thumbnailPath = RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath();

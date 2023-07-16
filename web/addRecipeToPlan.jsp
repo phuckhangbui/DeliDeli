@@ -567,6 +567,8 @@
                                 <input type="hidden" name="isPlan" value="true" />
                                 <input type="hidden" name="planId" value="<%= plan.getId()%>"/>
                                 <input type="hidden" name="user_id" value="<%= user.getId()%>"/>
+                                <input type="hidden" name="dietId" value="<%= plan.getDiet_id() %>"/>
+
                                 <select name="searchBy" id="">
                                     <option value="Public" selected="selected">Public</option>
                                     <option value="Personal">Personal</option>
