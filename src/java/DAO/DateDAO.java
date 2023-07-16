@@ -43,8 +43,10 @@ public class DateDAO {
                     Date date = rs.getDate("date");
                     int week_id = rs.getInt("week_id");
                     plan_id = rs.getInt("plan_id");
+                    boolean isSync = rs.getBoolean("is_sync");
+                    boolean isTemplate = rs.getBoolean("is_template");
 
-                    DateDTO planDate = new DateDTO(id, date, week_id, plan_id);
+                    DateDTO planDate = new DateDTO(id, date, week_id, plan_id, isSync, isTemplate);
                     result.add(planDate);
                 }
             }
@@ -89,8 +91,10 @@ public class DateDAO {
                     Date date = rs.getDate("date");
                     int week_id = rs.getInt("week_id");
                     plan_id = rs.getInt("plan_id");
+                    boolean isSync = rs.getBoolean("is_sync");
+                    boolean isTemplate = rs.getBoolean("is_template");
 
-                    result = new DateDTO(id, date, week_id, plan_id);
+                    result = new DateDTO(id, date, week_id, plan_id, isSync, isTemplate);
                 }
             }
         } catch (SQLException ex) {

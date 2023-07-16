@@ -50,8 +50,6 @@ public class AddDailyPlanServlet extends HttpServlet {
 
             java.sql.Date end_date = new java.sql.Date(calendar.getTimeInMillis());
 
-            
-
             String name = (String) session.getAttribute("createPlanTitle");  // title in fe, name in be lmao
             String description = (String) session.getAttribute("createPlanDescription");
             int dietId = (int) session.getAttribute("createPlanDietId");
@@ -68,13 +66,24 @@ public class AddDailyPlanServlet extends HttpServlet {
             }
 
             try {
+//                // Loop from start_date to end_date
+//                Calendar loopDate = Calendar.getInstance();
+//                loopDate.setTime(start_date);
+//
+//                while (loopDate.getTime().before(end_date) || loopDate.getTime().equals(end_date)) {
+//                    // Insert daily meal
+//                    java.sql.Date currentDate = new java.sql.Date(loopDate.getTimeInMillis());
+//                    boolean isMealInserted = DateDAO.insertDateForDaily(currentDate, id);
+//
+//                    // Increment loop date by one day
+//                    loopDate.add(Calendar.DATE, 1);
+//                }
                 boolean areDatesAdded = DateDAO.insertDateForDaily(start_date, id);
             } catch (Exception ex) {
                 System.out.println("[addPlanServlet - ERROR]: " + ex.getMessage());
                 response.sendRedirect("error.jsp");
             }
-            
-            
+
             session.setAttribute("createPlanTitle", null);
             session.setAttribute("createPlanDescription", null);
             session.setAttribute("createPlanDietId", null);

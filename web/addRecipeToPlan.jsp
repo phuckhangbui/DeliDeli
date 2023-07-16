@@ -593,9 +593,10 @@
                                 %>
                             </a>
                             <div class="add-recipe-to-plan-content-recipe-button">
-                                <button type="button" class="" data-bs-toggle="modal" data-bs-target="#addRecipeToPlan<%= list.getId()%>">
+<!--                                <button type="button" class="" data-bs-toggle="modal" data-bs-target="#addRecipeToPlan<%= list.getId()%>">
                                     Add
                                 </button>
+-->
                                 <button type="button" class="" data-bs-toggle="modal" data-bs-target="#addMultiplesMealToPlan<%= list.getId()%>">
                                     Add multiples
                                 </button>
@@ -626,37 +627,42 @@
                                                     calendar.setTime(dateList.getDate());
 
                                                     // Loop through the days between the selected day and the end date
-                                                    while (calendar.getTime().before(endDate) || calendar.getTime().equals(endDate)) {
+                                                    //while (calendar.getTime().before(endDate) || calendar.getTime().equals(endDate)) {
                                                         // Generate the checkboxes
-                                            %>
-                                            <div class="col-md-4">
+%>
+<!--                                            <div class="col-md-4">
                                                 <div class="d-flex">
                                                     <input type="checkbox" id="date_id<%= dateList.getId()%>" name="date_id" value="<%= formattedDate%>">
                                                     <label for="dateOfWeek<%= dateList.getId()%>"> <%= dayOfWeek%> (<%= formattedDate%>) </label>
                                                 </div>
                                             </div>
+-->
                                             <%
 
                                                         // Increment the calendar by 1 day
-                                                        calendar.add(Calendar.DAY_OF_MONTH, 1);
-                                                        dayOfWeek = dayOfWeekFormat.format(calendar.getTime());
-                                                        formattedDate = dateFormat.format(calendar.getTime());
-                                                    }
+                                                        //calendar.add(Calendar.DAY_OF_MONTH, 1);
+                                                        //dayOfWeek = dayOfWeekFormat.format(calendar.getTime());
+                                                        //formattedDate = dateFormat.format(calendar.getTime());
+                                                    //}
                                                 }%>
                                         </div>
-                                        <label>Select Meal:</label>
-                                        <div>
-                                            <input type="checkbox" id="breakfastCheckbox" name="meal" value="breakfast" onchange="updateTimeOptions()">
-                                            <label for="breakfastCheckbox">Breakfast</label>
+                                        <div class="row add-recipe-info-ingredient">
+                                            <div class="draggable-container-time col-md-8 add-recipe-info-ingredient-content">
+                                                <div class="add-recipe-info-header">Time <span>*</span></div>
+                                                <div class="draggable-time-container">
+                                                    <!-- Existing draggable time elements -->
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 add-recipe-info-ingredient-button">
+                                                <button type="button" id="btnToggleTime">
+                                                    <img src="assets/drag-icon.svg" alt="">
+                                                </button>
+                                                <button type="button" id="btnAddTime">
+                                                    Add Time
+                                                </button>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <input type="checkbox" id="lunchCheckbox" name="meal" value="lunch" onchange="updateTimeOptions()">
-                                            <label for="lunchCheckbox">Lunch</label>
-                                        </div>
-                                        <div>
-                                            <input type="checkbox" id="dinnerCheckbox" name="meal" value="dinner" onchange="updateTimeOptions()">
-                                            <label for="dinnerCheckbox">Dinner</label>
-                                        </div>
+
                                         <label for="recipe_count">Number of Recipes per meal:</label>
                                         <select id="recipe_count" name="recipe_count">
                                             <option value="1">1</option>
@@ -664,10 +670,7 @@
                                             <option value="3">3</option>
                                         </select>
                                         <br><br>
-                                        <!--                                        <label for="start_time">Select Start Time:</label>
-                                                                                <select id="start_time" name="start_time"></select>
-                                                                                <input type="time" id="start_time" name="start_time">
-                                                                                <br><br>-->
+
                                     </div>
 
                                     <input type="hidden" id="recipeIdInput<%= list.getId()%>" name="recipe_id" value="<%= list.getId()%>">
@@ -675,10 +678,11 @@
                                     <% DateDTO date = DateDAO.getDateByPlanID(plan.getId());%>
                                     <input type="hidden" name="week_id" value="<%= date.getWeek_id()%>" />
                                     <input type="hidden" name="plan_start" value="<%= plan.getStart_at()%>" />
+                                    <input type="hidden" name="date_id" value="<%= date.getId()%>" />
 
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <button type="submit" name="action" value="addPlanMultiplesMeal" class="add-recipe-to-plan-modal-button"
+                                        <button type="submit" name="action" value="addPlanRecipe" class="add-recipe-to-plan-modal-button"
                                                 data-recipeid="<%= list.getId()%>" onclick="setRecipeId(this, '<%= list.getId()%>');">Add</button>
                                     </div>
                                 </div>
@@ -686,7 +690,7 @@
                         </div>
 
                         <!-- Modal -->
-                        <div class="modal fade" id="addRecipeToPlan<%= list.getId()%>" tabindex="-1"
+<!--                        <div class="modal fade" id="addRecipeToPlan<%= list.getId()%>" tabindex="-1"
                              aria-labelledby="addRecipeToPlanModalLabel<%= list.getId()%>" aria-hidden="true">
                             <form action="UserController" method="post" class="modal-dialog add-recipe-to-plan-modal">
                                 <div class="modal-content">
@@ -694,9 +698,9 @@
                                         <h1 class="modal-title fs-5" id="exampleModalLabel<%= list.getId()%>">Adding Recipe To Plan</h1>
                                     </div>
                                     <div class="modal-body">
-                                        <!--                                        <div>
+                                                                                <div>
                                                                                     <h1> Time is <span id="currentTime" ></span></h1>
-                                                                                </div>-->
+                                                                                </div>
                                         <div>What day do you want to cook this recipe ?</div>
                                         <div class="row choose-week-day">
                                             <% for (PlanDateDTO dateList : planDate) {
@@ -707,19 +711,19 @@
                                                     String formattedDate = dateFormat.format(dateList.getDate());
                                             %>
                                             <div class="col-md-4">
-<!--                                                <input type="checkbox" id="date_id<%= dateList.getId()%>" name="date_id" value="<%= dateList.getId()%>">-->
+                                                <input type="checkbox" id="date_id<%= dateList.getId()%>" name="date_id" value="<%= dateList.getId()%>">
                                                 <label for="dateOfWeek<%= dateList.getId()%>"> <%= dayOfWeek%> (<%= formattedDate%>) </label>
                                             </div>
                                             <% }%>
                                         </div>
-                                        <!--                                        <label for="meal">Select Meal:</label>
+                                                                                <label for="meal">Select Meal:</label>
                                                                                 <select id="meal" name="meal" onchange="updateTimeOptions()">
                                                                                     <option value="breakfast">Breakfast</option>
                                                                                     <option value="lunch">Lunch</option>
                                                                                     <option value="dinner">Dinner</option>
                                                                                 </select>
                                                                                 <br><br>
-                                        -->
+                                        
                                         <label for="recipe_count">Number of Recipes:</label>
                                         <select id="recipe_count" name="recipe_count">
                                             <option value="1">1</option>
@@ -728,7 +732,7 @@
                                         </select>
                                         <br><br>
                                         <label for="start_time">Select Start Time:</label>
-                                        <!--<select id="start_time" name="start_time"></select>-->
+                                        <select id="start_time" name="start_time"></select>
                                         <input type="time" id="start_time" name="start_time">
                                         <br><br>
                                     </div>
@@ -745,76 +749,219 @@
                                     </div>
                                 </div>
                             </form>
-                        </div>
+                        </div>-->
 
                         <script>
-                            const mealSelect = document.getElementById("meal");
-                            const startTimeSelect = document.getElementById("start_time");
+                            document.addEventListener("DOMContentLoaded", function () {
+                                const modal = document.getElementById("addMultiplesMealToPlan<%= list.getId()%>");
 
-                            // Map of time options based on meal
-                            const timeOptions = {
-                                breakfast: ["08:00", "08:30", "09:00", "09:30"],
-                                lunch: ["12:00", "12:30", "13:00", "13:30"],
-                                dinner: ["18:00", "18:30", "19:00", "19:30"]
-                            };
+                                let draggablesTime = []; // Array to store draggable time elements
+                                let dragTime = false; // Flag to track drag mode
 
-                            // Function to update time options based on selected meal
-                            function updateTimeOptions() {
-                                const selectedMeal = mealSelect.value;
-                                const options = timeOptions[selectedMeal];
+                                // Function to toggle drag mode
+                                function toggleDragModeTime(enableDragMode) {
+                                    dragTime = enableDragMode;
+                                    draggablesTime.forEach((draggable) => {
+                                        draggable.draggable = dragTime;
+                                        draggable.classList.toggle('drag-mode-disabled', !dragTime);
+                                        draggable.style.cursor = dragTime ? 'grab' : 'default';
+                                    });
+                                }
 
-                                // Clear existing options
-                                startTimeSelect.innerHTML = "";
+                                // Function to create options for select element
+                                function createOptions(selectElement) {
+                                    for (let hour = 0; hour < 24; hour++) {
+                                        const time = hour.toString().padStart(2, '0') + ':00'; // Format the time as HH:00
+                                        const option = document.createElement('option');
+                                        option.value = time;
+                                        option.text = time;
+                                        selectElement.appendChild(option);
+                                    }
+                                    selectElement.setAttribute('required', true); // Add the "required" attribute
+                                }
 
-                                // Add new options
-                                options.forEach(time => {
-                                    const option = document.createElement("option");
-                                    option.text = time;
-                                    option.value = time;
-                                    startTimeSelect.add(option);
+                                // Add event listener to the toggle button
+                                modal.querySelector("#btnToggleTime").addEventListener('click', () => {
+                                    toggleDragModeTime(!dragTime); // Toggle the drag mode
                                 });
-                            }
 
-                            // Event listener for modal open
-                            const modal = document.getElementById("addRecipeToPlan<%= list.getId()%>");
-                            modal.addEventListener("shown.bs.modal", updateTimeOptions);
+                                // Add event listener to the add button
+                                modal.querySelector("#btnAddTime").addEventListener('click', () => {
+                                    if (!dragTime) {
+                                        const draggableContainer = modal.querySelector('.draggable-container-time');
+                                        const newDraggable = document.createElement('p');
+                                        newDraggable.classList.add('draggable-time');
+                                        newDraggable.classList.add('draggable');
+                                        newDraggable.draggable = dragTime;
+
+                                        const newSelect = document.createElement('select');
+                                        newSelect.classList.add('timeList');
+                                        newSelect.name = 'timeId';
+                                        createOptions(newSelect);
+
+                                        const deleteButton = document.createElement('button');
+                                        deleteButton.type = 'button';
+                                        deleteButton.classList.add('btnDeleteTime');
+
+                                        const deleteImage = document.createElement('img');
+                                        deleteImage.src = 'assets/close-icon.svg';
+                                        deleteImage.alt = 'Delete';
+
+                                        deleteButton.appendChild(deleteImage);
+                                        deleteButton.addEventListener('click', () => {
+                                            newDraggable.remove();
+                                            if (draggablesTime.length === 1) {
+                                                disableDeleteButtons();
+                                            }
+                                        });
+
+                                        newDraggable.appendChild(newSelect);
+                                        newDraggable.appendChild(deleteButton);
+
+                                        draggableContainer.appendChild(newDraggable);
+                                        draggablesTime = draggableContainer.querySelectorAll('.draggable-time');
+
+                                        enableDeleteButtons();
+                                    }
+                                });
+
+                                // Function to get the closest element during drag and drop
+                                function getDragAfterElement(container, y) {
+                                    const draggableElements = [...container.querySelectorAll('.draggable:not(.dragging)')];
+                                    return draggableElements.reduce((closest, child) => {
+                                        const box = child.getBoundingClientRect();
+                                        const offset = y - box.top - box.height / 2;
+                                        if (offset < 0 && offset > closest.offset) {
+                                            return {offset: offset, element: child};
+                                        } else {
+                                            return closest;
+                                        }
+                                    }, {offset: Number.NEGATIVE_INFINITY}).element;
+                                }
+
+                                // Function to enable delete buttons
+                                function enableDeleteButtons() {
+                                    modal.querySelectorAll('.btnDeleteTime').forEach((button) => {
+                                        button.addEventListener('click', () => {
+                                            button.parentNode.remove();
+                                            if (draggablesTime.length === 1) {
+                                                disableDeleteButtons();
+                                            }
+                                        });
+                                    });
+                                }
+
+                                // Function to disable delete buttons
+                                function disableDeleteButtons() {
+                                    modal.querySelectorAll('.btnDeleteTime').forEach((button) => {
+                                        button.disabled = true;
+                                    });
+                                }
+
+                                // Add event listener to the modal's shown event
+                                modal.addEventListener('shown.bs.modal', function () {
+                                    const draggableContainer = modal.querySelector('.draggable-container-time');
+                                    const btnToggleTime = modal.querySelector('#btnToggleTime');
+                                    const btnAddTime = modal.querySelector('#btnAddTime');
+                                    const btnDeleteTime = modal.querySelectorAll('.btnDeleteTime');
+
+                                    draggablesTime = draggableContainer.querySelectorAll('.draggable-time');
+
+                                    toggleDragModeTime(dragTime);
+
+                                    btnToggleTime.addEventListener('click', () => {
+                                        toggleDragModeTime(!dragTime);
+                                    });
+
+                                    btnAddTime.addEventListener('click', () => {
+                                        // Rest of the code...
+                                    });
+
+                                    enableDeleteButtons();
+
+                                    draggableContainer.addEventListener('dragover', (e) => {
+                                        e.preventDefault();
+                                        const afterElement = getDragAfterElement(draggableContainer, e.clientY);
+                                        const draggable = document.querySelector('.dragging');
+                                        if (afterElement == null) {
+                                            draggableContainer.appendChild(draggable);
+                                        } else {
+                                            draggableContainer.insertBefore(draggable, afterElement);
+                                        }
+                                    });
+                                });
+                            });
+                        </script>
+
+
+                        <script>
+//                            const mealSelect = document.getElementById("meal");
+//                            const startTimeSelect = document.getElementById("start_time");
+//
+//                            // Map of time options based on meal
+//                            const timeOptions = {
+//                                breakfast: ["08:00", "08:30", "09:00", "09:30"],
+//                                lunch: ["12:00", "12:30", "13:00", "13:30"],
+//                                dinner: ["18:00", "18:30", "19:00", "19:30"]
+//                            };
+//
+//                            // Function to update time options based on selected meal
+//                            function updateTimeOptions() {
+//                                const selectedMeal = mealSelect.value;
+//                                const options = timeOptions[selectedMeal];
+//
+//                                // Clear existing options
+//                                startTimeSelect.innerHTML = "";
+//
+//                                // Add new options
+//                                options.forEach(time => {
+//                                    const option = document.createElement("option");
+//                                    option.text = time;
+//                                    option.value = time;
+//                                    startTimeSelect.add(option);
+//                                });
+//                            }
+//
+//                            // Event listener for modal open
+//                            const modal = document.getElementById("addRecipeToPlan<%= list.getId()%>");
+//                            modal.addEventListener("shown.bs.modal", updateTimeOptions);
                         </script>
 
                         <script>
-                            function updateTimeSelects() {
-                                const selectedMeal = mealSelect.value;
-                                const options = timeOptions[selectedMeal];
-
-                                const recipeCount = parseInt(recipeCountSelect.value);
-
-                                // Clear the existing time selects container
-                                timeSelectsContainer.innerHTML = "";
-
-                                // Generate the time selects based on the recipe count
-                                for (let i = 1; i <= recipeCount; i++) {
-                                    const startTimeLabel = document.createElement("label");
-                                    startTimeLabel.setAttribute("for", `start_time_${i}`);
-                                    startTimeLabel.textContent = `Select Start Time for Recipe ${i}:`;
-
-                                    const startTimeSelect = document.createElement("select");
-                                    startTimeSelect.setAttribute("id", `start_time_${i}`);
-                                    startTimeSelect.setAttribute("name", `start_time_${i}`);
-
-                                    // Add new options for the current time select
-                                    options.forEach(time => {
-                                        const option = document.createElement("option");
-                                        option.text = time;
-                                        option.value = time;
-                                        startTimeSelect.add(option);
-                                    });
-
-                                    // Add the label and select to the time selects container
-                                    timeSelectsContainer.appendChild(startTimeLabel);
-                                    timeSelectsContainer.appendChild(startTimeSelect);
-                                    timeSelectsContainer.appendChild(document.createElement("br"));
-                                    timeSelectsContainer.appendChild(document.createElement("br"));
-                                }
-                            }
+//                            function updateTimeSelects() {
+//                                const selectedMeal = mealSelect.value;
+//                                const options = timeOptions[selectedMeal];
+//
+//                                const recipeCount = parseInt(recipeCountSelect.value);
+//
+//                                // Clear the existing time selects container
+//                                timeSelectsContainer.innerHTML = "";
+//
+//                                // Generate the time selects based on the recipe count
+//                                for (let i = 1; i <= recipeCount; i++) {
+//                                    const startTimeLabel = document.createElement("label");
+//                                    startTimeLabel.setAttribute("for", `start_time_${i}`);
+//                                    startTimeLabel.textContent = `Select Start Time for Recipe ${i}:`;
+//
+//                                    const startTimeSelect = document.createElement("select");
+//                                    startTimeSelect.setAttribute("id", `start_time_${i}`);
+//                                    startTimeSelect.setAttribute("name", `start_time_${i}`);
+//
+//                                    // Add new options for the current time select
+//                                    options.forEach(time => {
+//                                        const option = document.createElement("option");
+//                                        option.text = time;
+//                                        option.value = time;
+//                                        startTimeSelect.add(option);
+//                                    });
+//
+//                                    // Add the label and select to the time selects container
+//                                    timeSelectsContainer.appendChild(startTimeLabel);
+//                                    timeSelectsContainer.appendChild(startTimeSelect);
+//                                    timeSelectsContainer.appendChild(document.createElement("br"));
+//                                    timeSelectsContainer.appendChild(document.createElement("br"));
+//                                }
+//                            }
 
                         </script>
 
