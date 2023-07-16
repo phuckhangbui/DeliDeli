@@ -41,20 +41,29 @@ public class PlanDetailServlet extends HttpServlet {
         ArrayList<DateDTO> displayDate = new ArrayList<>();
 
         LocalDate currentDate = LocalDate.now();
+        java.sql.Date startDate = plan.getStart_at();
+        LocalDate startLocalDate = startDate.toLocalDate();
         int distanceInDays = 0;
 
         String distanceInDaysParam = request.getParameter("distanceInDays");
         if (distanceInDaysParam != null) {
             distanceInDays = Integer.parseInt(distanceInDaysParam);
-        }
-        
-        System.out.println("Distance in days - " + distanceInDays);
+            request.setAttribute("distanceInDays", distanceInDays);
 
-        for (DateDTO date : planDate) {
-            LocalDate currentDateInList = date.getDate().toLocalDate();
-            if (currentDateInList.equals(currentDate.plusDays(distanceInDays))) {
-                displayDate.add(date);
-                break; // Break after finding the date with the desired distance
+            for (DateDTO date : planDate) {
+                LocalDate dateList = date.getDate().toLocalDate();
+                if (dateList.equals(startLocalDate.plusDays(distanceInDays))) {
+                    displayDate.add(date);
+                    break; // Break after finding the date with the desired distance
+                }
+            }
+        } else {
+            for (DateDTO date : planDate) {
+                LocalDate dateList = date.getDate().toLocalDate();
+                if (dateList.equals(currentDate)) {
+                    displayDate.add(date);
+                    break; // Break after finding the date with the desired distance
+                }
             }
         }
 
