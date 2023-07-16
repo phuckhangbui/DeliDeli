@@ -549,11 +549,11 @@
                                 <input type="text" name="txtsearch" placeholder="What recipes are you searching for ?">
                                 <input type="hidden" name="isPlan" value="true" />
                                 <input type="hidden" name="planId" value="<%= plan.getId()%>"/>
+                                <input type="hidden" name="user_id" value="<%= user.getId() %>"/>
                                 <select name="searchBy" id="">
-                                    <option value="Title" selected="selected">TITLE</option>
-                                    <option value="Category">CATEGORIES</option>
-                                    <option value="Cuisine">CUISINES</option>
-                                    <option value="Diet">DIETS</option>
+                                    <option value="Public" selected="selected">Public</option>
+                                    <option value="Personal">Personal</option>
+                                    <option value="Saved">Saved</option>
                                 </select>
                             </form>
                         </div>
