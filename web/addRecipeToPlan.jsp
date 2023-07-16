@@ -212,7 +212,7 @@
                             %>
 
                             <div class="col-md-3 plan-table-week-column">
-                                <div class="plan-table-week-header">Breakfast</div>
+                                <div class="plan-table-week-header">Morning</div>
 
                                 <div class="plan-table-week-recipe">
                                     <% if (breakfastMeals != null && breakfastMeals.size() != 0) {
@@ -283,7 +283,7 @@
 
 
                             <div class="col-md-3 plan-table-week-column">
-                                <div class="plan-table-week-header">Lunch</div>
+                                <div class="plan-table-week-header">Afternoon</div>
 
                                 <div class="plan-table-week-recipe">
                                     <% if (lunchMeals != null && lunchMeals.size() != 0) {
@@ -352,7 +352,7 @@
 
 
                             <div class="col-md-3 plan-table-week-column">
-                                <div class="plan-table-week-header">Dinner</div>
+                                <div class="plan-table-week-header">Night</div>
 
                                 <div class="plan-table-week-recipe">
                                     <% if (dinnerMeals != null && dinnerMeals.size() != 0) {

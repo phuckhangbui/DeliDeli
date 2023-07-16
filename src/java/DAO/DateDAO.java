@@ -69,7 +69,6 @@ public class DateDAO {
         }
         return result;
     }
-
 // This will select all current date plan and then select the one that hasn't been notified.
 //    public static PlanDateDTO getActiveRecipePlan(Date currentDate, int plan_id) {
 //        Connection con = null;
@@ -122,8 +121,6 @@ public class DateDAO {
 //        }
 //        return result;
 //    }
-    
-
     public static DateDTO getDateByPlanID(int plan_id) {
         Connection con = null;
         PreparedStatement stm = null;
@@ -367,7 +364,7 @@ public class DateDAO {
         }
         return false;
     }
-    
+
     public static boolean deleteDateByPlanId(int plan_id) {
         Connection con = null;
         PreparedStatement stm = null;
@@ -405,6 +402,5 @@ public class DateDAO {
         }
         return false;
     }
-
 
 }
