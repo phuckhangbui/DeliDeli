@@ -4,6 +4,7 @@
  */
 package DAO;
 
+import DTO.MealDTO;
 import Utils.DBUtils;
 import java.sql.Connection;
 import java.sql.Date;
@@ -11,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 /**
  *
@@ -105,19 +107,139 @@ public class DailyPlanTemplateDAO {
         return firstValue; // Return the first value from the "id" column, or -1 if it couldn't be retrieved or an error occurred
 
     }
-    
-    
-    
-    public static boolean syncWithDailyTemplate(int templateId, int planId){
-        
+
+    public static ArrayList<Integer> getSyncDateId(int planId) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        ArrayList<Integer> idList = new ArrayList<>(); // Variable to store the first value
+
+        String sql = "SELECT id FROM date WHERE is_template = 0 AND plan_id = ? AND is_sync = 1";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, planId); // Set the plan_id value
+                rs = stm.executeQuery();
+
+                if (rs != null) {
+                    while (rs.next()) {
+                        int id = rs.getInt(1);
+                        idList.add(id);
+                    }
+                }
+
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error - retrieveFirstValue: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+
+        return idList;
+
+    }
+
+    public static boolean syncWithDailyTemplate(ArrayList<Integer> idList, ArrayList<MealDTO> templateMeals) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+
+        String sql = "INSERT INTO [Meal](date_id, recipe_id, start_time, isNotified)\n"
+                + "VALUES (?, ?, ?, ?)";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                for (int id : idList) {
+                    for (MealDTO meal : templateMeals) {
+                        stm = con.prepareStatement(sql);
+                        stm.setInt(1, id);
+                        stm.setInt(2, meal.getRecipe_id());
+                        stm.setTime(3, meal.getStart_time());
+                        stm.setBoolean(4, true);
+                        stm.executeUpdate();
+                    }
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error - deleteAllRecipeByPlanID: " + ex.getMessage());
+            return false;
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
         return true;
     }
-    
-    
-    
-    
+
+    public static boolean deleteSyncDateMeal(int planId, ArrayList<Integer> idList) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+
+        String sql = "DELETE m\n"
+                + "FROM Meal m\n"
+                + "INNER JOIN [Date] d ON d.id = m.date_id\n"
+                + "WHERE m.date_id = ?";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                for (int id : idList) {
+                    stm = con.prepareStatement(sql);
+                    stm.setInt(1, id);
+                    stm.executeUpdate();
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error - deleteAllRecipeByPlanID: " + ex.getMessage());
+            return false;
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return true;
+    }
 
     public static void main(String[] args) {
-        System.out.println(getDailyTemplateIdByPlanId(1));
+        ArrayList<Integer> idList = getSyncDateId(1);
+        for (int id : idList) {
+            System.out.println(id);
+        }
     }
 }

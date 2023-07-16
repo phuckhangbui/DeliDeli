@@ -47,6 +47,19 @@ public class UseDailyPlanTemplateServlet extends HttpServlet {
             int templateId = DailyPlanTemplateDAO.getDailyTemplateIdByPlanId(planId);
             
             ArrayList<MealDTO> templateMeals = MealDAO.getAllMealByDateId(templateId);
+            //list of all normal date in that plan
+            ArrayList<Integer> idList = DailyPlanTemplateDAO.getSyncDateId(planId);
+            //delete old meal from the normal date
+            DailyPlanTemplateDAO.deleteSyncDateMeal(planId, idList);
+           
+            
+            if(templateMeals.size() > 0){                
+                
+                //sync normal date with template date
+                DailyPlanTemplateDAO.syncWithDailyTemplate(idList, templateMeals);
+            }
+            
+            
         }catch(Exception ex){
             response.sendRedirect("error.jsp");
         }
