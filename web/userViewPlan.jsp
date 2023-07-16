@@ -141,6 +141,7 @@
                             <div class="col-md-12 plan-table-week-day">
                                 <%
                                     SimpleDateFormat dayOfWeekFormat = new SimpleDateFormat("EEEE");
+                                    dateList.getDate();
                                     String dayOfWeek = dayOfWeekFormat.format(dateList.getDate());
                                 %>
                                 <%= dayOfWeek%>

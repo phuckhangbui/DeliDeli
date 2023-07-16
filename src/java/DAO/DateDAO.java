@@ -29,7 +29,7 @@ public class DateDAO {
         ArrayList<DateDTO> result = new ArrayList<>();
 
         String sql = "SELECT * FROM [Date]\n"
-                + "WHERE [plan_id] = ?";
+                + "WHERE [plan_id] = ? AND is_template = 0";
 
         try {
             con = DBUtils.getConnection();

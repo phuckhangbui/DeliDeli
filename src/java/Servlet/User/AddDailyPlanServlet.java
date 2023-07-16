@@ -4,6 +4,7 @@
  */
 package Servlet.User;
 
+import DAO.DailyPlanTemplateDAO;
 import DAO.DateDAO;
 import DAO.PlanDAO;
 import DTO.UserDTO;
@@ -66,19 +67,20 @@ public class AddDailyPlanServlet extends HttpServlet {
             }
 
             try {
-//                // Loop from start_date to end_date
-//                Calendar loopDate = Calendar.getInstance();
-//                loopDate.setTime(start_date);
-//
-//                while (loopDate.getTime().before(end_date) || loopDate.getTime().equals(end_date)) {
-//                    // Insert daily meal
-//                    java.sql.Date currentDate = new java.sql.Date(loopDate.getTimeInMillis());
-//                    boolean isMealInserted = DateDAO.insertDateForDaily(currentDate, id);
-//
-//                    // Increment loop date by one day
-//                    loopDate.add(Calendar.DATE, 1);
-//                }
-                boolean areDatesAdded = DateDAO.insertDateForDaily(start_date, id);
+                // Loop from start_date to end_date
+                Calendar loopDate = Calendar.getInstance();
+                loopDate.setTime(start_date);
+
+                while (loopDate.getTime().before(end_date) || loopDate.getTime().equals(end_date)) {
+                    // Insert daily meal
+                    java.sql.Date currentDate = new java.sql.Date(loopDate.getTimeInMillis());
+                    boolean isMealInserted = DateDAO.insertDateForDaily(currentDate, id);
+
+                    // Increment loop date by one day
+                    loopDate.add(Calendar.DATE, 1);
+                }
+                int templateId = DailyPlanTemplateDAO.insertDateTemplate(id);
+                System.out.println("Template created: " + templateId);
             } catch (Exception ex) {
                 System.out.println("[addPlanServlet - ERROR]: " + ex.getMessage());
                 response.sendRedirect("error.jsp");
@@ -87,7 +89,8 @@ public class AddDailyPlanServlet extends HttpServlet {
             session.setAttribute("createPlanTitle", null);
             session.setAttribute("createPlanDescription", null);
             session.setAttribute("createPlanDietId", null);
-            request.getRequestDispatcher("addDailyPlanFinal.jsp").forward(request, response);
+            session.setAttribute("newlyCreatedPlanId", id);
+            request.getRequestDispatcher("addDailyPlanTemplate.jsp").forward(request, response);
         }
     }
 
