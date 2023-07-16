@@ -15,6 +15,7 @@ import DTO.DateDTO;
 import DTO.RecipeDTO;
 import DTO.UserDTO;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -36,6 +37,7 @@ public class PlanEditServlet extends HttpServlet {
         ArrayList<DisplayRecipeDTO> displayList = (ArrayList<DisplayRecipeDTO>) request.getAttribute("searchRecipesList");
         boolean isSearch = Boolean.parseBoolean(request.getParameter("isSearch"));
 
+        //Daily
         if (id != null && !id.isEmpty()) {
             PlanDTO plan = PlanDAO.getUserPlanById(Integer.parseInt(id));
             request.setAttribute("plan", plan);
@@ -44,7 +46,17 @@ public class PlanEditServlet extends HttpServlet {
             request.setAttribute("diet", diet);
 
             ArrayList<DateDTO> planDate = DateDAO.getAllDateByPlanID(plan.getId());
-            request.setAttribute("planDate", planDate);
+            ArrayList<DateDTO> displayDate = new ArrayList<>();
+
+            for (DateDTO date : planDate) {
+                LocalDate currentDate = date.getDate().toLocalDate();
+                if (currentDate.equals(LocalDate.now())) {
+                    displayDate.add(date);
+                    break; // Break after finding current date.
+                }
+            }
+                
+            request.setAttribute("planDate", displayDate);
 
             if (isSearch) {
                 request.setAttribute("SEARCH_LIST", displayList);
@@ -73,6 +85,7 @@ public class PlanEditServlet extends HttpServlet {
 
         }
 
+        //Weekly
         response.sendRedirect("error.jsp");
 
     }
