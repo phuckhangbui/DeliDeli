@@ -41,6 +41,12 @@
             rel="stylesheet">
         <%
             PlanDTO plan = (PlanDTO) request.getAttribute("plan");
+            int distanceInDays = 0;
+
+            String distanceInDaysParam = request.getParameter("distanceInDays");
+            if (distanceInDaysParam != null) {
+                distanceInDays = Integer.parseInt(distanceInDaysParam);
+            }
         %>
         <script>
 
@@ -54,10 +60,6 @@
     <body onload="startCountdown()">
         <!--         The navigation bar       -->
         <%@include file="header.jsp" %>
-
-        <!-- Tick Tock -->
-
-
 
         <!--         Recipe Plan       -->
 
@@ -112,13 +114,13 @@
                                                         data-bs-target="#removeAllRecipes" onclick="redirectToEditPlan()">
                                                     Edit Plan
                                                 </button>-->
-                        <a href="UserController?action=editPlan&id=<%= plan.getId()%>&isSearch=false"><img src="./assets/edit-icon.svg" alt=""></a>
+                        <a href="UserController?action=editPlan&id=<%= plan.getId()%>&isSearch=false&distanceInDays=<%= distanceInDays%>">
+                            <img src="./assets/edit-icon.svg" alt=""></a>
 
                         <!-- <button class="plan-navbar-edit">
                                 <a href="userViewPlan.html"><img src="./assets/leave.svg" alt=""></a>
                             </button> -->
                     </div>
-
                     <%
                         ArrayList<DateDTO> planDate = (ArrayList<DateDTO>) request.getAttribute("planDate");
                         ArrayList<DateDTO> allPlanDate = (ArrayList<DateDTO>) request.getAttribute("allPlanDate");
@@ -127,6 +129,8 @@
                     <input type="date" name="dateChanger" id="dateInput" min="<%= allPlanDate.get(0).getDate()%>" max="<%= allPlanDate.get(allPlanDate.size() - 1).getDate()%>" onchange="updateDate(this.value)">
                     <script>
                         function updateDate(dateValue) {
+                            var distanceInDays = 0;
+
                             var selectedDate = new Date(dateValue);
                             var startDate = new Date("<%= allPlanDate.get(0).getDate()%>");
 

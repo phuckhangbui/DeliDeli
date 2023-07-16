@@ -173,11 +173,28 @@
 
                     <%
                         boolean SEARCH_PLAN_REAL = (boolean) request.getAttribute("SEARCH_PLAN_REAL");
+                        ArrayList<DateDTO> planDate = (ArrayList<DateDTO>) request.getAttribute("planDate");
+                        ArrayList<DateDTO> allPlanDate = (ArrayList<DateDTO>) request.getAttribute("allPlanDate");
                     %>
+                    <input type="date" name="dateChanger" id="dateInput" min="<%= allPlanDate.get(0).getDate()%>" max="<%= allPlanDate.get(allPlanDate.size() - 1).getDate()%>" onchange="updateDate(this.value)">
+                    <script>
+                        function updateDate(dateValue) {
+                            var distanceInDays = 0;
+
+                            var selectedDate = new Date(dateValue);
+                            var startDate = new Date("<%= allPlanDate.get(0).getDate()%>");
+
+                            var distanceInTime = Math.abs(selectedDate.getTime() - startDate.getTime());
+                            var distanceInDays = Math.ceil(distanceInTime / (1000 * 3600 * 24));
+
+                            console.log("Distance between selected date and start date:", distanceInDays, "days");
+
+                            var servletURL = "PlanEditServlet?id=" + <%= plan.getId()%> + "&distanceInDays=" + distanceInDays;
+                            window.location.href = servletURL;
+                        }
+                    </script>
                     <div class=" plan-table">
-                        <%
-                            ArrayList<DateDTO> planDate = (ArrayList<DateDTO>) request.getAttribute("planDate");
-                            for (DateDTO dateList : planDate) {
+                        <%                            for (DateDTO dateList : planDate) {
                                 ArrayList<MealDTO> breakfastMeals = MealDAO.getAllMealsTimeBased(plan.getId(), dateList.getId(), true, false, false);
                                 ArrayList<MealDTO> lunchMeals = MealDAO.getAllMealsTimeBased(plan.getId(), dateList.getId(), false, true, false);
                                 ArrayList<MealDTO> dinnerMeals = MealDAO.getAllMealsTimeBased(plan.getId(), dateList.getId(), false, false, true);
@@ -549,7 +566,7 @@
                                 <input type="text" name="txtsearch" placeholder="What recipes are you searching for ?">
                                 <input type="hidden" name="isPlan" value="true" />
                                 <input type="hidden" name="planId" value="<%= plan.getId()%>"/>
-                                <input type="hidden" name="user_id" value="<%= user.getId() %>"/>
+                                <input type="hidden" name="user_id" value="<%= user.getId()%>"/>
                                 <select name="searchBy" id="">
                                     <option value="Public" selected="selected">Public</option>
                                     <option value="Personal">Personal</option>
@@ -627,7 +644,7 @@
                                                     // Loop through the days between the selected day and the end date
                                                     //while (calendar.getTime().before(endDate) || calendar.getTime().equals(endDate)) {
                                                     // Generate the checkboxes
-                                            %>
+%>
                                             <!--                                            <div class="col-md-4">
                                                                                             <div class="d-flex">
                                                                                                 <input type="checkbox" id="date_id<%= dateList.getId()%>" name="date_id" value="<%= formattedDate%>">
