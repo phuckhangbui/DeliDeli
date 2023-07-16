@@ -36,20 +36,22 @@
                                 <li class="breadcrumb-item"><a href="#"> Plan</a></li> 
                                 <li class="breadcrumb-item"><a href="#"> Add Plan</a></li> 
                                 <li class="breadcrumb-item"><a href="#"> Daily Plan</a></li> 
-                                <li class="breadcrumb-item current-link" aria-current="page">Add Recipe to Plan</li>
+                                <li class="breadcrumb-item current-link" aria-current="page">Add Plan Template</li>
                             </ol>
                         </nav>
                         <form action="UserController" method="POST">
                             <div class="add-plan-header">
-                                <p>Add Recipe to Plan</p>
+                                <p>Add Plan Template</p>
                                 <p>
                                     Add recipe to plan for one day, use every other day
                                 </p>
                             </div>
+                            
+                            
 
                             <div class=" add-recipe-info-submit">
-                                <button type="submit" name="action" value="addDailyPlanFinal">
-                                    Next
+                                <button type="submit" name="action" value="addDailyPlanTemplate">
+                                    Use Template
                                 </button>
                             </div>
                         </form>    

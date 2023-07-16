@@ -4,19 +4,24 @@
  */
 package Servlet.User;
 
+import DAO.DailyPlanTemplateDAO;
+import DAO.MealDAO;
+import DAO.PlanDAO;
+import DTO.MealDTO;
+import DTO.PlanDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author khang
  */
-public class AddDailyPlanFinalServlet extends HttpServlet {
+public class UseDailyPlanTemplateServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,10 +37,31 @@ public class AddDailyPlanFinalServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            HttpSession session = request.getSession();
-
-            response.sendRedirect("UserController?action=planManagement");
+            int planId = Integer.parseInt(request.getParameter("planId"));
+            PlanDTO plan = PlanDAO.getPlanById(planId);
+            if(plan == null){
+                response.sendRedirect("error.jsp");
+            }
             
+            //get template date id
+            int templateId = DailyPlanTemplateDAO.getDailyTemplateIdByPlanId(planId);
+            
+            ArrayList<MealDTO> templateMeals = MealDAO.getAllMealByDateId(templateId);
+            //list of all normal date in that plan
+            ArrayList<Integer> idList = DailyPlanTemplateDAO.getSyncDateId(planId);
+            //delete old meal from the normal date
+            DailyPlanTemplateDAO.deleteSyncDateMeal(planId, idList);
+           
+            
+            if(templateMeals.size() > 0){                
+                
+                //sync normal date with template date
+                DailyPlanTemplateDAO.syncWithDailyTemplate(idList, templateMeals);
+            }
+            
+            
+        }catch(Exception ex){
+            response.sendRedirect("error.jsp");
         }
     }
 

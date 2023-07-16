@@ -4,17 +4,16 @@
  */
 package Servlet.User;
 
+import DAO.DateDAO;
 import DAO.DietDAO;
 import DTO.DietDTO;
 import DAO.PlanDAO;
 import DTO.PlanDTO;
-import DAO.PlanDateDAO;
 import DAO.RecipeDAO;
 import DTO.DisplayRecipeDTO;
-import DTO.PlanDateDTO;
+import DTO.DateDTO;
 import DTO.RecipeDTO;
 import DTO.UserDTO;
-import Utils.NavigationBarUtils;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
@@ -44,7 +43,7 @@ public class PlanEditServlet extends HttpServlet {
             DietDTO diet = DietDAO.getTypeById(plan.getDiet_id());
             request.setAttribute("diet", diet);
 
-            ArrayList<PlanDateDTO> planDate = PlanDateDAO.getAllDateByPlanId(plan.getId());
+            ArrayList<DateDTO> planDate = DateDAO.getAllDateByPlanID(plan.getId());
             request.setAttribute("planDate", planDate);
 
             if (isSearch) {
