@@ -46,7 +46,7 @@
             
         %>
 
-        <%@include file="header.jsp" %>
+        <%@include file="homeHeader.jsp" %>
 
         <!--        Recipe Detail         -->
         <div class="blank-background">

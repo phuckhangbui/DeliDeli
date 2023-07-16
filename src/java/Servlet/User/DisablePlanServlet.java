@@ -4,18 +4,10 @@
  */
 package Servlet.User;
 
-import DAO.DietDAO;
-import DTO.DietDTO;
-import DAO.MealDAO;
-import DTO.MealDTO;
 import DAO.PlanDAO;
 import DTO.PlanDTO;
-import DAO.PlanDateDAO;
-import DTO.PlanDateDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -25,25 +17,20 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Daiisuke
  */
-public class PlanDetailServlet extends HttpServlet {
+public class DisablePlanServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String id = request.getParameter("id");
-        
-        PlanDTO plan = PlanDAO.getUserPlanById(new Integer(id));
-        request.setAttribute("plan", plan);
-        
-        ArrayList<PlanDateDTO> planDate = PlanDateDAO.getAllDateByPlanId(plan.getId());
-        request.setAttribute("planDate", planDate);
-        
-        DietDTO diet = DietDAO.getTypeById(plan.getDiet_id());
-        request.setAttribute("diet", diet);
 
-        //ArrayList<MealDTO> meal = MealDAO.getAllMealByDateId(planDate);
-        RequestDispatcher rq = request.getRequestDispatcher("userViewPlan.jsp");
-        rq.forward(request, response);
+        int plan_id = Integer.parseInt(request.getParameter("plan_id"));
+
+        PlanDTO plan = PlanDAO.getPlanById(plan_id);
+        
+        boolean newStatus = !plan.isStatus();
+        plan.setStatus(newStatus);
+        
+        PlanDAO.updateStatusByPlanID(plan_id, newStatus);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -55,6 +42,8 @@ public class PlanDetailServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    
+    //Look behind, if you've read this.
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

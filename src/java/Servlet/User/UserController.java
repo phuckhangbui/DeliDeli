@@ -32,6 +32,8 @@ public class UserController extends HttpServlet {
             request.setCharacterEncoding("UTF-8");
 
             String action = request.getParameter("action");
+            
+            System.out.println("Current user action - " + action);
             if (action == null || action.equals("")) {
                 url = "error.jsp";
             } else {
@@ -84,6 +86,15 @@ public class UserController extends HttpServlet {
                     case "editPlan":
                         url = "PlanEditServlet";
                         break;
+                    case "disablePlanConfirmed":
+                        url = "DisablePlanServlet";
+                        break;
+                    case "removeAllRecipeConfirmed":
+                        url = "RemoveAllRecipeServlet";
+                        break;
+                    case "deletePlanConfirmed":
+                        url = "DeletePlanServlet";
+                        break;
                     case "loadEditRecipe":
                         url = "LoadEditRecipeServlet";
                         break;
@@ -119,6 +130,24 @@ public class UserController extends HttpServlet {
                         break;
                     case "deleteSavedRecipe":
                         url = "DeleteSavedRecipeServlet";
+                        break;
+                    case "addDailyPlan":
+                        url = "AddDailyPlanServlet";
+                        break;
+                    case "addDailyPlanFinal":
+                        url = "AddDailyPlanFinalServlet";
+                        break;
+                    case "addWeeklyPlan":
+                        url = "AddWeeklyPlanServlet";
+                        break;
+                    case "addWeeklyPlanFinal":
+                        url = "AddWeeklyPlanFinalServlet";
+                        break;
+                    case "editStartTimeRecipe":
+                        url = "EditStartTimeRecipeServlet";
+                        break;
+                    case "addPlanMultiplesMeal":
+                        url = "AddPlanMultiplesMealServlet";
                         break;
                 }
             }

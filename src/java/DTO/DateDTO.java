@@ -26,4 +26,6 @@ public class DateDTO {
     private Date date;
     private int week_id;
     private int plan_id;
+    private boolean isSync;
+    private boolean isTemplate;
 }

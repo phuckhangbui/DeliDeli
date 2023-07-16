@@ -3,6 +3,7 @@ package Servlet.User;
 import DAO.PlanDAO;
 import DTO.DietDTO;
 import DTO.PlanDTO;
+import DTO.UserDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -21,8 +23,9 @@ public class PlanManagementServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        int userId = Integer.parseInt(request.getParameter("userId"));
-        ArrayList<PlanDTO> planList = PlanDAO.getAllUserPlanByUserID(userId);
+        HttpSession session = request.getSession();
+        UserDTO user = (UserDTO) session.getAttribute("user");
+        ArrayList<PlanDTO> planList = PlanDAO.getAllUserPlanByUserID(user.getId());
         request.setAttribute("planList", planList);
         RequestDispatcher rd = request.getRequestDispatcher("planManagement.jsp");
         rd.forward(request, response);

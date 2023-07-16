@@ -122,7 +122,7 @@ public class UserFilter implements Filter {
 
         Throwable problem = null;
         if (!login) {
-            httpResponse.sendRedirect("errorpage.html");
+            httpResponse.sendRedirect("notFound.jsp");
             return;
         } else {
             chain.doFilter(request, response);

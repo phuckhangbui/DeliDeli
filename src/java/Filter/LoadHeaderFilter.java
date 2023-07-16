@@ -200,16 +200,16 @@ public class LoadHeaderFilter implements Filter {
 
             // Check user plan date & update date based on current time. (daily)
             // Currently, only one plan can be active.
-            if (activePlan != null) {
-                if (currentDateNow.after(activePlan.getEnd_at())) {
-                    isPlanStatus = PlanDAO.updateStatusByPlanID(activePlan.getId(), false);
-                } else {
-                    DateDTO date = DateDAO.getDateByPlanID(activePlan.getId());
-                    if (date != null) {
-                        DateDAO.updateDate(date.getId(), currentDateNow);
-                    }
-                }
-            }
+//            if (activePlan != null) {
+//                if (currentDateNow.after(activePlan.getEnd_at())) {
+//                    isPlanStatus = PlanDAO.updateStatusByPlanID(activePlan.getId(), false);
+//                } else {
+//                    DateDTO date = DateDAO.getDateByPlanID(activePlan.getId());
+//                    if (date != null) {
+//                        DateDAO.updateDate(date.getId(), currentDateNow);
+//                    }
+//                }
+//            }
         }
 
         Throwable problem = null;

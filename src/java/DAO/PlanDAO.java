@@ -23,15 +23,15 @@ import java.util.List;
  */
 public class PlanDAO {
 
-    public static boolean insertPlan(String name, String description, String note, Date start_at, Date end_at, boolean status, int user_id, int diet_id) throws Exception {
+    public static boolean insertPlan(String name, String description, String note, Date start_at, Date end_at, boolean status, int user_id, int diet_id, boolean isDaily) throws Exception {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
 
         LocalDate today = LocalDate.now();
 
-        String sql = "INSERT INTO [Plan](name, description, note, start_at, end_at, status, user_id, diet_id)\n"
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO [Plan](name, description, note, start_at, end_at, status, user_id, diet_id, isDaily)\n"
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try {
             con = DBUtils.getConnection();
@@ -46,10 +46,11 @@ public class PlanDAO {
                 if (today.isEqual(start_at.toLocalDate())) {
                     status = true;
                 }
-                
+
                 stm.setBoolean(6, status);
                 stm.setInt(7, user_id);
                 stm.setInt(8, diet_id);
+                stm.setBoolean(9, isDaily);
 
                 int effectRows = stm.executeUpdate();
                 if (effectRows > 0) {
@@ -142,8 +143,9 @@ public class PlanDAO {
                     boolean status = rs.getBoolean("status");
                     user_id = rs.getInt("user_id");
                     int diet_id = rs.getInt("diet_id");
+                    boolean isDaily = rs.getBoolean("isDaily");
 
-                    result = new PlanDTO(id, name, description, note, start_at, end_at, status, user_id, diet_id);
+                    result = new PlanDTO(id, name, description, note, start_at, end_at, status, user_id, diet_id, isDaily);
                 }
             }
         } catch (SQLException ex) {
@@ -165,7 +167,7 @@ public class PlanDAO {
         }
         return result;
     }
-    
+
     public static PlanDTO getTodayPlan(int user_id, Date today_date) {
         Connection con = null;
         PreparedStatement stm = null;
@@ -193,8 +195,9 @@ public class PlanDAO {
                     boolean status = rs.getBoolean("status");
                     user_id = rs.getInt("user_id");
                     int diet_id = rs.getInt("diet_id");
+                    boolean isDaily = rs.getBoolean("isDaily");
 
-                    result = new PlanDTO(id, name, description, note, start_at, end_at, status, user_id, diet_id);
+                    result = new PlanDTO(id, name, description, note, start_at, end_at, status, user_id, diet_id, isDaily);
                 }
             }
         } catch (SQLException ex) {
@@ -244,8 +247,9 @@ public class PlanDAO {
                     boolean status = rs.getBoolean("status");
                     int user_id = rs.getInt("user_id");
                     int diet_id = rs.getInt("diet_id");
+                    boolean isDaily = rs.getBoolean("isDaily");
 
-                    PlanDTO userPlan = new PlanDTO(id, name, description, note, start_at, end_at, status, user_id, diet_id);
+                    PlanDTO userPlan = new PlanDTO(id, name, description, note, start_at, end_at, status, user_id, diet_id, isDaily);
                     result.add(userPlan);
                 }
             }
@@ -268,7 +272,58 @@ public class PlanDAO {
         }
         return result;
     }
-    
+
+    public static PlanDTO getPlanById(int plan_id) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        PlanDTO result = new PlanDTO();
+
+        String sql = "SELECT * FROM [Plan]\n"
+                + "WHERE id = ?\n";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, plan_id);
+                rs = stm.executeQuery();
+                while (rs.next()) {
+
+                    plan_id = rs.getInt("id");
+                    String name = rs.getString("name");
+                    String description = rs.getString("description");
+                    String note = rs.getString("note");
+                    Date start_at = rs.getDate("start_at");
+                    Date end_at = rs.getDate("end_at");
+                    boolean status = rs.getBoolean("status");
+                    int user_id = rs.getInt("user_id");
+                    int diet_id = rs.getInt("diet_id");
+                    boolean isDaily = rs.getBoolean("isDaily");
+
+                    result = new PlanDTO(plan_id, name, description, note, start_at, end_at, status, user_id, diet_id, isDaily);
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error - getAllUserPlanByUserID: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return result;
+    }
+
     public static boolean checkPlanTitleDuplicateByUserID(String plan_title, int user_id) {
         Connection con = null;
         PreparedStatement stm = null;
@@ -339,8 +394,9 @@ public class PlanDAO {
                     boolean status = rs.getBoolean("status");
                     int user_id = rs.getInt("user_id");
                     int diet_id = rs.getInt("diet_id");
+                    boolean isDaily = rs.getBoolean("isDaily");
 
-                    result = new PlanDTO(id, name, description, note, start_at, end_at, status, user_id, diet_id);
+                    result = new PlanDTO(id, name, description, note, start_at, end_at, status, user_id, diet_id, isDaily);
                     return result;
                 }
             }
@@ -527,8 +583,8 @@ public class PlanDAO {
         }
         return false;
     }
-    
-    public static boolean updateStatusByPlanID(int plan_id, boolean status){
+
+    public static boolean updateStatusByPlanID(int plan_id, boolean status) {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
@@ -549,6 +605,44 @@ public class PlanDAO {
             }
         } catch (SQLException ex) {
             System.out.println("Query error - updatePlanByID: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return false;
+    }
+    
+    public static boolean deletePlanById(int plan_id) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+
+        String sql = "DELETE d\n"
+                + "FROM Plan d\n"
+                + "WHERE d.id = ?";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, plan_id);
+
+                int rowsAffected = stm.executeUpdate();
+                return rowsAffected > 0;
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error - deletePlanById: " + ex.getMessage());
         } finally {
             try {
                 if (rs != null) {

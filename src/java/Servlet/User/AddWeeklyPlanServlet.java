@@ -2,19 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package Servlet;
+package Servlet.User;
 
-import DAO.NewsDAO;
-import DAO.RecipeDAO;
-import DAO.SuggestionDAO;
-import DTO.DisplayRecipeDTO;
-import DTO.NewsDTO;
-import DTO.RecipeDTO;
+import DAO.DateDAO;
+import DAO.PlanDAO;
 import DTO.UserDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Calendar;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +20,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author khang
  */
-public class TriggerAppServlet extends HttpServlet {
+public class AddWeeklyPlanServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,25 +37,48 @@ public class TriggerAppServlet extends HttpServlet {
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             HttpSession session = request.getSession();
-            session.invalidate(); // Invalidate the current session
+            UserDTO user = (UserDTO) session.getAttribute("user");
 
-            HashMap<Integer, String> cateMap = Utils.NavigationBarUtils.getMap("Category");
-            HashMap<Integer, String> cuisineMap = Utils.NavigationBarUtils.getMap("Cuisine");
-            HashMap<Integer, String> levelMap = Utils.NavigationBarUtils.getMap("Level");
-            HashMap<Integer, String> ingredientMap = Utils.NavigationBarUtils.getMap("Ingredient");
-            HashMap<Integer, String> dietMap = Utils.NavigationBarUtils.getMap("Diet");
-            HashMap<Integer, String> newsMap = Utils.NavigationBarUtils.getMap("NewsCategory");
+            String start_date_str = request.getParameter("start_date");
+            java.sql.Date start_date = java.sql.Date.valueOf(start_date_str);
+            int planLength = Integer.parseInt(request.getParameter("planLength"));
 
-            HttpSession newSession = request.getSession(); // Create a new session
-            newSession.setAttribute("cateMap", cateMap);
-            newSession.setAttribute("cuisineMap", cuisineMap);
-            newSession.setAttribute("levelMap", levelMap);
-            newSession.setAttribute("ingredientMap", ingredientMap);
-            newSession.setAttribute("dietMap", dietMap);
-            newSession.setAttribute("newsMap", newsMap);
+            // Calculate end date
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(start_date);
+            calendar.add(Calendar.DATE, planLength * 7);
 
-            request.getRequestDispatcher("home.jsp").forward(request, response);
+            java.sql.Date end_date = new java.sql.Date(calendar.getTimeInMillis());
 
+            
+
+            String name = (String) session.getAttribute("createPlanTitle");  // title in fe, name in be lmao
+            String description = (String) session.getAttribute("createPlanDescription");
+            int dietId = (int) session.getAttribute("createPlanDietId");
+            boolean status = false;
+            boolean result = false;
+            int id = 0;
+
+            try {
+                result = PlanDAO.insertPlan(name, description, "", start_date, end_date, status, user.getId(), dietId, false);
+                id = PlanDAO.getPlanByUserIdAndName(user.getId(), name);
+            } catch (Exception ex) {
+                System.out.println("[addPlanServlet - ERROR]: " + ex.getMessage());
+                response.sendRedirect("error.jsp");
+            }
+
+            try {
+//                boolean areDatesAdded = DateDAO.insertDateForDaily(start_date, id); weeklly plan 
+            } catch (Exception ex) {
+                System.out.println("[addPlanServlet - ERROR]: " + ex.getMessage());
+                response.sendRedirect("error.jsp");
+            }
+
+            
+            session.setAttribute("createPlanTitle", null);
+            session.setAttribute("createPlanDescription", null);
+            session.setAttribute("createPlanDietId", null);
+            request.getRequestDispatcher("addWeeklyPlanFinal.jsp").forward(request, response);
         }
     }
 

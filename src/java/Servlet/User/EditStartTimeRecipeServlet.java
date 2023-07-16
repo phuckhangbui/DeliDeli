@@ -4,16 +4,12 @@
  */
 package Servlet.User;
 
-import DAO.DateDAO;
 import DAO.MealDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -21,62 +17,49 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author Daiisuke
+ * @author Admin
  */
-public class PlanAddRecipeServlet extends HttpServlet {
+public class EditStartTimeRecipeServlet extends HttpServlet {
 
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-
         try ( PrintWriter out = response.getWriter()) {
-
-            boolean result = false;
-
-            String dateId = request.getParameter("date_id");
-            String[] timeId = request.getParameterValues("timeId");
-            int recipe_id = Integer.parseInt(request.getParameter("recipe_id"));
-            int recipe_count = Integer.parseInt(request.getParameter("recipe_count"));
+            /* TODO output your page here. You may use following sample code. */
+            int date_id = Integer.parseInt(request.getParameter("date_id"));
             int plan_id = Integer.parseInt(request.getParameter("plan_id"));
-            int week_id = Integer.parseInt(request.getParameter("week_id"));
-            String plantStart = request.getParameter("plan_start");
+            int meal_id = Integer.parseInt(request.getParameter("meal_id"));
+            String start_timeStr = request.getParameter("start_time");
 
-            //List<Integer> dateIdList = new ArrayList<>();
-            List<Time> timeList = new ArrayList<>();
+            Time start_time = null;
 
-//            if (selectedDates != null) {
-//                for (String dateString : selectedDates) {
-//                    java.sql.Date date = java.sql.Date.valueOf(dateString);
-//                    int date_id = DateDAO.insertMultiplesDate(date, week_id, plan_id);
-//                    dateIdList.add(date_id);
-//                }
-//            }
-            if (timeId != null) {
-                for (String timeStr : timeId) {
-                    SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-                    java.util.Date parsedStart = timeFormat.parse(timeStr);
-                    Time time = new Time(parsedStart.getTime());
-                    timeList.add(time);
-                }
-            }
+            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+            java.util.Date parsedStart = timeFormat.parse(start_timeStr);
 
-            for (Time time : timeList) {
-                for (int i = 0; i < recipe_count; i++) {
-                    result = MealDAO.addMealById(new Integer(dateId), recipe_id, time);
-//                    System.out.println("Success");
-                }
-            }
+            start_time = new Time(parsedStart.getTime());
 
-//            out.println(date_id);
-//            out.println(plan_id);
-//            out.println(recipe_id);
-//            out.println(start_timeStr);
-//            out.println(recipe_count);
+            boolean result = MealDAO.changeStartTimeOfRecipe(meal_id, date_id, start_time);
+
             if (result) {
                 response.sendRedirect("UserController?action=editPlan&id=" + plan_id + "&isSearch=false");
             } else {
                 response.sendRedirect("error.jsp");
             }
+
+//            System.out.println("Success");
+//            out.println(date_id);
+//            out.println(plan_id);
+//            out.println(meal_id);
+//            out.println(start_timeStr);
         } catch (ParseException e) {
             e.printStackTrace();
         }

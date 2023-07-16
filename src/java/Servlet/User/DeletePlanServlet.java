@@ -4,18 +4,11 @@
  */
 package Servlet.User;
 
-import DAO.DietDAO;
-import DTO.DietDTO;
 import DAO.MealDAO;
-import DTO.MealDTO;
 import DAO.PlanDAO;
-import DTO.PlanDTO;
 import DAO.PlanDateDAO;
-import DTO.PlanDateDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -25,25 +18,30 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Daiisuke
  */
-public class PlanDetailServlet extends HttpServlet {
+public class DeletePlanServlet extends HttpServlet {
+
+    private final static String ERROR = "error.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String id = request.getParameter("id");
-        
-        PlanDTO plan = PlanDAO.getUserPlanById(new Integer(id));
-        request.setAttribute("plan", plan);
-        
-        ArrayList<PlanDateDTO> planDate = PlanDateDAO.getAllDateByPlanId(plan.getId());
-        request.setAttribute("planDate", planDate);
-        
-        DietDTO diet = DietDAO.getTypeById(plan.getDiet_id());
-        request.setAttribute("diet", diet);
 
-        //ArrayList<MealDTO> meal = MealDAO.getAllMealByDateId(planDate);
-        RequestDispatcher rq = request.getRequestDispatcher("userViewPlan.jsp");
-        rq.forward(request, response);
+        int plan_id = Integer.parseInt(request.getParameter("plan_id"));
+        int user_id = Integer.parseInt(request.getParameter("user_id"));
+        boolean result = false;
+
+        if (plan_id > 0) {
+            result = MealDAO.deleteAllMealByPlanID(plan_id);
+            result = PlanDateDAO.deleteDateByPlanId(plan_id);
+            result = PlanDAO.deletePlanById(plan_id);
+        }
+
+        if (result) {
+            response.sendRedirect("UserController?action=planManagement&userId=" + user_id);
+        } else {
+            response.sendRedirect(ERROR);
+        }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

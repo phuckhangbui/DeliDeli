@@ -64,7 +64,7 @@
                                 </div>
                             </a>
                         </div>
-                        <%                            ArrayList<PlanDTO> planList = (ArrayList<PlanDTO>) request.getAttribute("planList");
+                        <%  ArrayList<PlanDTO> planList = (ArrayList<PlanDTO>) request.getAttribute("planList");
                             if (planList != null && planList.size() != 0) {
                                 for (PlanDTO list : planList) {
                         %>

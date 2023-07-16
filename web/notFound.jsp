@@ -32,10 +32,9 @@
             <div class="error-background-explaination">
                 It's seem that the page you're looking for doesn't exist or was loading incorrectly
             </div>
-            <a class="error-background-go-back" href="">
+            <a class="error-background-go-back" href="home.jsp">
                 Back To Home<span>></span>
             </a>
-
         </div>
     </body>
 </html>
