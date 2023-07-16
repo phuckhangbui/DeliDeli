@@ -7,7 +7,6 @@
 <%-- Document : header Created on : May 24, 2023, 7:23:26 PM Author : khang --%>
 <%@page import="java.sql.Time"%>
 <%@page import="java.time.LocalTime"%>
-<%@page import="DTO.PlanDateDTO"%>
 <%@page import="DTO.DisplayNotificationDTO"%>
 <%@page import="DTO.NotificationTypeDTO"%>
 <%@page import="DTO.NotificationDTO"%>

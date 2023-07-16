@@ -7,15 +7,13 @@ package Servlet.User;
 import DAO.MealDAO;
 import DAO.NotificationDAO;
 import DAO.RecipeDAO;
+import DTO.DateDTO;
 import DTO.MealDTO;
 import DTO.NotificationDTO;
-import DTO.PlanDateDTO;
 import DTO.RecipeDTO;
 import DTO.UserDTO;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.Time;
-import java.time.LocalTime;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -31,34 +29,37 @@ public class PlanRecipeNotificationServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        
+        
+        // Need to be remaked
 
-        HttpSession session = request.getSession();
-        PlanDateDTO currentPlanToday = (PlanDateDTO) session.getAttribute("currentPlanActivate");
-//        System.out.println("[NOTIFICATION]: currentPlanToday - " + currentPlanToday.getDate());
-//        System.out.println("[NOTIFICATION]: PlanRecipeNotificationServlet - " + currentPlanToday.getStart_time());
-        UserDTO user = (UserDTO) session.getAttribute("user");
-
-        MealDTO currentMeal = MealDAO.getMealByTimeAndDate(currentPlanToday.getStart_time(), currentPlanToday.getDate_id());
-        System.out.println("[NOTIFICATION]: currentMeal - " + currentMeal.getRecipe_id());
-
-        boolean result = MealDAO.updateMealNotificationStatusById(currentMeal.getId());
-        RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(currentMeal.getRecipe_id());
-
-        if (result) {
-            String title = "Your meal at " + currentMeal.getStart_time() + " is ready";
-            String desc = "You've planned your schedule ahead, what you'll be eating now: " + recipe.getTitle();
-            java.sql.Timestamp sendDate = new java.sql.Timestamp(System.currentTimeMillis());
-            int userId = user.getId();
-            int notificationType = 3;
-            int recipeId = currentMeal.getRecipe_id();
-            System.out.println("RecipeID: " + recipeId);
-            int planId = currentPlanToday.getPlan_id();
-
-            NotificationDTO notification = new NotificationDTO(0, title, desc, sendDate, false, userId, notificationType, recipeId, 0, "");
-
-            NotificationDAO.addNotification(notification);
-
-        }
+//        HttpSession session = request.getSession();
+//        DateDTO currentPlanToday = (DateDTO) session.getAttribute("currentPlanActivate");
+////        System.out.println("[NOTIFICATION]: currentPlanToday - " + currentPlanToday.getDate());
+////        System.out.println("[NOTIFICATION]: PlanRecipeNotificationServlet - " + currentPlanToday.getStart_time());
+//        UserDTO user = (UserDTO) session.getAttribute("user");
+//
+////        MealDTO currentMeal = MealDAO.getMealByTimeAndDate(currentPlanToday.getStart_time(), currentPlanToday.getDate_id());
+//        System.out.println("[NOTIFICATION]: currentMeal - " + currentMeal.getRecipe_id());
+//
+//        boolean result = MealDAO.updateMealNotificationStatusById(currentMeal.getId());
+//        RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(currentMeal.getRecipe_id());
+//
+//        if (result) {
+//            String title = "Your meal at " + currentMeal.getStart_time() + " is ready";
+//            String desc = "You've planned your schedule ahead, what you'll be eating now: " + recipe.getTitle();
+//            java.sql.Timestamp sendDate = new java.sql.Timestamp(System.currentTimeMillis());
+//            int userId = user.getId();
+//            int notificationType = 3;
+//            int recipeId = currentMeal.getRecipe_id();
+//            System.out.println("RecipeID: " + recipeId);
+//            int planId = currentPlanToday.getPlan_id();
+//
+//            NotificationDTO notification = new NotificationDTO(0, title, desc, sendDate, false, userId, notificationType, recipeId, 0, "");
+//
+//            NotificationDAO.addNotification(notification);
+//
+//        }
 
     }
 

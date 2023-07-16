@@ -4,14 +4,14 @@
  */
 package Servlet.User;
 
+import DAO.DateDAO;
 import DAO.DietDAO;
 import DTO.DietDTO;
 import DAO.MealDAO;
 import DTO.MealDTO;
 import DAO.PlanDAO;
 import DTO.PlanDTO;
-import DAO.PlanDateDAO;
-import DTO.PlanDateDTO;
+import DTO.DateDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ public class PlanDetailServlet extends HttpServlet {
         PlanDTO plan = PlanDAO.getUserPlanById(new Integer(id));
         request.setAttribute("plan", plan);
         
-        ArrayList<PlanDateDTO> planDate = PlanDateDAO.getAllDateByPlanId(plan.getId());
+        ArrayList<DateDTO> planDate = DateDAO.getAllDateByPlanID(plan.getId());
         request.setAttribute("planDate", planDate);
         
         DietDTO diet = DietDAO.getTypeById(plan.getDiet_id());

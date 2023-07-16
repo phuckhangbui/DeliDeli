@@ -4,9 +4,9 @@
  */
 package Servlet.User;
 
+import DAO.DateDAO;
 import DAO.MealDAO;
 import DAO.PlanDAO;
-import DAO.PlanDateDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -32,7 +32,7 @@ public class DeletePlanServlet extends HttpServlet {
 
         if (plan_id > 0) {
             result = MealDAO.deleteAllMealByPlanID(plan_id);
-            result = PlanDateDAO.deleteDateByPlanId(plan_id);
+            result = DateDAO.deleteDateByPlanId(plan_id);
             result = PlanDAO.deletePlanById(plan_id);
         }
 

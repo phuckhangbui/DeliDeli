@@ -8,13 +8,11 @@ import DAO.DateDAO;
 import DAO.NotificationDAO;
 import DAO.NotificationTypeDAO;
 import DAO.PlanDAO;
-import DAO.PlanDateDAO;
 import DTO.DateDTO;
 import DTO.DisplayNotificationDTO;
 import DTO.NotificationDTO;
 import DTO.NotificationTypeDTO;
 import DTO.PlanDTO;
-import DTO.PlanDateDTO;
 import DTO.UserDTO;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -152,24 +150,24 @@ public class LoadHeaderFilter implements Filter {
             request.setAttribute("displayList", displayList);
 
             // Plan Notification & Auto Activator
-            LocalDate currentDate = LocalDate.now();
-            Date currentDateNow = Date.valueOf(currentDate);
-            PlanDateDTO currentPlanRecipeActive = null;
-            boolean isPlanStatus = false;
-            boolean isActivatePlan = false;
-            // Get activated plan
-            PlanDTO activePlan = PlanDAO.getCurrentActivePlan(user.getId());
-            // Get plan about to get activated today.
-            PlanDTO planToActivate = PlanDAO.getTodayPlan(user.getId(), currentDateNow);
+//            LocalDate currentDate = LocalDate.now();
+//            Date currentDateNow = Date.valueOf(currentDate);
+//            PlanDateDTO currentPlanRecipeActive = null;
+//            boolean isPlanStatus = false;
+//            boolean isActivatePlan = false;
+//            // Get activated plan
+//            PlanDTO activePlan = PlanDAO.getCurrentActivePlan(user.getId());
+//            // Get plan about to get activated today.
+//            PlanDTO planToActivate = PlanDAO.getTodayPlan(user.getId(), currentDateNow);
 
-            //Activate plan
-            if (planToActivate != null) {
-                if (currentDate.isEqual(planToActivate.getStart_at().toLocalDate()) && !isPlanStatus) {
-                    isActivatePlan = PlanDAO.updateStatusByPlanID(planToActivate.getId(), true);
-                }
-            }
-
-            if (activePlan != null) {
+//            //Activate plan
+//            if (planToActivate != null) {
+//                if (currentDate.isEqual(planToActivate.getStart_at().toLocalDate()) && !isPlanStatus) {
+//                    isActivatePlan = PlanDAO.updateStatusByPlanID(planToActivate.getId(), true);
+//                }
+//            }
+//
+//            if (activePlan != null) {
 //                // Deactivate plan
 //                if (activePlan.getEnd_at() != null && currentDate.isAfter(activePlan.getEnd_at().toLocalDate())) {
 //                    isPlanStatus = PlanDAO.updateStatusByPlanID(activePlan.getId(), false);
@@ -178,25 +176,25 @@ public class LoadHeaderFilter implements Filter {
 //                if (!currentDate.isEqual(activePlan.getStart_at().toLocalDate())) {
 //                    isPlanStatus = PlanDAO.updateStatusByPlanID(activePlan.getId(), false);
 //                }
-
-                // Plan Notification
-                currentPlanRecipeActive = PlanDateDAO.getActiveRecipePlan(currentDateNow, activePlan.getId());
-                LocalTime currentTime = LocalTime.now();
-                if (currentPlanRecipeActive != null && currentPlanRecipeActive.getStart_time() != null) {
-                    Time startTimeFromDB = currentPlanRecipeActive.getStart_time();
-                    LocalTime startTime = startTimeFromDB.toLocalTime();
-                    if (currentTime.equals(startTime) || currentTime.isAfter(startTime)) {
-                        request.setAttribute("planNotificationActivate", true);
-                        session.setAttribute("currentPlanActivate", currentPlanRecipeActive);
-                    } else {
-                        request.setAttribute("planNotificationActivate", false);
-                    }
-                } else {
-                    request.setAttribute("planNotificationActivate", false);
-                }
-            } else {
-                request.setAttribute("planNotificationActivate", false);
-            }
+//
+//                // Plan Notification
+//                currentPlanRecipeActive = PlanDateDAO.getActiveRecipePlan(currentDateNow, activePlan.getId());
+//                LocalTime currentTime = LocalTime.now();
+//                if (currentPlanRecipeActive != null && currentPlanRecipeActive.getStart_time() != null) {
+//                    Time startTimeFromDB = currentPlanRecipeActive.getStart_time();
+//                    LocalTime startTime = startTimeFromDB.toLocalTime();
+//                    if (currentTime.equals(startTime) || currentTime.isAfter(startTime)) {
+//                        request.setAttribute("planNotificationActivate", true);
+//                        session.setAttribute("currentPlanActivate", currentPlanRecipeActive);
+//                    } else {
+//                        request.setAttribute("planNotificationActivate", false);
+//                    }
+//                } else {
+//                    request.setAttribute("planNotificationActivate", false);
+//                }
+//            } else {
+//                request.setAttribute("planNotificationActivate", false);
+//            }
 
             // Check user plan date & update date based on current time. (daily)
             // Currently, only one plan can be active.

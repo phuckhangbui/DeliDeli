@@ -1,7 +1,6 @@
 <%-- Document : header Created on : May 24, 2023, 7:23:26 PM Author : khang --%>
 <%@page import="java.sql.Time"%>
 <%@page import="java.time.LocalTime"%>
-<%@page import="DTO.PlanDateDTO"%>
 <%@page import="DTO.DisplayNotificationDTO"%>
 <%@page import="DTO.NotificationTypeDTO"%>
 <%@page import="DTO.NotificationDTO"%>
@@ -119,24 +118,23 @@
                     <!--    TICK TOCK PLAN NOTIFICATION   -->
 
                     <%
-                        boolean isPlanNotificationActive = (boolean) request.getAttribute("planNotificationActivate");
-                        if (isPlanNotificationActive) {
-                            System.out.println("[HEADER]: Notification sent!");
+//                        boolean isPlanNotificationActive = (boolean) request.getAttribute("planNotificationActivate");
+//                        if (isPlanNotificationActive) {
+//                            System.out.println("[HEADER]: Notification sent!");
                     %>
                     <script>
-                        var xhr = new XMLHttpRequest();
-                        xhr.open("POST", "UserController?action=planNotification", true);
-                        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                        // This means execute when request is successful (status === 200).
-                        xhr.onreadystatechange = function () {
-                            if (xhr.readyState === 4 && xhr.status === 200) {
-                                console.log("Servlet activated!");
-                            }
-                        };
-                        xhr.send();
+//                        var xhr = new XMLHttpRequest();
+//                        xhr.open("POST", "UserController?action=planNotification", true);
+//                        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+//                        // This means execute when request is successful (status === 200).
+//                        xhr.onreadystatechange = function () {
+//                            if (xhr.readyState === 4 && xhr.status === 200) {
+//                                console.log("Servlet activated!");
+//                            }
+//                        };
+//                        xhr.send();
                     </script>
-                    <%
-                        }
+                    <%//                        }
                     %>
 
 
@@ -149,11 +147,10 @@
                             <button
                                 class="dropbtn-notification"
                                 onclick="toggleDropdown()">
-                                <% 
-                                    if(count[2] >0 ){
-                                    %>
-                                    <img src="assets/notification-active-icon.svg">
-                                    <%}else{
+                                <%                                    if (count[2] > 0) {
+                                %>
+                                <img src="assets/notification-active-icon.svg">
+                                <%} else {
                                 %>
                                 <img src="assets/notification-icon.svg">
                                 <% }%>
