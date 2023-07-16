@@ -663,12 +663,12 @@
                                             </div>
                                         </div>
 
-                                        <label for="recipe_count">Number of Recipes per meal:</label>
+<!--                                        <label for="recipe_count">Number of Recipes per meal:</label>
                                         <select id="recipe_count" name="recipe_count">
                                             <option value="1">1</option>
                                             <option value="2">2</option>
                                             <option value="3">3</option>
-                                        </select>
+                                        </select>-->
                                         <br><br>
 
                                     </div>
