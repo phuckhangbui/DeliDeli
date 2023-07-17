@@ -85,7 +85,7 @@ public class RecipeDAO {
                 + "FROM Recipe r\n"
                 + "JOIN RecipeDiet rd ON rd.recipe_id = r.id\n"
                 + "JOIN Diet d ON d.id = rd.diet_id\n"
-                + "WHERE d.title = ?";
+                + "WHERE d.title = ? AND r.status = 3";
 
         try {
             con = DBUtils.getConnection();
@@ -134,81 +134,7 @@ public class RecipeDAO {
         return result;
     }
 
-    public static ArrayList<RecipeDTO> searchRecipeForPlan(String search_str, String searchBy, int user_id) {
-        Connection con = null;
-        PreparedStatement stm = null;
-        ResultSet rs = null;
-        ArrayList<RecipeDTO> result = new ArrayList<>();
-
-        String sql = "SELECT r.id, r.title, r.description, r.prep_time, r.cook_time, r.servings, r.create_at, r.update_at, r.status, r.cuisine_id, r.category_id, r.user_id, r.level_id\n"
-                + "FROM Recipe r\n";
-
-        if (searchBy.equalsIgnoreCase("Public")) {
-            sql += "WHERE r.title LIKE ?\n";
-        }
-
-        if (searchBy.equalsIgnoreCase("Personal")) {
-            sql += "WHERE r.title LIKE ? AND r.[user_id] = ?\n";
-        }
-
-        if (searchBy.equalsIgnoreCase("Saved")) {
-            sql += "JOIN FavoriteRecipe fr ON r.id = fr.recipe_id\n"
-                    + "WHERE r.title LIKE ? AND fr.user_id = ?\n";
-        }
-
-        try {
-            con = DBUtils.getConnection();
-            if (con != null) {
-                stm = con.prepareStatement(sql);
-                stm.setString(1, "%" + search_str + "%");
-
-                if (searchBy.equalsIgnoreCase("Personal")) {
-                    stm.setInt(2, user_id);
-                }
-
-                if (searchBy.equalsIgnoreCase("Saved")) {
-                    stm.setInt(2, user_id);
-                }
-
-                rs = stm.executeQuery();
-                while (rs.next()) {
-                    int id = rs.getInt("id");
-                    String title = rs.getString("title");
-                    String description = rs.getString("description");
-                    int prep_time = rs.getInt("prep_time");
-                    int cook_time = rs.getInt("cook_time");
-                    int servings = rs.getInt("servings");
-                    Timestamp create_at = rs.getTimestamp("create_at");
-                    Timestamp update_at = rs.getTimestamp("update_at");
-                    int status = rs.getInt("status");
-                    int cuisine_id = rs.getInt("cuisine_id");
-                    int category_id = rs.getInt("category_id");
-                    int recipe_user_id = rs.getInt("user_id");
-                    int level_id = rs.getInt("level_id");
-
-                    RecipeDTO recipe = new RecipeDTO(id, title, description, prep_time, cook_time, servings, create_at, update_at, cuisine_id, category_id, recipe_user_id, level_id, status);
-                    result.add(recipe);
-                }
-            }
-        } catch (SQLException ex) {
-            System.out.println("Query error - searchRecipeForPlan: " + ex.getMessage());
-        } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (stm != null) {
-                    stm.close();
-                }
-                if (con != null) {
-                    con.close();
-                }
-            } catch (SQLException ex) {
-                System.out.println("Error closing database resources: " + ex.getMessage());
-            }
-        }
-        return result;
-    }
+    
 
     public static UserDTO getRecipeOwnerByRecipeId(int recipeId) {
         UserDTO owner = new UserDTO();
