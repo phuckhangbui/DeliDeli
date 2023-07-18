@@ -594,7 +594,7 @@
                                 <input type="hidden" name="isPlan" value="true" />
                                 <input type="hidden" name="planId" value="<%= plan.getId()%>"/>
                                 <input type="hidden" name="user_id" value="<%= user.getId()%>"/>
-                                <input type="hidden" name="dietId" value="<%= plan.getDiet_id() %>"/>
+                                <input type="hidden" name="dietId" value="<%= plan.getDiet_id()%>"/>
 
                                 <select name="searchBy" id="">
                                     <option value="Public" selected="selected">Public</option>
@@ -707,12 +707,12 @@
                                             </div>
                                         </div>
 
-                                        <label for="recipe_count">Number of Recipes per meal:</label>
-                                        <select id="recipe_count" name="recipe_count">
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                        </select>
+                                        <!--                                        <label for="recipe_count">Number of Recipes per meal:</label>
+                                                                                <select id="recipe_count" name="recipe_count">
+                                                                                    <option value="1">1</option>
+                                                                                    <option value="2">2</option>
+                                                                                    <option value="3">3</option>
+                                                                                </select>-->
                                         <br><br>
 
                                     </div>
@@ -816,14 +816,16 @@
                                 }
 
                                 // Function to create options for select element
-                                function createOptions(selectElement) {
-                                    for (let hour = 0; hour < 24; hour++) {
-                                        const time = hour.toString().padStart(2, '0') + ':00'; // Format the time as HH:00
+                                function createOptions(selectElement, timeOptions) {
+                                    selectElement.innerHTML = ''; // Clear existing options
+
+                                    for (let i = 0; i < timeOptions.length; i++) {
                                         const option = document.createElement('option');
-                                        option.value = time;
-                                        option.text = time;
+                                        option.value = timeOptions[i];
+                                        option.text = timeOptions[i];
                                         selectElement.appendChild(option);
                                     }
+
                                     selectElement.setAttribute('required', true); // Add the "required" attribute
                                 }
 
@@ -834,7 +836,7 @@
 
                                 // Add event listener to the add button
                                 modal.querySelector("#btnAddTime").addEventListener('click', () => {
-                                    if (!dragTime) {
+                                    if (!dragTime && draggablesTime.length < 6) { // Check the maximum limit
                                         const draggableContainer = modal.querySelector('.draggable-container-time');
                                         const newDraggable = document.createElement('p');
                                         newDraggable.classList.add('draggable-time');
@@ -844,7 +846,8 @@
                                         const newSelect = document.createElement('select');
                                         newSelect.classList.add('timeList');
                                         newSelect.name = 'timeId';
-                                        createOptions(newSelect);
+                                        const timeOptions = ['08:00', '12:00', '16:00', '20:00']; // Your custom time list
+                                        createOptions(newSelect, timeOptions);
 
                                         const deleteButton = document.createElement('button');
                                         deleteButton.type = 'button';
@@ -857,6 +860,7 @@
                                         deleteButton.appendChild(deleteImage);
                                         deleteButton.addEventListener('click', () => {
                                             newDraggable.remove();
+                                            draggablesTime = draggableContainer.querySelectorAll('.draggable-time'); // Update the draggable elements
                                             if (draggablesTime.length === 1) {
                                                 disableDeleteButtons();
                                             }
@@ -866,7 +870,7 @@
                                         newDraggable.appendChild(deleteButton);
 
                                         draggableContainer.appendChild(newDraggable);
-                                        draggablesTime = draggableContainer.querySelectorAll('.draggable-time');
+                                        draggablesTime = draggableContainer.querySelectorAll('.draggable-time'); // Update the draggable elements
 
                                         enableDeleteButtons();
                                     }
@@ -891,6 +895,7 @@
                                     modal.querySelectorAll('.btnDeleteTime').forEach((button) => {
                                         button.addEventListener('click', () => {
                                             button.parentNode.remove();
+                                            draggablesTime = draggableContainer.querySelectorAll('.draggable-time'); // Update the draggable elements
                                             if (draggablesTime.length === 1) {
                                                 disableDeleteButtons();
                                             }
@@ -939,6 +944,7 @@
                                 });
                             });
                         </script>
+
 
 
                         <script>
