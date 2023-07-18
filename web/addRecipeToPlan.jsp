@@ -51,7 +51,7 @@
             ArrayList<DateDTO> allPlanDate = (ArrayList<DateDTO>) request.getAttribute("allPlanDate");
         %>
 
-        <!--         The navigation bar       -->z
+        <!--         The navigation bar       -->
         <%@include file="header.jsp" %>
 
         <!--         Recipe Plan       -->
