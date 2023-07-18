@@ -80,6 +80,7 @@ public class PlanAddRecipeServlet extends HttpServlet {
 //            out.println(start_timeStr);
 //            out.println(recipe_count);
             if (result) {
+                //bug
                 response.sendRedirect("UserController?action=editPlan&id=" + plan_id + "&isSearch=false");
             } else {
                 response.sendRedirect("error.jsp");
