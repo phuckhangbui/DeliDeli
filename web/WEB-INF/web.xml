@@ -441,6 +441,10 @@
         <servlet-name>UseDailyPlanTemplateServlet</servlet-name>
         <servlet-class>Servlet.User.UseDailyPlanTemplateServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SychronizeTemplateServlet</servlet-name>
+        <servlet-class>Servlet.User.SychronizeTemplateServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -784,6 +788,10 @@
     <servlet-mapping>
         <servlet-name>UseDailyPlanTemplateServlet</servlet-name>
         <url-pattern>/UseDailyPlanTemplateServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SychronizeTemplateServlet</servlet-name>
+        <url-pattern>/SychronizeTemplateServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
