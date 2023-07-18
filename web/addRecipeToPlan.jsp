@@ -46,9 +46,12 @@
 
         <%
             PlanDTO plan = (PlanDTO) request.getAttribute("plan");
+            boolean SEARCH_PLAN_REAL = (boolean) request.getAttribute("SEARCH_PLAN_REAL");
+            ArrayList<DateDTO> planDate = (ArrayList<DateDTO>) request.getAttribute("planDate");
+            ArrayList<DateDTO> allPlanDate = (ArrayList<DateDTO>) request.getAttribute("allPlanDate");
         %>
 
-        <!--         The navigation bar       -->
+        <!--         The navigation bar       -->z
         <%@include file="header.jsp" %>
 
         <!--         Recipe Plan       -->
@@ -69,6 +72,39 @@
                         <p>Edit, add or remove recipes from your plan to fit more with your eating schedule</p>
                     </div>
 
+                    Synchronize with your template?        
+                    <input type="checkbox" id="isSync" name="isSync" value="1" onchange="activateSync(this, <%= plan.getId()%>)">
+                    <% for (DateDTO dateList : planDate) {%>
+                    <input type="hidden" class="dateIdInput" name="date_id" value="<%= dateList.getId()%>" />
+                    <% }%>
+
+                    <script>
+                        function activateSync(checkbox, planId) {
+                            var xhr = new XMLHttpRequest();
+                            var url = "SychronizeTemplateServlet";
+                            var parameterValue = checkbox.checked ? "checked" : "unchecked";
+                            var params = "plan_id=" + planId + "&checkbox_state=" + parameterValue;
+
+                            var dateIdInputs = document.getElementsByClassName("dateIdInput");
+                            for (var i = 0; i < dateIdInputs.length; i++) {
+                                params += "&date_id=" + dateIdInputs[i].value;
+                            }
+
+                            xhr.open("GET", url + "?" + params, true);
+                            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+                            xhr.onreadystatechange = function () {
+                                if (xhr.readyState === XMLHttpRequest.DONE) {
+                                    if (xhr.status === 200) {
+                                        console.log("AJAX request success.");
+                                    } else {
+                                        console.error("AJAX request failed.");
+                                    }
+                                }
+                            };
+                            xhr.send();
+                        }
+                    </script>
 
                     <div class="plan-navbar">
                         <button type="button" class="plan-navbar-remove" data-bs-toggle="modal"
@@ -161,21 +197,11 @@
                             }
                         </script>
 
-
-
-
-
                         <!-- <button class="plan-navbar-edit">
                                 <a href="userViewPlan.html"><img src="./assets/leave.svg" alt=""></a>
                             </button> -->
                     </div>
 
-
-                    <%
-                        boolean SEARCH_PLAN_REAL = (boolean) request.getAttribute("SEARCH_PLAN_REAL");
-                        ArrayList<DateDTO> planDate = (ArrayList<DateDTO>) request.getAttribute("planDate");
-                        ArrayList<DateDTO> allPlanDate = (ArrayList<DateDTO>) request.getAttribute("allPlanDate");
-                    %>
                     <input type="date" name="dateChanger" id="dateInput" min="<%= allPlanDate.get(0).getDate()%>" max="<%= allPlanDate.get(allPlanDate.size() - 1).getDate()%>" onchange="updateDate(this.value)">
                     <script>
                         function updateDate(dateValue) {
@@ -194,7 +220,8 @@
                         }
                     </script>
                     <div class=" plan-table">
-                        <%                            for (DateDTO dateList : planDate) {
+                        <%
+                            for (DateDTO dateList : planDate) {
                                 ArrayList<MealDTO> breakfastMeals = MealDAO.getAllMealsTimeBased(plan.getId(), dateList.getId(), true, false, false);
                                 ArrayList<MealDTO> lunchMeals = MealDAO.getAllMealsTimeBased(plan.getId(), dateList.getId(), false, true, false);
                                 ArrayList<MealDTO> dinnerMeals = MealDAO.getAllMealsTimeBased(plan.getId(), dateList.getId(), false, false, true);
@@ -646,7 +673,7 @@
                                                     // Loop through the days between the selected day and the end date
                                                     //while (calendar.getTime().before(endDate) || calendar.getTime().equals(endDate)) {
                                                     // Generate the checkboxes
-%>
+                                            %>
                                             <!--                                            <div class="col-md-4">
                                                                                             <div class="d-flex">
                                                                                                 <input type="checkbox" id="date_id<%= dateList.getId()%>" name="date_id" value="<%= formattedDate%>">
@@ -690,12 +717,15 @@
 
                                     </div>
 
-                                    <input type="hidden" id="recipeIdInput<%= list.getId()%>" name="recipe_id" value="<%= list.getId()%>">
-                                    <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
-                                    <% DateDTO date = DateDAO.getDateByPlanID(plan.getId());%>
-                                    <input type="hidden" name="week_id" value="<%= date.getWeek_id()%>" />
-                                    <input type="hidden" name="plan_start" value="<%= plan.getStart_at()%>" />
-                                    <input type="hidden" name="date_id" value="<%= date.getId()%>" />
+                                    <div class="plan-table">
+                                        <% for (DateDTO dateList : planDate) {%>
+                                        <input type="hidden" id="recipeIdInput<%= list.getId()%>" name="recipe_id" value="<%= list.getId()%>">
+                                        <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
+                                        <input type="hidden" name="week_id" value="<%= dateList.getWeek_id()%>" />
+                                        <input type="hidden" name="plan_start" value="<%= plan.getStart_at()%>" />
+                                        <input type="hidden" name="date_id" value="<%= dateList.getId()%>" />
+                                        <% }%>
+                                    </div>
 
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -757,7 +787,7 @@
                 <input type="hidden" id="recipeIdInput<%= list.getId()%>" name="recipe_id" value="<%= list.getId()%>">
                 <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
                         <% //DateDTO date = DateDAO.getDateByPlanID(plan.getId());%>
-                        <input type="hidden" name="date_id" value="<%= date.getId()%>" />
+                        <input type="hidden" name="date_id" value="" />
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
