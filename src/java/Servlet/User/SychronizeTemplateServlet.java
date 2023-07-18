@@ -4,38 +4,31 @@
  */
 package Servlet.User;
 
+import DAO.DateDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author khang
+ * @author Daiisuke
  */
-public class AddDailyPlanFinalServlet extends HttpServlet {
+public class SychronizeTemplateServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            HttpSession session = request.getSession();
 
-            response.sendRedirect("UserController?action=planManagement");
-            
+        int plan_id = Integer.parseInt(request.getParameter("plan_id"));
+        String checkbox_state = request.getParameter("checkbox_state");
+        int date_id = Integer.parseInt(request.getParameter("date_id"));
+
+        if (checkbox_state.equalsIgnoreCase("checked")) {
+            DateDAO.updateSyncStatus(date_id, true);
+        } else {
+            DateDAO.updateSyncStatus(date_id, false);
         }
     }
 

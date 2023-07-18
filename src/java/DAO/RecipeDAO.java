@@ -85,7 +85,7 @@ public class RecipeDAO {
                 + "FROM Recipe r\n"
                 + "JOIN RecipeDiet rd ON rd.recipe_id = r.id\n"
                 + "JOIN Diet d ON d.id = rd.diet_id\n"
-                + "WHERE d.title = ?";
+                + "WHERE d.title = ? AND r.status = 3";
 
         try {
             con = DBUtils.getConnection();
@@ -106,7 +106,7 @@ public class RecipeDAO {
                     int status = rs.getInt("status");
                     int cuisine_id = rs.getInt("cuisine_id");
                     int category_id = rs.getInt("category_id");
-                    int user_id = rs.getInt("user_id"); 
+                    int user_id = rs.getInt("user_id");
                     int level_id = rs.getInt("level_id");
 
                     RecipeDTO recipe = new RecipeDTO(id, title, description, prep_time, cook_time, servings, create_at, update_at, cuisine_id, category_id, user_id, level_id, status);
@@ -133,6 +133,8 @@ public class RecipeDAO {
         }
         return result;
     }
+
+    
 
     public static UserDTO getRecipeOwnerByRecipeId(int recipeId) {
         UserDTO owner = new UserDTO();

@@ -4,9 +4,14 @@
  */
 package Servlet.User;
 
+import DAO.DailyPlanTemplateDAO;
 import DAO.MealDAO;
+import DAO.PlanDAO;
+import DTO.MealDTO;
+import DTO.PlanDTO;
 import java.io.IOException;
-import javax.servlet.RequestDispatcher;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -14,29 +19,48 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author Daiisuke
+ * @author khang
  */
-public class PlanRemoveRecipeServlet extends HttpServlet {
+public class UseDailyPlanTemplateServlet extends HttpServlet {
 
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-
-        boolean result = false;
-        int meal_id = Integer.parseInt(request.getParameter("meal_id"));
-        int plan_id = Integer.parseInt(request.getParameter("plan_id"));
-
-        String url = "error.jsp";
-
-        if (meal_id > 0 && plan_id > 0) {
-            result = MealDAO.removeRecipeFromPlan(meal_id);
-            if (result) {
-                url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=false";
-                RequestDispatcher rd = request.getRequestDispatcher(url);
-                rd.forward(request, response);
-            } else {
-                response.sendRedirect(url);
+        try ( PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            int planId = Integer.parseInt(request.getParameter("planId"));
+            PlanDTO plan = PlanDAO.getPlanById(planId);
+            if(plan == null){
+                response.sendRedirect("error.jsp");
             }
+            
+            //get template date id
+            int templateId = DailyPlanTemplateDAO.getDailyTemplateIdByPlanId(planId);
+            
+            ArrayList<MealDTO> templateMeals = MealDAO.getAllMealByDateId(templateId);
+            //list of all normal date in that plan
+            ArrayList<Integer> idList = DailyPlanTemplateDAO.getSyncDateId(planId);
+            //delete old meal from the sync date -- leave the unsync date alone
+            DailyPlanTemplateDAO.deleteSyncDateMeal(planId, idList);
+           
+            
+            if(templateMeals.size() > 0){                
+                //sync normal date with template meal
+                DailyPlanTemplateDAO.syncWithDailyTemplate(idList, templateMeals);
+            }
+            
+            
+        }catch(Exception ex){
+            response.sendRedirect("error.jsp");
         }
     }
 

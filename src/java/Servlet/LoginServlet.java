@@ -4,19 +4,11 @@
  */
 package Servlet;
 
-import DAO.MealDAO;
-import DAO.PlanDAO;
-import DAO.PlanDateDAO;
 import Utils.EncodePass;
 import DAO.UserDAO;
-import DTO.MealDTO;
-import DTO.PlanDTO;
-import DTO.PlanDateDTO;
 import DTO.UserDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Date;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;

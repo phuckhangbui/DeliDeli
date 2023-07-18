@@ -4,18 +4,18 @@
  */
 package Servlet.User;
 
+import DAO.DateDAO;
 import DAO.DietDAO;
 import DTO.DietDTO;
 import DAO.PlanDAO;
 import DTO.PlanDTO;
-import DAO.PlanDateDAO;
 import DAO.RecipeDAO;
 import DTO.DisplayRecipeDTO;
-import DTO.PlanDateDTO;
+import DTO.DateDTO;
 import DTO.RecipeDTO;
 import DTO.UserDTO;
-import Utils.NavigationBarUtils;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -37,6 +37,7 @@ public class PlanEditServlet extends HttpServlet {
         ArrayList<DisplayRecipeDTO> displayList = (ArrayList<DisplayRecipeDTO>) request.getAttribute("searchRecipesList");
         boolean isSearch = Boolean.parseBoolean(request.getParameter("isSearch"));
 
+        //Daily
         if (id != null && !id.isEmpty()) {
             PlanDTO plan = PlanDAO.getUserPlanById(Integer.parseInt(id));
             request.setAttribute("plan", plan);
@@ -44,8 +45,38 @@ public class PlanEditServlet extends HttpServlet {
             DietDTO diet = DietDAO.getTypeById(plan.getDiet_id());
             request.setAttribute("diet", diet);
 
-            ArrayList<PlanDateDTO> planDate = PlanDateDAO.getAllDateByPlanId(plan.getId());
-            request.setAttribute("planDate", planDate);
+            ArrayList<DateDTO> planDate = DateDAO.getAllDateByPlanID(plan.getId());
+            ArrayList<DateDTO> displayDate = new ArrayList<>();
+
+            LocalDate currentDate = LocalDate.now();
+            java.sql.Date startDate = plan.getStart_at();
+            LocalDate startLocalDate = startDate.toLocalDate();
+            int distanceInDays = 0;
+
+            String distanceInDaysParam = request.getParameter("distanceInDays");
+            if (distanceInDaysParam != null) {
+                distanceInDays = Integer.parseInt(distanceInDaysParam);
+                request.setAttribute("distanceInDays", distanceInDays);
+
+                for (DateDTO date : planDate) {
+                    LocalDate dateList = date.getDate().toLocalDate();
+                    if (dateList.equals(startLocalDate.plusDays(distanceInDays))) {
+                        displayDate.add(date);
+                        break; // Break after finding the date with the desired distance
+                    }
+                }
+            } else {
+                for (DateDTO date : planDate) {
+                    LocalDate dateList = date.getDate().toLocalDate();
+                    if (dateList.equals(currentDate)) {
+                        displayDate.add(date);
+                        break; // Break after finding the date with the desired distance
+                    }
+                }
+            }
+
+            request.setAttribute("planDate", displayDate);
+            request.setAttribute("allPlanDate", planDate);
 
             if (isSearch) {
                 request.setAttribute("SEARCH_LIST", displayList);
@@ -74,6 +105,7 @@ public class PlanEditServlet extends HttpServlet {
 
         }
 
+        //Weekly
         response.sendRedirect("error.jsp");
 
     }

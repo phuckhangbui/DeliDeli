@@ -36,7 +36,7 @@ public class PlanAddRecipeServlet extends HttpServlet {
             String dateId = request.getParameter("date_id");
             String[] timeId = request.getParameterValues("timeId");
             int recipe_id = Integer.parseInt(request.getParameter("recipe_id"));
-            int recipe_count = Integer.parseInt(request.getParameter("recipe_count"));
+            //int recipe_count = Integer.parseInt(request.getParameter("recipe_count"));
             int plan_id = Integer.parseInt(request.getParameter("plan_id"));
             int week_id = Integer.parseInt(request.getParameter("week_id"));
             String plantStart = request.getParameter("plan_start");
@@ -61,10 +61,7 @@ public class PlanAddRecipeServlet extends HttpServlet {
             }
 
             for (Time time : timeList) {
-                for (int i = 0; i < recipe_count; i++) {
-                    result = MealDAO.addMealById(new Integer(dateId), recipe_id, time);
-//                    System.out.println("Success");
-                }
+                result = MealDAO.addMealById(new Integer(dateId), recipe_id, time);
             }
 
 //            out.println(date_id);
@@ -73,6 +70,7 @@ public class PlanAddRecipeServlet extends HttpServlet {
 //            out.println(start_timeStr);
 //            out.println(recipe_count);
             if (result) {
+                //bug
                 response.sendRedirect("UserController?action=editPlan&id=" + plan_id + "&isSearch=false");
             } else {
                 response.sendRedirect("error.jsp");

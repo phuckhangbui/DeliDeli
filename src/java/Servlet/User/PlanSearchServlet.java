@@ -16,6 +16,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -29,11 +30,13 @@ public class PlanSearchServlet extends HttpServlet {
 
         Boolean isPlan = Boolean.parseBoolean(request.getParameter("isPlan"));
         String txtsearch = request.getParameter("txtsearch").toLowerCase();
-        String searchBy = request.getParameter("searchBy").toLowerCase();
+        String searchBy = request.getParameter("searchBy");
         String plan_id = request.getParameter("planId").toLowerCase();
+        int dietId = Integer.parseInt(request.getParameter("dietId"));
+        int user_id = Integer.parseInt(request.getParameter("user_id"));
 
-        if (isPlan != null && isPlan) {
-            ArrayList<RecipeDTO> list = NavigationBarUtils.searchRecipes(txtsearch, searchBy);
+        if (isPlan) {
+            ArrayList<RecipeDTO> list = NavigationBarUtils.searchRecipeForPlan(txtsearch, searchBy, user_id, dietId);
             ArrayList<DisplayRecipeDTO> displayList = new ArrayList<>();
             for (RecipeDTO r : list) {
                 String thumbnailPath = RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath();

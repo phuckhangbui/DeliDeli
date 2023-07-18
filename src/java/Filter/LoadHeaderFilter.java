@@ -8,13 +8,11 @@ import DAO.DateDAO;
 import DAO.NotificationDAO;
 import DAO.NotificationTypeDAO;
 import DAO.PlanDAO;
-import DAO.PlanDateDAO;
 import DTO.DateDTO;
 import DTO.DisplayNotificationDTO;
 import DTO.NotificationDTO;
 import DTO.NotificationTypeDTO;
 import DTO.PlanDTO;
-import DTO.PlanDateDTO;
 import DTO.UserDTO;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -154,7 +152,7 @@ public class LoadHeaderFilter implements Filter {
             // Plan Notification & Auto Activator
             LocalDate currentDate = LocalDate.now();
             Date currentDateNow = Date.valueOf(currentDate);
-            PlanDateDTO currentPlanRecipeActive = null;
+            DateDTO currentPlanRecipeActive = null;
             boolean isPlanStatus = false;
             boolean isActivatePlan = false;
             // Get activated plan
@@ -162,14 +160,14 @@ public class LoadHeaderFilter implements Filter {
             // Get plan about to get activated today.
             PlanDTO planToActivate = PlanDAO.getTodayPlan(user.getId(), currentDateNow);
 
-            //Activate plan
-            if (planToActivate != null) {
-                if (currentDate.isEqual(planToActivate.getStart_at().toLocalDate()) && !isPlanStatus) {
-                    isActivatePlan = PlanDAO.updateStatusByPlanID(planToActivate.getId(), true);
-                }
-            }
-
-            if (activePlan != null) {
+//            //Activate plan
+//            if (planToActivate != null) {
+//                if (currentDate.isEqual(planToActivate.getStart_at().toLocalDate()) && !isPlanStatus) {
+//                    isActivatePlan = PlanDAO.updateStatusByPlanID(planToActivate.getId(), true);
+//                }
+//            }
+//
+//            if (activePlan != null) {
 //                // Deactivate plan
 //                if (activePlan.getEnd_at() != null && currentDate.isAfter(activePlan.getEnd_at().toLocalDate())) {
 //                    isPlanStatus = PlanDAO.updateStatusByPlanID(activePlan.getId(), false);
@@ -178,38 +176,32 @@ public class LoadHeaderFilter implements Filter {
 //                if (!currentDate.isEqual(activePlan.getStart_at().toLocalDate())) {
 //                    isPlanStatus = PlanDAO.updateStatusByPlanID(activePlan.getId(), false);
 //                }
-
-                // Plan Notification
-                currentPlanRecipeActive = PlanDateDAO.getActiveRecipePlan(currentDateNow, activePlan.getId());
-                LocalTime currentTime = LocalTime.now();
-                if (currentPlanRecipeActive != null && currentPlanRecipeActive.getStart_time() != null) {
-                    Time startTimeFromDB = currentPlanRecipeActive.getStart_time();
-                    LocalTime startTime = startTimeFromDB.toLocalTime();
-                    if (currentTime.equals(startTime) || currentTime.isAfter(startTime)) {
-                        request.setAttribute("planNotificationActivate", true);
-                        session.setAttribute("currentPlanActivate", currentPlanRecipeActive);
-                    } else {
-                        request.setAttribute("planNotificationActivate", false);
-                    }
-                } else {
-                    request.setAttribute("planNotificationActivate", false);
-                }
-            } else {
-                request.setAttribute("planNotificationActivate", false);
-            }
-
-            // Check user plan date & update date based on current time. (daily)
-            // Currently, only one plan can be active.
-//            if (activePlan != null) {
-//                if (currentDateNow.after(activePlan.getEnd_at())) {
-//                    isPlanStatus = PlanDAO.updateStatusByPlanID(activePlan.getId(), false);
-//                } else {
-//                    DateDTO date = DateDAO.getDateByPlanID(activePlan.getId());
-//                    if (date != null) {
-//                        DateDAO.updateDate(date.getId(), currentDateNow);
+//
+//                // Plan Notification
+//                currentPlanRecipeActive = DateDAO.getActiveRecipePlan(currentDateNow, activePlan.getId());
+//                LocalTime currentTime = LocalTime.now();
+//                if (currentPlanRecipeActive != null && currentPlanRecipeActive.getStart_time() != null) {
+//                    Time startTimeFromDB = currentPlanRecipeActive.getStart_time();
+//                    LocalTime startTime = startTimeFromDB.toLocalTime();
+//                    if (currentTime.equals(startTime) || currentTime.isAfter(startTime)) {
+//                        request.setAttribute("planNotificationActivate", true);
+//                        session.setAttribute("currentPlanActivate", currentPlanRecipeActive);
+//                    } else {
+//                        request.setAttribute("planNotificationActivate", false);
 //                    }
+//                } else {
+//                    request.setAttribute("planNotificationActivate", false);
 //                }
+//            } else {
+//                request.setAttribute("planNotificationActivate", false);
 //            }
+
+            // End the plan if current date is after plan end_date.
+            if (activePlan != null) {
+                if (currentDateNow.after(activePlan.getEnd_at())) {
+                    isPlanStatus = PlanDAO.updateStatusByPlanID(activePlan.getId(), false);
+                }
+            }
         }
 
         Throwable problem = null;
@@ -221,8 +213,7 @@ public class LoadHeaderFilter implements Filter {
 
         // If there was a problem, we want to rethrow it if it is
         // a known type, otherwise log it.
-        if (problem
-                != null) {
+        if (problem!= null) {
             if (problem instanceof ServletException) {
                 throw (ServletException) problem;
             }
