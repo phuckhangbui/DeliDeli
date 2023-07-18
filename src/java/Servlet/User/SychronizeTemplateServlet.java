@@ -4,14 +4,8 @@
  */
 package Servlet.User;
 
-import DAO.DailyPlanTemplateDAO;
-import DAO.MealDAO;
-import DAO.PlanDAO;
-import DTO.MealDTO;
-import DTO.PlanDTO;
+import DAO.DateDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,48 +13,22 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author khang
+ * @author Daiisuke
  */
-public class UseDailyPlanTemplateServlet extends HttpServlet {
+public class SychronizeTemplateServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            int planId = Integer.parseInt(request.getParameter("planId"));
-            PlanDTO plan = PlanDAO.getPlanById(planId);
-            if(plan == null){
-                response.sendRedirect("error.jsp");
-            }
-            
-            //get template date id
-            int templateId = DailyPlanTemplateDAO.getDailyTemplateIdByPlanId(planId);
-            
-            ArrayList<MealDTO> templateMeals = MealDAO.getAllMealByDateId(templateId);
-            //list of all normal date in that plan
-            ArrayList<Integer> idList = DailyPlanTemplateDAO.getSyncDateId(planId);
-            //delete old meal from the sync date -- leave the unsync date alone
-            DailyPlanTemplateDAO.deleteSyncDateMeal(planId, idList);
-           
-            
-            if(templateMeals.size() > 0){                
-                //sync normal date with template meal
-                DailyPlanTemplateDAO.syncWithDailyTemplate(idList, templateMeals);
-            }
-            
-            
-        }catch(Exception ex){
-            response.sendRedirect("error.jsp");
+
+        int plan_id = Integer.parseInt(request.getParameter("plan_id"));
+        String checkbox_state = request.getParameter("checkbox_state");
+        int date_id = Integer.parseInt(request.getParameter("date_id"));
+
+        if (checkbox_state.equalsIgnoreCase("checked")) {
+            DateDAO.updateSyncStatus(date_id, true);
+        } else {
+            DateDAO.updateSyncStatus(date_id, false);
         }
     }
 
