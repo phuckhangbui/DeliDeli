@@ -146,7 +146,7 @@ public class MealDAO {
 
                     // Time filter
                     if (breakfast) {
-                        if (start_time.getHours() >= 5 && start_time.getHours() < 12) {
+                        if (start_time.getHours() < 12) {
                             MealDTO meal = new MealDTO(id, date_id, recipe_id, start_time, plan_id);
                             result.add(meal);
                         }
@@ -156,11 +156,12 @@ public class MealDAO {
                             result.add(meal);
                         }
                     } else if (dinner) {
-                        if (start_time.getHours() >= 17 && start_time.getHours() < 24) {
+                        if (start_time.getHours() >= 17 && start_time.getHours() <= 24) {
                             MealDTO meal = new MealDTO(id, date_id, recipe_id, start_time, plan_id);
                             result.add(meal);
                         }
                     }
+
                 }
             }
         } catch (SQLException ex) {
@@ -370,6 +371,46 @@ public class MealDAO {
             }
         } catch (SQLException ex) {
             System.out.println("Query error - removeRecipeFromPlanByMealID: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return false;
+    }
+
+    public static boolean deleteAllMealByDate(int plan_id, int date_id) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+
+        String sql = "DELETE m\n"
+                + "FROM Meal m\n"
+                + "INNER JOIN [Date] d ON d.id = m.date_id\n"
+                + "WHERE d.plan_id = ? AND d.id = ?";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, plan_id);
+                stm.setInt(2, date_id);
+
+                int rowsAffected = stm.executeUpdate();
+                return rowsAffected > 0;
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error - deleteAllRecipeByPlanID: " + ex.getMessage());
         } finally {
             try {
                 if (rs != null) {

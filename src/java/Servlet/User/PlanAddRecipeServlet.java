@@ -40,6 +40,7 @@ public class PlanAddRecipeServlet extends HttpServlet {
             int plan_id = Integer.parseInt(request.getParameter("plan_id"));
             int week_id = Integer.parseInt(request.getParameter("week_id"));
             String plantStart = request.getParameter("plan_start");
+            String distanceInDays = request.getParameter("distanceInDays");
 
             //List<Integer> dateIdList = new ArrayList<>();
             List<Time> timeList = new ArrayList<>();
@@ -73,7 +74,7 @@ public class PlanAddRecipeServlet extends HttpServlet {
 //            out.println(start_timeStr);
 //            out.println(recipe_count);
             if (result) {
-                response.sendRedirect("UserController?action=editPlan&id=" + plan_id + "&isSearch=false");
+                response.sendRedirect("UserController?action=editPlan&id=" + plan_id + "&isSearch=false&distanceInDays=" + distanceInDays);
             } else {
                 response.sendRedirect("error.jsp");
             }
