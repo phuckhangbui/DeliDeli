@@ -38,7 +38,6 @@ public class PlanRemoveRecipeServlet extends HttpServlet {
                 response.sendRedirect(url);
             }
         }
-        response.sendRedirect(url);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

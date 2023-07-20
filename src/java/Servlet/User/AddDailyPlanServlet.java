@@ -61,6 +61,8 @@ public class AddDailyPlanServlet extends HttpServlet {
             try {
                 result = PlanDAO.insertPlan(name, description, "", start_date, end_date, status, user.getId(), dietId, true);
                 id = PlanDAO.getPlanByUserIdAndName(user.getId(), name);
+                int templateId = DailyPlanTemplateDAO.insertDateTemplate(id);
+                System.out.println("Template created: " + templateId);
             } catch (Exception ex) {
                 System.out.println("[addPlanServlet - ERROR]: " + ex.getMessage());
                 response.sendRedirect("error.jsp");
@@ -79,8 +81,7 @@ public class AddDailyPlanServlet extends HttpServlet {
                     // Increment loop date by one day
                     loopDate.add(Calendar.DATE, 1);
                 }
-                int templateId = DailyPlanTemplateDAO.insertDateTemplate(id);
-                System.out.println("Template created: " + templateId);
+                
             } catch (Exception ex) {
                 System.out.println("[addPlanServlet - ERROR]: " + ex.getMessage());
                 response.sendRedirect("error.jsp");

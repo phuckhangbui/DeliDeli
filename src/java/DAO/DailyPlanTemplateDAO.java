@@ -170,7 +170,7 @@ public class DailyPlanTemplateDAO {
                         stm.setInt(1, id);
                         stm.setInt(2, meal.getRecipe_id());
                         stm.setTime(3, meal.getStart_time());
-                        stm.setBoolean(4, true);
+                        stm.setBoolean(4, false);
                         stm.executeUpdate();
                     }
                 }
@@ -237,9 +237,16 @@ public class DailyPlanTemplateDAO {
     }
 
     public static void main(String[] args) {
-        ArrayList<Integer> idList = getSyncDateId(1);
-        for (int id : idList) {
-            System.out.println(id);
-        }
+//        int templateId = DailyPlanTemplateDAO.getDailyTemplateIdByPlanId(2);
+//        ArrayList<MealDTO> templateMeals = MealDAO.getAllMealByDateId(templateId);
+//        //list of all normal date in that plan
+//        ArrayList<Integer> idList = DailyPlanTemplateDAO.getSyncDateId(2);
+//        //delete old meal from the normal date
+//        DailyPlanTemplateDAO.deleteSyncDateMeal(2, idList);
+//
+//        if (templateMeals.size() > 0) {
+//            //sync normal date with template date
+//            DailyPlanTemplateDAO.syncWithDailyTemplate(idList, templateMeals);
+//        }
     }
 }

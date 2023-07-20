@@ -12,8 +12,11 @@ import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -36,7 +39,7 @@ public class PlanAddRecipeServlet extends HttpServlet {
             String dateId = request.getParameter("date_id");
             String[] timeId = request.getParameterValues("timeId");
             int recipe_id = Integer.parseInt(request.getParameter("recipe_id"));
-            int recipe_count = Integer.parseInt(request.getParameter("recipe_count"));
+            //int recipe_count = Integer.parseInt(request.getParameter("recipe_count"));
             int plan_id = Integer.parseInt(request.getParameter("plan_id"));
             int week_id = Integer.parseInt(request.getParameter("week_id"));
             String plantStart = request.getParameter("plan_start");
@@ -52,8 +55,15 @@ public class PlanAddRecipeServlet extends HttpServlet {
 //                    dateIdList.add(date_id);
 //                }
 //            }
-            if (timeId != null) {
-                for (String timeStr : timeId) {
+
+
+// Convert the array to a Set to remove duplicates
+            Set<String> uniqueTimeIdsSet = new HashSet<>(Arrays.asList(timeId));
+
+// Convert the Set back to an array
+            String[] uniqueTimeIds = uniqueTimeIdsSet.toArray(new String[0]);
+            if (uniqueTimeIds != null) {
+                for (String timeStr : uniqueTimeIds) {
                     SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
                     java.util.Date parsedStart = timeFormat.parse(timeStr);
                     Time time = new Time(parsedStart.getTime());
@@ -62,10 +72,7 @@ public class PlanAddRecipeServlet extends HttpServlet {
             }
 
             for (Time time : timeList) {
-                for (int i = 0; i < recipe_count; i++) {
-                    result = MealDAO.addMealById(new Integer(dateId), recipe_id, time);
-//                    System.out.println("Success");
-                }
+                result = MealDAO.addMealById(new Integer(dateId), recipe_id, time);
             }
 
 //            out.println(date_id);
