@@ -4,6 +4,7 @@
     Author     : Walking Bag
 --%>
 
+<%@page import="java.time.temporal.ChronoUnit"%>
 <%@page import="java.util.Calendar"%>
 <%@page import="DAO.DateDAO"%>
 <%@page import="DTO.DateDTO"%>
@@ -49,6 +50,15 @@
             boolean SEARCH_PLAN_REAL = (boolean) request.getAttribute("SEARCH_PLAN_REAL");
             ArrayList<DateDTO> planDate = (ArrayList<DateDTO>) request.getAttribute("planDate");
             ArrayList<DateDTO> allPlanDate = (ArrayList<DateDTO>) request.getAttribute("allPlanDate");
+            LocalDate currentDate = LocalDate.now();
+            java.sql.Date startDateSQL = plan.getStart_at();
+            LocalDate startLocalDate = startDateSQL.toLocalDate();
+            int distanceInDays = (int) ChronoUnit.DAYS.between(startLocalDate, currentDate);
+
+            String distanceInDaysParam = request.getParameter("distanceInDays");
+            if (distanceInDaysParam != null) {
+                distanceInDays = Integer.parseInt(distanceInDaysParam);
+            }
         %>
 
         <!--         The navigation bar       -->
@@ -127,6 +137,10 @@
                                                 data-bs-dismiss="modal">No, I changed my mind</button>
 
                                         <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
+                                        <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
+                                        <% for (DateDTO dateList : planDate) {%>
+                                        <input type="hidden" class="dateIdInput" name="date_id" value="<%= dateList.getId()%>" />
+                                        <% }%>
 
                                         <button type="submit" name="action" value="removeAllRecipeConfirmed" class="remove-recipe-from-plan-button">Yes, remove all of them</button>
                                     </div>
@@ -724,6 +738,7 @@
                                         <input type="hidden" name="week_id" value="<%= dateList.getWeek_id()%>" />
                                         <input type="hidden" name="plan_start" value="<%= plan.getStart_at()%>" />
                                         <input type="hidden" name="date_id" value="<%= dateList.getId()%>" />
+                                        <input type="hidden" name="distanceInDays" value="<%= distanceInDays%>" />
                                         <% }%>
                                     </div>
 

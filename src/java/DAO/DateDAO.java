@@ -130,7 +130,7 @@ public class DateDAO {
 
         String sql = "SELECT * FROM [Date]\n"
                 + "WHERE [plan_id] = ?";
-
+ 
         try {
             con = DBUtils.getConnection();
             if (con != null) {

@@ -25,10 +25,11 @@ public class RemoveAllRecipeServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
 
         int plan_id = Integer.parseInt(request.getParameter("plan_id"));
+        int date_id = Integer.parseInt(request.getParameter("date_id"));
         boolean result = false;
 
         if (plan_id > 0) {
-            result = MealDAO.deleteAllMealByPlanID(plan_id);
+            result = MealDAO.deleteAllMealByDate(plan_id, date_id);
         }
 
         if (result) {

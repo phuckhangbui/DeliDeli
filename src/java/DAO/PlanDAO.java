@@ -622,15 +622,14 @@ public class PlanDAO {
         }
         return false;
     }
-    
+
     public static boolean deletePlanById(int plan_id) {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
 
-        String sql = "DELETE d\n"
-                + "FROM Plan d\n"
-                + "WHERE d.id = ?";
+        String sql = "DELETE [Plan]\n"
+                + "WHERE [Plan].id = ?";
 
         try {
             con = DBUtils.getConnection();

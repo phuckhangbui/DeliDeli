@@ -14,8 +14,10 @@ import DTO.DisplayRecipeDTO;
 import DTO.DateDTO;
 import DTO.RecipeDTO;
 import DTO.UserDTO;
+import static Servlet.User.PlanDetailServlet.calculateDistanceInDays;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -49,9 +51,9 @@ public class PlanEditServlet extends HttpServlet {
             ArrayList<DateDTO> displayDate = new ArrayList<>();
 
             LocalDate currentDate = LocalDate.now();
-            java.sql.Date startDate = plan.getStart_at();
-            LocalDate startLocalDate = startDate.toLocalDate();
-            int distanceInDays = 0;
+            java.sql.Date startDateSQL = plan.getStart_at();
+            LocalDate startLocalDate = startDateSQL.toLocalDate();
+            int distanceInDays = (int) calculateDistanceInDays(startLocalDate, currentDate);
 
             String distanceInDaysParam = request.getParameter("distanceInDays");
             if (distanceInDaysParam != null) {
