@@ -4,6 +4,7 @@
     Author     : Walking Bag
 --%>
 
+<%@page import="java.time.temporal.ChronoUnit"%>
 <%@page import="DTO.DietDTO"%>
 <%@page import="DAO.DietDAO"%>
 <%@page import="Utils.DateNameChanger"%>
@@ -41,7 +42,10 @@
             rel="stylesheet">
         <%
             PlanDTO plan = (PlanDTO) request.getAttribute("plan");
-            int distanceInDays = 0;
+            LocalDate currentDate = LocalDate.now();
+            java.sql.Date startDateSQL = plan.getStart_at();
+            LocalDate startLocalDate = startDateSQL.toLocalDate();
+            int distanceInDays = (int) ChronoUnit.DAYS.between(startLocalDate, currentDate);
 
             String distanceInDaysParam = request.getParameter("distanceInDays");
             if (distanceInDaysParam != null) {
@@ -185,7 +189,7 @@
                                             for (MealDTO list : breakfastMeals) {
                                                 RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(list.getRecipe_id());
                                                 String modalId = "recipeNutritionModal" + list.getId(); // Generate unique modal ID for each recipe
-%>
+                                    %>
                                     <button class="plan-table-week-recipe-content" type="button" data-bs-toggle="modal" data-bs-target="#<%= modalId%>">
                                         <div class="plan-table-week-recipe-content-image">
                                             <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
@@ -241,7 +245,7 @@
                                             for (MealDTO list : lunchMeals) {
                                                 RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(list.getRecipe_id());
                                                 String modalId = "recipeNutritionModal" + list.getId(); // Generate unique modal ID for each recipe
-%>
+                                    %>
                                     <button class="plan-table-week-recipe-content" type="button" data-bs-toggle="modal" data-bs-target="#<%= modalId%>">
                                         <div class="plan-table-week-recipe-content-image">
                                             <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
@@ -297,7 +301,7 @@
                                             for (MealDTO list : dinnerMeals) {
                                                 RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(list.getRecipe_id());
                                                 String modalId = "recipeNutritionModal" + list.getId(); // Generate unique modal ID for each recipe
-                                    %>
+%>
                                     <button class="plan-table-week-recipe-content" type="button" data-bs-toggle="modal" data-bs-target="#<%= modalId%>">
                                         <div class="plan-table-week-recipe-content-image">
                                             <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">

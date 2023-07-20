@@ -12,8 +12,11 @@ import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -40,6 +43,7 @@ public class PlanAddRecipeServlet extends HttpServlet {
             int plan_id = Integer.parseInt(request.getParameter("plan_id"));
             int week_id = Integer.parseInt(request.getParameter("week_id"));
             String plantStart = request.getParameter("plan_start");
+            String distanceInDays = request.getParameter("distanceInDays");
 
             //List<Integer> dateIdList = new ArrayList<>();
             List<Time> timeList = new ArrayList<>();
@@ -51,8 +55,15 @@ public class PlanAddRecipeServlet extends HttpServlet {
 //                    dateIdList.add(date_id);
 //                }
 //            }
-            if (timeId != null) {
-                for (String timeStr : timeId) {
+
+
+// Convert the array to a Set to remove duplicates
+            Set<String> uniqueTimeIdsSet = new HashSet<>(Arrays.asList(timeId));
+
+// Convert the Set back to an array
+            String[] uniqueTimeIds = uniqueTimeIdsSet.toArray(new String[0]);
+            if (uniqueTimeIds != null) {
+                for (String timeStr : uniqueTimeIds) {
                     SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
                     java.util.Date parsedStart = timeFormat.parse(timeStr);
                     Time time = new Time(parsedStart.getTime());
@@ -70,8 +81,7 @@ public class PlanAddRecipeServlet extends HttpServlet {
 //            out.println(start_timeStr);
 //            out.println(recipe_count);
             if (result) {
-                //bug
-                response.sendRedirect("UserController?action=editPlan&id=" + plan_id + "&isSearch=false");
+                response.sendRedirect("UserController?action=editPlan&id=" + plan_id + "&isSearch=false&distanceInDays=" + distanceInDays);
             } else {
                 response.sendRedirect("error.jsp");
             }

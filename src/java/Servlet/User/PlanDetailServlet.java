@@ -15,6 +15,7 @@ import DTO.DateDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -27,6 +28,10 @@ import javax.servlet.http.HttpServletResponse;
  * @author Daiisuke
  */
 public class PlanDetailServlet extends HttpServlet {
+
+    public static long calculateDistanceInDays(LocalDate startDate, LocalDate endDate) {
+        return ChronoUnit.DAYS.between(startDate, endDate);
+    }
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -41,9 +46,9 @@ public class PlanDetailServlet extends HttpServlet {
         ArrayList<DateDTO> displayDate = new ArrayList<>();
 
         LocalDate currentDate = LocalDate.now();
-        java.sql.Date startDate = plan.getStart_at();
-        LocalDate startLocalDate = startDate.toLocalDate();
-        int distanceInDays = 0;
+        java.sql.Date startDateSQL = plan.getStart_at();
+        LocalDate startLocalDate = startDateSQL.toLocalDate();
+        int distanceInDays = (int) calculateDistanceInDays(startLocalDate, currentDate);
 
         String distanceInDaysParam = request.getParameter("distanceInDays");
         if (distanceInDaysParam != null) {

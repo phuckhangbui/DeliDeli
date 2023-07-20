@@ -4,6 +4,7 @@
     Author     : Walking Bag
 --%>
 
+<%@page import="java.time.temporal.ChronoUnit"%>
 <%@page import="java.util.Calendar"%>
 <%@page import="DAO.DateDAO"%>
 <%@page import="DTO.DateDTO"%>
@@ -49,6 +50,15 @@
             boolean SEARCH_PLAN_REAL = (boolean) request.getAttribute("SEARCH_PLAN_REAL");
             ArrayList<DateDTO> planDate = (ArrayList<DateDTO>) request.getAttribute("planDate");
             ArrayList<DateDTO> allPlanDate = (ArrayList<DateDTO>) request.getAttribute("allPlanDate");
+            LocalDate currentDate = LocalDate.now();
+            java.sql.Date startDateSQL = plan.getStart_at();
+            LocalDate startLocalDate = startDateSQL.toLocalDate();
+            int distanceInDays = (int) ChronoUnit.DAYS.between(startLocalDate, currentDate);
+
+            String distanceInDaysParam = request.getParameter("distanceInDays");
+            if (distanceInDaysParam != null) {
+                distanceInDays = Integer.parseInt(distanceInDaysParam);
+            }
         %>
 
         <!--         The navigation bar       -->
@@ -127,6 +137,10 @@
                                                 data-bs-dismiss="modal">No, I changed my mind</button>
 
                                         <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
+                                        <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
+                                        <% for (DateDTO dateList : planDate) {%>
+                                        <input type="hidden" class="dateIdInput" name="date_id" value="<%= dateList.getId()%>" />
+                                        <% }%>
 
                                         <button type="submit" name="action" value="removeAllRecipeConfirmed" class="remove-recipe-from-plan-button">Yes, remove all of them</button>
                                     </div>
@@ -673,7 +687,7 @@
                                                     // Loop through the days between the selected day and the end date
                                                     //while (calendar.getTime().before(endDate) || calendar.getTime().equals(endDate)) {
                                                     // Generate the checkboxes
-                                            %>
+%>
                                             <!--                                            <div class="col-md-4">
                                                                                             <div class="d-flex">
                                                                                                 <input type="checkbox" id="date_id<%= dateList.getId()%>" name="date_id" value="<%= formattedDate%>">
@@ -724,79 +738,19 @@
                                         <input type="hidden" name="week_id" value="<%= dateList.getWeek_id()%>" />
                                         <input type="hidden" name="plan_start" value="<%= plan.getStart_at()%>" />
                                         <input type="hidden" name="date_id" value="<%= dateList.getId()%>" />
+                                        <input type="hidden" name="distanceInDays" value="<%= distanceInDays%>" />
                                         <% }%>
                                     </div>
 
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                         <button type="submit" name="action" value="addPlanRecipe" class="add-recipe-to-plan-modal-button"
-                                                data-recipeid="<%= list.getId()%>" onclick="setRecipeId(this, '<%= list.getId()%>');">Add</button>
+                                                data-recipeid="<%= list.getId()%>" onclick="setRecipeId(this, '<%= list.getId()%>');" disabled="" id="btnAddRecipe">Add</button>
                                     </div>
                                 </div>
                             </form>
                         </div>
 
-                        <!-- Modal -->
-<!--                        <div class="modal fade" id="addRecipeToPlan<%= list.getId()%>" tabindex="-1"
-                             aria-labelledby="addRecipeToPlanModalLabel<%= list.getId()%>" aria-hidden="true">
-                            <form action="UserController" method="post" class="modal-dialog add-recipe-to-plan-modal">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel<%= list.getId()%>">Adding Recipe To Plan</h1>
-                                    </div>
-                                    <div class="modal-body">
-                                                                                <div>
-                                                                                    <h1> Time is <span id="currentTime" ></span></h1>
-                                                                                </div>
-                                        <div>What day do you want to cook this recipe ?</div>
-                                        <div class="row choose-week-day">
-                        <% for (DateDTO dateList : planDate) {
-                                SimpleDateFormat dayOfWeekFormat = new SimpleDateFormat("EEEE");
-                                String dayOfWeek = dayOfWeekFormat.format(dateList.getDate());
-
-                                SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd");
-                                String formattedDate = dateFormat.format(dateList.getDate());
-                        %>
-                        <div class="col-md-4">
-                            <input type="checkbox" id="date_id<%= dateList.getId()%>" name="date_id" value="<%= dateList.getId()%>">
-                            <label for="dateOfWeek<%= dateList.getId()%>"> <%= dayOfWeek%> (<%= formattedDate%>) </label>
-                        </div>
-                        <% }%>
-                    </div>
-                                                            <label for="meal">Select Meal:</label>
-                                                            <select id="meal" name="meal" onchange="updateTimeOptions()">
-                                                                <option value="breakfast">Breakfast</option>
-                                                                <option value="lunch">Lunch</option>
-                                                                <option value="dinner">Dinner</option>
-                                                            </select>
-                                                            <br><br>
-                    
-                    <label for="recipe_count">Number of Recipes:</label>
-                    <select id="recipe_count" name="recipe_count">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                    </select>
-                    <br><br>
-                    <label for="start_time">Select Start Time:</label>
-                    <select id="start_time" name="start_time"></select>
-                    <input type="time" id="start_time" name="start_time">
-                    <br><br>
-                </div>
-
-                <input type="hidden" id="recipeIdInput<%= list.getId()%>" name="recipe_id" value="<%= list.getId()%>">
-                <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
-                        <% //DateDTO date = DateDAO.getDateByPlanID(plan.getId());%>
-                        <input type="hidden" name="date_id" value="" />
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" name="action" value="addPlanRecipe" class="add-recipe-to-plan-modal-button"
-                                    data-recipeid="<%= list.getId()%>" onclick="setRecipeId(this, '<%= list.getId()%>');">Add</button>
-                        </div>
-                    </div>
-                </form>
-            </div>-->
 
                         <script>
                             document.addEventListener("DOMContentLoaded", function () {
@@ -816,8 +770,24 @@
                                 }
 
                                 // Function to create options for select element
-                                function createOptions(selectElement, timeOptions) {
-                                    selectElement.innerHTML = ''; // Clear existing options
+                                function createOptions(selectElement, selectedOptions, selectedValue) {
+                                    // Clear existing options by removing all children
+                                    while (selectElement.firstChild) {
+                                        selectElement.removeChild(selectElement.firstChild);
+                                    }
+
+                                    const timeOptions = [];
+                                    for (let hour = 0; hour < 24; hour++) {
+                                        const time = hour.toString().padStart(2, '0') + ':00'; // Format the time as HH:00
+                                        if (!selectedOptions.includes(time)) {
+                                            timeOptions.push(time);
+                                        }
+                                    }
+
+                                    // Always include the selected time even if it's deleted from other elements
+                                    if (selectedValue && !selectedOptions.includes(selectedValue)) {
+                                        timeOptions.push(selectedValue);
+                                    }
 
                                     for (let i = 0; i < timeOptions.length; i++) {
                                         const option = document.createElement('option');
@@ -829,6 +799,20 @@
                                     selectElement.setAttribute('required', true); // Add the "required" attribute
                                 }
 
+                                // Function to check if any time is selected
+                                function isAnyTimeOptionSelected() {
+                                    const selectElements = modal.querySelectorAll('.timeList');
+                                    const hasSelectedTimeOptions = Array.from(selectElements).some(select => select.value !== '');
+                                    return hasSelectedTimeOptions || draggablesTime.length > 0;
+                                }
+
+                                // Function to update the "Add" button state
+                                function updateAddButtonState() {
+                                    const btnAddTime = modal.querySelector('#btnAddRecipe');
+                                    btnAddTime.disabled = !isAnyTimeOptionSelected() || draggablesTime.length === 0;
+                                }
+
+
                                 // Add event listener to the toggle button
                                 modal.querySelector("#btnToggleTime").addEventListener('click', () => {
                                     toggleDragModeTime(!dragTime); // Toggle the drag mode
@@ -838,6 +822,7 @@
                                 modal.querySelector("#btnAddTime").addEventListener('click', () => {
                                     if (!dragTime && draggablesTime.length < 6) { // Check the maximum limit
                                         const draggableContainer = modal.querySelector('.draggable-container-time');
+                                        const selectedOptions = Array.from(draggableContainer.querySelectorAll('.timeList')).map(select => select.value);
                                         const newDraggable = document.createElement('p');
                                         newDraggable.classList.add('draggable-time');
                                         newDraggable.classList.add('draggable');
@@ -846,8 +831,9 @@
                                         const newSelect = document.createElement('select');
                                         newSelect.classList.add('timeList');
                                         newSelect.name = 'timeId';
-                                        const timeOptions = ['08:00', '12:00', '16:00', '20:00']; // Your custom time list
-                                        createOptions(newSelect, timeOptions);
+                                        // Pass the selected value of the current time element
+                                        const selectedValue = selectedOptions.length === 0 ? '' : selectedOptions[selectedOptions.length - 1];
+                                        createOptions(newSelect, selectedOptions, selectedValue);
 
                                         const deleteButton = document.createElement('button');
                                         deleteButton.type = 'button';
@@ -873,8 +859,10 @@
                                         draggablesTime = draggableContainer.querySelectorAll('.draggable-time'); // Update the draggable elements
 
                                         enableDeleteButtons();
+                                        updateAddButtonState();
                                     }
                                 });
+
 
                                 // Function to get the closest element during drag and drop
                                 function getDragAfterElement(container, y) {
@@ -910,6 +898,12 @@
                                     });
                                 }
 
+                                modal.querySelectorAll('.timeList').forEach((selectElement) => {
+                                    selectElement.addEventListener('change', () => {
+                                        updateAddButtonState();
+                                    });
+                                });
+
                                 // Add event listener to the modal's shown event
                                 modal.addEventListener('shown.bs.modal', function () {
                                     const draggableContainer = modal.querySelector('.draggable-container-time');
@@ -941,81 +935,33 @@
                                             draggableContainer.insertBefore(draggable, afterElement);
                                         }
                                     });
+
+                                    updateAddButtonState();
                                 });
+
+                                // Function to clear all select options in the modal
+                                // Function to clear all select options in the modal
+                                function clearSelectOptions() {
+                                    const selectElements = modal.querySelectorAll('.timeList');
+                                    selectElements.forEach((select) => {
+                                        const selectedValue = select.value;
+                                        const selectedOptions = Array.from(select.children).map(option => option.value);
+                                        createOptions(select, selectedOptions, selectedValue);
+                                    });
+                                }
+
+
+                                // Add event listener to the "Close" button
+                                modal.querySelector("button[data-bs-dismiss='modal']").addEventListener('click', () => {
+                                    clearSelectOptions();
+                                });
+
+                                // Add event listener to the modal's hidden event
+                                modal.addEventListener('hidden.bs.modal', () => {
+                                    clearSelectOptions();
+                                });
+
                             });
-                        </script>
-
-
-
-                        <script>
-//                            const mealSelect = document.getElementById("meal");
-//                            const startTimeSelect = document.getElementById("start_time");
-//
-//                            // Map of time options based on meal
-//                            const timeOptions = {
-//                                breakfast: ["08:00", "08:30", "09:00", "09:30"],
-//                                lunch: ["12:00", "12:30", "13:00", "13:30"],
-//                                dinner: ["18:00", "18:30", "19:00", "19:30"]
-//                            };
-//
-//                            // Function to update time options based on selected meal
-//                            function updateTimeOptions() {
-//                                const selectedMeal = mealSelect.value;
-//                                const options = timeOptions[selectedMeal];
-//
-//                                // Clear existing options
-//                                startTimeSelect.innerHTML = "";
-//
-//                                // Add new options
-//                                options.forEach(time => {
-//                                    const option = document.createElement("option");
-//                                    option.text = time;
-//                                    option.value = time;
-//                                    startTimeSelect.add(option);
-//                                });
-//                            }
-//
-//                            // Event listener for modal open
-//                            const modal = document.getElementById("addRecipeToPlan<%= list.getId()%>");
-//                            modal.addEventListener("shown.bs.modal", updateTimeOptions);
-                        </script>
-
-                        <script>
-//                            function updateTimeSelects() {
-//                                const selectedMeal = mealSelect.value;
-//                                const options = timeOptions[selectedMeal];
-//
-//                                const recipeCount = parseInt(recipeCountSelect.value);
-//
-//                                // Clear the existing time selects container
-//                                timeSelectsContainer.innerHTML = "";
-//
-//                                // Generate the time selects based on the recipe count
-//                                for (let i = 1; i <= recipeCount; i++) {
-//                                    const startTimeLabel = document.createElement("label");
-//                                    startTimeLabel.setAttribute("for", `start_time_${i}`);
-//                                    startTimeLabel.textContent = `Select Start Time for Recipe ${i}:`;
-//
-//                                    const startTimeSelect = document.createElement("select");
-//                                    startTimeSelect.setAttribute("id", `start_time_${i}`);
-//                                    startTimeSelect.setAttribute("name", `start_time_${i}`);
-//
-//                                    // Add new options for the current time select
-//                                    options.forEach(time => {
-//                                        const option = document.createElement("option");
-//                                        option.text = time;
-//                                        option.value = time;
-//                                        startTimeSelect.add(option);
-//                                    });
-//
-//                                    // Add the label and select to the time selects container
-//                                    timeSelectsContainer.appendChild(startTimeLabel);
-//                                    timeSelectsContainer.appendChild(startTimeSelect);
-//                                    timeSelectsContainer.appendChild(document.createElement("br"));
-//                                    timeSelectsContainer.appendChild(document.createElement("br"));
-//                                }
-//                            }
-
                         </script>
 
                         <%
