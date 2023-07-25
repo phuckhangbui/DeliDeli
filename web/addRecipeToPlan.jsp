@@ -266,7 +266,7 @@
                             </div>
 
                             <%
-                                DateDTO date = DateDAO.getDateByPlanID(plan.getId());
+                                //DateDTO date = DateDAO.getDateByPlanID(plan.getId());
                             %>
 
                             <div class="col-md-3 plan-table-week-column">
@@ -308,22 +308,35 @@
 
                                                 <div class="modal-body recipe-nutriton-modal">
                                                     <label for="start_time">Chose the time again if you want:</label>
-                                                    <!--<select id="start_time" name="start_time"></select>-->
-                                                    <input type="time" id="start_time" name="start_time">
+                                                    <input type="time" id="start_time" name="start_time" class="start-time-input" value="<%= list.getStart_time()%>">
+                                                </div>
+
+                                                <div class="plan-table">
+                                                    <% for (DateDTO dateAList : planDate) {%>
+                                                    <input type="hidden" id="recipeIdInput<%= list.getId()%>" name="recipe_id" value="<%= list.getId()%>">
+                                                    <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
+                                                    <input type="hidden" name="week_id" value="<%= dateList.getWeek_id()%>" />
+                                                    <input type="hidden" name="plan_start" value="<%= plan.getStart_at()%>" />
+                                                    <input type="hidden" name="date_id" value="<%= dateList.getId()%>" />
+                                                    <input type="hidden" name="distanceInDays" value="<%= distanceInDays%>" />
+                                                    <% }%>
                                                 </div>
 
                                                 <input type="hidden" id="recipeIdInput<%= list.getId()%>" name="meal_id" value="<%= list.getId()%>">
-                                                <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
+                                                <!--<input type="hidden" name="plan_id" value="<%= plan.getId()%>" / //>-->
 
-                                                <input type="hidden" name="date_id" value="<%= date.getId()%>" />
 
                                                 <div class="modal-footer">
-                                                    <button type="submit" name="action" value="editStartTimeRecipe" class="remove-recipe-from-plan-button" data-recipeid="<%= list.getId()%>" onclick="setRecipeId(this, '<%= list.getId()%>')">Change time</button>
-                                                    <button type="submit" name="action" value="removePlanRecipe" class="remove-recipe-from-plan-button" data-recipeid="<%= list.getId()%>" onclick="setRecipeId(this, '<%= list.getId()%>')">Remove</button>
+                                                    <button type="submit" id="changeTimeBtn" name="action" value="editStartTimeRecipe" class="remove-recipe-from-plan-button" 
+                                                            data-recipeid="<%= list.getId()%>" onclick="setRecipeId(this, '<%= list.getId()%>')">Change time</button>
+
+                                                    <button type="submit" name="action" value="removePlanRecipe" class="remove-recipe-from-plan-button" 
+                                                            data-recipeid="<%= list.getId()%>" onclick="setRecipeId(this, '<%= list.getId()%>')">Remove</button>
                                                 </div>
                                             </div>
                                         </form>
                                     </div>
+
                                     <%
                                         }
                                     } else {
@@ -333,11 +346,9 @@
                                             <img src="./assets/add-icon.svg" alt="">
                                         </div>
                                     </button>
-                                    <% } %>
+                                    <% }%>
                                 </div>
                             </div>
-
-
 
 
                             <div class="col-md-3 plan-table-week-column">
@@ -379,21 +390,34 @@
 
                                                 <div class="modal-body recipe-nutriton-modal">
                                                     <label for="start_time">Chose the time again if you want:</label>
-                                                    <!--<select id="start_time" name="start_time"></select>-->
-                                                    <input type="time" id="start_time" name="start_time">
+                                                    <input type="time" id="start_time_afternoon" name="start_time" class="start-time-input" value="<%= list.getStart_time()%>">
+                                                </div>
+
+                                                <div class="plan-table">
+                                                    <% for (DateDTO dateAList : planDate) {%>
+                                                    <input type="hidden" id="recipeIdInput<%= list.getId()%>" name="recipe_id" value="<%= list.getId()%>">
+                                                    <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
+                                                    <input type="hidden" name="week_id" value="<%= dateList.getWeek_id()%>" />
+                                                    <input type="hidden" name="plan_start" value="<%= plan.getStart_at()%>" />
+                                                    <input type="hidden" name="date_id" value="<%= dateList.getId()%>" />
+                                                    <input type="hidden" name="distanceInDays" value="<%= distanceInDays%>" />
+                                                    <% }%>
                                                 </div>
 
                                                 <input type="hidden" id="recipeIdInput<%= list.getId()%>" name="meal_id" value="<%= list.getId()%>">
-                                                <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
-                                                <input type="hidden" name="date_id" value="<%= date.getId()%>" />
+                                                <!--<input type="hidden" name="plan_id" value="<%= plan.getId()%>" / //>-->
+
 
                                                 <div class="modal-footer">
-                                                    <button type="submit" name="action" value="editStartTimeRecipe" class="remove-recipe-from-plan-button" data-recipeid="<%= list.getId()%>" onclick="setRecipeId(this, '<%= list.getId()%>')">Change time</button>
+                                                    <button type="submit" id="changeTimeAfternoonBtn" name="action" value="editStartTimeRecipe" class="remove-recipe-from-plan-button" 
+                                                            data-recipeid="<%= list.getId()%>" onclick="setRecipeId(this, '<%= list.getId()%>')"
+                                                            >Change time</button>
                                                     <button type="submit" name="action" value="removePlanRecipe" class="remove-recipe-from-plan-button" data-recipeid="<%= list.getId()%>" onclick="setRecipeId(this, '<%= list.getId()%>')">Remove</button>
                                                 </div>
                                             </div>
                                         </form>
                                     </div>
+
                                     <%
                                         }
                                     } else {
@@ -448,21 +472,34 @@
 
                                                 <div class="modal-body recipe-nutriton-modal">
                                                     <label for="start_time">Chose the time again if you want:</label>
-                                                    <!--<select id="start_time" name="start_time"></select>-->
-                                                    <input type="time" id="start_time" name="start_time">
+                                                    <input type="time" id="start_time_night" name="start_time" class="start-time-input" value="<%= list.getStart_time()%>">
+                                                </div>
+
+                                                <div class="plan-table">
+                                                    <% for (DateDTO dateAList : planDate) {%>
+                                                    <input type="hidden" id="recipeIdInput<%= list.getId()%>" name="recipe_id" value="<%= list.getId()%>">
+                                                    <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
+                                                    <input type="hidden" name="week_id" value="<%= dateList.getWeek_id()%>" />
+                                                    <input type="hidden" name="plan_start" value="<%= plan.getStart_at()%>" />
+                                                    <input type="hidden" name="date_id" value="<%= dateList.getId()%>" />
+                                                    <input type="hidden" name="distanceInDays" value="<%= distanceInDays%>" />
+                                                    <% }%>
                                                 </div>
 
                                                 <input type="hidden" id="recipeIdInput<%= list.getId()%>" name="meal_id" value="<%= list.getId()%>">
-                                                <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
-                                                <input type="hidden" name="date_id" value="<%= date.getId()%>" />
+                                                <!--<input type="hidden" name="plan_id" value="<%= plan.getId()%>" / //>-->
+
 
                                                 <div class="modal-footer">
-                                                    <button type="submit" name="action" value="editStartTimeRecipe" class="remove-recipe-from-plan-button" data-recipeid="<%= list.getId()%>" onclick="setRecipeId(this, '<%= list.getId()%>')">Change time</button>
+                                                    <button type="submit" id="changeTimeNightBtn" name="action" value="editStartTimeRecipe" class="remove-recipe-from-plan-button" 
+                                                            data-recipeid="<%= list.getId()%>" onclick="setRecipeId(this, '<%= list.getId()%>')"
+                                                            >Change time</button>
                                                     <button type="submit" name="action" value="removePlanRecipe" class="remove-recipe-from-plan-button" data-recipeid="<%= list.getId()%>" onclick="setRecipeId(this, '<%= list.getId()%>')">Remove</button>
                                                 </div>
                                             </div>
                                         </form>
                                     </div>
+
                                     <%
                                         }
                                     } else {
@@ -687,7 +724,7 @@
                                                     // Loop through the days between the selected day and the end date
                                                     //while (calendar.getTime().before(endDate) || calendar.getTime().equals(endDate)) {
                                                     // Generate the checkboxes
-%>
+                                            %>
                                             <!--                                            <div class="col-md-4">
                                                                                             <div class="d-flex">
                                                                                                 <input type="checkbox" id="date_id<%= dateList.getId()%>" name="date_id" value="<%= formattedDate%>">
@@ -712,7 +749,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-4 add-recipe-info-ingredient-button">
-                                                <button type="button" id="btnToggleTime">
+                                                <button type="button" id="btnToggleTime" style="display: none">
                                                     <img src="assets/drag-icon.svg" alt="">
                                                 </button>
                                                 <button type="button" id="btnAddTime">
@@ -975,102 +1012,6 @@
 
             </div>
         </div>
-
-        <script>
-//                            function openModal(recipeId) {
-//// Get the modal element
-//                                var modal = document.getElementById("addRecipeToPlan" + recipeId);
-//
-//// Set the selected meal to "breakfast" by default
-//                                var mealSelectt = modal.querySelector("#meal");
-//                                mealSelectt.value = "breakfast";
-//
-//// Update the time options based on the selected meal
-//                                updateTimeOptions();
-//
-//// Show the modal
-//                                var modalInstance = new bootstrap.Modal(modal);
-//                                modalInstance.show();
-//                            }
-        </script>
-
-        <script>
-//            const start_time = document.getElementById("start_time");
-//
-//            // Check if the start time is in the past
-//            function checkStartTime() {
-//                const selectedTime = start_time.value;
-//                const now = new Date();
-//                const currentHour = now.getHours();
-//                const currentMinute = now.getMinutes();
-//
-//                const selectedHour = parseInt(selectedTime.split(":")[0]);
-//                const selectedMinute = parseInt(selectedTime.split(":")[1]);
-//
-//                if (selectedHour < currentHour || (selectedHour === currentHour && selectedMinute < currentMinute)) {
-//                    alert("The start time must be in the future.");
-//                    start_time.focus();
-//                    return false;
-//                }
-//
-//                return true;
-//            }
-
-            // Open the modal
-//            function openModal(recipeId) {
-//                var modal = document.getElementById("addRecipeToPlan" + recipeId);
-//                var currentTime = modal.querySelector("#currentTime");
-//                currentTime.innerText = getCurrentTime(); // Set current time
-//                modal.style.display = "block";
-//            }
-//
-//            // Get the current time
-//            function getCurrentTime() {
-//                var now = new Date();
-//                var hours = now.getHours();
-//                var minutes = now.getMinutes();
-//                var seconds = now.getSeconds();
-//
-//                // Add leading zeros if necessary
-//                if (hours < 10)
-//                    hours = "0" + hours;
-//                if (minutes < 10)
-//                    minutes = "0" + minutes;
-//                if (seconds < 10)
-//                    seconds = "0" + seconds;
-//
-//                return hours + ":" + minutes + ":" + seconds;
-//            }
-
-//            function validateTime() {
-//                var selectedTimeInput = document.getElementById("start_time");
-//                var selectedTime = selectedTimeInput.value;
-//                var currentTime = new Date();
-//                var currentHour = currentTime.getHours();
-//                var currentMinute = currentTime.getMinutes();
-//
-//                var selectedHour = parseInt(selectedTime.split(":")[0]);
-//                var selectedMinute = parseInt(selectedTime.split(":")[1]);
-//
-//                if (selectedHour < currentHour || (selectedHour === currentHour && selectedMinute < currentMinute)) {
-//                    alert("Please select a time in the future.");
-//                    selectedTimeInput.value = ""; // Clear the input value
-//                    selectedTimeInput.focus(); // Set focus back to the input field
-//                    return false; // Prevent form submission
-//                }
-//
-//                return true; // Allow form submission
-//            }
-//
-//            function setCurrentTime() {
-//                var currentTime = getCurrentTime();
-//                var currentTimeInput = document.getElementById("currentTimeInput");
-//                currentTimeInput.value = currentTime;
-//            }
-        </script>
-
-
-
         <script>
             // Function to scroll to a specific section
             function scrollToSection(addSection) {
