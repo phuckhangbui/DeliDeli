@@ -321,11 +321,8 @@
                                                     <input type="hidden" name="distanceInDays" value="<%= distanceInDays%>" />
                                                     <% }%>
                                                 </div>
-
+                                                
                                                 <input type="hidden" id="recipeIdInput<%= list.getId()%>" name="meal_id" value="<%= list.getId()%>">
-                                                <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
-                                                <input type="hidden" name="date_id" value="<%= date.getId()%>" />
-                                                <input type="hidden" name="distanceInDays" value="<%= distanceInDays%>" />
 
                                                 <div class="modal-footer">
                                                     <button type="submit" id="changeTimeBtn" name="action" value="editStartTimeRecipe" class="remove-recipe-from-plan-button" 
@@ -404,12 +401,8 @@
                                                     <input type="hidden" name="distanceInDays" value="<%= distanceInDays%>" />
                                                     <% }%>
                                                 </div>
-
+                                                
                                                 <input type="hidden" id="recipeIdInput<%= list.getId()%>" name="meal_id" value="<%= list.getId()%>">
-                                                <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
-                                                <input type="hidden" name="date_id" value="<%= date.getId()%>" />
-                                                <input type="hidden" name="distanceInDays" value="<%= distanceInDays%>" />
-
 
                                                 <div class="modal-footer">
                                                     <button type="submit" id="changeTimeAfternoonBtn" name="action" value="editStartTimeRecipe" class="remove-recipe-from-plan-button" 
@@ -488,11 +481,8 @@
                                                     <input type="hidden" name="distanceInDays" value="<%= distanceInDays%>" />
                                                     <% }%>
                                                 </div>
-
+                                                
                                                 <input type="hidden" id="recipeIdInput<%= list.getId()%>" name="meal_id" value="<%= list.getId()%>">
-                                                <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
-                                                <input type="hidden" name="date_id" value="<%= date.getId()%>" />
-                                                <input type="hidden" name="distanceInDays" value="<%= distanceInDays%>" />
 
                                                 <div class="modal-footer">
                                                     <button type="submit" id="changeTimeNightBtn" name="action" value="editStartTimeRecipe" class="remove-recipe-from-plan-button" 
