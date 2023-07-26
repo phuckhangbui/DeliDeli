@@ -4,14 +4,22 @@
  */
 package Servlet.User;
 
-import DAO.DailyPlanTemplateDAO;
-import DAO.MealDAO;
+import DAO.DateDAO;
+import DAO.DietDAO;
 import DAO.PlanDAO;
-import DTO.MealDTO;
+import DAO.RecipeDAO;
+import DTO.DateDTO;
+import DTO.DietDTO;
+import DTO.DisplayRecipeDTO;
 import DTO.PlanDTO;
+import DTO.RecipeDTO;
+import DTO.UserDTO;
+import static Servlet.User.PlanDetailServlet.calculateDistanceInDays;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +29,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author khang
  */
-public class UseDailyPlanTemplateServlet extends HttpServlet {
+public class LoadEditPlanDetailServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,29 +45,33 @@ public class UseDailyPlanTemplateServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            int planId = Integer.parseInt(request.getParameter("id"));
-            PlanDTO plan = PlanDAO.getPlanById(planId);
-            if(plan == null){
-                response.sendRedirect("error.jsp");
+
+            String id = request.getParameter("id");
+
+            //Daily
+            if (id != null && !id.isEmpty()) {
+                PlanDTO plan = PlanDAO.getUserPlanById(Integer.parseInt(id));
+                request.setAttribute("plan", plan);
+
+                java.sql.Date startDateSQL = plan.getStart_at();
+                java.sql.Date endDateSQL = plan.getEnd_at();
+                
+                long millisDiff = endDateSQL.getTime() - startDateSQL.getTime();
+                
+                int planLength = (int) (millisDiff / (1000 * 60 * 60 * 24));
+                
+                request.setAttribute("planLength", planLength);
+                
+                
+                if(plan.isDaily()){
+                    request.getRequestDispatcher("editDailyPlanDetail.jsp").forward(request, response);
+                }
+                else{
+                    request.getRequestDispatcher("#").forward(request, response);
+                }
             }
+
             
-            //get template date id
-            int templateId = DailyPlanTemplateDAO.getDailyTemplateIdByPlanId(planId);
-            
-            ArrayList<MealDTO> templateMeals = MealDAO.getAllMealByDateId(templateId);
-            //list of all normal date in that plan
-            ArrayList<Integer> idList = DailyPlanTemplateDAO.getSyncDateId(planId);
-            //delete old meal from the sync date -- leave the unsync date alone
-            DailyPlanTemplateDAO.deleteSyncDateMeal(planId, idList);
-           
-            
-            if(templateMeals.size() > 0){                
-                //sync normal date with template meal
-                DailyPlanTemplateDAO.syncWithDailyTemplate(idList, templateMeals);
-            }
-            
-            request.getRequestDispatcher("UserController?action=loadEditDailyTemplate&id=" + planId).forward(request, response);
-        }catch(Exception ex){
             response.sendRedirect("error.jsp");
         }
     }

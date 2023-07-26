@@ -4,8 +4,10 @@
  */
 package Servlet.User;
 
+import DAO.DailyPlanTemplateDAO;
 import DAO.DateDAO;
 import DAO.DietDAO;
+import DAO.MealDAO;
 import DAO.PlanDAO;
 import DAO.RecipeDAO;
 import DTO.DateDTO;
@@ -17,8 +19,15 @@ import DTO.UserDTO;
 import static Servlet.User.PlanDetailServlet.calculateDistanceInDays;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -29,7 +38,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author khang
  */
-public class LoadEditRecipeDetailServlet extends HttpServlet {
+public class LoadEditDailyTemplateServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -45,33 +54,52 @@ public class LoadEditRecipeDetailServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-
             String id = request.getParameter("id");
+            ArrayList<DisplayRecipeDTO> displayList = (ArrayList<DisplayRecipeDTO>) request.getAttribute("searchRecipesList");
+            boolean isSearch = Boolean.parseBoolean(request.getParameter("isSearch"));
 
             //Daily
             if (id != null && !id.isEmpty()) {
                 PlanDTO plan = PlanDAO.getUserPlanById(Integer.parseInt(id));
                 request.setAttribute("plan", plan);
 
-                java.sql.Date startDateSQL = plan.getStart_at();
-                java.sql.Date endDateSQL = plan.getEnd_at();
-                
-                long millisDiff = endDateSQL.getTime() - startDateSQL.getTime();
-                
-                int planLength = (int) (millisDiff / (1000 * 60 * 60 * 24));
-                
-                request.setAttribute("planLength", planLength);
-                
-                
-                if(plan.isDaily()){
-                    request.getRequestDispatcher("editDailyPlanDetail.jsp").forward(request, response);
+                DietDTO diet = DietDAO.getTypeById(plan.getDiet_id());
+                request.setAttribute("diet", diet);
+
+                int templateId = DailyPlanTemplateDAO.getDailyTemplateIdByPlanId(plan.getId());
+                DateDTO templateDate = DailyPlanTemplateDAO.getDailyTemplateByPlanId(plan.getId());
+
+                request.setAttribute("templateDate", templateDate);
+
+                request.setAttribute("templateId", templateId);
+                if (isSearch) {
+                    request.setAttribute("SEARCH_LIST", displayList);
+                    request.setAttribute("SEARCH_PLAN_REAL", true);
+                    RequestDispatcher rq = request.getRequestDispatcher("editDailyTemplate.jsp");
+                    rq.forward(request, response);
+                    return;
+                } else {
+                    ArrayList<RecipeDTO> list = RecipeDAO.getRecipeByDietTitle(diet.getTitle());
+                    displayList = new ArrayList<>();
+                    for (RecipeDTO r : list) {
+                        String thumbnailPath = RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath();
+                        String category = RecipeDAO.getCategoryByRecipeId(r.getId());
+                        double rating = RecipeDAO.getRatingByRecipeId(r.getId());
+                        UserDTO owner = RecipeDAO.getRecipeOwnerByRecipeId(r.getId());
+
+                        DisplayRecipeDTO d = new DisplayRecipeDTO(r.getId(), r.getTitle(), thumbnailPath, category, rating, owner);
+                        displayList.add(d);
+                    }
+                    request.setAttribute("SEARCH_LIST", displayList);
+                    request.setAttribute("SEARCH_PLAN_REAL", false);
+                    RequestDispatcher rq = request.getRequestDispatcher("editDailyTemplate.jsp");
+                    rq.forward(request, response);
+                    return;
                 }
-                else{
-                    request.getRequestDispatcher("#").forward(request, response);
-                }
+
             }
 
-            
+            //Weekly
             response.sendRedirect("error.jsp");
         }
     }

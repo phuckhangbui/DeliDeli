@@ -446,8 +446,12 @@
         <servlet-class>Servlet.User.SychronizeTemplateServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>LoadEditRecipeDetailServlet</servlet-name>
-        <servlet-class>Servlet.User.LoadEditRecipeDetailServlet</servlet-class>
+        <servlet-name>LoadEditPlanDetailServlet</servlet-name>
+        <servlet-class>Servlet.User.LoadEditPlanDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoadEditDailyTemplateServlet</servlet-name>
+        <servlet-class>Servlet.User.LoadEditDailyTemplateServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
@@ -798,8 +802,12 @@
         <url-pattern>/SychronizeTemplateServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>LoadEditRecipeDetailServlet</servlet-name>
-        <url-pattern>/LoadEditRecipeDetailServlet</url-pattern>
+        <servlet-name>LoadEditPlanDetailServlet</servlet-name>
+        <url-pattern>/LoadEditPlanDetailServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadEditDailyTemplateServlet</servlet-name>
+        <url-pattern>/LoadEditDailyTemplateServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
