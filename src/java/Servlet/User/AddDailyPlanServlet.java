@@ -91,7 +91,7 @@ public class AddDailyPlanServlet extends HttpServlet {
             session.setAttribute("createPlanDescription", null);
             session.setAttribute("createPlanDietId", null);
             session.setAttribute("newlyCreatedPlanId", id);
-            request.getRequestDispatcher("addDailyPlanTemplate.jsp").forward(request, response);
+            request.getRequestDispatcher("home.jsp").forward(request, response);
         }
     }
 

@@ -39,6 +39,7 @@ public class EditStartTimeRecipeServlet extends HttpServlet {
             int plan_id = Integer.parseInt(request.getParameter("plan_id"));
             int meal_id = Integer.parseInt(request.getParameter("meal_id"));
             String start_timeStr = request.getParameter("start_time");
+            String distanceInDays = request.getParameter("distanceInDays");
 
             SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
             java.util.Date parsedStart = timeFormat.parse(start_timeStr);
@@ -48,7 +49,7 @@ public class EditStartTimeRecipeServlet extends HttpServlet {
             boolean result = MealDAO.changeStartTimeOfRecipe(meal_id, date_id, start_time);
 
             if (result) {
-                response.sendRedirect("UserController?action=editPlan&id=" + plan_id + "&isSearch=false");
+                response.sendRedirect("UserController?action=editPlan&id=" + plan_id + "&isSearch=false&distanceInDays=" + distanceInDays);
             } else {
                 response.sendRedirect("error.jsp");
             }

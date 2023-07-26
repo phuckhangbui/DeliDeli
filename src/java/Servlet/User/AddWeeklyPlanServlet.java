@@ -78,7 +78,7 @@ public class AddWeeklyPlanServlet extends HttpServlet {
             session.setAttribute("createPlanTitle", null);
             session.setAttribute("createPlanDescription", null);
             session.setAttribute("createPlanDietId", null);
-            request.getRequestDispatcher("addWeeklyPlanFinal.jsp").forward(request, response);
+            request.getRequestDispatcher("home.jsp").forward(request, response);
         }
     }
 
