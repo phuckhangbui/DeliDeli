@@ -6,6 +6,7 @@ package Servlet.User;
 
 import DAO.DateDAO;
 import DAO.PlanDAO;
+import DAO.WeeklyPlanTemplateDAO;
 import DTO.UserDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -50,6 +51,7 @@ public class AddWeeklyPlanServlet extends HttpServlet {
 
             java.sql.Date end_date = new java.sql.Date(calendar.getTimeInMillis());
 
+            calendar.setTime(end_date);
             
 
             String name = (String) session.getAttribute("createPlanTitle");  // title in fe, name in be lmao
@@ -62,13 +64,28 @@ public class AddWeeklyPlanServlet extends HttpServlet {
             try {
                 result = PlanDAO.insertPlan(name, description, "", start_date, end_date, status, user.getId(), dietId, false);
                 id = PlanDAO.getPlanByUserIdAndName(user.getId(), name);
+                
+                int weekTemplateId = WeeklyPlanTemplateDAO.insertWeekTemplate(id, start_date);
+                WeeklyPlanTemplateDAO.insertDateOfWeeklyTemplate(start_date, weekTemplateId, id);
             } catch (Exception ex) {
                 System.out.println("[addPlanServlet - ERROR]: " + ex.getMessage());
                 response.sendRedirect("error.jsp");
             }
 
             try {
-//                boolean areDatesAdded = DateDAO.insertDateForDaily(start_date, id); weeklly plan 
+                // Loop from start_date to end_date
+                Calendar loopDate = Calendar.getInstance();
+                loopDate.setTime(start_date);
+                
+                for(int i = 0; i< planLength; i++) {
+                    // Insert daily meal
+                    java.sql.Date currentDate = new java.sql.Date(loopDate.getTimeInMillis());
+                    int weekId = DateDAO.insertWeekForWeekly(currentDate, id);
+                    DateDAO.insertAllDatesWithinAWeek(currentDate, weekId, id);
+                    
+                    // Increment loop date by seven day
+                    loopDate.add(Calendar.DATE, 7);
+                }
             } catch (Exception ex) {
                 System.out.println("[addPlanServlet - ERROR]: " + ex.getMessage());
                 response.sendRedirect("error.jsp");

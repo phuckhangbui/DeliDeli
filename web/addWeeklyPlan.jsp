@@ -107,7 +107,7 @@
 
 
                             <div class=" add-recipe-info-submit">
-                                <button type="submit" name="action" value="addDailyPlan">
+                                <button type="submit" name="action" value="addWeeklyPlan">
                                     Next
                                 </button>
                             </div>

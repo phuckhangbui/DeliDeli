@@ -149,6 +149,9 @@ public class UserController extends HttpServlet {
                     case "addPlanMultiplesMeal":
                         url = "AddPlanMultiplesMealServlet";
                         break;
+                    case "loadEditRecipeDetail":
+                        url = "LoadEditRecipeDetailServlet";
+                        break;
                 }
             }
             RequestDispatcher rd = request.getRequestDispatcher(url);
