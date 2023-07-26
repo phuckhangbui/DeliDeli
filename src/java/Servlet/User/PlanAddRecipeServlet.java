@@ -4,7 +4,6 @@
  */
 package Servlet.User;
 
-import DAO.DateDAO;
 import DAO.MealDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,7 +12,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -57,10 +55,8 @@ public class PlanAddRecipeServlet extends HttpServlet {
 //            }
 
 
-// Convert the array to a Set to remove duplicates
             Set<String> uniqueTimeIdsSet = new HashSet<>(Arrays.asList(timeId));
 
-// Convert the Set back to an array
             String[] uniqueTimeIds = uniqueTimeIdsSet.toArray(new String[0]);
             if (uniqueTimeIds != null) {
                 for (String timeStr : uniqueTimeIds) {

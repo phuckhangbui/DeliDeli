@@ -40,12 +40,10 @@ public class EditStartTimeRecipeServlet extends HttpServlet {
             int meal_id = Integer.parseInt(request.getParameter("meal_id"));
             String start_timeStr = request.getParameter("start_time");
 
-            Time start_time = null;
-
             SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
             java.util.Date parsedStart = timeFormat.parse(start_timeStr);
 
-            start_time = new Time(parsedStart.getTime());
+            Time start_time = new Time(parsedStart.getTime());
 
             boolean result = MealDAO.changeStartTimeOfRecipe(meal_id, date_id, start_time);
 
