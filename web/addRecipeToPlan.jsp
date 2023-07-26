@@ -50,6 +50,7 @@
             boolean SEARCH_PLAN_REAL = (boolean) request.getAttribute("SEARCH_PLAN_REAL");
             ArrayList<DateDTO> planDate = (ArrayList<DateDTO>) request.getAttribute("planDate");
             ArrayList<DateDTO> allPlanDate = (ArrayList<DateDTO>) request.getAttribute("allPlanDate");
+            String error = (String) request.getAttribute("max_meal_error");
             LocalDate currentDate = LocalDate.now();
             java.sql.Date startDateSQL = plan.getStart_at();
             LocalDate startLocalDate = startDateSQL.toLocalDate();
@@ -653,6 +654,9 @@
                                     }
                                 %>
                             </a>
+                            <%
+                                
+                            %>
                             <div class="add-recipe-to-plan-content-recipe-button">
 <!--                                <button type="button" class="" data-bs-toggle="modal" data-bs-target="#addRecipeToPlan<%= list.getId()%>">
                                     Add
@@ -690,7 +694,7 @@
                                                     // Loop through the days between the selected day and the end date
                                                     //while (calendar.getTime().before(endDate) || calendar.getTime().equals(endDate)) {
                                                     // Generate the checkboxes
-%>
+                                            %>
                                             <!--                                            <div class="col-md-4">
                                                                                             <div class="d-flex">
                                                                                                 <input type="checkbox" id="date_id<%= dateList.getId()%>" name="date_id" value="<%= formattedDate%>">

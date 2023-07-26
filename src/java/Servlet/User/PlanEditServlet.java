@@ -6,6 +6,7 @@ package Servlet.User;
 
 import DAO.DateDAO;
 import DAO.DietDAO;
+import DAO.MealDAO;
 import DTO.DietDTO;
 import DAO.PlanDAO;
 import DTO.PlanDTO;
@@ -49,6 +50,7 @@ public class PlanEditServlet extends HttpServlet {
 
             ArrayList<DateDTO> planDate = DateDAO.getAllDateByPlanID(plan.getId());
             ArrayList<DateDTO> displayDate = new ArrayList<>();
+            String error = "";
 
             LocalDate currentDate = LocalDate.now();
             java.sql.Date startDateSQL = plan.getStart_at();
@@ -79,6 +81,15 @@ public class PlanEditServlet extends HttpServlet {
 
             request.setAttribute("planDate", displayDate);
             request.setAttribute("allPlanDate", planDate);
+
+            // Meal count based on time.
+            for (DateDTO date : displayDate) {
+                int meal_count = MealDAO.countRecipeBasedOnTime(date.getId());
+                if (meal_count == 10) {
+                    error = "Please remove some recipes before adding. (10 max)";
+                    request.setAttribute("max_meal_error", error);
+                }
+            }
 
             if (isSearch) {
                 request.setAttribute("SEARCH_LIST", displayList);
