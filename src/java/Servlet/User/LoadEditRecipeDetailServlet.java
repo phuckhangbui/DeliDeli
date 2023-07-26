@@ -4,12 +4,22 @@
  */
 package Servlet.User;
 
-import DAO.MealDAO;
+import DAO.DateDAO;
+import DAO.DietDAO;
+import DAO.PlanDAO;
+import DAO.RecipeDAO;
+import DTO.DateDTO;
+import DTO.DietDTO;
+import DTO.DisplayRecipeDTO;
+import DTO.PlanDTO;
+import DTO.RecipeDTO;
+import DTO.UserDTO;
+import static Servlet.User.PlanDetailServlet.calculateDistanceInDays;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Time;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,9 +27,9 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author Admin
+ * @author khang
  */
-public class EditStartTimeRecipeServlet extends HttpServlet {
+public class LoadEditRecipeDetailServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,32 +45,34 @@ public class EditStartTimeRecipeServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            int date_id = Integer.parseInt(request.getParameter("date_id"));
-            int plan_id = Integer.parseInt(request.getParameter("plan_id"));
-            int meal_id = Integer.parseInt(request.getParameter("meal_id"));
-            String start_timeStr = request.getParameter("start_time");
-            String distanceInDays = request.getParameter("distanceInDays");
 
-            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-            java.util.Date parsedStart = timeFormat.parse(start_timeStr);
+            String id = request.getParameter("id");
 
-            Time start_time = new Time(parsedStart.getTime());
+            //Daily
+            if (id != null && !id.isEmpty()) {
+                PlanDTO plan = PlanDAO.getUserPlanById(Integer.parseInt(id));
+                request.setAttribute("plan", plan);
 
-            boolean result = MealDAO.changeStartTimeOfRecipe(meal_id, date_id, start_time);
-
-            if (result) {
-                response.sendRedirect("UserController?action=editPlan&id=" + plan_id + "&isSearch=false&distanceInDays=" + distanceInDays);
-            } else {
-                response.sendRedirect("error.jsp");
+                java.sql.Date startDateSQL = plan.getStart_at();
+                java.sql.Date endDateSQL = plan.getEnd_at();
+                
+                long millisDiff = endDateSQL.getTime() - startDateSQL.getTime();
+                
+                int planLength = (int) (millisDiff / (1000 * 60 * 60 * 24));
+                
+                request.setAttribute("planLength", planLength);
+                
+                
+                if(plan.isDaily()){
+                    request.getRequestDispatcher("editDailyPlanDetail.jsp").forward(request, response);
+                }
+                else{
+                    request.getRequestDispatcher("#").forward(request, response);
+                }
             }
 
-//            System.out.println("Success");
-//            out.println(date_id);
-//            out.println(plan_id);
-//            out.println(meal_id);
-//            out.println(start_timeStr);
-        } catch (ParseException e) {
-            e.printStackTrace();
+            
+            response.sendRedirect("error.jsp");
         }
     }
 
