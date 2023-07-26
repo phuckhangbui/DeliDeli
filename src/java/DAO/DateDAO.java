@@ -22,6 +22,55 @@ import java.util.List;
  */
 public class DateDAO {
 
+    public static ArrayList<DateDTO> getAllDateByPlanIDAndWeekID(int plan_id, int weekId) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        ArrayList<DateDTO> result = new ArrayList<>();
+
+        String sql = "SELECT * FROM [Date]\n"
+                + "WHERE [plan_id] = ? AND [week_id] = ?";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, plan_id);
+                stm.setInt(2, weekId);
+
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    Date date = rs.getDate("date");
+                    int week_id = rs.getInt("week_id");
+                    plan_id = rs.getInt("plan_id");
+                    boolean isSync = rs.getBoolean("is_sync");
+                    boolean isTemplate = rs.getBoolean("is_template");
+
+                    DateDTO planDate = new DateDTO(id, date, week_id, plan_id, isSync, isTemplate);
+                    result.add(planDate);
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error - getPlanIdByUserIdAndDate: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return result;
+    }
+
     public static ArrayList<DateDTO> getAllDateByPlanID(int plan_id) {
         Connection con = null;
         PreparedStatement stm = null;
@@ -189,7 +238,7 @@ public class DateDAO {
                 calendar.setTime(start_date);
 
                 // Iterate from start_date until end_date, we add each date into a list.
-                for(int i = 0; i < 7; i++) {
+                for (int i = 0; i < 7; i++) {
                     Date currentDate = new Date(calendar.getTime().getTime()); // Convert java.util.Date to java.sql.Date
                     dates.add(currentDate);
                     calendar.add(Calendar.DAY_OF_MONTH, 1);
@@ -323,7 +372,7 @@ public class DateDAO {
         return false;
     }
 
-   public static int insertWeekForWeekly(Date date, int plan_id) {
+    public static int insertWeekForWeekly(Date date, int plan_id) {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
@@ -490,6 +539,10 @@ public class DateDAO {
             }
         }
         return false;
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(DateDAO.getAllDateByPlanIDAndWeekID(5, 3));
     }
 
 }
