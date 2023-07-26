@@ -37,6 +37,7 @@ public class PlanEditServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String id = request.getParameter("id");
+        boolean foundMatchingDate = false;
         ArrayList<DisplayRecipeDTO> displayList = (ArrayList<DisplayRecipeDTO>) request.getAttribute("searchRecipesList");
         boolean isSearch = Boolean.parseBoolean(request.getParameter("isSearch"));
 
@@ -58,6 +59,7 @@ public class PlanEditServlet extends HttpServlet {
             int distanceInDays = (int) calculateDistanceInDays(startLocalDate, currentDate);
 
             String distanceInDaysParam = request.getParameter("distanceInDays");
+
             if (distanceInDaysParam != null) {
                 distanceInDays = Integer.parseInt(distanceInDaysParam);
                 request.setAttribute("distanceInDays", distanceInDays);
@@ -65,17 +67,15 @@ public class PlanEditServlet extends HttpServlet {
                 for (DateDTO date : planDate) {
                     LocalDate dateList = date.getDate().toLocalDate();
                     if (dateList.equals(startLocalDate.plusDays(distanceInDays))) {
+                        foundMatchingDate = true;
                         displayDate.add(date);
-                        break; // Break after finding the date with the desired distance
+                        break;
                     }
                 }
-            } else {
-                for (DateDTO date : planDate) {
-                    LocalDate dateList = date.getDate().toLocalDate();
-                    if (dateList.equals(currentDate)) {
-                        displayDate.add(date);
-                        break; // Break after finding the date with the desired distance
-                    }
+
+                if (!foundMatchingDate && !planDate.isEmpty()) {
+                    DateDTO firstDate = planDate.get(0);
+                    displayDate.add(firstDate);
                 }
             }
 

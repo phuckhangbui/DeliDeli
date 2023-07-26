@@ -65,7 +65,7 @@ public class PlanDetailServlet extends HttpServlet {
                 LocalDate dateList = date.getDate().toLocalDate();
                 if (dateList.equals(startLocalDate.plusDays(distanceInDays))) {
                     displayDate.add(date);
-                    break; // Break after finding the date with the desired distance
+                    break;
                 }
             }
             // If currentDate is out of plan date scope then return plan start date
@@ -76,7 +76,7 @@ public class PlanDetailServlet extends HttpServlet {
                 if (dateList.equals(currentDate)) {
                     displayDate.add(date);
                     foundMatchingDate = true;
-                    break; // Break after finding the date with the desired distance
+                    break;
                 }
             }
             if (!foundMatchingDate && !planDate.isEmpty()) {
