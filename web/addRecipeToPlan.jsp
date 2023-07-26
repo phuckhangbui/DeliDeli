@@ -293,7 +293,7 @@
 
                                     <!-- Modal -->
                                     <div class="modal fade" id="<%= modalId%>" tabindex="-1" aria-labelledby="recipeNutritionModalLabel" aria-hidden="true">
-                                        <form class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                        <form action="UserController" method="POST" class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <h1 class="modal-title fs-5" id="exampleModalLabel"><%= recipe.getTitle()%></h1>
@@ -323,8 +323,9 @@
                                                 </div>
 
                                                 <input type="hidden" id="recipeIdInput<%= list.getId()%>" name="meal_id" value="<%= list.getId()%>">
-                                                <!--<input type="hidden" name="plan_id" value="<%= plan.getId()%>" / //>-->
-
+                                                <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
+                                                <input type="hidden" name="date_id" value="<%= date.getId()%>" />
+                                                <input type="hidden" name="distanceInDays" value="<%= distanceInDays%>" />
 
                                                 <div class="modal-footer">
                                                     <button type="submit" id="changeTimeBtn" name="action" value="editStartTimeRecipe" class="remove-recipe-from-plan-button" 
@@ -375,7 +376,7 @@
 
                                     <!-- Modal -->
                                     <div class="modal fade" id="<%= modalId%>" tabindex="-1" aria-labelledby="recipeNutritionModalLabel" aria-hidden="true">
-                                        <form class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                        <form action="UserController" method="POST" class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <h1 class="modal-title fs-5" id="exampleModalLabel"><%= recipe.getTitle()%></h1>
@@ -405,7 +406,9 @@
                                                 </div>
 
                                                 <input type="hidden" id="recipeIdInput<%= list.getId()%>" name="meal_id" value="<%= list.getId()%>">
-                                                <!--<input type="hidden" name="plan_id" value="<%= plan.getId()%>" / //>-->
+                                                <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
+                                                <input type="hidden" name="date_id" value="<%= date.getId()%>" />
+                                                <input type="hidden" name="distanceInDays" value="<%= distanceInDays%>" />
 
 
                                                 <div class="modal-footer">
@@ -457,7 +460,7 @@
 
                                     <!-- Modal -->
                                     <div class="modal fade" id="<%= modalId%>" tabindex="-1" aria-labelledby="recipeNutritionModalLabel" aria-hidden="true">
-                                        <form class="modal-dialog modal-dialog-centered modal-dialog-scrollable" >
+                                        <form action="UserController" method="POST" class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <h1 class="modal-title fs-5" id="exampleModalLabel"><%= recipe.getTitle()%></h1>
@@ -487,8 +490,9 @@
                                                 </div>
 
                                                 <input type="hidden" id="recipeIdInput<%= list.getId()%>" name="meal_id" value="<%= list.getId()%>">
-                                                <!--<input type="hidden" name="plan_id" value="<%= plan.getId()%>" / //>-->
-
+                                                <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
+                                                <input type="hidden" name="date_id" value="<%= date.getId()%>" />
+                                                <input type="hidden" name="distanceInDays" value="<%= distanceInDays%>" />
 
                                                 <div class="modal-footer">
                                                     <button type="submit" id="changeTimeNightBtn" name="action" value="editStartTimeRecipe" class="remove-recipe-from-plan-button" 

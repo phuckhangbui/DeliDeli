@@ -25,13 +25,14 @@ public class PlanRemoveRecipeServlet extends HttpServlet {
         boolean result = false;
         int meal_id = Integer.parseInt(request.getParameter("meal_id"));
         int plan_id = Integer.parseInt(request.getParameter("plan_id"));
+        String distanceInDays = request.getParameter("distanceInDays");
 
         String url = "error.jsp";
 
         if (meal_id > 0 && plan_id > 0) {
             result = MealDAO.removeRecipeFromPlan(meal_id);
             if (result) {
-                url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=false";
+                url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=false&distanceInDays=" + distanceInDays;
                 RequestDispatcher rd = request.getRequestDispatcher(url);
                 rd.forward(request, response);
             } else {
