@@ -130,7 +130,7 @@ public class DateDAO {
 
         String sql = "SELECT * FROM [Date]\n"
                 + "WHERE [plan_id] = ?";
- 
+
         try {
             con = DBUtils.getConnection();
             if (con != null) {
@@ -169,7 +169,7 @@ public class DateDAO {
         return result;
     }
 
-    public static boolean insertAllDatesWithinAWeek(Date start_date, Date end_date, int week_id, int plan_id) {
+    public static boolean insertAllDatesWithinAWeek(Date start_date, int week_id, int plan_id) {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
@@ -189,7 +189,7 @@ public class DateDAO {
                 calendar.setTime(start_date);
 
                 // Iterate from start_date until end_date, we add each date into a list.
-                while (!calendar.getTime().after(end_date)) {
+                for(int i = 0; i < 7; i++) {
                     Date currentDate = new Date(calendar.getTime().getTime()); // Convert java.util.Date to java.sql.Date
                     dates.add(currentDate);
                     calendar.add(Calendar.DAY_OF_MONTH, 1);
@@ -321,6 +321,51 @@ public class DateDAO {
             }
         }
         return false;
+    }
+
+   public static int insertWeekForWeekly(Date date, int plan_id) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        int insertedId = -1; // Default value in case insertion fails
+
+        String sql = "INSERT INTO [dbo].[Week] ([start_at], [plan_id])\n" + "VALUES (?, ?)";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+
+                stm = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                stm.setDate(1, date);
+                stm.setInt(2, plan_id);
+                int effectRows = stm.executeUpdate();
+
+                if (effectRows > 0) {
+                    // Get the generated ID of the newly inserted row
+                    rs = stm.getGeneratedKeys();
+                    if (rs.next()) {
+                        insertedId = rs.getInt(1);
+                    }
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error - insertAllDatesWithinAWeek: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return insertedId;
     }
 
     public static boolean updateDate(int date_id, Date new_date) {
