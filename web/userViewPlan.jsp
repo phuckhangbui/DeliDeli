@@ -45,6 +45,8 @@
             LocalDate currentDate = LocalDate.now();
             java.sql.Date startDateSQL = plan.getStart_at();
             LocalDate startLocalDate = startDateSQL.toLocalDate();
+            
+            // This exist only to redirect page based on selected date.
             int distanceInDays = (int) ChronoUnit.DAYS.between(startLocalDate, currentDate);
 
             String distanceInDaysParam = request.getParameter("distanceInDays");

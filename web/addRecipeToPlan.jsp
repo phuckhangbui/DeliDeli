@@ -50,9 +50,12 @@
             boolean SEARCH_PLAN_REAL = (boolean) request.getAttribute("SEARCH_PLAN_REAL");
             ArrayList<DateDTO> planDate = (ArrayList<DateDTO>) request.getAttribute("planDate");
             ArrayList<DateDTO> allPlanDate = (ArrayList<DateDTO>) request.getAttribute("allPlanDate");
+            boolean error = (boolean) request.getAttribute("max_meal_error");
             LocalDate currentDate = LocalDate.now();
             java.sql.Date startDateSQL = plan.getStart_at();
             LocalDate startLocalDate = startDateSQL.toLocalDate();
+
+            // This exist only to redirect page based on selected date.
             int distanceInDays = (int) ChronoUnit.DAYS.between(startLocalDate, currentDate);
 
             String distanceInDaysParam = request.getParameter("distanceInDays");
@@ -550,6 +553,7 @@
                                 <input type="hidden" name="planId" value="<%= plan.getId()%>"/>
                                 <input type="hidden" name="user_id" value="<%= user.getId()%>"/>
                                 <input type="hidden" name="dietId" value="<%= plan.getDiet_id()%>"/>
+                                <input type="hidden" name="distanceInDays" value="<%= distanceInDays%>" />
 
                                 <select name="searchBy" id="">
                                     <option value="Public" selected="selected">Public</option>
@@ -591,14 +595,28 @@
                                     }
                                 %>
                             </a>
+                            <%
+
+                            %>
                             <div class="add-recipe-to-plan-content-recipe-button">
 <!--                                <button type="button" class="" data-bs-toggle="modal" data-bs-target="#addRecipeToPlan<%= list.getId()%>">
                                     Add
                                 </button>
                                 -->
+                                <%
+                                    if (!error) {
+                                %>
                                 <button type="button" class="" data-bs-toggle="modal" data-bs-target="#addMultiplesMealToPlan<%= list.getId()%>">
                                     Add multiples
-                                </button>
+                                </button>  
+                                <%
+                                } else {
+                                %>
+                                <p>Please remove some recipe (max: 10)</p>
+                                <%
+                                    }
+                                %>
+
                             </div>
                         </div>
 

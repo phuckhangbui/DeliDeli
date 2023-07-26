@@ -184,6 +184,50 @@ public class MealDAO {
         return result;
     }
 
+    public static int countRecipeBasedOnTime(int date_id) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        int result = 0;
+
+        String sql = "SELECT COUNT(*) AS meal_count\n"
+                + "FROM Meal\n"
+                + "WHERE date_id = ? AND DATEPART(HOUR, start_time) >= 0 AND DATEPART(HOUR, start_time) < 12";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, date_id);
+                rs = stm.executeQuery();
+                while (rs.next()) {
+
+                    int meal_count = rs.getInt("meal_count");     
+                    result = meal_count;
+                    
+                    return result;
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error - countRecipeBasedOnTime: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return result;
+    }
+
 //    public static boolean addMealById(int date_id, int recipe_id, Time start_time, Time end_time) {
 //        Connection con = null;
 //        PreparedStatement stm = null;

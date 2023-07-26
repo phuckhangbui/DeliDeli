@@ -34,6 +34,7 @@ public class PlanSearchServlet extends HttpServlet {
         String plan_id = request.getParameter("planId").toLowerCase();
         int dietId = Integer.parseInt(request.getParameter("dietId"));
         int user_id = Integer.parseInt(request.getParameter("user_id"));
+        int distanceInDays = Integer.parseInt(request.getParameter("distanceInDays"));
 
         if (isPlan) {
             ArrayList<RecipeDTO> list = NavigationBarUtils.searchRecipeForPlan(txtsearch, searchBy, user_id, dietId);
@@ -48,7 +49,7 @@ public class PlanSearchServlet extends HttpServlet {
                 displayList.add(d);
             }
             request.setAttribute("searchRecipesList", displayList);
-            String url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=true";
+            String url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=true&distanceInDays=" + distanceInDays;
             request.getRequestDispatcher(url).forward(request, response);
         }
     }

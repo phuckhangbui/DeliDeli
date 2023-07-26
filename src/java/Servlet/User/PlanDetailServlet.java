@@ -7,13 +7,10 @@ package Servlet.User;
 import DAO.DateDAO;
 import DAO.DietDAO;
 import DTO.DietDTO;
-import DAO.MealDAO;
-import DTO.MealDTO;
 import DAO.PlanDAO;
 import DTO.PlanDTO;
 import DTO.DateDTO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -37,8 +34,9 @@ public class PlanDetailServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String id = request.getParameter("id");
+        boolean foundMatchingDate = false;
 
-        //Daily
+        // Daily
         PlanDTO plan = PlanDAO.getUserPlanById(new Integer(id));
         request.setAttribute("plan", plan);
 
@@ -50,25 +48,40 @@ public class PlanDetailServlet extends HttpServlet {
         LocalDate startLocalDate = startDateSQL.toLocalDate();
         int distanceInDays = (int) calculateDistanceInDays(startLocalDate, currentDate);
 
+//        System.out.println("distanceInDays - " + distanceInDays);
+        // distanceInDays here act as an param to detect whether the date changed at page by user.
         String distanceInDaysParam = request.getParameter("distanceInDays");
+
+//        System.out.println("distanceInDaysParam - " + distanceInDaysParam);
         if (distanceInDaysParam != null) {
             distanceInDays = Integer.parseInt(distanceInDaysParam);
             request.setAttribute("distanceInDays", distanceInDays);
 
+            // A little note for myself (how it traverse through date automatically)
+            // After calculate the distance date, the plan will change the date based on the distance in date value
+            // dateList is the every date inside that plan, it will traverse through every date til they find the 
+            // startLocalDate (plan startdate) == dateList and add it to the arrayList to display on JSP.
             for (DateDTO date : planDate) {
                 LocalDate dateList = date.getDate().toLocalDate();
                 if (dateList.equals(startLocalDate.plusDays(distanceInDays))) {
                     displayDate.add(date);
-                    break; // Break after finding the date with the desired distance
+                    break;
                 }
             }
+            // If currentDate is out of plan date scope then return plan start date
         } else {
             for (DateDTO date : planDate) {
                 LocalDate dateList = date.getDate().toLocalDate();
+
                 if (dateList.equals(currentDate)) {
                     displayDate.add(date);
-                    break; // Break after finding the date with the desired distance
+                    foundMatchingDate = true;
+                    break;
                 }
+            }
+            if (!foundMatchingDate && !planDate.isEmpty()) {
+                DateDTO firstDate = planDate.get(0);
+                displayDate.add(firstDate);
             }
         }
 
