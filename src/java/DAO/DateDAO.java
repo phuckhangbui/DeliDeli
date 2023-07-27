@@ -540,7 +540,93 @@ public class DateDAO {
         }
         return false;
     }
-    
+
+    public static boolean deleteDateByDateId(int id) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+
+        String sql = "DELETE d\n"
+                + "FROM [Date] d\n"
+                + "WHERE d.id = ?";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, id);
+
+                int rowsAffected = stm.executeUpdate();
+                return rowsAffected > 0;
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error - deleteDateByPlanId: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return false;
+    }
+
+    public static DateDTO getDateIdByPlanIdAndDate(int planId, Date date) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        DateDTO result = new DateDTO();
+
+        String sql = "SELECT * FROM [Date]\n"
+                + "WHERE [plan_id] = ? AND date = ?";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, planId);
+                stm.setDate(2, date);
+
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    date = rs.getDate("date");
+                    int week_id = rs.getInt("week_id");
+                    planId = rs.getInt("plan_id");
+                    boolean isSync = rs.getBoolean("is_sync");
+                    boolean isTemplate = rs.getBoolean("is_template");
+
+                    result = new DateDTO(id, date, week_id, planId, isSync, isTemplate);
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error - getPlanIdByUserIdAndDate: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return result;
+    }
+
     public static void main(String[] args) {
         System.out.println(DateDAO.getAllDateByPlanIDAndWeekID(5, 3));
     }

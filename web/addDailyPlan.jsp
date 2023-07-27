@@ -56,7 +56,7 @@
                             <div class="col-md-6 add-plan-info-date">
                                 Plan's Length: <span>*</span>
                                 <div>
-                                    <input type="number" id="length" name="planLength" onchange="calculateEndDate()" min='1' max='365' required> 
+                                    <input type="number" id="length" name="planLength" onchange="calculateEndDate()" min='1' max='30' required> 
                                 </div>
                             </div>
 

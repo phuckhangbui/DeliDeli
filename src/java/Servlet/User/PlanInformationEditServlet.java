@@ -4,19 +4,28 @@
  */
 package Servlet.User;
 
+import DAO.DailyPlanTemplateDAO;
 import DAO.DateDAO;
+import DAO.MealDAO;
 import DAO.PlanDAO;
 import DTO.DateDTO;
+import DTO.MealDTO;
+import DTO.PlanDTO;
+import DTO.UserDTO;
 import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -27,66 +36,80 @@ public class PlanInformationEditServlet extends HttpServlet {
     private static final String ERROR = "error.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, Exception {
         response.setContentType("text/html;charset=UTF-8");
+        int id = Integer.parseInt(request.getParameter("id"));
+        String des = request.getParameter("des");
+        String note = request.getParameter("note");
+        HttpSession session = request.getSession();
+        UserDTO user = (UserDTO) session.getAttribute("user");
 
-        int plan_id = Integer.parseInt(request.getParameter("plan_id"));
-        int user_id = Integer.parseInt(request.getParameter("user_id"));
-        List<String> errorList = new ArrayList<>();
+        PlanDTO plan = PlanDAO.getPlanById(id);
+        Date start_date = plan.getStart_at();
+        Date end_date = plan.getEnd_at();
+        int planLength = Integer.parseInt(request.getParameter("planLength"));
 
-        boolean result = false;
-        boolean checkWeek = false;
-        boolean checkDate = false;
-        String url = ERROR;
+        // Calculate end date
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(start_date);
+        calendar.add(Calendar.DATE, planLength);
 
-        String start_date_str = request.getParameter("start_date");
-        java.sql.Date start_date = java.sql.Date.valueOf(start_date_str);
-        LocalDate startDate = LocalDate.parse(start_date_str);
-        LocalDate end_date_str = startDate.plusDays(6);
-        java.sql.Date end_date = java.sql.Date.valueOf(end_date_str);
+        java.sql.Date end_date_after = new java.sql.Date(calendar.getTimeInMillis());
 
-        String plan_title = request.getParameter("plan_title");
-        int diet_id = Integer.parseInt(request.getParameter("recipeDietId"));
-        String plan_description = request.getParameter("plan_description");
-        String plan_note = request.getParameter("plan_note");
+        PlanDAO.updatePlanByID(id, des, note, end_date_after);
 
-        ArrayList<DateDTO> dateBeforeUpdate = DateDAO.getAllDateByPlanID(plan_id);
+        LocalDate endBefore = end_date.toLocalDate();
+        LocalDate endAfter = end_date_after.toLocalDate();
 
-        if (!PlanDAO.checkPlanTitleDuplicateByUserID(plan_title, user_id)) {
-            errorList.add("Recipe title must be unique !");
-            request.setAttribute("errorList", errorList);
-            url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=false";
-            RequestDispatcher rd = request.getRequestDispatcher(url);
-            rd.forward(request, response);
-            return;
+        if (endBefore.isEqual(endAfter)) {
+
         }
+        if (endBefore.isBefore(endAfter)) {
+            //add more date to plan
+            Calendar loopDate = Calendar.getInstance();
+            loopDate.setTime(end_date);
 
-        try {
-            if (plan_id > 0) {
-                result = PlanDAO.updatePlanByID(plan_id, diet_id, plan_title, plan_description, plan_note, start_date, end_date);
-                if (result) {
-                    checkWeek = PlanDAO.updateWeekByPlanID(plan_id, start_date);
-                    if (checkWeek) {
-                        for (DateDTO list : dateBeforeUpdate) {
-//                            System.out.println("Date List - " + list.getId());
-                            checkDate = DateDAO.updateDate(list.getId(), start_date);
-                            startDate = startDate.plusDays(1);
-                            start_date = java.sql.Date.valueOf(startDate);
-//                            System.out.println("Date reiterate - " + start_date);
-                        }
-                    }
-                }
+            while (loopDate.getTime().before(end_date_after) || loopDate.getTime().equals(end_date_after)) {
+                // Insert daily meal for the new date
+                java.sql.Date currentDate = new java.sql.Date(loopDate.getTimeInMillis());
+                boolean isMealInserted = DateDAO.insertDateForDaily(currentDate, id);
+
+                // Increment loop date by one day
+                loopDate.add(Calendar.DATE, 1);
             }
 
-            if (result && checkWeek && checkDate) {
-                url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=false";
+            //apply template for the new date
+            int templateId = DailyPlanTemplateDAO.getDailyTemplateIdByPlanId(id);
+
+            ArrayList<MealDTO> templateMeals = MealDAO.getAllMealByDateId(templateId);
+            //list of all normal date in that plan
+            ArrayList<Integer> idList = DailyPlanTemplateDAO.getSyncDateId(id);
+            //delete old meal from the sync date -- leave the unsync date alone
+            DailyPlanTemplateDAO.deleteSyncDateMeal(id, idList);
+
+            if (templateMeals.size() > 0) {
+                //sync normal date with template meal
+                DailyPlanTemplateDAO.syncWithDailyTemplate(idList, templateMeals);
             }
 
-        } catch (Exception ex) {
-            System.out.println("[PlanInformationEditServlet - ERROR]: " + ex.getMessage());
-            response.sendRedirect(url);
+        } else {
+            //shorten the time of plan -> delete the date that are not in the plan
+            Calendar loopDate = Calendar.getInstance();
+            loopDate.setTime(end_date_after);
+
+            while (loopDate.getTime().before(end_date) || loopDate.getTime().equals(end_date)) {
+                // Delete date
+                java.sql.Date currentDate = new java.sql.Date(loopDate.getTimeInMillis());
+                DateDTO date = DateDAO.getDateIdByPlanIdAndDate(id, currentDate);
+
+                MealDAO.deleteAllMealByDate(id, date.getId());
+                DateDAO.deleteDateByDateId(date.getId());
+
+                // Increment loop date by one day
+                loopDate.add(Calendar.DATE, 1);
+            }
         }
-        response.sendRedirect(url);
+        request.getRequestDispatcher("UserController?action=getPlanDetailById&id=" + id).forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -101,7 +124,11 @@ public class PlanInformationEditServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (Exception ex) {
+            Logger.getLogger(PlanInformationEditServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -115,7 +142,11 @@ public class PlanInformationEditServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (Exception ex) {
+            Logger.getLogger(PlanInformationEditServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

@@ -46,7 +46,7 @@ public class LoadEditPlanDetailServlet extends HttpServlet {
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
 
-            String id = request.getParameter("id");
+           String id = request.getParameter("id");
 
             //Daily
             if (id != null && !id.isEmpty()) {
