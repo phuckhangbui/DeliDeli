@@ -20,12 +20,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.omg.CORBA.Current;
 
 /**
  *
  * @author khang
  */
-public class UseDailyPlanTemplateServlet extends HttpServlet {
+public class UseWeeklyPlanTemplateServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -46,26 +47,50 @@ public class UseDailyPlanTemplateServlet extends HttpServlet {
             if (plan == null) {
                 response.sendRedirect("error.jsp");
             }
-            //get template date id
-            int templateId = DailyPlanTemplateDAO.getDailyTemplateIdByPlanId(planId);
-            
-            ArrayList<MealDTO> templateMeals = MealDAO.getAllMealByDateId(templateId);
-            //list of all normal date in that plan
-            ArrayList<Integer> idList = DailyPlanTemplateDAO.getSyncDateId(planId);
-            //delete old meal from the sync date -- leave the unsync date alone
-            DailyPlanTemplateDAO.deleteSyncDateMeal(planId, idList);
-           
-            
-            if(templateMeals.size() > 0){                
-                //sync normal date with template meal
-                DailyPlanTemplateDAO.syncWithDailyTemplate(idList, templateMeals);
+
+            java.sql.Date startDateSQL = plan.getStart_at();
+            java.sql.Date endDateSQL = plan.getEnd_at();
+
+            long millisDiff = endDateSQL.getTime() - startDateSQL.getTime();
+
+            int planLength = (int) (millisDiff / (1000 * 60 * 60 * 24 * 7)) + 1;
+
+            //get template week id
+            int templateId = WeeklyPlanTemplateDAO.getWeeklyTemplateIdByPlanId(planId);
+
+            //list of all normal Week in that plan
+            ArrayList<Integer> weeklyIdList = WeeklyPlanTemplateDAO.getSyncWeekId(planId);
+            ArrayList<DateDTO> dateInTemplate = DateDAO.getAllDateByPlanIDAndWeekID(planId, templateId);
+
+            for (DateDTO date : dateInTemplate) {
+                //loop each date in the week template, get the meals
+                ArrayList<MealDTO> templateMeals = MealDAO.getAllMealByDateId(date.getId());
+                //delete old meal from the date of the sync week
+
+                //loop for each simlar date in that template
+                for (int i = 0; i < planLength; i++) {
+                    Calendar loopDate = Calendar.getInstance();
+                    loopDate.setTime(date.getDate());
+                    loopDate.add(Calendar.DATE, i * 7);
+                    java.sql.Date currentDate = new java.sql.Date(loopDate.getTimeInMillis());
+
+                    DateDTO modifiedDate = DateDAO.getDateIdByPlanIdAndDateInWeeklyPlan(planId, currentDate);
+                    //delete meal of that date
+                    MealDAO.deleteAllMealByDate(planId, modifiedDate.getId());
+                    //copy meal of the template to that date
+                    WeeklyPlanTemplateDAO.syncWithTemplate(modifiedDate.getId(), templateMeals);
+
+                }
             }
             
-            request.getRequestDispatcher("UserController?action=loadEditDailyTemplate&id=" + planId).forward(request, response);
+            
+            //forward to the edit weekly template page again
+            request.getRequestDispatcher("#").forward(request, response);
 
         } catch (Exception ex) {
             response.sendRedirect("error.jsp");
         }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
