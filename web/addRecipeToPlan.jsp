@@ -62,9 +62,9 @@
             if (distanceInDaysParam != null) {
                 distanceInDays = Integer.parseInt(distanceInDaysParam);
             }
-            
-            //Weekly
-            ArrayList<DateDTO> weeklyDate = (ArrayList<DateDTO>) DateDAO.getAllDateByPlanIDAndWeekID(plan.getId(), 6);
+
+            //Weekly (hard-code week id)
+            ArrayList<DateDTO> weeklyDate = (ArrayList<DateDTO>) DateDAO.getAllDateByPlanIDAndWeekID(plan.getId(), 8);
         %>
 
         <!--         The navigation bar       -->
@@ -610,7 +610,7 @@
                                     if (!error) {
                                 %>
                                 <button type="button" class="" data-bs-toggle="modal" data-bs-target="#addMultiplesMealToPlan<%= list.getId()%>">
-                                    Add multiples
+                                    Add daily
                                 </button>  
                                 <%
                                 } else {
@@ -619,8 +619,6 @@
                                 <%
                                     }
                                 %>
-                                    Add daily
-                                </button>
                                 <button type="button" class="" data-bs-toggle="modal" data-bs-target="#addWeeklyMealToPlan<%= list.getId()%>">
                                     Add weekly
                                 </button>
@@ -652,7 +650,7 @@
 
                                                     // Loop through the days between the selected day and the end date
                                                     //while (calendar.getTime().before(endDate) || calendar.getTime().equals(endDate)) {
-%>
+                                            %>
                                             <div class="col-md-4">
                                                 <div class="d-flex">
                                                     <input type="checkbox" id="date_id<%= dateList.getId()%>" name="date_id" value="<%= dateList.getId()%>">
@@ -694,7 +692,7 @@
                                         <input type="hidden" id="recipeIdInput<%= list.getId()%>" name="recipe_id" value="<%= list.getId()%>">
                                         <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
                                         <!-- week id hard code here -->
-                                        <input type="hidden" name="week_id" value="<%= 6%>" />
+                                        <input type="hidden" name="week_id" value="<%= 8%>" />
                                         <input type="hidden" name="distanceInDays" value="<%= distanceInDays%>" />
                                         <% }%>
                                     </div>
@@ -949,7 +947,7 @@
                                                     // Loop through the days between the selected day and the end date
                                                     //while (calendar.getTime().before(endDate) || calendar.getTime().equals(endDate)) {
                                                     // Generate the checkboxes
-%>
+                                            %>
                                             <!--                                            <div class="col-md-4">
                                                                                             <div class="d-flex">
                                                                                                 <input type="checkbox" id="date_id<%= dateList.getId()%>" name="date_id" value="<%= formattedDate%>">
