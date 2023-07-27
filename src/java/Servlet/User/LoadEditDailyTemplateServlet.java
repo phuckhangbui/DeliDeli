@@ -57,6 +57,8 @@ public class LoadEditDailyTemplateServlet extends HttpServlet {
             String id = request.getParameter("id");
             ArrayList<DisplayRecipeDTO> displayList = (ArrayList<DisplayRecipeDTO>) request.getAttribute("searchRecipesList");
             boolean isSearch = Boolean.parseBoolean(request.getParameter("isSearch"));
+            boolean foundMatchingDate = false;
+            boolean error = false;
 
             //Daily
             if (id != null && !id.isEmpty()) {
@@ -66,12 +68,36 @@ public class LoadEditDailyTemplateServlet extends HttpServlet {
                 DietDTO diet = DietDAO.getTypeById(plan.getDiet_id());
                 request.setAttribute("diet", diet);
 
+                ArrayList<DateDTO> planDate = DateDAO.getDailyTemplate(plan.getId());
+                ArrayList<DateDTO> displayDate = new ArrayList<>();
+
+                LocalDate currentDate = LocalDate.now();
+                java.sql.Date startDateSQL = plan.getStart_at();
+                LocalDate startLocalDate = startDateSQL.toLocalDate();
+
+                for (DateDTO date : planDate) {
+                    displayDate.add(date);
+                    break;
+                }
+
+                request.setAttribute("planDate", displayDate);
+
                 int templateId = DailyPlanTemplateDAO.getDailyTemplateIdByPlanId(plan.getId());
                 DateDTO templateDate = DailyPlanTemplateDAO.getDailyTemplateByPlanId(plan.getId());
-
                 request.setAttribute("templateDate", templateDate);
-
                 request.setAttribute("templateId", templateId);
+
+                // Meal count based on time.
+                for (DateDTO date : displayDate) {
+                    int meal_count = MealDAO.countRecipeBasedOnTime(date.getId());
+                    if (meal_count > 10) {
+                        error = true;
+                    }
+                }
+
+//            System.out.println("Max meal error - " + error);
+                request.setAttribute("max_meal_error", error);
+
                 if (isSearch) {
                     request.setAttribute("SEARCH_LIST", displayList);
                     request.setAttribute("SEARCH_PLAN_REAL", true);
@@ -104,7 +130,7 @@ public class LoadEditDailyTemplateServlet extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

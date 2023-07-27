@@ -421,7 +421,7 @@ public class PlanDAO {
         return 0;
     }
 
-    public static boolean updatePlanByID(int plan_id, int diet_id, String plan_title, String plan_description, String plan_note, Date start_at, Date end_at) throws Exception {
+    public static boolean updatePlanByID(int plan_id, String plan_description, String plan_note, Date end_at) throws Exception {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
@@ -434,10 +434,10 @@ public class PlanDAO {
             con = DBUtils.getConnection();
             if (con != null) {
                 stm = con.prepareStatement(sql);
-                stm.setString(1, description);
-                stm.setString(2, note);
+                stm.setString(1, plan_description);
+                stm.setString(2, plan_note);
                 stm.setDate(3, end_at);
-                stm.setInt(4, id);
+                stm.setInt(4, plan_id);
 
                 int rowsAffected = stm.executeUpdate();
                 return rowsAffected > 0;

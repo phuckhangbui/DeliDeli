@@ -39,9 +39,10 @@ public class PlanEditServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String id = request.getParameter("id");
-        boolean foundMatchingDate = false;
         ArrayList<DisplayRecipeDTO> displayList = (ArrayList<DisplayRecipeDTO>) request.getAttribute("searchRecipesList");
         boolean isSearch = Boolean.parseBoolean(request.getParameter("isSearch"));
+        boolean foundMatchingDate = false;
+        boolean error = false;
 
         //Daily
         if (id != null && !id.isEmpty()) {
@@ -63,7 +64,6 @@ public class PlanEditServlet extends HttpServlet {
 
             ArrayList<DateDTO> planDate = DateDAO.getAllDateByPlanID(plan.getId());
             ArrayList<DateDTO> displayDate = new ArrayList<>();
-            boolean error = false;
 
             LocalDate currentDate = LocalDate.now();
             java.sql.Date startDateSQL = plan.getStart_at();
@@ -102,7 +102,7 @@ public class PlanEditServlet extends HttpServlet {
                 }
             }
 
-            System.out.println("Max meal error - " + error);
+//            System.out.println("Max meal error - " + error);
             request.setAttribute("max_meal_error", error);
 
             if (isSearch) {

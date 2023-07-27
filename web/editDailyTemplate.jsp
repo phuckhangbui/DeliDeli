@@ -49,6 +49,9 @@
             PlanDTO plan = (PlanDTO) request.getAttribute("plan");
             boolean SEARCH_PLAN_REAL = (boolean) request.getAttribute("SEARCH_PLAN_REAL");
             DateDTO templateDate = (DateDTO) request.getAttribute("templateDate");
+            ArrayList<DateDTO> planDate = (ArrayList<DateDTO>) request.getAttribute("planDate");
+            boolean error = (boolean) request.getAttribute("max_meal_error");
+
         %>
 
         <!--         The navigation bar       -->
@@ -105,7 +108,7 @@
                         </div>
 
                         <form action="UserController">
-                            <input name="id" value="<%= plan.getId() %>" hidden="">
+                            <input name="id" value="<%= plan.getId()%>" hidden="">
                             <button type="submit" class="plan-navbar-remove" name="action" value="useDailyPlanTemplate" >
                                 Use this template for all sync recipe
                             </button>
@@ -422,6 +425,8 @@
                                 <input type="hidden" name="planId" value="<%= plan.getId()%>"/>
                                 <input type="hidden" name="user_id" value="<%= user.getId()%>"/>
                                 <input type="hidden" name="dietId" value="<%= plan.getDiet_id()%>"/>
+                                <input type="hidden" name="distanceInDays" value="0" />
+                                <input type="hidden" name="isTemplate" value="true" />
 
                                 <select name="searchBy" id="">
                                     <option value="Public" selected="selected">Public</option>
@@ -441,7 +446,7 @@
                             ArrayList<DisplayRecipeDTO> searchRecipesList = (ArrayList<DisplayRecipeDTO>) request.getAttribute("SEARCH_LIST");
                             if (searchRecipesList != null && !searchRecipesList.isEmpty()) {
                                 for (DisplayRecipeDTO list : searchRecipesList) {
-                                    ArrayList<NutritionDTO> recipeNutritionAdd = RecipeDAO.getNutritionValuesByRecipeID(list.getId());
+                                    recipeNutrition = RecipeDAO.getNutritionValuesByRecipeID(list.getId());
                         %>
                         <div href="" class=" col-md-3 add-recipe-to-plan-content-recipe">
                             <a href="MainController?action=getRecipeDetailById&id=<%= list.getId()%>" target="_blank">
@@ -451,7 +456,7 @@
                                 <div class="add-recipe-to-plan-content-recipe-title"><%= list.getTitle()%></div>
 
                                 <%
-                                    for (NutritionDTO nutrition : recipeNutritionAdd) {
+                                    for (NutritionDTO nutrition : recipeNutrition) {
                                 %>
                                 <div class="add-recipe-to-plan-content-recipe-nutrients">
                                     <p class="plan-table-calories">Calories: <%= nutrition.getCalories()%></p>
@@ -463,18 +468,31 @@
                                     }
                                 %>
                             </a>
+                            <%
+
+                            %>
                             <div class="add-recipe-to-plan-content-recipe-button">
 <!--                                <button type="button" class="" data-bs-toggle="modal" data-bs-target="#addRecipeToPlan<%= list.getId()%>">
                                     Add
                                 </button>
                                 -->
+                                <%
+                                    if (!error) {
+                                %>
                                 <button type="button" class="" data-bs-toggle="modal" data-bs-target="#addMultiplesMealToPlan<%= list.getId()%>">
-                                    Add multiples
-                                </button>
+                                    Add daily
+                                </button>  
+                                <%
+                                } else {
+                                %>
+                                <p>Please remove some recipe (max: 10)</p>
+                                <%
+                                    }
+                                %>
                             </div>
                         </div>
 
-                        <!-- Multiples Meal-->
+                        <!-- Daily Meal-->
                         <div class="modal fade" id="addMultiplesMealToPlan<%= list.getId()%>" tabindex="-1"
                              aria-labelledby="addRecipeToPlanModalLabel<%= list.getId()%>" aria-hidden="true">
                             <form action="UserController" method="post" class="modal-dialog add-recipe-to-plan-modal">
@@ -485,7 +503,6 @@
                                     <div class="modal-body">
                                         <div>What day do you want to cook this recipe?</div>
                                         <div class="row choose-week-day flex-column">
-
                                         </div>
                                         <div class="row add-recipe-info-ingredient">
                                             <div class="draggable-container-time col-md-8 add-recipe-info-ingredient-content">
@@ -503,24 +520,20 @@
                                                 </button>
                                             </div>
                                         </div>
-
-                                        <!--                                        <label for="recipe_count">Number of Recipes per meal:</label>
-                                                                                <select id="recipe_count" name="recipe_count">
-                                                                                    <option value="1">1</option>
-                                                                                    <option value="2">2</option>
-                                                                                    <option value="3">3</option>
-                                                                                </select>-->
                                         <br><br>
 
                                     </div>
 
                                     <div class="plan-table">
+                                        <% for (DateDTO dateList : planDate) {%>
                                         <input type="hidden" id="recipeIdInput<%= list.getId()%>" name="recipe_id" value="<%= list.getId()%>">
                                         <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
+                                        <input type="hidden" name="week_id" value="<%= dateList.getWeek_id()%>" />
                                         <input type="hidden" name="plan_start" value="<%= plan.getStart_at()%>" />
-                                        <input type="hidden" name="date_id" value="<%= templateDate.getId()%>" />
-
-
+                                        <input type="hidden" name="date_id" value="<%= dateList.getId()%>" />
+                                        <input type="hidden" name="distanceInDays" value="0" />
+                                        <input type="hidden" name="isTemplate" value="true" />
+                                        <% }%>
                                     </div>
 
                                     <div class="modal-footer">

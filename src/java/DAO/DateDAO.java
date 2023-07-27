@@ -118,6 +118,54 @@ public class DateDAO {
         }
         return result;
     }
+    
+    public static ArrayList<DateDTO> getDailyTemplate(int plan_id) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        ArrayList<DateDTO> result = new ArrayList<>();
+
+        String sql = "SELECT * FROM [Date]\n"
+                + "WHERE [plan_id] = ? AND is_template = 1";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, plan_id);
+
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    Date date = rs.getDate("date");
+                    int week_id = rs.getInt("week_id");
+                    plan_id = rs.getInt("plan_id");
+                    boolean isSync = rs.getBoolean("is_sync");
+                    boolean isTemplate = rs.getBoolean("is_template");
+
+                    DateDTO planDate = new DateDTO(id, date, week_id, plan_id, isSync, isTemplate);
+                    result.add(planDate);
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error - getPlanIdByUserIdAndDate: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return result;
+    }
 // This will select all current date plan and then select the one that hasn't been notified.
 //    public static PlanDateDTO getActiveRecipePlan(Date currentDate, int plan_id) {
 //        Connection con = null;

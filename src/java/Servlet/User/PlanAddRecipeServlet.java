@@ -26,6 +26,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class PlanAddRecipeServlet extends HttpServlet {
 
+    private static final String ERROR = "error.jsp";
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -33,6 +35,8 @@ public class PlanAddRecipeServlet extends HttpServlet {
         try ( PrintWriter out = response.getWriter()) {
 
             boolean result = false;
+            boolean isTemplate = false;
+            String url = ERROR;
 
             String dateId = request.getParameter("date_id");
             String[] timeId = request.getParameterValues("timeId");
@@ -41,7 +45,7 @@ public class PlanAddRecipeServlet extends HttpServlet {
             int plan_id = Integer.parseInt(request.getParameter("plan_id"));
             int week_id = Integer.parseInt(request.getParameter("week_id"));
             String plantStart = request.getParameter("plan_start");
-            String distanceInDays = request.getParameter("distanceInDays");
+            String distanceInDaysParam = request.getParameter("distanceInDays");
 
             //List<Integer> dateIdList = new ArrayList<>();
             List<Time> timeList = new ArrayList<>();
@@ -53,8 +57,6 @@ public class PlanAddRecipeServlet extends HttpServlet {
 //                    dateIdList.add(date_id);
 //                }
 //            }
-
-
             Set<String> uniqueTimeIdsSet = new HashSet<>(Arrays.asList(timeId));
 
             String[] uniqueTimeIds = uniqueTimeIdsSet.toArray(new String[0]);
@@ -76,10 +78,24 @@ public class PlanAddRecipeServlet extends HttpServlet {
 //            out.println(recipe_id);
 //            out.println(start_timeStr);
 //            out.println(recipe_count);
-            if (result) {
-                response.sendRedirect("UserController?action=editPlan&id=" + plan_id + "&isSearch=false&distanceInDays=" + distanceInDays);
+// ... Your existing code ...
+            int distanceInDays = Integer.parseInt(distanceInDaysParam);
+
+            if (result && distanceInDays == 0) {
+                isTemplate = Boolean.parseBoolean(request.getParameter("isTemplate"));
+                if (isTemplate) {
+                    url = "LoadEditDailyTemplateServlet?id=" + plan_id + "&isSearch=false";
+                }
+            }
+
+            if (result && url == null) {
+                url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=false&distanceInDays=" + distanceInDaysParam;
+            }
+
+            if (url != null) {
+                response.sendRedirect(url);
             } else {
-                response.sendRedirect("error.jsp");
+                response.sendRedirect(ERROR);
             }
         } catch (ParseException e) {
             e.printStackTrace();

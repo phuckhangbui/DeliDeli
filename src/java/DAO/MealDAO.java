@@ -128,7 +128,7 @@ public class MealDAO {
                 + "JOIN [Date] d ON m.date_id = d.id\n"
                 + "WHERE [plan_id] = ? and [date_id] = ?\n"
                 + "ORDER BY [start_time]\n";
-
+        
         try {
             con = DBUtils.getConnection();
             if (con != null) {
