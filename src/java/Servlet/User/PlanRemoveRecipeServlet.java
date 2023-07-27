@@ -31,8 +31,6 @@ public class PlanRemoveRecipeServlet extends HttpServlet {
         int meal_id = Integer.parseInt(request.getParameter("meal_id"));
         int plan_id = Integer.parseInt(request.getParameter("plan_id"));
 
-        System.out.println("meal_id - " + meal_id);
-        System.out.println("plan_id - " + plan_id);
         String distanceInDaysParam = request.getParameter("distanceInDays");
 
         if (meal_id > 0 && plan_id > 0) {

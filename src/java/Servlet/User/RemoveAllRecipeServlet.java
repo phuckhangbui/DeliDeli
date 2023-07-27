@@ -31,41 +31,37 @@ public class RemoveAllRecipeServlet extends HttpServlet {
 
         int plan_id = Integer.parseInt(request.getParameter("plan_id"));
         int date_id = Integer.parseInt(request.getParameter("date_id"));
+        int distanceInDays = Integer.parseInt(request.getParameter("distanceInDays"));
         boolean result = false;
+        String url = ERROR;
 
-        if (plan_id > 0) {
+        if (plan_id > 0 && date_id > 0) {
             result = MealDAO.deleteAllMealByDate(plan_id, date_id);
+        } else {
+            response.sendRedirect(url);
+            return;
         }
+        boolean isTemplate = Boolean.parseBoolean(request.getParameter("isTemplate"));
 
-        PlanDTO plan = PlanDAO.getPlanById(plan_id);
-        int templateId = DailyPlanTemplateDAO.getDailyTemplateIdByPlanId(plan.getId());
-
-        if (result) {
-            if (templateId == date_id) {
-                response.sendRedirect("UserController?action=loadEditDailyTemplate&id="+ plan_id + "&isSearch=false");
-            } else {
-                response.sendRedirect("UserController?action=editPlan&id=" + plan_id + "&isSearch=false");
-            }
+        if (result && isTemplate) {
+            url = "LoadEditDailyTemplateServlet?id=" + plan_id + "&isSearch=false";
+        } else {
+            url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=false&distanceInDays=" + distanceInDays;
         }
-    
-
-    
-        else {
-            response.sendRedirect(ERROR);
+        response.sendRedirect(url);
     }
-}
 
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-/**
- * Handles the HTTP <code>GET</code> method.
- *
- * @param request servlet request
- * @param response servlet response
- * @throws ServletException if a servlet-specific error occurs
- * @throws IOException if an I/O error occurs
- */
-@Override
-protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -79,7 +75,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
      * @throws IOException if an I/O error occurs
      */
     @Override
-protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -90,7 +86,7 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
      * @return a String containing servlet description
      */
     @Override
-public String getServletInfo() {
+    public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
 

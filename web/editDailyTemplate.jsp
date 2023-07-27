@@ -98,8 +98,12 @@
                                                 data-bs-dismiss="modal">No, I changed my mind</button>
 
                                         <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
-                                        <input type="hidden" class="dateIdInput" name="date_id" value="<%= templateDate.getId()%>" />
-
+                                        <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
+                                        <% for (DateDTO dateList : planDate) {%>
+                                        <input type="hidden" class="dateIdInput" name="date_id" value="<%= dateList.getId()%>" />
+                                        <% }%>
+                                        <input type="hidden" name="distanceInDays" value="1337" />
+                                        <input type="hidden" name="isTemplate" value="true" />
 
                                         <button type="submit" name="action" value="removeAllRecipeConfirmed" class="remove-recipe-from-plan-button">Yes, remove all of them</button>
                                     </div>

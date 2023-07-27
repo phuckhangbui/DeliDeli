@@ -91,12 +91,6 @@
                         <p>Edit, add or remove recipes from your plan to fit more with your eating schedule</p>
                     </div>
 
-                    Synchronize with your template?        
-                    <input type="checkbox" id="isSync" name="isSync" value="1" onchange="activateSync(this, <%= plan.getId()%>)">
-                    <% for (DateDTO dateList : planDate) {%>
-                    <input type="hidden" class="dateIdInput" name="date_id" value="<%= dateList.getId()%>" />
-                    <% }%>
-
                     <script>
                         function activateSync(checkbox, planId) {
                             var xhr = new XMLHttpRequest();
@@ -150,6 +144,8 @@
                                         <% for (DateDTO dateList : planDate) {%>
                                         <input type="hidden" class="dateIdInput" name="date_id" value="<%= dateList.getId()%>" />
                                         <% }%>
+                                        <input type="hidden" name="distanceInDays" value="<%= distanceInDays%>" />
+                                        <input type="hidden" name="isTemplate" value="false" />
 
                                         <button type="submit" name="action" value="removeAllRecipeConfirmed" class="remove-recipe-from-plan-button">Yes, remove all of them</button>
                                     </div>
@@ -185,7 +181,7 @@
                             </form>
                         </div>
 
-                        <button id="planButton" type="button" class="plan-navbar-disable" onclick="disableActivatePlan()">
+                        <button id="planButton" type="button" class="plan-navbar-remove" onclick="disableActivatePlan()">
                             <% if (plan.isStatus()) { %>
                             Disable Plan
                             <% } else { %>
@@ -219,6 +215,14 @@
                                 xhr.send("plan_id=" + encodeURIComponent(planId));
                             }
                         </script>
+
+
+                        <form action="UserController">
+                            <input name="id" value="<%= plan.getId()%>" hidden="">
+                            <button type="submit" class="plan-navbar-remove" name="action" value="useDailyPlanTemplate" >
+                                Use this template for all sync recipe
+                            </button>
+                        </form>
 
                         <!-- <button class="plan-navbar-edit">
                                 <a href="userViewPlan.html"><img src="./assets/leave.svg" alt=""></a>
@@ -695,7 +699,7 @@
                                         <input type="hidden" id="recipeIdInput<%= list.getId()%>" name="recipe_id" value="<%= list.getId()%>">
                                         <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
                                         <!-- week id hard code here -->
-                                        <input type="hidden" name="week_id" value="<%= week.getId() %>" />
+                                        <input type="hidden" name="week_id" value="<%= week.getId()%>" />
                                         <input type="hidden" name="distanceInDays" value="<%= distanceInDays%>" />
                                         <% }%>
                                     </div>

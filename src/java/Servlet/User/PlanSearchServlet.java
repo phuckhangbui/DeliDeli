@@ -24,9 +24,14 @@ import javax.servlet.http.HttpSession;
  */
 public class PlanSearchServlet extends HttpServlet {
 
+    private static final String ERROR = "error.jsp";
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+
+        boolean isTemplate = false;
+        String url = ERROR;
 
         Boolean isPlan = Boolean.parseBoolean(request.getParameter("isPlan"));
         String txtsearch = request.getParameter("txtsearch").toLowerCase();
@@ -49,7 +54,16 @@ public class PlanSearchServlet extends HttpServlet {
                 displayList.add(d);
             }
             request.setAttribute("searchRecipesList", displayList);
-            String url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=true&distanceInDays=" + distanceInDays;
+            if (distanceInDays == 1337) {
+                isTemplate = Boolean.parseBoolean(request.getParameter("isTemplate"));
+                if (isTemplate) {
+                    url = "LoadEditDailyTemplateServlet?id=" + plan_id + "&isSearch=true";
+                } else {
+                    url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=true&distanceInDays=" + distanceInDays;
+                }
+            } else {
+                url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=true&distanceInDays=" + distanceInDays;
+            }
             request.getRequestDispatcher(url).forward(request, response);
         }
     }
