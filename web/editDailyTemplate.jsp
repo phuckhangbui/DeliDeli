@@ -196,6 +196,9 @@
                                                     <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
                                                     <input type="hidden" name="plan_start" value="<%= plan.getStart_at()%>" />
                                                     <input type="hidden" name="date_id" value="<%= templateDate.getId()%>" />
+                                                    <input type="hidden" name="date_id" value="<%= templateDate.getId()%>" />
+                                                    <input type="hidden" name="distanceInDays" value="1337" />
+                                                    <input type="hidden" name="isTemplate" value="true" />
 
                                                 </div>
 
@@ -272,9 +275,10 @@
 
                                                     <input type="hidden" id="recipeIdInput<%= list.getId()%>" name="recipe_id" value="<%= list.getId()%>">
                                                     <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
-
                                                     <input type="hidden" name="plan_start" value="<%= plan.getStart_at()%>" />
                                                     <input type="hidden" name="date_id" value="<%= templateDate.getId()%>" />
+                                                    <input type="hidden" name="distanceInDays" value="1337" />
+                                                    <input type="hidden" name="isTemplate" value="true" />
 
 
                                                 </div>
@@ -352,9 +356,10 @@
 
                                                     <input type="hidden" id="recipeIdInput<%= list.getId()%>" name="recipe_id" value="<%= list.getId()%>">
                                                     <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
-
                                                     <input type="hidden" name="plan_start" value="<%= plan.getStart_at()%>" />
                                                     <input type="hidden" name="date_id" value="<%= templateDate.getId()%>" />
+                                                    <input type="hidden" name="distanceInDays" value="1337" />
+                                                    <input type="hidden" name="isTemplate" value="true" />
 
 
                                                 </div>
@@ -425,7 +430,7 @@
                                 <input type="hidden" name="planId" value="<%= plan.getId()%>"/>
                                 <input type="hidden" name="user_id" value="<%= user.getId()%>"/>
                                 <input type="hidden" name="dietId" value="<%= plan.getDiet_id()%>"/>
-                                <input type="hidden" name="distanceInDays" value="0" />
+                                <input type="hidden" name="distanceInDays" value="1337" />
                                 <input type="hidden" name="isTemplate" value="true" />
 
                                 <select name="searchBy" id="">

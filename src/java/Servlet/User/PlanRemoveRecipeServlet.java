@@ -18,26 +18,42 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class PlanRemoveRecipeServlet extends HttpServlet {
 
+    private static final String ERROR = "error.jsp";
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
+        String url = ERROR;
+
         boolean result = false;
+        boolean isTemplate = false;
         int meal_id = Integer.parseInt(request.getParameter("meal_id"));
         int plan_id = Integer.parseInt(request.getParameter("plan_id"));
-        String distanceInDays = request.getParameter("distanceInDays");
 
-        String url = "error.jsp";
+        System.out.println("meal_id - " + meal_id);
+        System.out.println("plan_id - " + plan_id);
+        String distanceInDaysParam = request.getParameter("distanceInDays");
 
         if (meal_id > 0 && plan_id > 0) {
             result = MealDAO.removeRecipeFromPlan(meal_id);
-            if (result) {
-                url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=false&distanceInDays=" + distanceInDays;
-                RequestDispatcher rd = request.getRequestDispatcher(url);
-                rd.forward(request, response);
+            int distanceInDays = Integer.parseInt(distanceInDaysParam);
+            if (result && distanceInDays == 1337) {
+                isTemplate = Boolean.parseBoolean(request.getParameter("isTemplate"));
+                if (isTemplate) {
+                    url = "LoadEditDailyTemplateServlet?id=" + plan_id + "&isSearch=false";
+                } else {
+                    url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=false&distanceInDays=" + distanceInDaysParam;
+                }
             } else {
-                response.sendRedirect(url);
+                url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=false&distanceInDays=" + distanceInDaysParam;
             }
+        }
+
+        if (url != null) {
+            response.sendRedirect(url);
+        } else {
+            response.sendRedirect(ERROR);
         }
     }
 
