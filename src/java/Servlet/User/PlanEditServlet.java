@@ -11,10 +11,12 @@ import DTO.DietDTO;
 import DAO.PlanDAO;
 import DTO.PlanDTO;
 import DAO.RecipeDAO;
+import DAO.WeekDAO;
 import DTO.DisplayRecipeDTO;
 import DTO.DateDTO;
 import DTO.RecipeDTO;
 import DTO.UserDTO;
+import DTO.WeekDTO;
 import static Servlet.User.PlanDetailServlet.calculateDistanceInDays;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -45,6 +47,16 @@ public class PlanEditServlet extends HttpServlet {
         if (id != null && !id.isEmpty()) {
             PlanDTO plan = PlanDAO.getUserPlanById(Integer.parseInt(id));
             request.setAttribute("plan", plan);
+
+            WeekDTO week = WeekDAO.getWeekByPlanID(plan.getId());
+
+            //Temporary fix for hardcode
+            //This week value will be moved to week jsp page only.
+            if (week != null) {
+                request.setAttribute("week", week);
+            } else {
+                request.setAttribute("week", new WeekDTO()); // Provide a default WeekDTO object with default values
+            }
 
             DietDTO diet = DietDAO.getTypeById(plan.getDiet_id());
             request.setAttribute("diet", diet);
@@ -89,7 +101,7 @@ public class PlanEditServlet extends HttpServlet {
                     error = true;
                 }
             }
-            
+
             System.out.println("Max meal error - " + error);
             request.setAttribute("max_meal_error", error);
 

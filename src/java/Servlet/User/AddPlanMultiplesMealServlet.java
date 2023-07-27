@@ -42,6 +42,7 @@ public class AddPlanMultiplesMealServlet extends HttpServlet {
             boolean result = false;
             
             String[] selectedDates = request.getParameterValues("date_id");
+            System.out.println("selectedDates - " + selectedDates);
             String[] timeIds = request.getParameterValues("timeId");
             int recipe_id = Integer.parseInt(request.getParameter("recipe_id"));
             int plan_id = Integer.parseInt(request.getParameter("plan_id"));

@@ -4,6 +4,7 @@
     Author     : Walking Bag
 --%>
 
+<%@page import="DTO.WeekDTO"%>
 <%@page import="java.time.temporal.ChronoUnit"%>
 <%@page import="java.util.Calendar"%>
 <%@page import="DAO.DateDAO"%>
@@ -47,6 +48,8 @@
 
         <%
             PlanDTO plan = (PlanDTO) request.getAttribute("plan");
+            WeekDTO week = (WeekDTO) request.getAttribute("week");
+            System.out.println("Current week - " + week.toString());
             boolean SEARCH_PLAN_REAL = (boolean) request.getAttribute("SEARCH_PLAN_REAL");
             ArrayList<DateDTO> planDate = (ArrayList<DateDTO>) request.getAttribute("planDate");
             ArrayList<DateDTO> allPlanDate = (ArrayList<DateDTO>) request.getAttribute("allPlanDate");
@@ -64,7 +67,7 @@
             }
 
             //Weekly (hard-code week id)
-            ArrayList<DateDTO> weeklyDate = (ArrayList<DateDTO>) DateDAO.getAllDateByPlanIDAndWeekID(plan.getId(), 8);
+            ArrayList<DateDTO> weeklyDate = (ArrayList<DateDTO>) DateDAO.getAllDateByPlanIDAndWeekID(plan.getId(), week.getId());
         %>
 
         <!--         The navigation bar       -->
@@ -692,7 +695,7 @@
                                         <input type="hidden" id="recipeIdInput<%= list.getId()%>" name="recipe_id" value="<%= list.getId()%>">
                                         <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
                                         <!-- week id hard code here -->
-                                        <input type="hidden" name="week_id" value="<%= 8%>" />
+                                        <input type="hidden" name="week_id" value="<%= week.getId() %>" />
                                         <input type="hidden" name="distanceInDays" value="<%= distanceInDays%>" />
                                         <% }%>
                                     </div>
