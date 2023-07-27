@@ -46,6 +46,7 @@ public class AddPlanMultiplesMealServlet extends HttpServlet {
             int recipe_id = Integer.parseInt(request.getParameter("recipe_id"));
             int plan_id = Integer.parseInt(request.getParameter("plan_id"));
             int week_id = Integer.parseInt(request.getParameter("week_id"));
+            String distanceInDays = request.getParameter("distanceInDays");
 
             List<Integer> dateIdList = new ArrayList<>();
             List<Time> timeList = new ArrayList<>();
@@ -69,6 +70,9 @@ public class AddPlanMultiplesMealServlet extends HttpServlet {
                     //System.out.println("Good");
                 }
             }
+            
+            response.sendRedirect("UserController?action=editPlan&id=" + plan_id + "&isSearch=false&distanceInDays=" + distanceInDays);
+            
 //
 //            if (selectedDates != null) {
 //                for (String dateString : selectedDates) {
