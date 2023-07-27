@@ -305,6 +305,54 @@ public class WeeklyPlanTemplateDAO {
         return true;
     }
 
+    public static ArrayList<Integer> getEmptyWeekId(int planId) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        ArrayList<Integer> idList = new ArrayList<>(); // Variable to store the first value
+
+        String sql = "SELECT w.id\n"
+                + "FROM [dbo].[Week] w\n"
+                + "LEFT JOIN [dbo].[Date] d ON w.id = d.week_id\n"
+                + "WHERE d.week_id IS NULL AND w.plan_id = ?";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, planId); // Set the plan_id value
+                rs = stm.executeQuery();
+
+                if (rs != null) {
+                    while (rs.next()) {
+                        int id = rs.getInt(1);
+                        idList.add(id);
+                    }
+                }
+
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error - retrieveFirstValue: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+
+        return idList;
+
+    }
+
     public static void main(String[] args) {
 //        System.out.println(getDailyTemplateByPlanId(1));
     }

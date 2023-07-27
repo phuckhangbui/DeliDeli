@@ -8,6 +8,8 @@ import DAO.DailyPlanTemplateDAO;
 import DAO.DateDAO;
 import DAO.MealDAO;
 import DAO.PlanDAO;
+import DAO.WeekDAO;
+import DAO.WeeklyPlanTemplateDAO;
 import DTO.DateDTO;
 import DTO.MealDTO;
 import DTO.PlanDTO;
@@ -47,66 +49,159 @@ public class PlanInformationEditServlet extends HttpServlet {
         PlanDTO plan = PlanDAO.getPlanById(id);
         Date start_date = plan.getStart_at();
         Date end_date = plan.getEnd_at();
+
         int planLength = Integer.parseInt(request.getParameter("planLength"));
 
-        // Calculate end date
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(start_date);
-        calendar.add(Calendar.DATE, planLength);
+        if (plan.isDaily()) {
 
-        java.sql.Date end_date_after = new java.sql.Date(calendar.getTimeInMillis());
+            // Calculate end date
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(start_date);
+            calendar.add(Calendar.DATE, planLength);
 
-        PlanDAO.updatePlanByID(id, des, note, end_date_after);
+            java.sql.Date end_date_after = new java.sql.Date(calendar.getTimeInMillis());
 
-        LocalDate endBefore = end_date.toLocalDate();
-        LocalDate endAfter = end_date_after.toLocalDate();
+            PlanDAO.updatePlanByID(id, des, note, end_date_after);
 
-        if (endBefore.isEqual(endAfter)) {
+            LocalDate endBefore = end_date.toLocalDate();
+            LocalDate endAfter = end_date_after.toLocalDate();
 
-        }
-        if (endBefore.isBefore(endAfter)) {
-            //add more date to plan
-            Calendar loopDate = Calendar.getInstance();
-            loopDate.setTime(end_date);
+            if (endBefore.isEqual(endAfter)) {
 
-            while (loopDate.getTime().before(end_date_after) || loopDate.getTime().equals(end_date_after)) {
-                // Insert daily meal for the new date
-                java.sql.Date currentDate = new java.sql.Date(loopDate.getTimeInMillis());
-                boolean isMealInserted = DateDAO.insertDateForDaily(currentDate, id);
-
-                // Increment loop date by one day
-                loopDate.add(Calendar.DATE, 1);
             }
+            if (endBefore.isBefore(endAfter)) {
+                //add more date to plan
+                Calendar loopDate = Calendar.getInstance();
+                loopDate.setTime(end_date);
 
-            //apply template for the new date
-            int templateId = DailyPlanTemplateDAO.getDailyTemplateIdByPlanId(id);
+                while (loopDate.getTime().before(end_date_after) || loopDate.getTime().equals(end_date_after)) {
+                    // Insert daily meal for the new date
+                    java.sql.Date currentDate = new java.sql.Date(loopDate.getTimeInMillis());
+                    boolean isMealInserted = DateDAO.insertDateForDaily(currentDate, id);
 
-            ArrayList<MealDTO> templateMeals = MealDAO.getAllMealByDateId(templateId);
-            //list of all normal date in that plan
-            ArrayList<Integer> idList = DailyPlanTemplateDAO.getSyncDateId(id);
-            //delete old meal from the sync date -- leave the unsync date alone
-            DailyPlanTemplateDAO.deleteSyncDateMeal(id, idList);
+                    // Increment loop date by one day
+                    loopDate.add(Calendar.DATE, 1);
+                }
 
-            if (templateMeals.size() > 0) {
-                //sync normal date with template meal
-                DailyPlanTemplateDAO.syncWithDailyTemplate(idList, templateMeals);
+                //apply template for the new date
+                int templateId = DailyPlanTemplateDAO.getDailyTemplateIdByPlanId(id);
+
+                ArrayList<MealDTO> templateMeals = MealDAO.getAllMealByDateId(templateId);
+                //list of all normal date in that plan
+                ArrayList<Integer> idList = DailyPlanTemplateDAO.getSyncDateId(id);
+                //delete old meal from the sync date -- leave the unsync date alone
+                DailyPlanTemplateDAO.deleteSyncDateMeal(id, idList);
+
+                if (templateMeals.size() > 0) {
+                    //sync normal date with template meal
+                    DailyPlanTemplateDAO.syncWithDailyTemplate(idList, templateMeals);
+                }
+
+            } else {
+                //shorten the time of plan -> delete the date that are not in the plan
+                Calendar loopDate = Calendar.getInstance();
+                loopDate.setTime(end_date_after);
+
+                while (loopDate.getTime().before(end_date) || loopDate.getTime().equals(end_date)) {
+                    // Delete date
+                    java.sql.Date currentDate = new java.sql.Date(loopDate.getTimeInMillis());
+                    DateDTO date = DateDAO.getDateIdByPlanIdAndDate(id, currentDate);
+
+                    MealDAO.deleteAllMealByDate(id, date.getId());
+                    DateDAO.deleteDateByDateId(date.getId());
+
+                    // Increment loop date by one day
+                    loopDate.add(Calendar.DATE, 1);
+                }
             }
+        } //WEEKLY 
+        else {
+            // Calculate end date
 
-        } else {
-            //shorten the time of plan -> delete the date that are not in the plan
-            Calendar loopDate = Calendar.getInstance();
-            loopDate.setTime(end_date_after);
+            long millisDiff = plan.getEnd_at().getTime() - plan.getStart_at().getTime();
+            int planLengthOld = (int) (millisDiff / (1000 * 60 * 60 * 24 * 7)) + 1; // for weekly
 
-            while (loopDate.getTime().before(end_date) || loopDate.getTime().equals(end_date)) {
-                // Delete date
-                java.sql.Date currentDate = new java.sql.Date(loopDate.getTimeInMillis());
-                DateDTO date = DateDAO.getDateIdByPlanIdAndDate(id, currentDate);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(start_date);
+            calendar.add(Calendar.DATE, (planLength * 7) - 1);
 
-                MealDAO.deleteAllMealByDate(id, date.getId());
-                DateDAO.deleteDateByDateId(date.getId());
+            java.sql.Date end_date_after = new java.sql.Date(calendar.getTimeInMillis());
 
-                // Increment loop date by one day
+            PlanDAO.updatePlanByID(id, des, note, end_date_after);
+
+            LocalDate endBefore = end_date.toLocalDate();
+            LocalDate endAfter = end_date_after.toLocalDate();
+
+            if (planLength == planLengthOld) {
+
+            }
+            if (planLength > planLengthOld) {
+                // get the different
+                int diff = planLength - planLengthOld;
+                //get the start of the new week
+                Calendar endDate = Calendar.getInstance();
+                endDate.setTime(end_date);
+                endDate.add(calendar.DATE, 1);
+                
+                //add new week and date of that week
+                for(int i= 0; i < diff; i++){
+                    java.sql.Date currentDate = new java.sql.Date(endDate.getTimeInMillis());
+                    int weekId = DateDAO.insertWeekForWeekly(currentDate, id);
+                    DateDAO.insertAllDatesWithinAWeek(currentDate, weekId, id);
+                    endDate.add(calendar.DATE, 7);
+                }
+                
+                //get template week id
+                int templateId = WeeklyPlanTemplateDAO.getWeeklyTemplateIdByPlanId(id);
+
+                //list of all normal Week in that plan
+                ArrayList<Integer> weeklyIdList = WeeklyPlanTemplateDAO.getSyncWeekId(id);
+                ArrayList<DateDTO> dateInTemplate = DateDAO.getAllDateByPlanIDAndWeekID(id, templateId);
+
+                for (DateDTO date : dateInTemplate) {
+                    //loop each date in the week template, get the meals
+                    ArrayList<MealDTO> templateMeals = MealDAO.getAllMealByDateId(date.getId());
+                    //delete old meal from the date of the sync week
+
+                    //loop for each simlar date in that template
+                    for (int i = 0; i < planLength; i++) {
+                        Calendar loopDate = Calendar.getInstance();
+                        loopDate.setTime(date.getDate());
+                        loopDate.add(Calendar.DATE, i * 7);
+                        java.sql.Date currentDate = new java.sql.Date(loopDate.getTimeInMillis());
+
+                        DateDTO modifiedDate = DateDAO.getDateIdByPlanIdAndDateInWeeklyPlan(id, currentDate);
+                        //delete meal of that date
+                        MealDAO.deleteAllMealByDate(id, modifiedDate.getId());
+                        //copy meal of the template to that date
+                        WeeklyPlanTemplateDAO.syncWithTemplate(modifiedDate.getId(), templateMeals);
+
+                    }
+                }
+
+            } else {
+                //shorten the time of plan -> delete the date that are not in the plan
+                Calendar loopDate = Calendar.getInstance();
+                loopDate.setTime(end_date_after);
                 loopDate.add(Calendar.DATE, 1);
+
+                while (loopDate.getTime().before(end_date) || loopDate.getTime().equals(end_date)) {
+                    // Delete date
+                    java.sql.Date currentDate = new java.sql.Date(loopDate.getTimeInMillis());
+                    DateDTO date = DateDAO.getDateIdByPlanIdAndDate(id, currentDate);
+
+                    MealDAO.deleteAllMealByDate(id, date.getId());
+                    DateDAO.deleteDateByDateId(date.getId());
+                    
+                    //Delete week -> delete week that have no date 
+                    ArrayList<Integer> emptyWeekList = WeeklyPlanTemplateDAO.getEmptyWeekId(id);
+                    for(Integer weekId : emptyWeekList){
+                        WeekDAO.deleteWeekOnId(weekId);
+                    }
+                    
+                    // Increment loop date by one day
+                    loopDate.add(Calendar.DATE, 1);
+                }
             }
         }
         request.getRequestDispatcher("UserController?action=getPlanDetailById&id=" + id).forward(request, response);
