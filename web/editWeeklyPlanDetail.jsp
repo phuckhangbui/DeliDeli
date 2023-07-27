@@ -1,6 +1,6 @@
 <%-- 
-    Document   : editDailyPlanDetail
-    Created on : Jul 26, 2023, 9:36:22 AM
+    Document   : editWeeklyPlanDetail
+    Created on : Jul 27, 2023, 11:30:41 AM
     Author     : khang
 --%>
 
@@ -56,7 +56,7 @@
                             </div>
                             <div class="row add-plan-date ">
                                 <div class="add-plan-info-header">
-                                    Plan Period <span class="add-plan-info-header-des"></span>
+                                    Plan Period <span class="add-plan-info-header-des">(Each plan will have a fixed period of 1 week)</span>
                                 </div>
                                 <div class="col-md-6 add-plan-info-date">
                                     Starting Date: <span>*</span>
@@ -68,7 +68,7 @@
                                 <div class="col-md-6 add-plan-info-date">
                                     Plan's Length: <span>*</span>
                                     <div>
-                                        <input type="number" id="length" name="planLength" onchange="calculateEndDate()" min='1' max='90' value="<%= planLength %>" required> 
+                                        <input type="number" id="length" name="planLength" onchange="calculateEndDate()" min='1' max='12' value="<%= planLength%>" required> 
                                     </div>
                                 </div>
                                 <div class="col-md-6 add-plan-info-date">
@@ -82,8 +82,9 @@
                                         var planLength = parseInt(document.getElementById("length").value);
 
                                         if (!isNaN(startDate) && !isNaN(planLength)) {
+                                            // Increment end date by the length in weeks
                                             var endDate = new Date(startDate);
-                                            endDate.setDate(endDate.getDate() + planLength);
+                                            endDate.setDate(endDate.getDate() + (planLength * 7) - 1);
 
                                             var endDateOptions = {year: 'numeric', month: 'numeric', day: 'numeric'};
                                             var endDateFormatted = endDate.toLocaleDateString(undefined, endDateOptions);
@@ -94,6 +95,7 @@
                                         }
                                     }
 
+                                    // Set the maximum date to 3 months from the current date
                                     var startDateInput = document.getElementById("startingDate");
                                     var currentDate = new Date();
                                     var maxDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 3, currentDate.getDate());

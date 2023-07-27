@@ -153,6 +153,9 @@ public class UserController extends HttpServlet {
                     case "loadEditDailyTemplate":
                         url = "LoadEditDailyTemplateServlet";
                         break;
+                    case "UseWeeklyPlanTemplate":
+                        url = "UseWeeklyPlanTemplateServlet";
+                        break;
                 }
             }
             RequestDispatcher rd = request.getRequestDispatcher(url);

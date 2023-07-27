@@ -288,6 +288,6 @@ public class DailyPlanTemplateDAO {
     }
 
     public static void main(String[] args) {
-        System.out.println(getDailyTemplateByPlanId(1));
+//        System.out.println(getDailyTemplateByPlanId(1));
     }
 }

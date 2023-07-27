@@ -55,23 +55,22 @@ public class LoadEditPlanDetailServlet extends HttpServlet {
 
                 java.sql.Date startDateSQL = plan.getStart_at();
                 java.sql.Date endDateSQL = plan.getEnd_at();
-                
+
                 long millisDiff = endDateSQL.getTime() - startDateSQL.getTime();
-                
-                int planLength = (int) (millisDiff / (1000 * 60 * 60 * 24));
-                
-                request.setAttribute("planLength", planLength);
-                
-                
-                if(plan.isDaily()){
+
+                if (plan.isDaily()) {
+                    int planLength = (int) (millisDiff / (1000 * 60 * 60 * 24));
+
+                    request.setAttribute("planLength", planLength);
                     request.getRequestDispatcher("editDailyPlanDetail.jsp").forward(request, response);
-                }
-                else{
-                    request.getRequestDispatcher("#").forward(request, response);
+                } else {
+                    int planLength = (int) (millisDiff / (1000 * 60 * 60 * 24 * 7)) + 1;
+
+                    request.setAttribute("planLength", planLength);
+                    request.getRequestDispatcher("editWeeklyPlanDetail.jsp").forward(request, response);
                 }
             }
 
-            
             response.sendRedirect("error.jsp");
         }
     }

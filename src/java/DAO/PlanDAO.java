@@ -427,20 +427,17 @@ public class PlanDAO {
         ResultSet rs = null;
 
         String sql = "UPDATE [Plan]\n"
-                + "SET name = ?, description = ?, note = ?, start_at = ?, end_at = ?, diet_id = ?\n"
+                + "SET description = ?, note = ?, end_at = ?\n"
                 + "WHERE id = ?";
 
         try {
             con = DBUtils.getConnection();
             if (con != null) {
                 stm = con.prepareStatement(sql);
-                stm.setString(1, plan_title);
-                stm.setString(2, plan_description);
-                stm.setString(3, plan_note);
-                stm.setDate(4, start_at);
-                stm.setDate(5, end_at);
-                stm.setInt(6, diet_id);
-                stm.setInt(7, plan_id);
+                stm.setString(1, description);
+                stm.setString(2, note);
+                stm.setDate(3, end_at);
+                stm.setInt(4, id);
 
                 int rowsAffected = stm.executeUpdate();
                 return rowsAffected > 0;

@@ -4,7 +4,10 @@
  */
 package DAO;
 
+import DTO.DateDTO;
+import DTO.MealDTO;
 import DTO.PlanDTO;
+import DTO.WeekDTO;
 import Utils.DBUtils;
 import java.sql.Connection;
 import java.sql.Date;
@@ -69,7 +72,7 @@ public class WeeklyPlanTemplateDAO {
 
         return generatedId; // Return -1 if the ID retrieval failed or the insert query was not successful
     }
-    
+
     public static boolean insertDateOfWeeklyTemplate(Date start_date, int week_id, int plan_id) {
         Connection con = null;
         PreparedStatement stm = null;
@@ -90,7 +93,7 @@ public class WeeklyPlanTemplateDAO {
                 calendar.setTime(start_date);
 
                 // Iterate from start_date until end_date, we add each date into a list.
-                for(int i = 0; i < 7; i++) {
+                for (int i = 0; i < 7; i++) {
                     Date currentDate = new Date(calendar.getTime().getTime()); // Convert java.util.Date to java.sql.Date
                     dates.add(currentDate);
                     calendar.add(Calendar.DAY_OF_MONTH, 1);
@@ -127,5 +130,230 @@ public class WeeklyPlanTemplateDAO {
             }
         }
         return false;
+    }
+
+    public static int getWeeklyTemplateIdByPlanId(int planId) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        int firstValue = -1; // Variable to store the first value
+
+        String sql = "SELECT id FROM week WHERE is_template = 1 AND plan_id = ?";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, planId); // Set the plan_id value
+                rs = stm.executeQuery();
+
+                if (rs.next()) {
+                    firstValue = rs.getInt("id"); // Get the first value from the "id" column
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error - retrieveFirstValue: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+
+        return firstValue; // Return the first value from the "id" column, or -1 if it couldn't be retrieved or an error occurred
+    }
+
+    public static WeekDTO getWeeklyTemplateByPlanId(int planId) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        WeekDTO result = null;
+
+        String sql = "SELECT * FROM week WHERE is_template = 1 AND plan_id = ?";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, planId); // Set the plan_id value
+                rs = stm.executeQuery();
+
+                if (rs.next()) {
+
+                    int id = rs.getInt("id");
+                    java.sql.Date start_at = rs.getDate("start_at");
+                    planId = rs.getInt("plan_id");
+                    boolean isSync = rs.getBoolean("is_sync");
+                    boolean isTemplate = rs.getBoolean("is_template");
+
+                    result = new WeekDTO(id, start_at, planId, isSync, isTemplate);
+
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error - retrieveFirstValue: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+
+        return result;
+    }
+
+    public static ArrayList<Integer> getSyncWeekId(int planId) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        ArrayList<Integer> idList = new ArrayList<>(); // Variable to store the first value
+
+        String sql = "SELECT id FROM week WHERE is_template = 0 AND plan_id = ? AND is_sync = 1";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, planId); // Set the plan_id value
+                rs = stm.executeQuery();
+
+                if (rs != null) {
+                    while (rs.next()) {
+                        int id = rs.getInt(1);
+                        idList.add(id);
+                    }
+                }
+
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error - retrieveFirstValue: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+
+        return idList;
+    }
+
+    public static boolean syncWithTemplate(int modifiedDateId, ArrayList<MealDTO> templateMeals) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+
+        String sql = "INSERT INTO [Meal](date_id, recipe_id, start_time, isNotified)\n"
+                + "VALUES (?, ?, ?, ?)";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                for (MealDTO meal : templateMeals) {
+                    stm = con.prepareStatement(sql);
+                    stm.setInt(1, modifiedDateId);
+                    stm.setInt(2, meal.getRecipe_id());
+                    stm.setTime(3, meal.getStart_time());
+                    stm.setBoolean(4, false);
+                    stm.executeUpdate();
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error - deleteAllRecipeByPlanID: " + ex.getMessage());
+            return false;
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return true;
+    }
+
+    public static ArrayList<Integer> getEmptyWeekId(int planId) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        ArrayList<Integer> idList = new ArrayList<>(); // Variable to store the first value
+
+        String sql = "SELECT w.id\n"
+                + "FROM [dbo].[Week] w\n"
+                + "LEFT JOIN [dbo].[Date] d ON w.id = d.week_id\n"
+                + "WHERE d.week_id IS NULL AND w.plan_id = ?";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, planId); // Set the plan_id value
+                rs = stm.executeQuery();
+
+                if (rs != null) {
+                    while (rs.next()) {
+                        int id = rs.getInt(1);
+                        idList.add(id);
+                    }
+                }
+
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error - retrieveFirstValue: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+
+        return idList;
+
+    }
+
+    public static void main(String[] args) {
+//        System.out.println(getDailyTemplateByPlanId(1));
     }
 }
