@@ -531,7 +531,7 @@
                                         <input type="hidden" name="week_id" value="<%= dateList.getWeek_id()%>" />
                                         <input type="hidden" name="plan_start" value="<%= plan.getStart_at()%>" />
                                         <input type="hidden" name="date_id" value="<%= dateList.getId()%>" />
-                                        <input type="hidden" name="distanceInDays" value="0" />
+                                        <input type="hidden" name="distanceInDays" value="1337" />
                                         <input type="hidden" name="isTemplate" value="true" />
                                         <% }%>
                                     </div>

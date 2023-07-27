@@ -46,6 +46,7 @@ public class PlanAddRecipeServlet extends HttpServlet {
             int week_id = Integer.parseInt(request.getParameter("week_id"));
             String plantStart = request.getParameter("plan_start");
             String distanceInDaysParam = request.getParameter("distanceInDays");
+            System.out.println("distanceInDaysParam - " + distanceInDaysParam);
 
             //List<Integer> dateIdList = new ArrayList<>();
             List<Time> timeList = new ArrayList<>();
@@ -78,17 +79,16 @@ public class PlanAddRecipeServlet extends HttpServlet {
 //            out.println(recipe_id);
 //            out.println(start_timeStr);
 //            out.println(recipe_count);
-// ... Your existing code ...
             int distanceInDays = Integer.parseInt(distanceInDaysParam);
 
-            if (result && distanceInDays == 0) {
+            if (result && distanceInDays == 1337) {
                 isTemplate = Boolean.parseBoolean(request.getParameter("isTemplate"));
                 if (isTemplate) {
                     url = "LoadEditDailyTemplateServlet?id=" + plan_id + "&isSearch=false";
+                } else {
+                    url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=false&distanceInDays=" + distanceInDaysParam;
                 }
-            }
-
-            if (result && url == null) {
+            } else {
                 url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=false&distanceInDays=" + distanceInDaysParam;
             }
 
