@@ -4,6 +4,7 @@
  */
 package DAO;
 
+import DTO.DateDTO;
 import DTO.MealDTO;
 import Utils.DBUtils;
 import java.sql.Connection;
@@ -105,6 +106,56 @@ public class DailyPlanTemplateDAO {
         }
 
         return firstValue; // Return the first value from the "id" column, or -1 if it couldn't be retrieved or an error occurred
+
+    }
+
+    public static DateDTO getDailyTemplateByPlanId(int planId) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        DateDTO result = null;
+        
+        String sql = "SELECT * FROM date WHERE is_template = 1 AND plan_id = ?";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, planId); // Set the plan_id value
+                rs = stm.executeQuery();
+
+                if (rs.next()) {
+                  
+                        int id = rs.getInt("id");
+                        Date date = rs.getDate("date");
+                        int week_id = rs.getInt("week_id");
+                        planId = rs.getInt("plan_id");
+                        boolean isSync = rs.getBoolean("is_sync");
+                        boolean isTemplate = rs.getBoolean("is_template");
+
+                        result = new DateDTO(id, date, week_id, planId, isSync, isTemplate);
+                    
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error - retrieveFirstValue: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+
+        return result; 
 
     }
 
@@ -237,16 +288,6 @@ public class DailyPlanTemplateDAO {
     }
 
     public static void main(String[] args) {
-//        int templateId = DailyPlanTemplateDAO.getDailyTemplateIdByPlanId(2);
-//        ArrayList<MealDTO> templateMeals = MealDAO.getAllMealByDateId(templateId);
-//        //list of all normal date in that plan
-//        ArrayList<Integer> idList = DailyPlanTemplateDAO.getSyncDateId(2);
-//        //delete old meal from the normal date
-//        DailyPlanTemplateDAO.deleteSyncDateMeal(2, idList);
-//
-//        if (templateMeals.size() > 0) {
-//            //sync normal date with template date
-//            DailyPlanTemplateDAO.syncWithDailyTemplate(idList, templateMeals);
-//        }
+        System.out.println(getDailyTemplateByPlanId(1));
     }
 }

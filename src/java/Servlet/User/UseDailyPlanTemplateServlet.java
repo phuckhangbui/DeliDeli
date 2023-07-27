@@ -37,7 +37,7 @@ public class UseDailyPlanTemplateServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            int planId = Integer.parseInt(request.getParameter("planId"));
+            int planId = Integer.parseInt(request.getParameter("id"));
             PlanDTO plan = PlanDAO.getPlanById(planId);
             if(plan == null){
                 response.sendRedirect("error.jsp");
@@ -58,7 +58,7 @@ public class UseDailyPlanTemplateServlet extends HttpServlet {
                 DailyPlanTemplateDAO.syncWithDailyTemplate(idList, templateMeals);
             }
             
-            
+            request.getRequestDispatcher("UserController?action=loadEditDailyTemplate&id=" + planId).forward(request, response);
         }catch(Exception ex){
             response.sendRedirect("error.jsp");
         }

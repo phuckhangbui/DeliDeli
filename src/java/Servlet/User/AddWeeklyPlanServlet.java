@@ -47,7 +47,7 @@ public class AddWeeklyPlanServlet extends HttpServlet {
             // Calculate end date
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(start_date);
-            calendar.add(Calendar.DATE, planLength * 7);
+            calendar.add(Calendar.DATE, (planLength * 7) -1);
 
             java.sql.Date end_date = new java.sql.Date(calendar.getTimeInMillis());
 

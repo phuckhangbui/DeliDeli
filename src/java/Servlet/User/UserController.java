@@ -32,9 +32,7 @@ public class UserController extends HttpServlet {
             request.setCharacterEncoding("UTF-8");
 
             String action = request.getParameter("action");
-            
-            System.out.println("Current user action - " + action);
-                        if (action == null || action.equals("")) {
+            if (action == null || action.equals("")) {
                 url = "error.jsp";
             } else {
                 switch (action.trim()) {
@@ -149,8 +147,11 @@ public class UserController extends HttpServlet {
                     case "addPlanMultiplesMeal":
                         url = "AddPlanMultiplesMealServlet";
                         break;
-                    case "loadEditRecipeDetail":
-                        url = "LoadEditRecipeDetailServlet";
+                    case "loadEditPlanDetail":
+                        url = "LoadEditPlanDetailServlet";
+                        break;
+                    case "loadEditDailyTemplate":
+                        url = "LoadEditDailyTemplateServlet";
                         break;
                 }
             }

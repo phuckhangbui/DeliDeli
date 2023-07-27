@@ -81,7 +81,7 @@
                                     if (!isNaN(startDate) && !isNaN(planLength) && isMonday(startDate)) {
                                         // Increment end date by the length in weeks
                                         var endDate = new Date(startDate);
-                                        endDate.setDate(endDate.getDate() + (planLength * 7));
+                                        endDate.setDate(endDate.getDate() + (planLength * 7) -1  );
 
                                         var endDateOptions = {year: 'numeric', month: 'numeric', day: 'numeric'};
                                         var endDateFormatted = endDate.toLocaleDateString(undefined, endDateOptions);

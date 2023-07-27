@@ -4,57 +4,79 @@
  */
 package Servlet.User;
 
+import DAO.DateDAO;
+import DAO.DietDAO;
+import DAO.PlanDAO;
 import DAO.RecipeDAO;
+import DTO.DateDTO;
+import DTO.DietDTO;
 import DTO.DisplayRecipeDTO;
+import DTO.PlanDTO;
 import DTO.RecipeDTO;
 import DTO.UserDTO;
-import Utils.NavigationBarUtils;
+import static Servlet.User.PlanDetailServlet.calculateDistanceInDays;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Daiisuke
+ * @author khang
  */
-public class PlanSearchServlet extends HttpServlet {
+public class LoadEditPlanDetailServlet extends HttpServlet {
 
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        try ( PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
 
-        Boolean isPlan = Boolean.parseBoolean(request.getParameter("isPlan"));
-        String txtsearch = request.getParameter("txtsearch").toLowerCase();
-        String searchBy = request.getParameter("searchBy");
-        String plan_id = request.getParameter("planId").toLowerCase();
-        int dietId = Integer.parseInt(request.getParameter("dietId"));
-        int user_id = Integer.parseInt(request.getParameter("user_id"));
-        int distanceInDays = Integer.parseInt(request.getParameter("distanceInDays"));
+            String id = request.getParameter("id");
 
-        if (isPlan) {
-            ArrayList<RecipeDTO> list = NavigationBarUtils.searchRecipeForPlan(txtsearch, searchBy, user_id, dietId);
-            ArrayList<DisplayRecipeDTO> displayList = new ArrayList<>();
-            for (RecipeDTO r : list) {
-                String thumbnailPath = RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath();
-                String category = RecipeDAO.getCategoryByRecipeId(r.getId());
-                double rating = RecipeDAO.getRatingByRecipeId(r.getId());
-                UserDTO owner = RecipeDAO.getRecipeOwnerByRecipeId(r.getId());
+            //Daily
+            if (id != null && !id.isEmpty()) {
+                PlanDTO plan = PlanDAO.getUserPlanById(Integer.parseInt(id));
+                request.setAttribute("plan", plan);
 
-                DisplayRecipeDTO d = new DisplayRecipeDTO(r.getId(), r.getTitle(), thumbnailPath, category, rating, owner);
-                displayList.add(d);
+                java.sql.Date startDateSQL = plan.getStart_at();
+                java.sql.Date endDateSQL = plan.getEnd_at();
+                
+                long millisDiff = endDateSQL.getTime() - startDateSQL.getTime();
+                
+                int planLength = (int) (millisDiff / (1000 * 60 * 60 * 24));
+                
+                request.setAttribute("planLength", planLength);
+                
+                
+                if(plan.isDaily()){
+                    request.getRequestDispatcher("editDailyPlanDetail.jsp").forward(request, response);
+                }
+                else{
+                    request.getRequestDispatcher("#").forward(request, response);
+                }
             }
-            request.setAttribute("searchRecipesList", displayList);
-            String url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=true&distanceInDays=" + distanceInDays;
-            request.getRequestDispatcher(url).forward(request, response);
+
+            
+            response.sendRedirect("error.jsp");
         }
     }
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
 
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
