@@ -35,67 +35,90 @@ public class PlanDetailServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String id = request.getParameter("id");
         boolean foundMatchingDate = false;
+        boolean isDaily = false;
 
-        // Daily
         PlanDTO plan = PlanDAO.getUserPlanById(new Integer(id));
         request.setAttribute("plan", plan);
 
-        ArrayList<DateDTO> planDate = DateDAO.getAllDateByPlanID(plan.getId());
-        ArrayList<DateDTO> displayDate = new ArrayList<>();
+        // Daily
+        if (plan.isDaily()) {
+            ArrayList<DateDTO> planDate = DateDAO.getAllDateByPlanID(plan.getId());
+            ArrayList<DateDTO> displayDate = new ArrayList<>();
 
-        LocalDate currentDate = LocalDate.now();
-        java.sql.Date startDateSQL = plan.getStart_at();
-        LocalDate startLocalDate = startDateSQL.toLocalDate();
-        int distanceInDays = (int) calculateDistanceInDays(startLocalDate, currentDate);
+            LocalDate currentDate = LocalDate.now();
+            java.sql.Date startDateSQL = plan.getStart_at();
+            LocalDate startLocalDate = startDateSQL.toLocalDate();
+            int distanceInDays = (int) calculateDistanceInDays(startLocalDate, currentDate);
 
 //        System.out.println("distanceInDays - " + distanceInDays);
-        // distanceInDays here act as an param to detect whether the date changed at page by user.
-        String distanceInDaysParam = request.getParameter("distanceInDays");
+            // distanceInDays here act as an param to detect whether the date changed at page by user.
+            String distanceInDaysParam = request.getParameter("distanceInDays");
 
 //        System.out.println("distanceInDaysParam - " + distanceInDaysParam);
-        if (distanceInDaysParam != null) {
-            distanceInDays = Integer.parseInt(distanceInDaysParam);
-            request.setAttribute("distanceInDays", distanceInDays);
+            if (distanceInDaysParam != null) {
+                distanceInDays = Integer.parseInt(distanceInDaysParam);
+                request.setAttribute("distanceInDays", distanceInDays);
 
-            // A little note for myself (how it traverse through date automatically)
-            // After calculate the distance date, the plan will change the date based on the distance in date value
-            // dateList is the every date inside that plan, it will traverse through every date til they find the 
-            // startLocalDate (plan startdate) == dateList and add it to the arrayList to display on JSP.
-            for (DateDTO date : planDate) {
-                LocalDate dateList = date.getDate().toLocalDate();
-                if (dateList.equals(startLocalDate.plusDays(distanceInDays))) {
-                    displayDate.add(date);
-                    break;
+                // A little note for myself (how it traverse through date automatically)
+                // After calculate the distance date, the plan will change the date based on the distance in date value
+                // dateList is the every date inside that plan, it will traverse through every date til they find the 
+                // startLocalDate (plan startdate) == dateList and add it to the arrayList to display on JSP.
+                for (DateDTO date : planDate) {
+                    LocalDate dateList = date.getDate().toLocalDate();
+                    if (dateList.equals(startLocalDate.plusDays(distanceInDays))) {
+                        displayDate.add(date);
+                        break;
+                    }
+                }
+                // If currentDate is out of plan date scope then return plan start date
+            } else {
+                for (DateDTO date : planDate) {
+                    LocalDate dateList = date.getDate().toLocalDate();
+
+                    if (dateList.equals(currentDate)) {
+                        displayDate.add(date);
+                        foundMatchingDate = true;
+                        break;
+                    }
+                }
+                if (!foundMatchingDate && !planDate.isEmpty()) {
+                    DateDTO firstDate = planDate.get(0);
+                    displayDate.add(firstDate);
                 }
             }
-            // If currentDate is out of plan date scope then return plan start date
+
+            request.setAttribute("planDate", displayDate);
+            request.setAttribute("allPlanDate", planDate);
+
+            DietDTO diet = DietDAO.getTypeById(plan.getDiet_id());
+            request.setAttribute("diet", diet);
+
+            //ArrayList<MealDTO> meal = MealDAO.getAllMealByDateId(planDate);
+            RequestDispatcher rq = request.getRequestDispatcher("userViewPlan.jsp");
+            rq.forward(request, response);
+
+            // Weekly    
         } else {
-            for (DateDTO date : planDate) {
-                LocalDate dateList = date.getDate().toLocalDate();
+            ArrayList<DateDTO> planDate = DateDAO.getAllDateByPlanID(plan.getId());
+            ArrayList<DateDTO> displayDate = new ArrayList<>();
 
-                if (dateList.equals(currentDate)) {
-                    displayDate.add(date);
-                    foundMatchingDate = true;
-                    break;
-                }
-            }
-            if (!foundMatchingDate && !planDate.isEmpty()) {
-                DateDTO firstDate = planDate.get(0);
-                displayDate.add(firstDate);
-            }
+            LocalDate currentDate = LocalDate.now();
+            java.sql.Date startDateSQL = plan.getStart_at();
+            LocalDate startLocalDate = startDateSQL.toLocalDate();
+            int distanceInDays = (int) calculateDistanceInDays(startLocalDate, currentDate);
+
+            String distanceInDaysParam = request.getParameter("distanceInDays");
+
+            request.setAttribute("planDate", planDate);
+//            request.setAttribute("allPlanDate", planDate);
+
+            DietDTO diet = DietDAO.getTypeById(plan.getDiet_id());
+            request.setAttribute("diet", diet);
+
+            //ArrayList<MealDTO> meal = MealDAO.getAllMealByDateId(planDate);
+            RequestDispatcher rq = request.getRequestDispatcher("userViewPlanWeekly.jsp");
+            rq.forward(request, response);
         }
-
-        request.setAttribute("planDate", displayDate);
-        request.setAttribute("allPlanDate", planDate);
-
-        DietDTO diet = DietDAO.getTypeById(plan.getDiet_id());
-        request.setAttribute("diet", diet);
-
-        //ArrayList<MealDTO> meal = MealDAO.getAllMealByDateId(planDate);
-        RequestDispatcher rq = request.getRequestDispatcher("userViewPlan.jsp");
-        rq.forward(request, response);
-
-        //Weekly
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
