@@ -12,6 +12,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -118,7 +120,7 @@ public class DateDAO {
         }
         return result;
     }
-    
+
     public static ArrayList<DateDTO> getDailyTemplate(int plan_id) {
         Connection con = null;
         PreparedStatement stm = null;
@@ -248,6 +250,58 @@ public class DateDAO {
             }
         } catch (SQLException ex) {
             System.out.println("Query error - getPlanIdByUserIdAndDate: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return result;
+    }
+
+    public static DateDTO getDateBySelectedDate(String selectedDateStr, int plan_id) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        DateDTO result = new DateDTO();
+
+        String sql = "SELECT * FROM [Date]\n"
+                + "WHERE [date] = ? AND plan_id = ?";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                java.util.Date utilDate = sdf.parse(selectedDateStr);
+                java.sql.Date sqlSelectedDate = new java.sql.Date(utilDate.getTime());
+
+                stm = con.prepareStatement(sql);
+                stm.setDate(1, sqlSelectedDate);
+                stm.setInt(2, plan_id);
+
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    Date date = rs.getDate("date");
+                    int week_id = rs.getInt("week_id");
+                    plan_id = rs.getInt("plan_id");
+                    boolean isSync = rs.getBoolean("is_sync");
+                    boolean isTemplate = rs.getBoolean("is_template");
+
+                    result = new DateDTO(id, date, week_id, plan_id, isSync, isTemplate);
+                }
+            }
+        } catch (SQLException | ParseException ex) {
+            System.out.println("Query error - getDateBySelectedDate: " + ex.getMessage());
         } finally {
             try {
                 if (rs != null) {
@@ -681,8 +735,8 @@ public class DateDAO {
         ResultSet rs = null;
         DateDTO result = new DateDTO();
 
-        String sql = "SELECT * FROM [Date] d JOIN Week w ON d.week_id = w.id\n" +
-        "WHERE d.[plan_id] = ? AND w.is_template = 0 AND date = ? AND w.is_sync = 1";
+        String sql = "SELECT * FROM [Date] d JOIN Week w ON d.week_id = w.id\n"
+                + "WHERE d.[plan_id] = ? AND w.is_template = 0 AND date = ? AND w.is_sync = 1";
 
         try {
             con = DBUtils.getConnection();
