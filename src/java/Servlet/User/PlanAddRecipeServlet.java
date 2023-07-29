@@ -45,8 +45,7 @@ public class PlanAddRecipeServlet extends HttpServlet {
             int plan_id = Integer.parseInt(request.getParameter("plan_id"));
             int week_id = Integer.parseInt(request.getParameter("week_id"));
             String plantStart = request.getParameter("plan_start");
-            String distanceInDaysParam = request.getParameter("distanceInDays");
-            System.out.println("distanceInDaysParam - " + distanceInDaysParam);
+            String distanceInDays = request.getParameter("distanceInDays");
 
             //List<Integer> dateIdList = new ArrayList<>();
             List<Time> timeList = new ArrayList<>();
@@ -79,17 +78,13 @@ public class PlanAddRecipeServlet extends HttpServlet {
 //            out.println(recipe_id);
 //            out.println(start_timeStr);
 //            out.println(recipe_count);
-            int distanceInDays = Integer.parseInt(distanceInDaysParam);
 
-            if (result && distanceInDays == 1337) {
+            if (result) {
+                url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=false&distanceInDays=" + distanceInDays;
                 isTemplate = Boolean.parseBoolean(request.getParameter("isTemplate"));
                 if (isTemplate) {
                     url = "LoadEditDailyTemplateServlet?id=" + plan_id + "&isSearch=false";
-                } else {
-                    url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=false&distanceInDays=" + distanceInDaysParam;
                 }
-            } else {
-                url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=false&distanceInDays=" + distanceInDaysParam;
             }
 
             if (url != null) {
@@ -97,6 +92,7 @@ public class PlanAddRecipeServlet extends HttpServlet {
             } else {
                 response.sendRedirect(ERROR);
             }
+
         } catch (ParseException e) {
             e.printStackTrace();
         }

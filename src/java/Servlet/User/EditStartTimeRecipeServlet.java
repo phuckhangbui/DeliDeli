@@ -21,6 +21,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class EditStartTimeRecipeServlet extends HttpServlet {
 
+    private static final String ERROR = "error.jsp";
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -33,6 +35,9 @@ public class EditStartTimeRecipeServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+
+        String url = ERROR;
+
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             int date_id = Integer.parseInt(request.getParameter("date_id"));
@@ -40,6 +45,8 @@ public class EditStartTimeRecipeServlet extends HttpServlet {
             int meal_id = Integer.parseInt(request.getParameter("meal_id"));
             String start_timeStr = request.getParameter("start_time");
             String distanceInDays = request.getParameter("distanceInDays");
+
+            boolean isTemplate = false;
 
             SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
             java.util.Date parsedStart = timeFormat.parse(start_timeStr);
@@ -49,9 +56,17 @@ public class EditStartTimeRecipeServlet extends HttpServlet {
             boolean result = MealDAO.changeStartTimeOfRecipe(meal_id, date_id, start_time);
 
             if (result) {
-                response.sendRedirect("UserController?action=editPlan&id=" + plan_id + "&isSearch=false&distanceInDays=" + distanceInDays);
+                url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=false&distanceInDays=" + distanceInDays;
+                isTemplate = Boolean.parseBoolean(request.getParameter("isTemplate"));
+                if (isTemplate) {
+                    url = "LoadEditDailyTemplateServlet?id=" + plan_id + "&isSearch=false";
+                }
+            }
+
+            if (url != null) {
+                response.sendRedirect(url);
             } else {
-                response.sendRedirect("error.jsp");
+                response.sendRedirect(ERROR);
             }
 
 //            System.out.println("Success");

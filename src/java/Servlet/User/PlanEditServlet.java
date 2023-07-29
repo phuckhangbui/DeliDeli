@@ -51,11 +51,10 @@ public class PlanEditServlet extends HttpServlet {
             PlanDTO plan = PlanDAO.getUserPlanById(Integer.parseInt(id));
             request.setAttribute("plan", plan);
 
-            WeekDTO week = WeekDAO.getWeekByPlanID(plan.getId());
-
-            //Temporary fix for hardcode
-            //This week value will be moved to week jsp page only.
             if (plan.isDaily()) {
+
+                WeekDTO week = WeekDAO.getWeekByPlanID(plan.getId());
+
                 if (week != null) {
                     request.setAttribute("week", week);
                 } else {
@@ -94,7 +93,10 @@ public class PlanEditServlet extends HttpServlet {
                     }
                 }
 
+                // Select 1 day
                 request.setAttribute("planDate", displayDate);
+
+                // Send all of the date exist within the plan.
                 request.setAttribute("allPlanDate", planDate);
 
                 // Meal count based on time.
@@ -105,7 +107,6 @@ public class PlanEditServlet extends HttpServlet {
                     }
                 }
 
-//            System.out.println("Max meal error - " + error);
                 request.setAttribute("max_meal_error", error);
 
                 if (isSearch) {
@@ -133,53 +134,49 @@ public class PlanEditServlet extends HttpServlet {
                     return;
                 }
 
+                //Weekly
             } else {
-                System.out.println("Week here");
-                if (week != null) {
-                    request.setAttribute("week", week);
-                } else {
-                    request.setAttribute("week", new WeekDTO()); // Provide a default WeekDTO object with default values
-                }
 
                 DietDTO diet = DietDAO.getTypeById(plan.getDiet_id());
                 request.setAttribute("diet", diet);
+                WeekDTO week = null;
 
                 String selectedDateStr = request.getParameter("selectedDate");
-                DateDTO selectedDate = null;
+                System.out.println("selectedDateStr - " + selectedDateStr);
 
                 if (selectedDateStr != null && !selectedDateStr.isEmpty()) {
                     java.util.Date utilDate = null;
                     try {
+                        // HTML input (if date selected)
+
                         SimpleDateFormat sdfInput = new SimpleDateFormat("yyyy-MM-dd");
                         utilDate = sdfInput.parse(selectedDateStr);
 
                         SimpleDateFormat sdfOutput = new SimpleDateFormat("yyyy-MM-dd");
                         selectedDateStr = sdfOutput.format(utilDate);
+                        request.setAttribute("selectedDate", selectedDateStr);
 
-                        System.out.println("selectedDateStr - " + selectedDateStr);
+                        week = WeekDAO.getWeekByDate(selectedDateStr, plan.getId());
 
-                        selectedDate = DateDAO.getDateBySelectedDate(selectedDateStr, plan.getId());
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
 
-                    if (selectedDate != null) {
-                        System.out.println("Selected Date - " + selectedDate.getId());
-                    } else {
-                        System.out.println("No matching date found in the database.");
-                    }
                 } else {
+                    // Plan object input (if date not selected)
+
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                     selectedDateStr = sdf.format(plan.getStart_at());
-                    selectedDate = DateDAO.getDateBySelectedDate(selectedDateStr, plan.getId());
+                    request.setAttribute("selectedDate", selectedDateStr);
 
-                    System.out.println("selectedDateStr2 - " + selectedDateStr);
+                    week = WeekDAO.getWeekByDate(selectedDateStr, plan.getId());
 
-                    if (selectedDate != null) {
-                        System.out.println("Selected Date from plan - " + selectedDate.getId());
-                    } else {
-                        System.out.println("No matching date found in the database.");
-                    }
+                }
+
+                if (week != null) {
+                    request.setAttribute("week", week);
+                } else {
+                    request.setAttribute("week", new WeekDTO());
                 }
 
                 ArrayList<DateDTO> planDate = DateDAO.getAllDateByPlanID(plan.getId());
@@ -190,16 +187,8 @@ public class PlanEditServlet extends HttpServlet {
 
                 // Get all days in all weeks within the plan.
                 request.setAttribute("allPlanDate", planDate);
-                
-                System.out.println("Current week - " + week.getPlan_id());
 
-//                for (int i = 0; i < planDate.size(); i++) {
-//                    DateDTO date = planDate.get(i);
-//                    System.out.println((i + 1) + ". " + date.toString());
-//                }
-                
-
-//            System.out.println("Max meal error - " + error);
+                // Set the error for maxing morning, afternnoon, night (10).
                 request.setAttribute("max_meal_error", error);
 
                 if (isSearch) {
@@ -230,7 +219,6 @@ public class PlanEditServlet extends HttpServlet {
             }
         }
 
-        //Weekly
         response.sendRedirect("error.jsp");
 
     }

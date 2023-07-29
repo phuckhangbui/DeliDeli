@@ -31,20 +31,16 @@ public class PlanRemoveRecipeServlet extends HttpServlet {
         int meal_id = Integer.parseInt(request.getParameter("meal_id"));
         int plan_id = Integer.parseInt(request.getParameter("plan_id"));
 
-        String distanceInDaysParam = request.getParameter("distanceInDays");
+        String distanceInDays = request.getParameter("distanceInDays");
 
         if (meal_id > 0 && plan_id > 0) {
             result = MealDAO.removeRecipeFromPlan(meal_id);
-            int distanceInDays = Integer.parseInt(distanceInDaysParam);
-            if (result && distanceInDays == 1337) {
+            if (result) {
+                url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=false&distanceInDays=" + distanceInDays;
                 isTemplate = Boolean.parseBoolean(request.getParameter("isTemplate"));
                 if (isTemplate) {
                     url = "LoadEditDailyTemplateServlet?id=" + plan_id + "&isSearch=false";
-                } else {
-                    url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=false&distanceInDays=" + distanceInDaysParam;
                 }
-            } else {
-                url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=false&distanceInDays=" + distanceInDaysParam;
             }
         }
 

@@ -43,6 +43,7 @@
             rel="stylesheet">
         <%
             PlanDTO plan = (PlanDTO) request.getAttribute("plan");
+            String selectedDate = (String) request.getAttribute("selectedDate");
             LocalDate currentDate = LocalDate.now();
             java.sql.Date startDateSQL = plan.getStart_at();
             LocalDate startLocalDate = startDateSQL.toLocalDate();
@@ -139,7 +140,7 @@
                                                         data-bs-target="#removeAllRecipes" onclick="redirectToEditPlan()">
                                                     Edit Plan
                                                 </button>-->
-                        <a href="UserController?action=editPlan&id=<%= plan.getId()%>&isSearch=false&distanceInDays=<%= distanceInDays%>">
+                        <a href="UserController?action=editPlan&id=<%= plan.getId()%>&isSearch=false&selectedDate=<%= selectedDate%>">
                             <img src="./assets/edit-icon.svg" alt=""></a>
 
                         <!-- <button class="plan-navbar-edit">
@@ -166,6 +167,7 @@
                     <div class=" plan-table">
                         <%
                             for (DateDTO dateList : planDate) {
+                                String formattedDate = DateNameChanger.formatDateWithOrdinalIndicator(dateList.getDate(), dateFormat);
                                 ArrayList<MealDTO> breakfastMeals = MealDAO.getAllMealsTimeBased(plan.getId(), dateList.getId(), true, false, false);
                                 ArrayList<MealDTO> lunchMeals = MealDAO.getAllMealsTimeBased(plan.getId(), dateList.getId(), false, true, false);
                                 ArrayList<MealDTO> dinnerMeals = MealDAO.getAllMealsTimeBased(plan.getId(), dateList.getId(), false, false, true);
@@ -178,7 +180,7 @@
                                     dateList.getDate();
                                     String dayOfWeek = dayOfWeekFormat.format(dateList.getDate());
                                 %>
-                                <%= dayOfWeek%>
+                                <%= dayOfWeek%> (<%= formattedDate%>)
                             </div>
                             <div class="col-md-3 plan-table-week-column">
                                 <div class="plan-table-week-nutrition-header">Total Nutrition</div>

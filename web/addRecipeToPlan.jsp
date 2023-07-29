@@ -4,6 +4,7 @@
     Author     : Walking Bag
 --%>
 
+<%@page import="Utils.DateNameChanger"%>
 <%@page import="DTO.WeekDTO"%>
 <%@page import="java.time.temporal.ChronoUnit"%>
 <%@page import="java.util.Calendar"%>
@@ -49,7 +50,7 @@
         <%
             PlanDTO plan = (PlanDTO) request.getAttribute("plan");
             WeekDTO week = (WeekDTO) request.getAttribute("week");
-            System.out.println("Current week - " + week.toString());
+            String selectedDate = (String) request.getAttribute("selectedDate");
             boolean SEARCH_PLAN_REAL = (boolean) request.getAttribute("SEARCH_PLAN_REAL");
             ArrayList<DateDTO> planDate = (ArrayList<DateDTO>) request.getAttribute("planDate");
             ArrayList<DateDTO> allPlanDate = (ArrayList<DateDTO>) request.getAttribute("allPlanDate");
@@ -90,6 +91,12 @@
                         <p>Edit Plan</p>
                         <p>Edit, add or remove recipes from your plan to fit more with your eating schedule</p>
                     </div>
+
+                    Synchronize with your template?        
+                    <input type="checkbox" id="isSync" name="isSync" value="1" onchange="activateSync(this, <%= plan.getId()%>)">
+                    <% for (DateDTO dateList : planDate) {%>
+                    <input type="hidden" class="dateIdInput" name="date_id" value="<%= dateList.getId()%>" />
+                    <% }%>
 
                     <script>
                         function activateSync(checkbox, planId) {
@@ -217,13 +224,6 @@
                         </script>
 
 
-                        <form action="UserController">
-                            <input name="id" value="<%= plan.getId()%>" hidden="">
-                            <button type="submit" class="plan-navbar-remove" name="action" value="useDailyPlanTemplate" >
-                                Use this template for all sync recipe
-                            </button>
-                        </form>
-
                         <!-- <button class="plan-navbar-edit">
                                 <a href="userViewPlan.html"><img src="./assets/leave.svg" alt=""></a>
                             </button> -->
@@ -254,12 +254,13 @@
                     <%
                     } else {
                     %>
+                    Pick your week
                     <input type="date" name="dateChanger" id="dateInput" min="<%= minDate%>" max="<%= maxDate%>" onchange="sendDateToServlet()">
 
                     <script>
                         function sendDateToServlet() {
                             var selectedDate = new Date(document.getElementById("dateInput").value);
-                            var servletURL = "PlanDetailServlet?id=<%= plan.getId()%>&selectedDate=" + selectedDate.toISOString();
+                            var servletURL = "PlanEditServlet?id=<%= plan.getId()%>&selectedDate=" + selectedDate.toISOString() + "&isSearch=false";
                             window.location.href = servletURL;
                         }
                     </script>
@@ -269,6 +270,8 @@
                     <div class=" plan-table">
                         <%
                             for (DateDTO dateList : planDate) {
+                                SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM d", Locale.ENGLISH);
+                                String formattedDate = DateNameChanger.formatDateWithOrdinalIndicator(dateList.getDate(), dateFormat);
                                 ArrayList<MealDTO> breakfastMeals = MealDAO.getAllMealsTimeBased(plan.getId(), dateList.getId(), true, false, false);
                                 ArrayList<MealDTO> lunchMeals = MealDAO.getAllMealsTimeBased(plan.getId(), dateList.getId(), false, true, false);
                                 ArrayList<MealDTO> dinnerMeals = MealDAO.getAllMealsTimeBased(plan.getId(), dateList.getId(), false, false, true);
@@ -280,7 +283,7 @@
                                     SimpleDateFormat dayOfWeekFormat = new SimpleDateFormat("EEEE");
                                     String dayOfWeek = dayOfWeekFormat.format(dateList.getDate());
                                 %>
-                                <%= dayOfWeek%>
+                                <%= dayOfWeek%> (<%= formattedDate%>)
                             </div>
                             <div class="col-md-3 plan-table-week-column">
                                 <div class="plan-table-week-nutrition-header">Total Nutrition</div>
@@ -634,7 +637,7 @@
                                 </button>
                                 -->
                                 <%
-                                    if (!error) {
+                                    if (plan.isDaily()) {
                                 %>
                                 <button type="button" class="" data-bs-toggle="modal" data-bs-target="#addMultiplesMealToPlan<%= list.getId()%>">
                                     Add daily
@@ -642,18 +645,13 @@
                                 <%
                                 } else {
                                 %>
-                                <p>Please remove some recipe (max: 10)</p>
+                                <button type="button" class="" data-bs-toggle="modal" data-bs-target="#addWeeklyMealToPlan<%= list.getId()%>">
+                                    Add weekly
+                                </button>
                                 <%
                                     }
                                 %>
 
-                                <%
-                                    if (plan.isDaily() == false) {
-                                %>
-                                <button type="button" class="" data-bs-toggle="modal" data-bs-target="#addWeeklyMealToPlan<%= list.getId()%>">
-                                    Add weekly
-                                </button>
-                                <%}%>
                             </div>
                         </div>
 
@@ -726,7 +724,12 @@
                                         <!-- week id hard code here -->
                                         <input type="hidden" name="week_id" value="<%= week.getId()%>" />
                                         <input type="hidden" name="distanceInDays" value="<%= distanceInDays%>" />
+                                        <% if (plan.isDaily()) {%>
+                                        <input type="hidden" name="isDaily" value="true" />
+                                        <% } %>
+                                        <input type="hidden" name="isDaily" value="false" />
                                         <% }%>
+                                        <input type="hidden" name="selectedDate" value="<%= selectedDate%>" />
                                     </div>
 
                                     <div class="modal-footer">
@@ -1023,6 +1026,10 @@
                                         <input type="hidden" name="plan_start" value="<%= plan.getStart_at()%>" />
                                         <input type="hidden" name="date_id" value="<%= dateList.getId()%>" />
                                         <input type="hidden" name="distanceInDays" value="<%= distanceInDays%>" />
+                                        <% if (plan.isDaily()) {%>
+                                        <input type="hidden" name="isDaily" value="true" />
+                                        <% } %>
+                                        <input type="hidden" name="isDaily" value="false" />
                                         <% }%>
                                     </div>
 

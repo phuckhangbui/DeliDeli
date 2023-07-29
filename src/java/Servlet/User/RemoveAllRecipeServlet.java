@@ -32,6 +32,7 @@ public class RemoveAllRecipeServlet extends HttpServlet {
         int plan_id = Integer.parseInt(request.getParameter("plan_id"));
         int date_id = Integer.parseInt(request.getParameter("date_id"));
         int distanceInDays = Integer.parseInt(request.getParameter("distanceInDays"));
+        boolean isTemplate = false;
         boolean result = false;
         String url = ERROR;
 
@@ -41,13 +42,15 @@ public class RemoveAllRecipeServlet extends HttpServlet {
             response.sendRedirect(url);
             return;
         }
-        boolean isTemplate = Boolean.parseBoolean(request.getParameter("isTemplate"));
 
-        if (result && isTemplate) {
-            url = "LoadEditDailyTemplateServlet?id=" + plan_id + "&isSearch=false";
-        } else {
+        if (result) {
             url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=false&distanceInDays=" + distanceInDays;
+            isTemplate = Boolean.parseBoolean(request.getParameter("isTemplate"));
+            if (isTemplate) {
+                url = "LoadEditDailyTemplateServlet?id=" + plan_id + "&isSearch=false";
+            }
         }
+        
         response.sendRedirect(url);
     }
 
