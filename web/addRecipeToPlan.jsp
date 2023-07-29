@@ -626,9 +626,14 @@
                                 <%
                                     }
                                 %>
+
+                                <%
+                                    if (plan.isDaily() == false) {
+                                %>
                                 <button type="button" class="" data-bs-toggle="modal" data-bs-target="#addWeeklyMealToPlan<%= list.getId()%>">
                                     Add weekly
                                 </button>
+                                <%}%>
                             </div>
                         </div>
 
@@ -712,7 +717,6 @@
                                 </div>
                             </form>
                         </div>
-
 
                         <script>
                             document.addEventListener("DOMContentLoaded", function () {
