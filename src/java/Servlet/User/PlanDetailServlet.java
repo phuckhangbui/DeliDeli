@@ -145,13 +145,6 @@ public class PlanDetailServlet extends HttpServlet {
             ArrayList<DateDTO> planDate = DateDAO.getAllDateByPlanID(plan.getId());
             ArrayList<DateDTO> displayDate = DateDAO.getAllDateByPlanIDAndWeekID(plan.getId(), week.getId());
 
-            LocalDate currentDate = LocalDate.now();
-            java.sql.Date startDateSQL = plan.getStart_at();
-            LocalDate startLocalDate = startDateSQL.toLocalDate();
-            int distanceInDays = (int) calculateDistanceInDays(startLocalDate, currentDate);
-
-            String distanceInDaysParam = request.getParameter("distanceInDays");
-
             // Get 7 days in a week.
             request.setAttribute("planDate", displayDate);
 

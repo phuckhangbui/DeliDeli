@@ -19,6 +19,8 @@ import DTO.UserDTO;
 import DTO.WeekDTO;
 import static Servlet.User.PlanDetailServlet.calculateDistanceInDays;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -53,83 +55,179 @@ public class PlanEditServlet extends HttpServlet {
 
             //Temporary fix for hardcode
             //This week value will be moved to week jsp page only.
-            if (week != null) {
-                request.setAttribute("week", week);
-            } else {
-                request.setAttribute("week", new WeekDTO()); // Provide a default WeekDTO object with default values
-            }
+            if (plan.isDaily()) {
+                if (week != null) {
+                    request.setAttribute("week", week);
+                } else {
+                    request.setAttribute("week", new WeekDTO()); // Provide a default WeekDTO object with default values
+                }
 
-            DietDTO diet = DietDAO.getTypeById(plan.getDiet_id());
-            request.setAttribute("diet", diet);
+                DietDTO diet = DietDAO.getTypeById(plan.getDiet_id());
+                request.setAttribute("diet", diet);
 
-            ArrayList<DateDTO> planDate = DateDAO.getAllDateByPlanID(plan.getId());
-            ArrayList<DateDTO> displayDate = new ArrayList<>();
+                ArrayList<DateDTO> planDate = DateDAO.getAllDateByPlanID(plan.getId());
+                ArrayList<DateDTO> displayDate = new ArrayList<>();
 
-            LocalDate currentDate = LocalDate.now();
-            java.sql.Date startDateSQL = plan.getStart_at();
-            LocalDate startLocalDate = startDateSQL.toLocalDate();
-            int distanceInDays = (int) calculateDistanceInDays(startLocalDate, currentDate);
+                LocalDate currentDate = LocalDate.now();
+                java.sql.Date startDateSQL = plan.getStart_at();
+                LocalDate startLocalDate = startDateSQL.toLocalDate();
+                int distanceInDays = (int) calculateDistanceInDays(startLocalDate, currentDate);
 
-            String distanceInDaysParam = request.getParameter("distanceInDays");
+                String distanceInDaysParam = request.getParameter("distanceInDays");
 
-            if (distanceInDaysParam != null) {
-                distanceInDays = Integer.parseInt(distanceInDaysParam);
-                request.setAttribute("distanceInDays", distanceInDays);
+                if (distanceInDaysParam != null) {
+                    distanceInDays = Integer.parseInt(distanceInDaysParam);
+                    request.setAttribute("distanceInDays", distanceInDays);
 
-                for (DateDTO date : planDate) {
-                    LocalDate dateList = date.getDate().toLocalDate();
-                    if (dateList.equals(startLocalDate.plusDays(distanceInDays))) {
-                        foundMatchingDate = true;
-                        displayDate.add(date);
-                        break;
+                    for (DateDTO date : planDate) {
+                        LocalDate dateList = date.getDate().toLocalDate();
+                        if (dateList.equals(startLocalDate.plusDays(distanceInDays))) {
+                            foundMatchingDate = true;
+                            displayDate.add(date);
+                            break;
+                        }
+                    }
+
+                    if (!foundMatchingDate && !planDate.isEmpty()) {
+                        DateDTO firstDate = planDate.get(0);
+                        displayDate.add(firstDate);
                     }
                 }
 
-                if (!foundMatchingDate && !planDate.isEmpty()) {
-                    DateDTO firstDate = planDate.get(0);
-                    displayDate.add(firstDate);
-                }
-            }
+                request.setAttribute("planDate", displayDate);
+                request.setAttribute("allPlanDate", planDate);
 
-            request.setAttribute("planDate", displayDate);
-            request.setAttribute("allPlanDate", planDate);
-
-            // Meal count based on time.
-            for (DateDTO date : displayDate) {
-                int meal_count = MealDAO.countRecipeBasedOnTime(date.getId());
-                if (meal_count > 10) {
-                    error = true;
+                // Meal count based on time.
+                for (DateDTO date : displayDate) {
+                    int meal_count = MealDAO.countRecipeBasedOnTime(date.getId());
+                    if (meal_count > 10) {
+                        error = true;
+                    }
                 }
-            }
 
 //            System.out.println("Max meal error - " + error);
-            request.setAttribute("max_meal_error", error);
+                request.setAttribute("max_meal_error", error);
 
-            if (isSearch) {
-                request.setAttribute("SEARCH_LIST", displayList);
-                request.setAttribute("SEARCH_PLAN_REAL", true);
-                RequestDispatcher rq = request.getRequestDispatcher("addRecipeToPlan.jsp");
-                rq.forward(request, response);
-                return;
-            } else {
-                ArrayList<RecipeDTO> list = RecipeDAO.getRecipeByDietTitle(diet.getTitle());
-                displayList = new ArrayList<>();
-                for (RecipeDTO r : list) {
-                    String thumbnailPath = RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath();
-                    String category = RecipeDAO.getCategoryByRecipeId(r.getId());
-                    double rating = RecipeDAO.getRatingByRecipeId(r.getId());
-                    UserDTO owner = RecipeDAO.getRecipeOwnerByRecipeId(r.getId());
+                if (isSearch) {
+                    request.setAttribute("SEARCH_LIST", displayList);
+                    request.setAttribute("SEARCH_PLAN_REAL", true);
+                    RequestDispatcher rq = request.getRequestDispatcher("addRecipeToPlan.jsp");
+                    rq.forward(request, response);
+                    return;
+                } else {
+                    ArrayList<RecipeDTO> list = RecipeDAO.getRecipeByDietTitle(diet.getTitle());
+                    displayList = new ArrayList<>();
+                    for (RecipeDTO r : list) {
+                        String thumbnailPath = RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath();
+                        String category = RecipeDAO.getCategoryByRecipeId(r.getId());
+                        double rating = RecipeDAO.getRatingByRecipeId(r.getId());
+                        UserDTO owner = RecipeDAO.getRecipeOwnerByRecipeId(r.getId());
 
-                    DisplayRecipeDTO d = new DisplayRecipeDTO(r.getId(), r.getTitle(), thumbnailPath, category, rating, owner);
-                    displayList.add(d);
+                        DisplayRecipeDTO d = new DisplayRecipeDTO(r.getId(), r.getTitle(), thumbnailPath, category, rating, owner);
+                        displayList.add(d);
+                    }
+                    request.setAttribute("SEARCH_LIST", displayList);
+                    request.setAttribute("SEARCH_PLAN_REAL", false);
+                    RequestDispatcher rq = request.getRequestDispatcher("addRecipeToPlan.jsp");
+                    rq.forward(request, response);
+                    return;
                 }
-                request.setAttribute("SEARCH_LIST", displayList);
-                request.setAttribute("SEARCH_PLAN_REAL", false);
-                RequestDispatcher rq = request.getRequestDispatcher("addRecipeToPlan.jsp");
-                rq.forward(request, response);
-                return;
-            }
 
+            } else {
+                System.out.println("Week here");
+                if (week != null) {
+                    request.setAttribute("week", week);
+                } else {
+                    request.setAttribute("week", new WeekDTO()); // Provide a default WeekDTO object with default values
+                }
+
+                DietDTO diet = DietDAO.getTypeById(plan.getDiet_id());
+                request.setAttribute("diet", diet);
+
+                String selectedDateStr = request.getParameter("selectedDate");
+                DateDTO selectedDate = null;
+
+                if (selectedDateStr != null && !selectedDateStr.isEmpty()) {
+                    java.util.Date utilDate = null;
+                    try {
+                        SimpleDateFormat sdfInput = new SimpleDateFormat("yyyy-MM-dd");
+                        utilDate = sdfInput.parse(selectedDateStr);
+
+                        SimpleDateFormat sdfOutput = new SimpleDateFormat("yyyy-MM-dd");
+                        selectedDateStr = sdfOutput.format(utilDate);
+
+                        System.out.println("selectedDateStr - " + selectedDateStr);
+
+                        selectedDate = DateDAO.getDateBySelectedDate(selectedDateStr, plan.getId());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+                    if (selectedDate != null) {
+                        System.out.println("Selected Date - " + selectedDate.getId());
+                    } else {
+                        System.out.println("No matching date found in the database.");
+                    }
+                } else {
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    selectedDateStr = sdf.format(plan.getStart_at());
+                    selectedDate = DateDAO.getDateBySelectedDate(selectedDateStr, plan.getId());
+
+                    System.out.println("selectedDateStr2 - " + selectedDateStr);
+
+                    if (selectedDate != null) {
+                        System.out.println("Selected Date from plan - " + selectedDate.getId());
+                    } else {
+                        System.out.println("No matching date found in the database.");
+                    }
+                }
+
+                ArrayList<DateDTO> planDate = DateDAO.getAllDateByPlanID(plan.getId());
+                ArrayList<DateDTO> displayDate = DateDAO.getAllDateByPlanIDAndWeekID(plan.getId(), week.getId());
+
+                // Get 7 days in a week.
+                request.setAttribute("planDate", displayDate);
+
+                // Get all days in all weeks within the plan.
+                request.setAttribute("allPlanDate", planDate);
+                
+                System.out.println("Current week - " + week.getPlan_id());
+
+//                for (int i = 0; i < planDate.size(); i++) {
+//                    DateDTO date = planDate.get(i);
+//                    System.out.println((i + 1) + ". " + date.toString());
+//                }
+                
+
+//            System.out.println("Max meal error - " + error);
+                request.setAttribute("max_meal_error", error);
+
+                if (isSearch) {
+                    request.setAttribute("SEARCH_LIST", displayList);
+                    request.setAttribute("SEARCH_PLAN_REAL", true);
+                    RequestDispatcher rq = request.getRequestDispatcher("addRecipeToPlan.jsp");
+                    rq.forward(request, response);
+                    return;
+                } else {
+                    ArrayList<RecipeDTO> list = RecipeDAO.getRecipeByDietTitle(diet.getTitle());
+                    displayList = new ArrayList<>();
+                    for (RecipeDTO r : list) {
+                        String thumbnailPath = RecipeDAO.getThumbnailByRecipeId(r.getId()).getThumbnailPath();
+                        String category = RecipeDAO.getCategoryByRecipeId(r.getId());
+                        double rating = RecipeDAO.getRatingByRecipeId(r.getId());
+                        UserDTO owner = RecipeDAO.getRecipeOwnerByRecipeId(r.getId());
+
+                        DisplayRecipeDTO d = new DisplayRecipeDTO(r.getId(), r.getTitle(), thumbnailPath, category, rating, owner);
+                        displayList.add(d);
+                    }
+                    request.setAttribute("SEARCH_LIST", displayList);
+                    request.setAttribute("SEARCH_PLAN_REAL", false);
+                    RequestDispatcher rq = request.getRequestDispatcher("addRecipeToPlan.jsp");
+                    rq.forward(request, response);
+                    return;
+                }
+
+            }
         }
 
         //Weekly

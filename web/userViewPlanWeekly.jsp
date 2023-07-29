@@ -163,9 +163,6 @@
                         }
                     </script>
 
-
-
-
                     <div class=" plan-table">
                         <%
                             for (DateDTO dateList : planDate) {
