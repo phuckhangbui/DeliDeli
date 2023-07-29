@@ -72,12 +72,13 @@
                     </nav>
                     <div class="edit-plan-header">
                         <p>Edit Template</p>
-                        <p>Edit, add or remove recipes from your plan to fit more with your eating schedule</p>
+                        <p>Template is used to overwrite all recipes in each and every day in the plan to this template's recipes</p>
                     </div>
 
 
 
                     <div class="plan-navbar">
+                        <div></div>
                         <button type="button" class="plan-navbar-remove" data-bs-toggle="modal"
                                 data-bs-target="#removeAllRecipes">
                             Remove All Recipes
@@ -111,14 +112,9 @@
                             </form>
                         </div>
 
-                        <form action="UserController">
-                            <input name="id" value="<%= plan.getId()%>" hidden="">
-                            <button type="submit" class="plan-navbar-remove" name="action" value="useDailyPlanTemplate" >
-                                Use this template for all sync recipe
-                            </button>
-                        </form>
-
                     </div>
+
+
 
 
                     <div class=" plan-table">
@@ -139,9 +135,9 @@
                                 %>
                                 <div class="plan-table-week-nutrition">
                                     <p class="plan-table-calories">Calories: <%= nutrition.getCalories()%></p>
-                                    <p class="plan-table-protein">Protein: <%= nutrition.getProtein()%></p>
-                                    <p class="plan-table-carb">Carbs: <%= nutrition.getCarbs()%></p>
-                                    <p class="plan-table-fat">Fat: <%= nutrition.getFat()%></p>
+                                    <p class="plan-table-protein">Proteins: <%= nutrition.getProtein()%> g</p>
+                                    <p class="plan-table-carb">Carbs: <%= nutrition.getCarbs()%> g</p>
+                                    <p class="plan-table-fat">Fats: <%= nutrition.getFat()%> g</p>
                                 </div>
                                 <%
                                     }
@@ -389,7 +385,7 @@
                                             <img src="./assets/add-icon.svg" alt="">
                                         </div>
                                     </button>
-                                    <% } %>
+                                    <% }%>
                                 </div>
                             </div>
 
@@ -401,7 +397,36 @@
 
 
 
+                    <div class="use-template">
+                        <button type="button" class="" data-bs-toggle="modal" data-bs-target="#useTemplateModal">
+                            USE
+                        </button>
+                    </div>
 
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="useTemplateModal" tabindex="-1" aria-labelledby="useTemplateModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmation</h1>
+                                </div>
+                                <form action="UserController" class="use-template-confirm">
+                                    <div class="modal-body">
+                                        Are you sure you want to use this template, it will overwrite all of your current recipes in this plan to this template ?
+                                    </div>
+                                    
+                                    <div class="modal-footer">
+                                        <input name="id" value="<%= plan.getId()%>" hidden="">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, I've changed my mind</button>
+                                        <button type="submit" class="use-template-confirm-button" name="action" value="useDailyPlanTemplate" >
+                                            Yes, use it
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
 
@@ -469,9 +494,9 @@
                                 %>
                                 <div class="add-recipe-to-plan-content-recipe-nutrients">
                                     <p class="plan-table-calories">Calories: <%= nutrition.getCalories()%></p>
-                                    <p class="plan-table-protein">Protein: <%= nutrition.getProtein()%></p>
-                                    <p class="plan-table-carb">Carbs: <%= nutrition.getCarbs()%></p>
-                                    <p class="plan-table-fat">Fat: <%= nutrition.getFat()%></p>
+                                    <p class="plan-table-protein">Proteins: <%= nutrition.getProtein()%> g</p>
+                                    <p class="plan-table-carb">Carbs: <%= nutrition.getCarbs()%> g</p>
+                                    <p class="plan-table-fat">Fats: <%= nutrition.getFat()%> g</p>
                                 </div>
                                 <%
                                     }
@@ -489,7 +514,7 @@
                                     if (!error) {
                                 %>
                                 <button type="button" class="" data-bs-toggle="modal" data-bs-target="#addMultiplesMealToPlan<%= list.getId()%>">
-                                    Add daily
+                                    Add
                                 </button>  
                                 <%
                                 } else {
@@ -504,13 +529,12 @@
                         <!-- Daily Meal-->
                         <div class="modal fade" id="addMultiplesMealToPlan<%= list.getId()%>" tabindex="-1"
                              aria-labelledby="addRecipeToPlanModalLabel<%= list.getId()%>" aria-hidden="true">
-                            <form action="UserController" method="post" class="modal-dialog add-recipe-to-plan-modal">
+                            <form action="UserController" method="post" class="modal-dialog add-recipe-to-plan-modal modal-dialog-centered">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel<%= list.getId()%>">Adding Multiples Meals To Plan</h1>
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel<%= list.getId()%>">Adding Meal To Template</h1>
                                     </div>
                                     <div class="modal-body">
-                                        <div>What day do you want to cook this recipe?</div>
                                         <div class="row choose-week-day flex-column">
                                         </div>
                                         <div class="row add-recipe-info-ingredient">
@@ -529,8 +553,6 @@
                                                 </button>
                                             </div>
                                         </div>
-                                        <br><br>
-
                                     </div>
 
                                     <div class="plan-table">

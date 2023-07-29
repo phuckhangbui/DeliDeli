@@ -85,23 +85,7 @@
                         <p>View your eating schedule that you have planned out for yourself</p>
                     </div>
 
-                    <form action="UserController">
-                        <input name="id" value="<%= plan.getId()%>" hidden=""/>
-                        <button type="submit" name="action" value="loadEditPlanDetail">Edit Plan's Detail</button>
 
-                    </form>
-                    <% if (plan.isDaily()) {%>
-                    <form action="UserController">
-                        <input name="id" value="<%= plan.getId()%>" hidden="">
-                        <button type="submit" name="action" value="loadEditDailyTemplate">Edit Template</button>
-                    </form>
-
-                    <%} else {%>
-                    <form action="UserController">
-                        <input name="id" value="<%= plan.getId()%>" hidden="">
-                        <button type="submit" name="action" value="loadEditDailyTemplate" disabled="">Edit Template</button>
-                    </form>
-                    <%}%>
                     <div class="plan-info">
                         <div class="row">
 
@@ -134,7 +118,28 @@
 
 
 
+
+
                     <div class="plan-navbar">
+                        <div class="plan-navbar-edit-info">
+                            <form action="UserController">
+                                <input name="id" value="<%= plan.getId()%>" hidden=""/>
+                                <button type="submit" name="action" value="loadEditPlanDetail" class="plan-navbar-remove">Edit Plan's Detail</button>
+
+                            </form>
+                            <% if (plan.isDaily()) {%>
+                            <form action="UserController">
+                                <input name="id" value="<%= plan.getId()%>" hidden="">
+                                <button type="submit" name="action" value="loadEditDailyTemplate" class="plan-navbar-remove">Edit Template</button>
+                            </form>
+
+                            <%} else {%>
+                            <form action="UserController">
+                                <input name="id" value="<%= plan.getId()%>" hidden="">
+                                <button type="submit" name="action" value="loadEditDailyTemplate" disabled="" >Edit Template</button>
+                            </form>
+                            <%}%>
+                        </div>
                         <!--                        <button type="button" class="plan-navbar-remove" data-bs-toggle="modal"
                                                         data-bs-target="#removeAllRecipes" onclick="redirectToEditPlan()">
                                                     Edit Plan
@@ -176,9 +181,9 @@
                                 %>
                                 <div class="plan-table-week-nutrition">
                                     <p class="plan-table-calories">Calories: <%= nutrition.getCalories()%></p>
-                                    <p class="plan-table-protein">Protein: <%= nutrition.getProtein()%>g</p>
-                                    <p class="plan-table-carb">Carbs: <%= nutrition.getCarbs()%>g</p>
-                                    <p class="plan-table-fat">Fat: <%= nutrition.getFat()%>g</p>
+                                    <p class="plan-table-protein">Proteins: <%= nutrition.getProtein()%> g</p>
+                                    <p class="plan-table-carb">Carbs: <%= nutrition.getCarbs()%> g</p>
+                                    <p class="plan-table-fat">Fats: <%= nutrition.getFat()%> g</p>
                                 </div>
                                 <%
                                     }

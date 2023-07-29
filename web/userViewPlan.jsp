@@ -45,7 +45,7 @@
             LocalDate currentDate = LocalDate.now();
             java.sql.Date startDateSQL = plan.getStart_at();
             LocalDate startLocalDate = startDateSQL.toLocalDate();
-            
+
             // This exist only to redirect page based on selected date.
             int distanceInDays = (int) ChronoUnit.DAYS.between(startLocalDate, currentDate);
 
@@ -84,23 +84,6 @@
                         <p>View your eating schedule that you have planned out for yourself</p>
                     </div>
 
-                        <form action="UserController">
-                            <input name="id" value="<%= plan.getId() %>" hidden=""/>
-                            <button type="submit" name="action" value="loadEditPlanDetail">Edit Plan's Detail</button>
-                            
-                        </form>
-                        <% if(plan.isDaily()){ %>
-                        <form action="UserController">
-                            <input name="id" value="<%= plan.getId() %>" hidden="">
-                            <button type="submit" name="action" value="loadEditDailyTemplate">Edit Template</button>
-                        </form>
-                            
-                        <%}else{%>
-                        <form action="UserController">
-                            <input name="id" value="<%= plan.getId() %>" hidden="">
-                            <button type="submit" name="action" value="loadEditDailyTemplate" disabled="">Edit Template</button>
-                        </form>
-                        <%}%>
                     <div class="plan-info">
                         <div class="row">
 
@@ -134,13 +117,30 @@
 
 
                     <div class="plan-navbar">
+                        <div class="plan-navbar-edit-info">
+                            <form action="UserController">
+                                <input name="id" value="<%= plan.getId()%>" hidden=""/>
+                                <button type="submit" name="action" value="loadEditPlanDetail" class="plan-navbar-remove">Edit Plan's Detail</button>
+                            </form>
+                            <% if (plan.isDaily()) {%>
+                            <form action="UserController">
+                                <input name="id" value="<%= plan.getId()%>" hidden="">
+                                <button type="submit" name="action" value="loadEditDailyTemplate" class="plan-navbar-remove">Template</button>
+                            </form>
+                            <%} else {%>
+                            <form action="UserController">
+                                <input name="id" value="<%= plan.getId()%>" hidden="">
+                                <button type="submit" name="action" value="loadEditDailyTemplate" disabled="">Template</button>
+                            </form>
+                            <%}%>
+                        </div>
                         <!--                        <button type="button" class="plan-navbar-remove" data-bs-toggle="modal"
                                                         data-bs-target="#removeAllRecipes" onclick="redirectToEditPlan()">
                                                     Edit Plan
                                                 </button>-->
                         <a href="UserController?action=editPlan&id=<%= plan.getId()%>&isSearch=false&distanceInDays=<%= distanceInDays%>">
-                            <img src="./assets/edit-icon.svg" alt=""></a>
-
+                            <img src="./assets/edit-icon.svg" alt="">
+                        </a>
                         <!-- <button class="plan-navbar-edit">
                                 <a href="userViewPlan.html"><img src="./assets/leave.svg" alt=""></a>
                             </button> -->
@@ -149,8 +149,9 @@
                         ArrayList<DateDTO> planDate = (ArrayList<DateDTO>) request.getAttribute("planDate");
                         ArrayList<DateDTO> allPlanDate = (ArrayList<DateDTO>) request.getAttribute("allPlanDate");
                     %>
-
-                    <input type="date" name="dateChanger" id="dateInput" min="<%= allPlanDate.get(0).getDate()%>" max="<%= allPlanDate.get(allPlanDate.size() - 1).getDate()%>" onchange="updateDate(this.value)">
+                    <div class="date-changer"> 
+                        <input type="date" name="dateChanger" id="dateInput" min="<%= allPlanDate.get(0).getDate()%>" max="<%= allPlanDate.get(allPlanDate.size() - 1).getDate()%>" onchange="updateDate(this.value)">
+                    </div>
                     <script>
                         function updateDate(dateValue) {
                             var distanceInDays = 0;
@@ -192,9 +193,9 @@
                                 %>
                                 <div class="plan-table-week-nutrition">
                                     <p class="plan-table-calories">Calories: <%= nutrition.getCalories()%></p>
-                                    <p class="plan-table-protein">Protein: <%= nutrition.getProtein()%>g</p>
-                                    <p class="plan-table-carb">Carbs: <%= nutrition.getCarbs()%>g</p>
-                                    <p class="plan-table-fat">Fat: <%= nutrition.getFat()%>g</p>
+                                    <p class="plan-table-protein">Proteins: <%= nutrition.getProtein()%> g</p>
+                                    <p class="plan-table-carb">Carbs: <%= nutrition.getCarbs()%> g</p>
+                                    <p class="plan-table-fat">Fats: <%= nutrition.getFat()%> g</p>
                                 </div>
                                 <%
                                     }
