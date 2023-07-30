@@ -192,6 +192,12 @@
                                             <% }%>
                                             <input type="hidden" name="distanceInDays" value="<%= distanceInDays%>" />
                                             <input type="hidden" name="isTemplate" value="false" />
+                                            <% if (plan.isDaily()) { %>
+                                            <input type="hidden" name="isDaily" value="true" />
+                                            <%} else {%>
+                                            <input type="hidden" name="selectedDate" value="<%= selectedDate%>" />
+                                            <input type="hidden" name="isDaily" value="false" />
+                                            <%}%>
 
                                             <button type="submit" name="action" value="removeAllRecipeConfirmed" class="remove-recipe-from-plan-button">Yes, remove all of them</button>
                                         </div>
@@ -237,16 +243,14 @@
                                 <a href="userViewPlan.html"><img src="./assets/leave.svg" alt=""></a>
                             </button> -->
                     </div>
-                    <div class="date-changer"> 
-                        <input type="date" name="dateChanger" id="dateInput" min="<%= allPlanDate.get(0).getDate()%>" max="<%= allPlanDate.get(allPlanDate.size() - 1).getDate()%>" onchange="updateDate(this.value)">
-                    </div>
-
                     <%
                         String minDate = allPlanDate.get(0).getDate().toLocalDate().toString();
                         String maxDate = allPlanDate.get(allPlanDate.size() - 1).getDate().toLocalDate().toString();
                         if (plan.isDaily()) {
                     %>
-                    <input type="date" name="dateChanger" id="dateInput" min="<%= allPlanDate.get(0).getDate()%>" max="<%= allPlanDate.get(allPlanDate.size() - 1).getDate()%>" onchange="updateDate(this.value)">
+                    <div class="date-changer"> 
+                        <input type="date" name="dateChanger" id="dateInput" min="<%= allPlanDate.get(0).getDate()%>" max="<%= allPlanDate.get(allPlanDate.size() - 1).getDate()%>" onchange="updateDate(this.value)">
+                    </div>
                     <script>
                         function updateDate(dateValue) {
                             var distanceInDays = 0;
@@ -266,9 +270,9 @@
                     <%
                     } else {
                     %>
-                    Pick your week
-                    <input type="date" name="dateChanger" id="dateInput" min="<%= minDate%>" max="<%= maxDate%>" onchange="sendDateToServlet()">
-
+                    <div class="date-changer"> 
+                        <input type="date" name="dateChanger" id="dateInput" min="<%= minDate%>" max="<%= maxDate%>" onchange="sendDateToServlet()">
+                    </div>
                     <script>
                         function sendDateToServlet() {
                             var selectedDate = new Date(document.getElementById("dateInput").value);
@@ -721,7 +725,7 @@
 
                                                     // Loop through the days between the selected day and the end date
                                                     //while (calendar.getTime().before(endDate) || calendar.getTime().equals(endDate)) {
-%>
+                                            %>
                                             <div class="col-md-6">
                                                 <div class="d-flex">
                                                     <input type="checkbox" id="date_id<%= dateList.getId()%>" name="date_id" value="<%= dateList.getId()%>">
@@ -1022,7 +1026,7 @@
                                                     // Loop through the days between the selected day and the end date
                                                     //while (calendar.getTime().before(endDate) || calendar.getTime().equals(endDate)) {
                                                     // Generate the checkboxes
-%>
+                                            %>
                                             <!--                                            <div class="col-md-4">
                                                                                             <div class="d-flex">
                                                                                                 <input type="checkbox" id="date_id<%= dateList.getId()%>" name="date_id" value="<%= formattedDate%>">
