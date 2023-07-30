@@ -128,18 +128,10 @@
                                 <button type="submit" name="action" value="loadEditPlanDetail" class="plan-navbar-remove">Edit Plan's Detail</button>
 
                             </form>
-                            <% if (plan.isDaily()) {%>
                             <form action="UserController">
                                 <input name="id" value="<%= plan.getId()%>" hidden="">
                                 <button type="submit" name="action" value="loadEditDailyTemplate" class="plan-navbar-remove">Edit Template</button>
                             </form>
-
-                            <%} else {%>
-                            <form action="UserController">
-                                <input name="id" value="<%= plan.getId()%>" hidden="">
-                                <button type="submit" name="action" value="loadEditDailyTemplate" disabled="" >Edit Template</button>
-                            </form>
-                            <%}%>
                         </div>
                         <!--                        <button type="button" class="plan-navbar-remove" data-bs-toggle="modal"
                                                         data-bs-target="#removeAllRecipes" onclick="redirectToEditPlan()">

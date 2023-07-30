@@ -83,24 +83,7 @@
                         <p><%= plan.getName()%></p>
                         <p>View your eating schedule that you have planned out for yourself</p>
                     </div>
-
-                    <form action="UserController">
-                        <input name="id" value="<%= plan.getId()%>" hidden=""/>
-                        <button type="submit" name="action" value="loadEditPlanDetail">Edit Plan's Detail</button>
-
-                    </form>
-                    <% if (plan.isDaily()) {%>
-                    <form action="UserController">
-                        <input name="id" value="<%= plan.getId()%>" hidden="">
-                        <button type="submit" name="action" value="loadEditDailyTemplate">Edit Template</button>
-                    </form>
-
-                    <%} else {%>
-                    <form action="UserController">
-                        <input name="id" value="<%= plan.getId()%>" hidden="">
-                        <button type="submit" name="action" value="loadEditDailyTemplate" disabled="">Edit Template</button>
-                    </form>
-                    <%}%>
+                        
                     <div class="plan-info">
                         <div class="row">
 

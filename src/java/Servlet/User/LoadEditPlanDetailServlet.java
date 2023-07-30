@@ -47,31 +47,38 @@ public class LoadEditPlanDetailServlet extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
 
             String id = request.getParameter("id");
+            System.out.println("id - " + id);
 
             //Daily
             if (id != null && !id.isEmpty()) {
                 PlanDTO plan = PlanDAO.getUserPlanById(Integer.parseInt(id));
                 request.setAttribute("plan", plan);
 
-                java.sql.Date startDateSQL = plan.getStart_at();
-                java.sql.Date endDateSQL = plan.getEnd_at();
+                if (plan != null) {
+                    java.sql.Date startDateSQL = plan.getStart_at();
+                    java.sql.Date endDateSQL = plan.getEnd_at();
 
-                long millisDiff = endDateSQL.getTime() - startDateSQL.getTime();
+                    long millisDiff = endDateSQL.getTime() - startDateSQL.getTime();
 
-                if (plan.isDaily()) {
-                    int planLength = (int) (millisDiff / (1000 * 60 * 60 * 24));
+                    if (plan.isDaily()) {
+                        int planLength = (int) (millisDiff / (1000 * 60 * 60 * 24));
 
-                    request.setAttribute("planLength", planLength);
-                    request.getRequestDispatcher("editDailyPlanDetail.jsp").forward(request, response);
+                        request.setAttribute("planLength", planLength);
+                        request.getRequestDispatcher("editDailyPlanDetail.jsp").forward(request, response);
+                    } else {
+                        int planLength = (int) (millisDiff / (1000 * 60 * 60 * 24 * 7)) + 1;
+
+                        request.setAttribute("planLength", planLength);
+                        request.getRequestDispatcher("editWeeklyPlanDetail.jsp").forward(request, response);
+                    }
                 } else {
-                    int planLength = (int) (millisDiff / (1000 * 60 * 60 * 24 * 7)) + 1;
-
-                    request.setAttribute("planLength", planLength);
-                    request.getRequestDispatcher("editWeeklyPlanDetail.jsp").forward(request, response);
+                    response.sendRedirect("error.jsp");
                 }
+            } else {
+                response.sendRedirect("error.jsp");
             }
-
-            response.sendRedirect("error.jsp");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

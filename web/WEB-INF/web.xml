@@ -457,6 +457,10 @@
         <servlet-name>UseWeeklyPlanTemplateServlet</servlet-name>
         <servlet-class>Servlet.User.UseWeeklyPlanTemplateServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>LoadEditWeeklyTemplateServlet</servlet-name>
+        <servlet-class>Servlet.User.LoadEditWeeklyTemplateServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -816,6 +820,10 @@
     <servlet-mapping>
         <servlet-name>UseWeeklyPlanTemplateServlet</servlet-name>
         <url-pattern>/UseWeeklyPlanTemplateServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadEditWeeklyTemplateServlet</servlet-name>
+        <url-pattern>/LoadEditWeeklyTemplateServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
