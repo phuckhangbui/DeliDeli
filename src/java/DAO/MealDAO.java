@@ -4,6 +4,7 @@
  */
 package DAO;
 
+import DTO.DateDTO;
 import DTO.MealDTO;
 import DTO.NutritionDTO;
 import DTO.PlanDTO;
@@ -46,6 +47,50 @@ public class MealDAO {
 
                     MealDTO meal = new MealDTO(id, date_id, recipe_id, start_time, date_id);
                     result.add(meal);
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return result;
+    }
+
+    public static MealDTO getMealByDateId(int DateId) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        MealDTO result = new MealDTO();
+
+        String sql = "SELECT * FROM [Meal]\n"
+                + "WHERE date_id = ?";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, DateId);
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    int date_id = rs.getInt("date_id");
+                    int recipe_id = rs.getInt("recipe_id");
+                    Time start_time = rs.getTime("start_time");
+
+                    result = new MealDTO(id, date_id, recipe_id, start_time, date_id);
                 }
             }
         } catch (SQLException ex) {
@@ -128,7 +173,7 @@ public class MealDAO {
                 + "JOIN [Date] d ON m.date_id = d.id\n"
                 + "WHERE [plan_id] = ? and [date_id] = ?\n"
                 + "ORDER BY [start_time]\n";
-        
+
         try {
             con = DBUtils.getConnection();
             if (con != null) {
@@ -202,9 +247,9 @@ public class MealDAO {
                 rs = stm.executeQuery();
                 while (rs.next()) {
 
-                    int meal_count = rs.getInt("meal_count");     
+                    int meal_count = rs.getInt("meal_count");
                     result = meal_count;
-                    
+
                     return result;
                 }
             }
@@ -353,7 +398,7 @@ public class MealDAO {
         return false;
     }
 
-    public static boolean updateMealNotificationStatusById(int id) {
+    public static boolean updateMealNotificationStatusByMealID(int meal_id) {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
@@ -367,7 +412,7 @@ public class MealDAO {
             if (con != null) {
                 stm = con.prepareStatement(sql);
                 stm.setBoolean(1, true);
-                stm.setInt(2, id);
+                stm.setInt(2, meal_id);
 
                 int effectRows = stm.executeUpdate();
                 if (effectRows > 0) {
@@ -392,6 +437,56 @@ public class MealDAO {
             }
         }
         return false;
+    }
+
+    public static ArrayList<MealDTO> getActiveRecipePlanByTime(Date currentDate, int plan_id, String currentTime) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        ArrayList<MealDTO> result = new ArrayList<>();
+
+        String sql = "SELECT m.id, m.start_time, m.date_id, m.recipe_id\n"
+                + "FROM [Meal] m\n"
+                + "JOIN [Date] d ON d.id = m.date_id\n"
+                + "WHERE d.[date] = ? AND d.plan_id = ? AND m.start_time = ? AND m.isNotified = 0";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setDate(1, new java.sql.Date(currentDate.getTime()));
+                stm.setInt(2, plan_id);
+                stm.setString(3, currentTime); // Use setString to handle time in "HH:mm:ss" format
+                rs = stm.executeQuery();
+                while (rs.next()) {
+
+                    int id = rs.getInt("id");
+                    Time start_time = rs.getTime("start_time");
+                    int date_id = rs.getInt("date_id");
+                    int recipe_id = rs.getInt("recipe_id");
+
+                    MealDTO meal = new MealDTO(id, date_id, recipe_id, start_time);
+                    result.add(meal);
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error - getActiveRecipePlanByTime: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return result;
     }
 
     public static boolean removeRecipeFromPlan(int meal_id) {

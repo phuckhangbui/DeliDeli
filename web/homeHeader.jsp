@@ -115,35 +115,9 @@
                     <% int[] count = (int[]) request.getAttribute("count");
                     %>
 
-                    <!--    TICK TOCK PLAN NOTIFICATION   -->
 
-                    <%
-//                        boolean isPlanNotificationActive = (boolean) request.getAttribute("planNotificationActivate");
-//                        if (isPlanNotificationActive) {
-//                            System.out.println("[HEADER]: Notification sent!");
-                    %>
-                    <script>
-//                        var xhr = new XMLHttpRequest();
-//                        xhr.open("POST", "UserController?action=planNotification", true);
-//                        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-//                        // This means execute when request is successful (status === 200).
-//                        xhr.onreadystatechange = function () {
-//                            if (xhr.readyState === 4 && xhr.status === 200) {
-//                                console.log("Servlet activated!");
-//                            }
-//                        };
-//                        xhr.send();
-                    </script>
-                    <%//                        }
-                    %>
-
-
-                    <!--                                  -->
-
-                    <div
-                        class="notification col-md-1">
-                        <div
-                            class="dropdown-notification">
+                    <div class="notification col-md-1">
+                        <div class="dropdown-notification">
                             <button
                                 class="dropbtn-notification"
                                 onclick="toggleDropdown()">

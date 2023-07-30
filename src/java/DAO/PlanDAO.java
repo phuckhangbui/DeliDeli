@@ -42,12 +42,7 @@ public class PlanDAO {
                 stm.setString(3, note);
                 stm.setDate(4, start_at);
                 stm.setDate(5, end_at);
-
-                if (today.isEqual(start_at.toLocalDate())) {
-                    status = true;
-                }
-
-                stm.setBoolean(6, status);
+                stm.setBoolean(6, false);
                 stm.setInt(7, user_id);
                 stm.setInt(8, diet_id);
                 stm.setBoolean(9, isDaily);

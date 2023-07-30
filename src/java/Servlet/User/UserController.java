@@ -114,9 +114,6 @@ public class UserController extends HttpServlet {
                     case "addPlanRecipe":
                         url = "PlanAddRecipeServlet";
                         break;
-                    case "planNotification":
-                        url = "PlanRecipeNotificationServlet";
-                        break;
                     case "removePlanRecipe":
                         url = "PlanRemoveRecipeServlet";
                         break;

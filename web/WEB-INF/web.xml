@@ -382,10 +382,6 @@
         <servlet-class>Servlet.User.PlanAddRecipeServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>PlanRecipeNotificationServlet</servlet-name>
-        <servlet-class>Servlet.User.PlanRecipeNotificationServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>PlanRemoveRecipeServlet</servlet-name>
         <servlet-class>Servlet.User.PlanRemoveRecipeServlet</servlet-class>
     </servlet>
@@ -744,10 +740,6 @@
     <servlet-mapping>
         <servlet-name>PlanAddRecipeServlet</servlet-name>
         <url-pattern>/PlanAddRecipeServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>PlanRecipeNotificationServlet</servlet-name>
-        <url-pattern>/PlanRecipeNotificationServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>PlanRemoveRecipeServlet</servlet-name>
