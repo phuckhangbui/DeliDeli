@@ -30,27 +30,39 @@ public class RemoveAllRecipeServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
 
         int plan_id = Integer.parseInt(request.getParameter("plan_id"));
-        int date_id = Integer.parseInt(request.getParameter("date_id"));
+        String[] dateIds = request.getParameterValues("date_id");
         int distanceInDays = Integer.parseInt(request.getParameter("distanceInDays"));
+        boolean isDaily = Boolean.parseBoolean(request.getParameter("isDaily"));
         boolean isTemplate = false;
         boolean result = false;
         String url = ERROR;
 
-        if (plan_id > 0 && date_id > 0) {
-            result = MealDAO.deleteAllMealByDate(plan_id, date_id);
+        if (plan_id > 0 && dateIds != null && dateIds.length > 0) {
+            for (String dateIdStr : dateIds) {
+                int date_id = Integer.parseInt(dateIdStr);
+                result = MealDAO.deleteAllMealByDate(plan_id, date_id);
+                if (!result) {
+                    break;
+                }
+            }
         } else {
             response.sendRedirect(url);
             return;
         }
 
         if (result) {
-            url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=false&distanceInDays=" + distanceInDays;
+            if (isDaily) {
+                url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=false&distanceInDays=" + distanceInDays;
+            } else {
+                
+                url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=false&selectedDate=";
+            }
             isTemplate = Boolean.parseBoolean(request.getParameter("isTemplate"));
             if (isTemplate) {
                 url = "LoadEditDailyTemplateServlet?id=" + plan_id + "&isSearch=false";
             }
         }
-        
+
         response.sendRedirect(url);
     }
 

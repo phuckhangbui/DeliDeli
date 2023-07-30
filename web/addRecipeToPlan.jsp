@@ -153,6 +153,11 @@
                                         <% }%>
                                         <input type="hidden" name="distanceInDays" value="<%= distanceInDays%>" />
                                         <input type="hidden" name="isTemplate" value="false" />
+                                        <%if (plan.isDaily()) {%>
+                                        <input type="hidden" name="isDaily" value="true" />
+                                        <% } else { %>
+                                        <input type="hidden" name="isDaily" value="false" />
+                                        <% }%>
 
                                         <button type="submit" name="action" value="removeAllRecipeConfirmed" class="remove-recipe-from-plan-button">Yes, remove all of them</button>
                                     </div>
@@ -726,10 +731,10 @@
                                         <input type="hidden" name="distanceInDays" value="<%= distanceInDays%>" />
                                         <% if (plan.isDaily()) {%>
                                         <input type="hidden" name="isDaily" value="true" />
+                                        <input type="hidden" name="selectedDate" value="<%= selectedDate%>" />
                                         <% } %>
                                         <input type="hidden" name="isDaily" value="false" />
                                         <% }%>
-                                        <input type="hidden" name="selectedDate" value="<%= selectedDate%>" />
                                     </div>
 
                                     <div class="modal-footer">
