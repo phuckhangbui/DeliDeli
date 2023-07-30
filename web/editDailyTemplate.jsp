@@ -105,6 +105,7 @@
                                         <% }%>
                                         <input type="hidden" name="distanceInDays" value="0" />
                                         <input type="hidden" name="isTemplate" value="true" />
+                                        <input type="hidden" name="isDaily" value="true" />
 
                                         <button type="submit" name="action" value="removeAllRecipeConfirmed" class="remove-recipe-from-plan-button">Yes, remove all of them</button>
                                     </div>
@@ -192,7 +193,7 @@
                                                         <div class="col-md-6">
                                                             <div>Chose time again: <span>(Optional)</span></div>
                                                             <input type="time" id="start_time" name="start_time" class="start-time-input" value="<%= list.getStart_time()%>">
-                                                            
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -206,6 +207,7 @@
                                                     <input type="hidden" name="date_id" value="<%= templateDate.getId()%>" />
                                                     <input type="hidden" name="distanceInDays" value="0" />
                                                     <input type="hidden" name="isTemplate" value="true" />
+                                                    <input type="hidden" name="isDaily" value="true" />
 
                                                 </div>
 
@@ -286,6 +288,8 @@
                                                     <input type="hidden" name="date_id" value="<%= templateDate.getId()%>" />
                                                     <input type="hidden" name="distanceInDays" value="0" />
                                                     <input type="hidden" name="isTemplate" value="true" />
+                                                    <input type="hidden" name="isDaily" value="true" />
+
 
 
                                                 </div>
@@ -367,6 +371,7 @@
                                                     <input type="hidden" name="date_id" value="<%= templateDate.getId()%>" />
                                                     <input type="hidden" name="distanceInDays" value="0" />
                                                     <input type="hidden" name="isTemplate" value="true" />
+                                                    <input type="hidden" name="isDaily" value="true" />
 
 
                                                 </div>
@@ -468,6 +473,7 @@
                                 <input type="hidden" name="dietId" value="<%= plan.getDiet_id()%>"/>
                                 <input type="hidden" name="distanceInDays" value="0" />
                                 <input type="hidden" name="isTemplate" value="true" />
+                                <input type="hidden" name="isDaily" value="true" />
 
                                 <select name="searchBy" id="">
                                     <option value="Public" selected="selected">Public</option>
@@ -571,6 +577,7 @@
                                         <input type="hidden" name="date_id" value="<%= dateList.getId()%>" />
                                         <input type="hidden" name="distanceInDays" value="0" />
                                         <input type="hidden" name="isTemplate" value="true" />
+                                        <input type="hidden" name="isDaily" value="true" />
                                         <% }%>
                                     </div>
 

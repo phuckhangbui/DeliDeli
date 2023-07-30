@@ -34,7 +34,6 @@ public class PlanRemoveRecipeServlet extends HttpServlet {
         String distanceInDays = request.getParameter("distanceInDays");
         String selectedDate = request.getParameter("selectedDate");
 
-
         if (meal_id > 0 && plan_id > 0) {
             result = MealDAO.removeRecipeFromPlan(meal_id);
             if (result) {

@@ -130,9 +130,17 @@
                         <div>
                             <form action="UserController">
                                 <input name="id" value="<%= plan.getId()%>" hidden="">
-                                <button type="submit" class="plan-navbar-remove" name="action" value="useDailyPlanTemplate" >
+                                <% if (plan.isDaily()) { %>
+                                <input name="isDaily" value="true" hidden="">
+                                <button type="submit" class="plan-navbar-remove" name="action" value="loadEditDailyTemplate" >
                                     Template
                                 </button>
+                                <% } else { %>
+                                <input name="isDaily" value="false" hidden="">
+                                <button type="submit" class="plan-navbar-remove" name="action" value="loadEditWeeklyTemplate" >
+                                    Template
+                                </button>
+                                <% }%>
                             </form>
                             <div class="sync-checkbox">
                                 <input type="checkbox" id="isSync" name="isSync" value="1" onchange="activateSync(this, <%= plan.getId()%>)">
@@ -141,7 +149,7 @@
                         </div>
 
                         <div>
-                            
+
                             <button type="button" class="plan-navbar-remove" data-bs-toggle="modal"  data-bs-target="#removeAllRecipes">
                                 Remove All Recipes
                             </button>
@@ -313,7 +321,7 @@
                                                         <div class="col-md-6">
                                                             <div>Chose time again: <span>(Optional)</span></div>
                                                             <input type="time" id="start_time" name="start_time" class="start-time-input" value="<%= list.getStart_time()%>">
-                                                            
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -684,7 +692,7 @@
 
                                                     // Loop through the days between the selected day and the end date
                                                     //while (calendar.getTime().before(endDate) || calendar.getTime().equals(endDate)) {
-                                            %>
+%>
                                             <div class="col-md-6">
                                                 <div class="d-flex">
                                                     <input type="checkbox" id="date_id<%= dateList.getId()%>" name="date_id" value="<%= dateList.getId()%>">
@@ -985,7 +993,7 @@
                                                     // Loop through the days between the selected day and the end date
                                                     //while (calendar.getTime().before(endDate) || calendar.getTime().equals(endDate)) {
                                                     // Generate the checkboxes
-                                            %>
+%>
                                             <!--                                            <div class="col-md-4">
                                                                                             <div class="d-flex">
                                                                                                 <input type="checkbox" id="date_id<%= dateList.getId()%>" name="date_id" value="<%= formattedDate%>">
