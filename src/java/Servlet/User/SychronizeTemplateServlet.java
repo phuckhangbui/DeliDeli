@@ -23,12 +23,20 @@ public class SychronizeTemplateServlet extends HttpServlet {
 
         int plan_id = Integer.parseInt(request.getParameter("plan_id"));
         String checkbox_state = request.getParameter("checkbox_state");
-        int date_id = Integer.parseInt(request.getParameter("date_id"));
+        String dateIdsString = request.getParameter("date_ids");
 
-        if (checkbox_state.equalsIgnoreCase("checked")) {
-            DateDAO.updateSyncStatus(date_id, true);
-        } else {
-            DateDAO.updateSyncStatus(date_id, false);
+        String[] dateIdsArray = dateIdsString.split(",");
+        int[] dateIds = new int[dateIdsArray.length];
+        for (int i = 0; i < dateIdsArray.length; i++) {
+            dateIds[i] = Integer.parseInt(dateIdsArray[i]);
+        }
+
+        for (int date_id : dateIds) {
+            if (checkbox_state.equalsIgnoreCase("checked")) {
+                DateDAO.updateSyncStatus(date_id, true);
+            } else {
+                DateDAO.updateSyncStatus(date_id, false);
+            }
         }
     }
 

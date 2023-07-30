@@ -81,7 +81,7 @@ public class AddDailyPlanServlet extends HttpServlet {
                     // Increment loop date by one day
                     loopDate.add(Calendar.DATE, 1);
                 }
-                
+
             } catch (Exception ex) {
                 System.out.println("[addPlanServlet - ERROR]: " + ex.getMessage());
                 response.sendRedirect("error.jsp");
@@ -91,7 +91,7 @@ public class AddDailyPlanServlet extends HttpServlet {
             session.setAttribute("createPlanDescription", null);
             session.setAttribute("createPlanDietId", null);
             session.setAttribute("newlyCreatedPlanId", id);
-            request.getRequestDispatcher("home.jsp").forward(request, response);
+            request.getRequestDispatcher("UserController?action=editPlan&id=" + id +"&isSearch=false&distanceInDays=0").forward(request, response);
         }
     }
 

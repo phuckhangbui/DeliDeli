@@ -103,12 +103,14 @@
                             var xhr = new XMLHttpRequest();
                             var url = "SychronizeTemplateServlet";
                             var parameterValue = checkbox.checked ? "checked" : "unchecked";
-                            var params = "plan_id=" + planId + "&checkbox_state=" + parameterValue;
 
                             var dateIdInputs = document.getElementsByClassName("dateIdInput");
+                            var dateIds = [];
                             for (var i = 0; i < dateIdInputs.length; i++) {
-                                params += "&date_id=" + dateIdInputs[i].value;
+                                dateIds.push(dateIdInputs[i].value);
                             }
+
+                            var params = "plan_id=" + planId + "&checkbox_state=" + parameterValue + "&date_ids=" + dateIds.join(',');
 
                             xhr.open("GET", url + "?" + params, true);
                             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -142,10 +144,22 @@
                                 </button>
                                 <% }%>
                             </form>
+
+                            
+                            <%
+                                // Lazy get 1 isSync .3.
+                                boolean isSync = false; 
+                                for (DateDTO dateList : planDate) {
+                                    isSync = dateList.isSync(); 
+                                    break; 
+                                }
+                            %>
+
                             <div class="sync-checkbox">
-                                <input type="checkbox" id="isSync" name="isSync" value="1" onchange="activateSync(this, <%= plan.getId()%>)">
+                                <input type="checkbox" id="isSync" name="isSync" value="1" <%= isSync ? "checked" : ""%> onchange="activateSync(this, <%= plan.getId()%>)">
                                 <label for="isSync">Sync with template</label>
                             </div>
+
                         </div>
 
                         <div>
