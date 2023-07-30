@@ -142,7 +142,6 @@ public class PlanEditServlet extends HttpServlet {
                 WeekDTO week = null;
 
                 String selectedDateStr = request.getParameter("selectedDate");
-                System.out.println("selectedDateStr - " + selectedDateStr);
 
                 if (selectedDateStr != null && !selectedDateStr.isEmpty()) {
                     java.util.Date utilDate = null;

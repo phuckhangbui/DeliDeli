@@ -155,7 +155,8 @@
                                         <input type="hidden" name="isTemplate" value="false" />
                                         <%if (plan.isDaily()) {%>
                                         <input type="hidden" name="isDaily" value="true" />
-                                        <% } else { %>
+                                        <% } else {%>
+                                        <input type="hidden" name="selectedDate" value="<%= selectedDate%>" />
                                         <input type="hidden" name="isDaily" value="false" />
                                         <% }%>
 
@@ -360,6 +361,13 @@
                                                     <input type="hidden" name="plan_start" value="<%= plan.getStart_at()%>" />
                                                     <input type="hidden" name="date_id" value="<%= dateList.getId()%>" />
                                                     <input type="hidden" name="distanceInDays" value="<%= distanceInDays%>" />
+                                                    <input type="hidden" name="isTemplate" value="false" />
+                                                    <%if (plan.isDaily()) {%>
+                                                    <input type="hidden" name="isDaily" value="true" />
+                                                    <% } else {%>
+                                                    <input type="hidden" name="selectedDate" value="<%= selectedDate%>" />
+                                                    <input type="hidden" name="isDaily" value="false" />
+                                                    <% }%>
                                                     <% }%>
                                                 </div>
 
@@ -440,6 +448,13 @@
                                                     <input type="hidden" name="plan_start" value="<%= plan.getStart_at()%>" />
                                                     <input type="hidden" name="date_id" value="<%= dateList.getId()%>" />
                                                     <input type="hidden" name="distanceInDays" value="<%= distanceInDays%>" />
+                                                    <input type="hidden" name="isTemplate" value="false" />
+                                                    <%if (plan.isDaily()) {%>
+                                                    <input type="hidden" name="isDaily" value="true" />
+                                                    <% } else {%>
+                                                    <input type="hidden" name="selectedDate" value="<%= selectedDate%>" />
+                                                    <input type="hidden" name="isDaily" value="false" />
+                                                    <% }%>
                                                     <% }%>
                                                 </div>
 
@@ -520,6 +535,13 @@
                                                     <input type="hidden" name="plan_start" value="<%= plan.getStart_at()%>" />
                                                     <input type="hidden" name="date_id" value="<%= dateList.getId()%>" />
                                                     <input type="hidden" name="distanceInDays" value="<%= distanceInDays%>" />
+                                                    <input type="hidden" name="isTemplate" value="false" />
+                                                    <%if (plan.isDaily()) {%>
+                                                    <input type="hidden" name="isDaily" value="true" />
+                                                    <% } else {%>
+                                                    <input type="hidden" name="selectedDate" value="<%= selectedDate%>" />
+                                                    <input type="hidden" name="isDaily" value="false" />
+                                                    <% }%>
                                                     <% }%>
                                                 </div>
 
@@ -592,6 +614,13 @@
                                 <input type="hidden" name="user_id" value="<%= user.getId()%>"/>
                                 <input type="hidden" name="dietId" value="<%= plan.getDiet_id()%>"/>
                                 <input type="hidden" name="distanceInDays" value="<%= distanceInDays%>" />
+                                <input type="hidden" name="isTemplate" value="false" />
+                                <%if (plan.isDaily()) {%>
+                                <input type="hidden" name="isDaily" value="true" />
+                                <% } else {%>
+                                <input type="hidden" name="selectedDate" value="<%= selectedDate%>" />
+                                <input type="hidden" name="isDaily" value="false" />
+                                <% }%>
 
                                 <select name="searchBy" id="">
                                     <option value="Public" selected="selected">Public</option>
@@ -685,7 +714,7 @@
 
                                                     // Loop through the days between the selected day and the end date
                                                     //while (calendar.getTime().before(endDate) || calendar.getTime().equals(endDate)) {
-%>
+                                            %>
                                             <div class="col-md-4">
                                                 <div class="d-flex">
                                                     <input type="checkbox" id="date_id<%= dateList.getId()%>" name="date_id" value="<%= dateList.getId()%>">
@@ -729,10 +758,11 @@
                                         <!-- week id hard code here -->
                                         <input type="hidden" name="week_id" value="<%= week.getId()%>" />
                                         <input type="hidden" name="distanceInDays" value="<%= distanceInDays%>" />
+                                        <input type="hidden" name="isTemplate" value="false" />
                                         <% if (plan.isDaily()) {%>
                                         <input type="hidden" name="isDaily" value="true" />
+                                        <% }%>
                                         <input type="hidden" name="selectedDate" value="<%= selectedDate%>" />
-                                        <% } %>
                                         <input type="hidden" name="isDaily" value="false" />
                                         <% }%>
                                     </div>
@@ -986,7 +1016,7 @@
                                                     // Loop through the days between the selected day and the end date
                                                     //while (calendar.getTime().before(endDate) || calendar.getTime().equals(endDate)) {
                                                     // Generate the checkboxes
-%>
+                                            %>
                                             <!--                                            <div class="col-md-4">
                                                                                             <div class="d-flex">
                                                                                                 <input type="checkbox" id="date_id<%= dateList.getId()%>" name="date_id" value="<%= formattedDate%>">
@@ -1031,10 +1061,12 @@
                                         <input type="hidden" name="plan_start" value="<%= plan.getStart_at()%>" />
                                         <input type="hidden" name="date_id" value="<%= dateList.getId()%>" />
                                         <input type="hidden" name="distanceInDays" value="<%= distanceInDays%>" />
+                                        <input type="hidden" name="isTemplate" value="false" />
                                         <% if (plan.isDaily()) {%>
                                         <input type="hidden" name="isDaily" value="true" />
-                                        <% } %>
+                                        <% }%>
                                         <input type="hidden" name="isDaily" value="false" />
+                                        <input type="hidden" name="selectedDate" value="<%= selectedDate%>" />
                                         <% }%>
                                     </div>
 

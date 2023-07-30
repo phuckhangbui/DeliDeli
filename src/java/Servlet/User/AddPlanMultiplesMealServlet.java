@@ -32,7 +32,7 @@ public class AddPlanMultiplesMealServlet extends HttpServlet {
     private static final String BREAKFAST_START = "08:00";
     private static final String LUNCH_START = "12:00";
     private static final String DINNER_START = "17:00";
-    private final static String ERROR = "error.jsp";
+    private static final String ERROR = "error.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -45,10 +45,11 @@ public class AddPlanMultiplesMealServlet extends HttpServlet {
 
             String[] selectedDates = request.getParameterValues("date_id");
             String[] timeIds = request.getParameterValues("timeId");
+            String distanceInDays = request.getParameter("distanceInDays");
+            String selectedDate = request.getParameter("selectedDate");
             int recipe_id = Integer.parseInt(request.getParameter("recipe_id"));
             int plan_id = Integer.parseInt(request.getParameter("plan_id"));
             int week_id = Integer.parseInt(request.getParameter("week_id"));
-            String distanceInDays = request.getParameter("distanceInDays");
             boolean isDaily = Boolean.parseBoolean(request.getParameter("isDaily"));
             boolean isTemplate = false;
 
@@ -76,12 +77,19 @@ public class AddPlanMultiplesMealServlet extends HttpServlet {
             }
 
             if (result) {
-                url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=false&distanceInDays=" + distanceInDays;
+                if (isDaily) {
+                    url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=false&distanceInDays=" + distanceInDays;
+                } else {
+                    url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=false&selectedDate=" + selectedDate;
+                }
                 isTemplate = Boolean.parseBoolean(request.getParameter("isTemplate"));
                 if (isTemplate) {
                     url = "LoadEditDailyTemplateServlet?id=" + plan_id + "&isSearch=false";
                 }
             }
+
+            response.sendRedirect(url);
+
 //
 //            if (selectedDates != null) {
 //                for (String dateString : selectedDates) {
@@ -90,7 +98,6 @@ public class AddPlanMultiplesMealServlet extends HttpServlet {
 //                    dateIdList.add(date_id);
 //                }
 //            }
-
 //            out.println("Week " + week_id);
 //            out.println("Plan " + plan_id);
 //            out.println("Recipe " + recipe_id);

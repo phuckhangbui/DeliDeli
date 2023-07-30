@@ -23,15 +23,6 @@ public class EditStartTimeRecipeServlet extends HttpServlet {
 
     private static final String ERROR = "error.jsp";
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -45,6 +36,8 @@ public class EditStartTimeRecipeServlet extends HttpServlet {
             int meal_id = Integer.parseInt(request.getParameter("meal_id"));
             String start_timeStr = request.getParameter("start_time");
             String distanceInDays = request.getParameter("distanceInDays");
+            String selectedDate = request.getParameter("selectedDate");
+            boolean isDaily = Boolean.parseBoolean(request.getParameter("isDaily"));
 
             boolean isTemplate = false;
 
@@ -56,7 +49,11 @@ public class EditStartTimeRecipeServlet extends HttpServlet {
             boolean result = MealDAO.changeStartTimeOfRecipe(meal_id, date_id, start_time);
 
             if (result) {
-                url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=false&distanceInDays=" + distanceInDays;
+                if (isDaily) {
+                    url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=false&distanceInDays=" + distanceInDays;
+                } else {
+                    url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=false&selectedDate=" + selectedDate;
+                }
                 isTemplate = Boolean.parseBoolean(request.getParameter("isTemplate"));
                 if (isTemplate) {
                     url = "LoadEditDailyTemplateServlet?id=" + plan_id + "&isSearch=false";

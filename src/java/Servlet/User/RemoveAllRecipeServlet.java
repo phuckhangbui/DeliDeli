@@ -33,6 +33,7 @@ public class RemoveAllRecipeServlet extends HttpServlet {
         String[] dateIds = request.getParameterValues("date_id");
         int distanceInDays = Integer.parseInt(request.getParameter("distanceInDays"));
         boolean isDaily = Boolean.parseBoolean(request.getParameter("isDaily"));
+        String selectedDate = request.getParameter("selectedDate");
         boolean isTemplate = false;
         boolean result = false;
         String url = ERROR;
@@ -42,20 +43,20 @@ public class RemoveAllRecipeServlet extends HttpServlet {
                 int date_id = Integer.parseInt(dateIdStr);
                 result = MealDAO.deleteAllMealByDate(plan_id, date_id);
                 if (!result) {
-                    break;
+                    if (isDaily) {
+                        url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=false&distanceInDays=" + distanceInDays;
+                    } else {
+                        url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=false&selectedDate=" + selectedDate;
+                    }
                 }
             }
-        } else {
-            response.sendRedirect(url);
-            return;
         }
 
         if (result) {
             if (isDaily) {
                 url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=false&distanceInDays=" + distanceInDays;
             } else {
-                
-                url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=false&selectedDate=";
+                url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=false&selectedDate=" + selectedDate;
             }
             isTemplate = Boolean.parseBoolean(request.getParameter("isTemplate"));
             if (isTemplate) {
