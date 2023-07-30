@@ -198,4 +198,41 @@ public class WeekDAO {
         }
         return false;
     }
+
+    public static boolean deleteAllWeekByPlanId(int plan_id) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+
+        String sql = "DELETE FROM Week\n"
+                + "WHERE plan_id = ?";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, plan_id);
+
+                int rowsAffected = stm.executeUpdate();
+                return rowsAffected > 0;
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error - deleteDateByPlanId: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return false;
+    }
 }
