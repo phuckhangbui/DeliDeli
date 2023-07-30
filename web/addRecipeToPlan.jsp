@@ -127,112 +127,118 @@
                     </script>
 
                     <div class="plan-navbar">
-                        <button type="button" class="plan-navbar-remove" data-bs-toggle="modal"
-                                data-bs-target="#removeAllRecipes">
-                            Remove All Recipes
-                        </button>
-                        <!-- Modal -->
-                        <div class="modal fade" id="removeAllRecipes" tabindex="-1"
-                             aria-labelledby="removeAllRecipesModalLabel" aria-hidden="true">
-                            <form action="UserController" method="POST" class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="removeAllRecipesModalLabel">Remove All Recipes</h1>
-                                    </div>
-                                    <div class="modal-body">
-                                        Are you sure you want to remove all recipes in this plan ?
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                                data-bs-dismiss="modal">No, I changed my mind</button>
+                        <form action="UserController">
+                            <input name="id" value="<%= plan.getId()%>" hidden="">
+                            <button type="submit" class="plan-navbar-remove" name="action" value="useDailyPlanTemplate" >
+                                Template
+                            </button>
+                        </form>
+                        <div>
+                            <button id="planButton" type="button" class="plan-navbar-activate" onclick="disableActivatePlan()">
+                                <% if (plan.isStatus()) { %>
+                                Disable
+                                <% } else { %>
+                                Activate
+                                <% }%>
+                            </button>
+                            <script>
+                                // Disable/Activate the plan using AJAX
+                                function disableActivatePlan() {
+                                    var planId = '<%= plan.getId()%>';
+                                    var button = document.getElementById("planButton");
 
-                                        <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
-                                        <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
-                                        <% for (DateDTO dateList : planDate) {%>
-                                        <input type="hidden" class="dateIdInput" name="date_id" value="<%= dateList.getId()%>" />
-                                        <% }%>
-                                        <input type="hidden" name="distanceInDays" value="<%= distanceInDays%>" />
-                                        <input type="hidden" name="isTemplate" value="false" />
-                                        <%if (plan.isDaily()) {%>
-                                        <input type="hidden" name="isDaily" value="true" />
-                                        <% } else {%>
-                                        <input type="hidden" name="selectedDate" value="<%= selectedDate%>" />
-                                        <input type="hidden" name="isDaily" value="false" />
-                                        <% }%>
+                                    var xhr = new XMLHttpRequest();
+                                    xhr.open("POST", "DisablePlanServlet", true);
+                                    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
-                                        <button type="submit" name="action" value="removeAllRecipeConfirmed" class="remove-recipe-from-plan-button">Yes, remove all of them</button>
-                                    </div>
-                                </div>  
-                            </form>
-                        </div>
-
-                        <button type="button" class="plan-navbar-delete" data-bs-toggle="modal"
-                                data-bs-target="#deletePlanConfirm">
-                            Delete Plan
-                        </button>
-                        <!-- Modal -->
-                        <div class="modal fade" id="deletePlanConfirm" tabindex="-1"
-                             aria-labelledby="deletePlanConfirmModalLabel" aria-hidden="true">
-                            <form action="UserController" method="POST" class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="removeAllRecipesModalLabel">Delete Plan</h1>
-                                    </div>
-                                    <div class="modal-body">
-                                        Are you sure you want to delete this plan ?
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                                data-bs-dismiss="modal">No, I changed my mind</button>
-
-                                        <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
-                                        <input type="hidden" name="user_id" value="<%= user.getId()%>" />
-
-                                        <button type="submit" name="action" value="deletePlanConfirmed" class="remove-recipe-from-plan-button">Yes, delete it</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-
-                        <button id="planButton" type="button" class="plan-navbar-remove" onclick="disableActivatePlan()">
-                            <% if (plan.isStatus()) { %>
-                            Disable Plan
-                            <% } else { %>
-                            Activate Plan
-                            <% }%>
-                        </button>
-
-                        <script>
-                            // Disable/Activate the plan using AJAX
-                            function disableActivatePlan() {
-                                var planId = '<%= plan.getId()%>';
-                                var button = document.getElementById("planButton");
-
-                                var xhr = new XMLHttpRequest();
-                                xhr.open("POST", "DisablePlanServlet", true);
-                                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-                                xhr.onload = function () {
-                                    if (xhr.status === 200) {
-                                        // Update button text based on the response
-                                        if (button.innerText === "Disable Plan") {
-                                            button.innerText = "Activate Plan";
+                                    xhr.onload = function () {
+                                        if (xhr.status === 200) {
+                                            // Update button text based on the response
+                                            if (button.innerText === "Disable") {
+                                                button.innerText = "Activate";
+                                            } else {
+                                                button.innerText = "Disable";
+                                            }
                                         } else {
-                                            button.innerText = "Disable Plan";
+                                            console.error("Failed to disable/activate the plan.");
                                         }
-                                    } else {
-                                        console.error("Failed to disable/activate the plan.");
-                                    }
-                                };
+                                    };
 
-                                xhr.send("plan_id=" + encodeURIComponent(planId));
-                            }
-                        </script>
+                                    xhr.send("plan_id=" + encodeURIComponent(planId));
+                                }
+                            </script>
+                            <button type="button" class="plan-navbar-remove" data-bs-toggle="modal"  data-bs-target="#removeAllRecipes">
+                                Remove All Recipes
+                            </button>
+                            <!-- Modal -->
+                            <div class="modal fade" id="removeAllRecipes" tabindex="-1"
+                                 aria-labelledby="removeAllRecipesModalLabel" aria-hidden="true">
+                                <form action="UserController" method="POST" class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="removeAllRecipesModalLabel">Remove All Recipes</h1>
+                                        </div>
+                                        <div class="modal-body">
+                                            Are you sure you want to remove all recipes in this plan ?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">No, I changed my mind</button>
+
+                                            <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
+                                            <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
+                                            <% for (DateDTO dateList : planDate) {%>
+                                            <input type="hidden" class="dateIdInput" name="date_id" value="<%= dateList.getId()%>" />
+                                            <% }%>
+                                            <input type="hidden" name="distanceInDays" value="<%= distanceInDays%>" />
+                                            <input type="hidden" name="isTemplate" value="false" />
+
+                                            <button type="submit" name="action" value="removeAllRecipeConfirmed" class="remove-recipe-from-plan-button">Yes, remove all of them</button>
+                                        </div>
+                                    </div>  
+                                </form>
+                            </div>
+
+                            <button type="button" class="plan-navbar-delete" data-bs-toggle="modal"
+                                    data-bs-target="#deletePlanConfirm">
+                                Delete Plan
+                            </button>
+                            <!-- Modal -->
+                            <div class="modal fade" id="deletePlanConfirm" tabindex="-1"
+                                 aria-labelledby="deletePlanConfirmModalLabel" aria-hidden="true">
+                                <form action="UserController" method="POST" class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="removeAllRecipesModalLabel">Delete Plan</h1>
+                                        </div>
+                                        <div class="modal-body">
+                                            Are you sure you want to delete this plan ?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">No, I changed my mind</button>
+
+                                            <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
+                                            <input type="hidden" name="user_id" value="<%= user.getId()%>" />
+
+                                            <button type="submit" name="action" value="deletePlanConfirmed" class="remove-recipe-from-plan-button">Yes, delete it</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+
+                        </div>
+
+
 
 
                         <!-- <button class="plan-navbar-edit">
                                 <a href="userViewPlan.html"><img src="./assets/leave.svg" alt=""></a>
                             </button> -->
+                    </div>
+                    <div class="date-changer"> 
+                        <input type="date" name="dateChanger" id="dateInput" min="<%= allPlanDate.get(0).getDate()%>" max="<%= allPlanDate.get(allPlanDate.size() - 1).getDate()%>" onchange="updateDate(this.value)">
                     </div>
 
                     <%
@@ -298,9 +304,9 @@
                                 %>
                                 <div class="plan-table-week-nutrition">
                                     <p class="plan-table-calories">Calories: <%= nutrition.getCalories()%></p>
-                                    <p class="plan-table-protein">Protein: <%= nutrition.getProtein()%></p>
-                                    <p class="plan-table-carb">Carbs: <%= nutrition.getCarbs()%></p>
-                                    <p class="plan-table-fat">Fat: <%= nutrition.getFat()%></p>
+                                    <p class="plan-table-protein">Proteins: <%= nutrition.getProtein()%> g</p>
+                                    <p class="plan-table-carb">Carbs: <%= nutrition.getCarbs()%> g</p>
+                                    <p class="plan-table-fat">Fats: <%= nutrition.getFat()%> g</p>
                                 </div>
                                 <%
                                     }
@@ -600,8 +606,9 @@
                     </script>
                     <% }%>
                     <div class="add-recipe-to-plan">
-                        <div class="add-recipe-to-plan-section-header">
-                            Add Recipes Section
+                        <div class="edit-plan-header">
+                            <p>Add Section</p>
+                            <p>Add recipes based on the type of plan that you have chosen</p>
                         </div>
                         <div class="add-recipe-to-plan-search-bar">
                             <form action="UserController" method="post">
@@ -654,9 +661,9 @@
                                 %>
                                 <div class="add-recipe-to-plan-content-recipe-nutrients">
                                     <p class="plan-table-calories">Calories: <%= nutrition.getCalories()%></p>
-                                    <p class="plan-table-protein">Protein: <%= nutrition.getProtein()%></p>
-                                    <p class="plan-table-carb">Carbs: <%= nutrition.getCarbs()%></p>
-                                    <p class="plan-table-fat">Fat: <%= nutrition.getFat()%></p>
+                                    <p class="plan-table-protein">Proteins: <%= nutrition.getProtein()%> g</p>
+                                    <p class="plan-table-carb">Carbs: <%= nutrition.getCarbs()%> g</p>
+                                    <p class="plan-table-fat">Fats: <%= nutrition.getFat()%> g</p>
                                 </div>
                                 <%
                                     }
@@ -692,14 +699,14 @@
                         <!-- Weekly Meal-->
                         <div class="modal fade" id="addWeeklyMealToPlan<%= list.getId()%>" tabindex="-1"
                              aria-labelledby="addRecipeToPlanModalLabel<%= list.getId()%>" aria-hidden="true">
-                            <form action="UserController" method="post" class="modal-dialog add-recipe-to-plan-modal">
+                            <form action="UserController" method="post" class="modal-dialog add-recipe-to-plan-modal modal-dialog-centered">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel<%= list.getId()%>">Adding Weekly Meals To Plan</h1>
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel<%= list.getId()%>">Adding Weekly Meal To Plan</h1>
                                     </div>
                                     <div class="modal-body">
                                         <div>What day do you want to cook this recipe?</div>
-                                        <div class="row choose-week-day flex-column">
+                                        <div class="row choose-week-day">
                                             <% for (DateDTO dateList : weeklyDate) {
                                                     SimpleDateFormat dayOfWeekFormat = new SimpleDateFormat("EEEE");
                                                     String dayOfWeek = dayOfWeekFormat.format(dateList.getDate());
@@ -714,11 +721,11 @@
 
                                                     // Loop through the days between the selected day and the end date
                                                     //while (calendar.getTime().before(endDate) || calendar.getTime().equals(endDate)) {
-                                            %>
-                                            <div class="col-md-4">
+%>
+                                            <div class="col-md-6">
                                                 <div class="d-flex">
                                                     <input type="checkbox" id="date_id<%= dateList.getId()%>" name="date_id" value="<%= dateList.getId()%>">
-                                                    <label for="dateOfWeek<%= dateList.getId()%>"> <%= dayOfWeek%> (<%= formattedDate%>) </label>
+                                                    <label for="dateOfWeek<%= dateList.getId()%>"> <%= dayOfWeek%> <span>(<%= formattedDate%>)</span> </label>
                                                 </div>
                                             </div>
 
@@ -993,13 +1000,12 @@
                         <!-- Daily Meal-->
                         <div class="modal fade" id="addMultiplesMealToPlan<%= list.getId()%>" tabindex="-1"
                              aria-labelledby="addRecipeToPlanModalLabel<%= list.getId()%>" aria-hidden="true">
-                            <form action="UserController" method="post" class="modal-dialog add-recipe-to-plan-modal">
+                            <form action="UserController" method="post" class="modal-dialog add-recipe-to-plan-modal modal-dialog-centered">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel<%= list.getId()%>">Adding Multiples Meals To Plan</h1>
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel<%= list.getId()%>">Adding Meal To Plan</h1>
                                     </div>
                                     <div class="modal-body">
-                                        <div>What day do you want to cook this recipe?</div>
                                         <div class="row choose-week-day flex-column">
                                             <% for (DateDTO dateList : planDate) {
                                                     SimpleDateFormat dayOfWeekFormat = new SimpleDateFormat("EEEE");
@@ -1016,7 +1022,7 @@
                                                     // Loop through the days between the selected day and the end date
                                                     //while (calendar.getTime().before(endDate) || calendar.getTime().equals(endDate)) {
                                                     // Generate the checkboxes
-                                            %>
+%>
                                             <!--                                            <div class="col-md-4">
                                                                                             <div class="d-flex">
                                                                                                 <input type="checkbox" id="date_id<%= dateList.getId()%>" name="date_id" value="<%= formattedDate%>">

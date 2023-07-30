@@ -68,7 +68,7 @@
                                 <div class="col-md-6 add-plan-info-date">
                                     Plan's Length: <span>*</span>
                                     <div>
-                                        <input type="number" id="length" name="planLength" onchange="calculateEndDate()" min='1' max='90' value="<%= planLength %>" required> 
+                                        <input type="number" id="length" name="planLength" onchange="calculateEndDate()" min='1' max='90' value="<%= planLength%>" required> 
                                     </div>
                                 </div>
                                 <div class="col-md-6 add-plan-info-date">
@@ -122,11 +122,11 @@
                                 <textarea class="input-full" rows="2" name="note" maxlength="200"
                                           placeholder="Anything that needs to note ?"
                                           ></textarea>
-                                <% }else{
+                                <% } else {
                                 %>
                                 <textarea class="input-full" rows="2" name="note" maxlength="200"
                                           placeholder="Anything that needs to note ?"
-                                          ><%= plan.getNote() %></textarea>
+                                          ><%= plan.getNote()%></textarea>
                                 <% }%>
 
                             </div>
