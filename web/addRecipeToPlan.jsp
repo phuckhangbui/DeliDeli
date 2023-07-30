@@ -685,13 +685,13 @@
                                     if (plan.isDaily()) {
                                 %>
                                 <button type="button" class="" data-bs-toggle="modal" data-bs-target="#addMultiplesMealToPlan<%= list.getId()%>">
-                                    Add daily
+                                    Add
                                 </button>  
                                 <%
                                 } else {
                                 %>
                                 <button type="button" class="" data-bs-toggle="modal" data-bs-target="#addWeeklyMealToPlan<%= list.getId()%>">
-                                    Add weekly
+                                    Add
                                 </button>
                                 <%
                                     }

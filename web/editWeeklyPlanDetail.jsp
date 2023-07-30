@@ -37,22 +37,24 @@
             <div class="blank-background">
                 <div class="container">
                     <div class="row add-plan">
-                        <!--                        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-                                                    <ol class="breadcrumb">
-                                                        <li class="breadcrumb-item"><a href="home.jsp">Home</a></li>
-                                                        <li class="breadcrumb-item"><a href="UserController?action=planManagement"> Plan</a></li> 
-                                                        <li class="breadcrumb-item"><a href="UserController?action=categoryLoadToPlan"> Add Plan</a></li> 
-                                                        <li class="breadcrumb-item current-link" aria-current="page">Daily Plan</li>
-                                                    </ol>
-                                                </nav>-->
-
-
+                        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="home.jsp">Home</a></li>
+    <!--                            <li class="breadcrumb-item"><a href="UserController?action=editPlan&id=<%= plan.getId()%>&isSearch=false"> Plan - <%= plan.getName()%> </a></li>-->
+                                <li class="breadcrumb-item"><a href="UserController?action=planManagement&userId=<%=user.getId()%>"> Plans List </a></li> 
+                                <li class="breadcrumb-item" aria-current="page"><a href="UserController?action=getPlanDetailById&id=<%= plan.getId()%>"> <%= plan.getName()%> </a></li>
+                                <li class="breadcrumb-item current-link" aria-current="page">Edit Info</li>
+                            </ol>
+                        </nav>
 
 
                         <!-- plan-edit -->
                         <form action="UserController" method="post" class="plan-edit">
-                            <div class="plan-edit-header">
-                                Info Section
+                            <div class="add-plan-header">
+                                <p>Info Section</p>
+                                <p>
+                                    Add, edit or remove information about your plan
+                                </p>
                             </div>
                             <div class="row add-plan-date ">
                                 <div class="add-plan-info-header">
@@ -65,18 +67,31 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-6 add-plan-info-date">
-                                    Plan's Length: <span>*</span>
+                                <div class="col-md-4 add-plan-info-date">
+                                    Plan's Length <span>*</span>
                                     <div>
                                         <input type="number" id="length" name="planLength" onchange="calculateEndDate()" min='1' max='12' value="<%= planLength%>" required> 
                                     </div>
+                                    <input type="text" id="length" name="planLength" onchange="calculateEndDate()" min="1" max="4"
+                                           oninput="this.value=this.value.slice(0,this.maxLength),this.value=this.value.replace(/[^0-9]/g,''), checkWeekRange(this)"
+                                           value="<%= planLength%>" maxlength="1" required>
+                                    <span class="add-plan-info-date-days">week(s)</span>
+
                                 </div>
-                                <div class="col-md-6 add-plan-info-date">
-                                    End Date:
+                                <div class="col-md-4 add-plan-info-date">
+                                    End Date
                                     <div id="endDate"><%= plan.getEnd_at()%></div>
                                 </div>
 
                                 <script>
+                                    function checkWeekRange(input) {
+                                        input.setCustomValidity("");
+                                        const value = parseInt(input.value);
+                                        if (isNaN(value) || value < 1 || value > 4) {
+                                            input.setCustomValidity("Please enter a number between 1 and 4 weeks.");
+                                        }
+                                    }
+
                                     function calculateEndDate() {
                                         var startDate = new Date(document.getElementById("startingDate").value);
                                         var planLength = parseInt(document.getElementById("length").value);
@@ -124,11 +139,11 @@
                                 <textarea class="input-full" rows="2" name="note" maxlength="200"
                                           placeholder="Anything that needs to note ?"
                                           ></textarea>
-                                <% }else{
+                                <% } else {
                                 %>
                                 <textarea class="input-full" rows="2" name="note" maxlength="200"
                                           placeholder="Anything that needs to note ?"
-                                          ><%= plan.getNote() %></textarea>
+                                          ><%= plan.getNote()%></textarea>
                                 <% }%>
 
                             </div>

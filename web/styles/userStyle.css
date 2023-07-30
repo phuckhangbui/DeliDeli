@@ -2249,7 +2249,7 @@ span {
     margin: 0 80px;
 }
 
-.add-plan-info-header, .add-plan-info-header-picture {
+.add-plan-info-header, .add-plan-info-header-picture, .add-plan-info-date {
     font-size: 24px;
 }
 
@@ -2302,11 +2302,15 @@ span {
     font-size: 20px;
     margin: 0px;
 }
-
+.add-plan-info-date-days{
+    color: black !important;
+}
 .add-plan-info-date input {
-    padding: 5px;
+    font-size: 20px;
+    padding: 5px 10px;
     border-radius: 10px;
     background-color: #f8f8f8;
+    width: 70%;
 }
 
 .add-plan-info-header-date {
@@ -2324,11 +2328,10 @@ span {
 
 
 /*    Edit/Add Recipes into a Plan     */
-.plan-edit {
+/*.plan-edit {
     width: 80%;
     padding: 0 30px;
-    margin: 10px auto ;
-}
+}*/
 .plan-edit-header, .add-recipe-to-plan-section-header{
     text-align: center;
     font-size: 48px;

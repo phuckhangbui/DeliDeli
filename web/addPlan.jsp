@@ -38,12 +38,11 @@
                         <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="home.jsp">Home</a></li>
-                                <li class="breadcrumb-item"><a href="UserController?action=planManagement"> Plan</a></li> 
+                                <li class="breadcrumb-item"><a href="UserController?action=planManagement"> Plans List</a></li> 
                                 <li class="breadcrumb-item current-link" aria-current="page">Add Plan</li>
                             </ol>
                         </nav>
                         <%
-                            
                             String title = (String) session.getAttribute("createPlanTitle");
                             String des = (String) session.getAttribute("createPlanDescription");
 
@@ -81,7 +80,7 @@
                             </div>
 
                             <div class="add-plan-info-header add-plan-info">
-                                Plan Diet <span>*</span>
+                                Plan Diet <span>*</span> <span class="add-plan-info-header-des">(This will effect the recipes recommended to you in the add recipes section)</span>
                                 <select name="recipeDietId" id="" class="add-plan-info-header-type" required>
                                     <%  for (Map.Entry<Integer, String> entry
                                                 : dietMap.entrySet()) {
@@ -100,8 +99,7 @@
 
                             <div class="add-plan-info-header add-plan-info"> <!-- change cai nay thanh select -->
                                 <div class="add-plan-info-header">
-                                    Plan Period <span>*</span> <span class="add-plan-info-header-des">(Weekly plan will only start at Monday)</span>
-                                </div>
+                                    Plan Period <span>*</span> <span class="add-plan-info-header-des">(Weekly plan will only start from Monday)</span>                                </div>
                                 <select name="period" id="" class="add-plan-info-header-type" required>
                                     <option value="daily" selected="">Daily</option>
                                     <option value="weekly">Weekly</option>

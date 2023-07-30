@@ -127,6 +127,11 @@
                                 <input name="id" value="<%= plan.getId()%>" hidden="">
                                 <button type="submit" name="action" value="loadEditDailyTemplate" class="plan-navbar-remove">Template</button>
                             </form>
+                            <%} else {%>
+                            <form action="UserController">
+                                <input name="id" value="<%= plan.getId()%>" hidden="">
+                                <button type="submit" name="action" value="loadEditDailyTemplate" disabled="">Template</button>
+                            </form>
                             <%}%>
                         </div>
                         <!--                        <button type="button" class="plan-navbar-remove" data-bs-toggle="modal"

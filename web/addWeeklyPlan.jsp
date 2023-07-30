@@ -46,26 +46,41 @@
                                 </p>
                             </div>
 
-                            <div class="col-md-6 add-plan-info-date">
-                                Start Date: <span>*</span>
-                                <div>
-                                    <input type="date" id="startDateInput" name="start_date" onchange="calculateEndDate()" required min="<%= LocalDate.now()%>">
+                            <div class="row">
+                                <div class="col-md-4 add-plan-info-date">
+                                    Start Date <span>*</span>
+                                    <div>
+                                        <input type="date" id="startDateInput" name="start_date" onchange="calculateEndDate()" required min="<%= LocalDate.now()%>">
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="col-md-6 add-plan-info-date">
-                                Plan's Length: <span>*</span>
+
+                            <div class="col-md-4 add-plan-info-date">
+                                Plan's Length <span>*</span>
                                 <div>
-                                    <input type="number" id="length" name="planLength" onchange="calculateEndDate()" min="1" max="4" required> week(s)
+                                    <input type="text" id="length" name="planLength" onchange="calculateEndDate()" min="1" max="4"
+                                           oninput="this.value=this.value.slice(0,this.maxLength),this.value=this.value.replace(/[^0-9]/g,''), checkWeekRange(this)"
+                                           maxlength="1" required>
+                                    <span class="add-plan-info-date-days">week(s)</span>
                                 </div>
                             </div>
 
-                            <div class="col-md-6 add-plan-info-date">
-                                End Date:
+
+                            <div class="col-md-4 add-plan-info-date">
+                                End Date
                                 <div id="endDate"></div>
                             </div>
 
                             <script>
+                                function checkWeekRange(input) {
+                                    input.setCustomValidity("");
+                                    const value = parseInt(input.value);
+                                    if (isNaN(value) || value < 1 || value > 4) {
+                                        input.setCustomValidity("Please enter a number between 1 and 4 weeks.");
+                                    }
+                                }
+
                                 function isMonday(date) {
                                     if (date.getDay() === 1) {
                                         return true; // Monday
@@ -81,8 +96,7 @@
                                     if (!isNaN(startDate) && !isNaN(planLength) && isMonday(startDate)) {
                                         // Increment end date by the length in weeks
                                         var endDate = new Date(startDate);
-                                        endDate.setDate(endDate.getDate() + (planLength * 7) -1  );
-
+                                        endDate.setDate(endDate.getDate() + (planLength * 7) - 1);
                                         var endDateOptions = {year: 'numeric', month: 'numeric', day: 'numeric'};
                                         var endDateFormatted = endDate.toLocaleDateString(undefined, endDateOptions);
 

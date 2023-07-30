@@ -41,7 +41,7 @@
                         <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="home.jsp">Home</a></li>
-                                <li class="breadcrumb-item current-link" aria-current="page">Plan List</li>
+                                <li class="breadcrumb-item current-link" aria-current="page">Plans List</li>
                             </ol>
                         </nav>
                         <div class="weekly-plans-header">
@@ -104,25 +104,33 @@
                                     </button>
                                 </form>
                                 <!-- Modal -->
-                                <div class="modal fade" id="deletePlanModal" tabindex="-1"
+                                <div class="modal fade" id="deletePlanModal<%= list.getId()%>" tabindex="-1"                                     
                                      aria-labelledby="deletePlanModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                ...
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary"
-                                                        data-bs-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-primary">Save changes</button>
+                                    <form action="UserController" method="POST" class="modal-dialog">
+
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="removeAllRecipesModalLabel">Delete Plan</h1>
+                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    ...
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">No, I changed my mind</button>
+
+                                                    <input type="hidden" name="plan_id" value="<%= list.getId()%>" />
+                                                    <input type="hidden" name="user_id" value="<%= user.getId()%>" />
+
+                                                    <button type="submit" name="action" value="deletePlanConfirmed" class="remove-recipe-from-plan-button">Yes, delete it</button>
+                                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -130,7 +138,7 @@
                                 }
                             }
                         %>   
-                        
+
                     </div>
                 </div>
             </div>
