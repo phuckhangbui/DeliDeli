@@ -92,8 +92,8 @@
                         <p>Edit, add or remove recipes from your plan to fit more with your eating schedule</p>
                     </div>
 
-                    Synchronize with your template?        
-                    <input type="checkbox" id="isSync" name="isSync" value="1" onchange="activateSync(this, <%= plan.getId()%>)">
+
+
                     <% for (DateDTO dateList : planDate) {%>
                     <input type="hidden" class="dateIdInput" name="date_id" value="<%= dateList.getId()%>" />
                     <% }%>
@@ -127,46 +127,21 @@
                     </script>
 
                     <div class="plan-navbar">
-                        <form action="UserController">
-                            <input name="id" value="<%= plan.getId()%>" hidden="">
-                            <button type="submit" class="plan-navbar-remove" name="action" value="useDailyPlanTemplate" >
-                                Template
-                            </button>
-                        </form>
                         <div>
-                            <button id="planButton" type="button" class="plan-navbar-activate" onclick="disableActivatePlan()">
-                                <% if (plan.isStatus()) { %>
-                                Disable
-                                <% } else { %>
-                                Activate
-                                <% }%>
-                            </button>
-                            <script>
-                                // Disable/Activate the plan using AJAX
-                                function disableActivatePlan() {
-                                    var planId = '<%= plan.getId()%>';
-                                    var button = document.getElementById("planButton");
+                            <form action="UserController">
+                                <input name="id" value="<%= plan.getId()%>" hidden="">
+                                <button type="submit" class="plan-navbar-remove" name="action" value="useDailyPlanTemplate" >
+                                    Template
+                                </button>
+                            </form>
+                            <div class="sync-checkbox">
+                                <input type="checkbox" id="isSync" name="isSync" value="1" onchange="activateSync(this, <%= plan.getId()%>)">
+                                <label for="isSync">Sync with template</label>
+                            </div>
+                        </div>
 
-                                    var xhr = new XMLHttpRequest();
-                                    xhr.open("POST", "DisablePlanServlet", true);
-                                    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-                                    xhr.onload = function () {
-                                        if (xhr.status === 200) {
-                                            // Update button text based on the response
-                                            if (button.innerText === "Disable") {
-                                                button.innerText = "Activate";
-                                            } else {
-                                                button.innerText = "Disable";
-                                            }
-                                        } else {
-                                            console.error("Failed to disable/activate the plan.");
-                                        }
-                                    };
-
-                                    xhr.send("plan_id=" + encodeURIComponent(planId));
-                                }
-                            </script>
+                        <div>
+                            
                             <button type="button" class="plan-navbar-remove" data-bs-toggle="modal"  data-bs-target="#removeAllRecipes">
                                 Remove All Recipes
                             </button>
@@ -202,34 +177,6 @@
                                             <button type="submit" name="action" value="removeAllRecipeConfirmed" class="remove-recipe-from-plan-button">Yes, remove all of them</button>
                                         </div>
                                     </div>  
-                                </form>
-                            </div>
-
-                            <button type="button" class="plan-navbar-delete" data-bs-toggle="modal"
-                                    data-bs-target="#deletePlanConfirm">
-                                Delete Plan
-                            </button>
-                            <!-- Modal -->
-                            <div class="modal fade" id="deletePlanConfirm" tabindex="-1"
-                                 aria-labelledby="deletePlanConfirmModalLabel" aria-hidden="true">
-                                <form action="UserController" method="POST" class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="removeAllRecipesModalLabel">Delete Plan</h1>
-                                        </div>
-                                        <div class="modal-body">
-                                            Are you sure you want to delete this plan ?
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
-                                                    data-bs-dismiss="modal">No, I changed my mind</button>
-
-                                            <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
-                                            <input type="hidden" name="user_id" value="<%= user.getId()%>" />
-
-                                            <button type="submit" name="action" value="deletePlanConfirmed" class="remove-recipe-from-plan-button">Yes, delete it</button>
-                                        </div>
-                                    </div>
                                 </form>
                             </div>
 
@@ -349,19 +296,31 @@
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <h1 class="modal-title fs-5" id="exampleModalLabel"><%= recipe.getTitle()%></h1>
-                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Start time: <%= list.getStart_time()%></h1>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body recipe-nutriton-modal">
-                                                    <div class="recipe-nutriton-modal-image">
+                                                    <a class="recipe-nutriton-modal-image" href="MainController?action=getRecipeDetailById&id=<%= recipe.getId()%>" target="_blank">
                                                         <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
+                                                        <h3><%= recipe.getTitle()%></h3>
+                                                    </a>
+
+                                                    <div class="row recipe-nutrtion-modal-time">
+                                                        <div class="col-md-6">
+                                                            <div >Start time: </div>
+                                                            <br>
+                                                            <div><%= formattedTime%></div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div>Chose time again: <span>(Optional)</span></div>
+                                                            <input type="time" id="start_time" name="start_time" class="start-time-input" value="<%= list.getStart_time()%>">
+                                                            
+                                                        </div>
                                                     </div>
                                                 </div>
-
-                                                <div class="modal-body recipe-nutriton-modal">
-                                                    <label for="start_time">Chose the time again if you want:</label>
-                                                    <input type="time" id="start_time" name="start_time" class="start-time-input" value="<%= list.getStart_time()%>">
-                                                </div>
+                                                <!--                                                <div class="modal-body recipe-nutriton-modal">
+                                                                                                    <label for="start_time">Chose the time again if you want:</label>
+                                                                                                    <input type="time" id="start_time" name="start_time" class="start-time-input" value="<%= list.getStart_time()%>">
+                                                                                                </div>-->
 
                                                 <div class="plan-table">
                                                     <% for (DateDTO dateAList : planDate) {%>
@@ -384,7 +343,7 @@
                                                 <input type="hidden" id="recipeIdInput<%= list.getId()%>" name="meal_id" value="<%= list.getId()%>">
 
                                                 <div class="modal-footer">
-                                                    <button type="submit" id="changeTimeBtn" name="action" value="editStartTimeRecipe" class="remove-recipe-from-plan-button" 
+                                                    <button type="submit" id="changeTimeBtn" name="action" value="editStartTimeRecipe" class="add-recipe-to-plan-modal-button" 
                                                             data-recipeid="<%= list.getId()%>" onclick="setRecipeId(this, '<%= list.getId()%>')">Change time</button>
 
                                                     <button type="submit" name="action" value="removePlanRecipe" class="remove-recipe-from-plan-button" 

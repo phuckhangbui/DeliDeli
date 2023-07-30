@@ -116,7 +116,7 @@ public class WeekDAO {
         String sql = "SELECT w.*\n"
                 + "FROM Week w\n"
                 + "LEFT JOIN [Date] d ON w.id = d.week_id \n"
-                + "WHERE d.[date] LIKE ? AND d.plan_id = ? AND w.is_template = 0";
+                + "WHERE d.[date] = ? AND d.plan_id = ? AND w.is_template = 0";
 
         try {
             con = DBUtils.getConnection();

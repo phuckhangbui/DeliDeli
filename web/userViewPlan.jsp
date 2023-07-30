@@ -138,9 +138,72 @@
                                                         data-bs-target="#removeAllRecipes" onclick="redirectToEditPlan()">
                                                     Edit Plan
                                                 </button>-->
-                        <a href="UserController?action=editPlan&id=<%= plan.getId()%>&isSearch=false&distanceInDays=<%= distanceInDays%>">
-                            <img src="./assets/edit-icon.svg" alt="">
-                        </a>
+                        <div>
+                            <button id="planButton" type="button" class="plan-navbar-activate" onclick="disableActivatePlan()">
+                                <% if (plan.isStatus()) { %>
+                                Disable
+                                <% } else { %>
+                                Activate
+                                <% }%>
+                            </button>
+                            <script>
+                                // Disable/Activate the plan using AJAX
+                                function disableActivatePlan() {
+                                    var planId = '<%= plan.getId()%>';
+                                    var button = document.getElementById("planButton");
+
+                                    var xhr = new XMLHttpRequest();
+                                    xhr.open("POST", "DisablePlanServlet", true);
+                                    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+                                    xhr.onload = function () {
+                                        if (xhr.status === 200) {
+                                            // Update button text based on the response
+                                            if (button.innerText === "Disable") {
+                                                button.innerText = "Activate";
+                                            } else {
+                                                button.innerText = "Disable";
+                                            }
+                                        } else {
+                                            console.error("Failed to disable/activate the plan.");
+                                        }
+                                    };
+
+                                    xhr.send("plan_id=" + encodeURIComponent(planId));
+                                }
+                            </script>
+                            <button type="button" class="plan-navbar-delete" data-bs-toggle="modal"
+                                    data-bs-target="#deletePlanConfirm">
+                                Delete Plan
+                            </button>
+                            <!-- Modal -->
+                            <div class="modal fade" id="deletePlanConfirm" tabindex="-1"
+                                 aria-labelledby="deletePlanConfirmModalLabel" aria-hidden="true">
+                                <form action="UserController" method="POST" class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="removeAllRecipesModalLabel">Delete Plan</h1>
+                                        </div>
+                                        <div class="modal-body">
+                                            Are you sure you want to delete this plan ?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">No, I changed my mind</button>
+
+                                            <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
+                                            <input type="hidden" name="user_id" value="<%= user.getId()%>" />
+
+                                            <button type="submit" name="action" value="deletePlanConfirmed" class="remove-recipe-from-plan-button">Yes, delete it</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <a href="UserController?action=editPlan&id=<%= plan.getId()%>&isSearch=false&distanceInDays=<%= distanceInDays%>">
+                                <img src="./assets/edit-icon.svg" alt="">
+                            </a>
+                        </div>
+
                         <!-- <button class="plan-navbar-edit">
                                 <a href="userViewPlan.html"><img src="./assets/leave.svg" alt=""></a>
                             </button> -->
@@ -211,7 +274,7 @@
                                             for (MealDTO list : breakfastMeals) {
                                                 RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(list.getRecipe_id());
                                                 String modalId = "recipeNutritionModal" + list.getId(); // Generate unique modal ID for each recipe
-                                    %>
+%>
                                     <button class="plan-table-week-recipe-content" type="button" data-bs-toggle="modal" data-bs-target="#<%= modalId%>">
                                         <div class="plan-table-week-recipe-content-image">
                                             <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
@@ -235,8 +298,15 @@
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body recipe-nutriton-modal">
-                                                    <div class="recipe-nutriton-modal-image">
+                                                    <a class="recipe-nutriton-modal-image" href="MainController?action=getRecipeDetailById&id=<%= recipe.getId()%>" target="_blank">
                                                         <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
+                                                        <h3><%= recipe.getTitle()%></h3>
+                                                    </a>
+
+                                                    <div class="row recipe-nutrtion-modal-time-view">
+                                                        <div class="col-md-12">
+                                                            <div >Start time: <%= formattedTime%></div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -268,7 +338,7 @@
                                             for (MealDTO list : lunchMeals) {
                                                 RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(list.getRecipe_id());
                                                 String modalId = "recipeNutritionModal" + list.getId(); // Generate unique modal ID for each recipe
-                                    %>
+%>
                                     <button class="plan-table-week-recipe-content" type="button" data-bs-toggle="modal" data-bs-target="#<%= modalId%>">
                                         <div class="plan-table-week-recipe-content-image">
                                             <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
@@ -324,7 +394,7 @@
                                             for (MealDTO list : dinnerMeals) {
                                                 RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(list.getRecipe_id());
                                                 String modalId = "recipeNutritionModal" + list.getId(); // Generate unique modal ID for each recipe
-%>
+                                    %>
                                     <button class="plan-table-week-recipe-content" type="button" data-bs-toggle="modal" data-bs-target="#<%= modalId%>">
                                         <div class="plan-table-week-recipe-content-image">
                                             <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">

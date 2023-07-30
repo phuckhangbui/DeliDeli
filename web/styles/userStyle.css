@@ -2064,8 +2064,12 @@ span {
 .recipe-nutriton-modal-image img{
     width: 400px;
 }
-
-
+.recipe-nutriton-modal-image{
+    text-align: center;
+}
+.recipe-nutriton-modal-image h3{
+    margin-top: 5px;
+}
 
 
 
@@ -2556,4 +2560,16 @@ input[type=checkbox]{
 .date-changer input {
     border-radius: 20px;
     padding: 5px 10px;
+}
+.sync-checkbox{
+    margin-left: 15px;
+}
+.recipe-nutrtion-modal-time{
+    font-size: 16px;
+}
+.recipe-nutrtion-modal-time span{
+    color: rgb(0,0,0,0.5)
+}
+.recipe-nutrtion-modal-time-view{
+    font-size: 20px;
 }

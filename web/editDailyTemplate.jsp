@@ -67,11 +67,11 @@
 <!--                            <li class="breadcrumb-item"><a href="UserController?action=editPlan&id=<%= plan.getId()%>&isSearch=false"> Plan - <%= plan.getName()%> </a></li>-->
                             <li class="breadcrumb-item"><a href="UserController?action=planManagement&userId=<%=user.getId()%>"> Plans List </a></li> 
                             <li class="breadcrumb-item" aria-current="page"><a href="UserController?action=getPlanDetailById&id=<%= plan.getId()%>"> <%= plan.getName()%> </a></li>
-                            <li class="breadcrumb-item current-link" aria-current="page">Edit Template</li>
+                            <li class="breadcrumb-item current-link" aria-current="page">Daily Template</li>
                         </ol>
                     </nav>
                     <div class="edit-plan-header">
-                        <p>Edit Template</p>
+                        <p>Daily Template</p>
                         <p>Template is used to overwrite all recipes in each and every day in the plan to this template's recipes</p>
                     </div>
 
@@ -111,7 +111,6 @@
                                 </div>  
                             </form>
                         </div>
-
                     </div>
 
 
@@ -126,7 +125,7 @@
                         %>
                         <div class="row plan-table-week">
                             <div class="col-md-12 plan-table-week-day">
-                                Daily Template
+                                Template Day
                             </div>
                             <div class="col-md-3 plan-table-week-column">
                                 <div class="plan-table-week-nutrition-header">Total Nutrition</div>
@@ -176,18 +175,26 @@
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <h1 class="modal-title fs-5" id="exampleModalLabel"><%= recipe.getTitle()%></h1>
-                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Start time: <%= list.getStart_time()%></h1>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body recipe-nutriton-modal">
-                                                    <div class="recipe-nutriton-modal-image">
+                                                    <a class="recipe-nutriton-modal-image" href="MainController?action=getRecipeDetailById&id=<%= recipe.getId()%>" target="_blank">
                                                         <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
-                                                    </div>
-                                                </div>
+                                                        <h3><%= recipe.getTitle()%></h3>
+                                                    </a>
 
-                                                <div class="modal-body recipe-nutriton-modal">
-                                                    <label for="start_time">Chose the time again if you want:</label>
-                                                    <input type="time" id="start_time" name="start_time" class="start-time-input" value="<%= list.getStart_time()%>">
+                                                    <div class="row recipe-nutrtion-modal-time">
+                                                        <div class="col-md-6">
+                                                            <div >Start time: </div>
+                                                            <br>
+                                                            <div><%= formattedTime%></div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div>Chose time again: <span>(Optional)</span></div>
+                                                            <input type="time" id="start_time" name="start_time" class="start-time-input" value="<%= list.getStart_time()%>">
+                                                            
+                                                        </div>
+                                                    </div>
                                                 </div>
 
                                                 <div class="plan-table">
@@ -205,7 +212,7 @@
                                                 <input type="hidden" id="recipeIdInput<%= list.getId()%>" name="meal_id" value="<%= list.getId()%>">
 
                                                 <div class="modal-footer">
-                                                    <button type="submit" id="changeTimeBtn" name="action" value="editStartTimeRecipe" class="remove-recipe-from-plan-button" 
+                                                    <button type="submit" id="changeTimeBtn" name="action" value="editStartTimeRecipe" class="add-recipe-to-plan-modal-button" 
                                                             data-recipeid="<%= list.getId()%>" onclick="setRecipeId(this, '<%= list.getId()%>')">Change time</button>
 
                                                     <button type="submit" name="action" value="removePlanRecipe" class="remove-recipe-from-plan-button" 
