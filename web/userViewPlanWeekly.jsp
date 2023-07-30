@@ -43,6 +43,7 @@
             rel="stylesheet">
         <%
             PlanDTO plan = (PlanDTO) request.getAttribute("plan");
+            String selectedDate = (String) request.getAttribute("selectedDate");
             LocalDate currentDate = LocalDate.now();
             java.sql.Date startDateSQL = plan.getStart_at();
             LocalDate startLocalDate = startDateSQL.toLocalDate();
@@ -144,7 +145,7 @@
                                                         data-bs-target="#removeAllRecipes" onclick="redirectToEditPlan()">
                                                     Edit Plan
                                                 </button>-->
-                        <a href="UserController?action=editPlan&id=<%= plan.getId()%>&isSearch=false&distanceInDays=<%= distanceInDays%>">
+                        <a href="UserController?action=editPlan&id=<%= plan.getId()%>&isSearch=false&selectedDate=<%= selectedDate%>">
                             <img src="./assets/edit-icon.svg" alt=""></a>
 
                         <!-- <button class="plan-navbar-edit">
@@ -153,13 +154,25 @@
                     </div>
                     <%
                         ArrayList<DateDTO> planDate = (ArrayList<DateDTO>) request.getAttribute("planDate");
-//                        ArrayList<DateDTO> allPlanDate = (ArrayList<DateDTO>) request.getAttribute("allPlanDate");
-//                    %>
+                        ArrayList<DateDTO> allPlanDate = (ArrayList<DateDTO>) request.getAttribute("allPlanDate");
+                        String minDate = allPlanDate.get(0).getDate().toLocalDate().toString();
+                        String maxDate = allPlanDate.get(allPlanDate.size() - 1).getDate().toLocalDate().toString();
+                    %>
 
+                    <input type="date" name="dateChanger" id="dateInput" min="<%= minDate%>" max="<%= maxDate%>" onchange="sendDateToServlet()">
+
+                    <script>
+                        function sendDateToServlet() {
+                            var selectedDate = new Date(document.getElementById("dateInput").value);
+                            var servletURL = "PlanDetailServlet?id=<%= plan.getId()%>&selectedDate=" + selectedDate.toISOString();
+                            window.location.href = servletURL;
+                        }
+                    </script>
 
                     <div class=" plan-table">
                         <%
                             for (DateDTO dateList : planDate) {
+                                String formattedDate = DateNameChanger.formatDateWithOrdinalIndicator(dateList.getDate(), dateFormat);
                                 ArrayList<MealDTO> breakfastMeals = MealDAO.getAllMealsTimeBased(plan.getId(), dateList.getId(), true, false, false);
                                 ArrayList<MealDTO> lunchMeals = MealDAO.getAllMealsTimeBased(plan.getId(), dateList.getId(), false, true, false);
                                 ArrayList<MealDTO> dinnerMeals = MealDAO.getAllMealsTimeBased(plan.getId(), dateList.getId(), false, false, true);
@@ -172,7 +185,7 @@
                                     dateList.getDate();
                                     String dayOfWeek = dayOfWeekFormat.format(dateList.getDate());
                                 %>
-                                <%= dayOfWeek%>
+                                <%= dayOfWeek%> (<%= formattedDate%>)
                             </div>
                             <div class="col-md-3 plan-table-week-column">
                                 <div class="plan-table-week-nutrition-header">Total Nutrition</div>
@@ -198,7 +211,7 @@
                                             for (MealDTO list : breakfastMeals) {
                                                 RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(list.getRecipe_id());
                                                 String modalId = "recipeNutritionModal" + list.getId(); // Generate unique modal ID for each recipe
-                                    %>
+%>
                                     <button class="plan-table-week-recipe-content" type="button" data-bs-toggle="modal" data-bs-target="#<%= modalId%>">
                                         <div class="plan-table-week-recipe-content-image">
                                             <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
@@ -254,7 +267,7 @@
                                             for (MealDTO list : lunchMeals) {
                                                 RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(list.getRecipe_id());
                                                 String modalId = "recipeNutritionModal" + list.getId(); // Generate unique modal ID for each recipe
-                                    %>
+%>
                                     <button class="plan-table-week-recipe-content" type="button" data-bs-toggle="modal" data-bs-target="#<%= modalId%>">
                                         <div class="plan-table-week-recipe-content-image">
                                             <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
@@ -310,7 +323,7 @@
                                             for (MealDTO list : dinnerMeals) {
                                                 RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(list.getRecipe_id());
                                                 String modalId = "recipeNutritionModal" + list.getId(); // Generate unique modal ID for each recipe
-%>
+                                    %>
                                     <button class="plan-table-week-recipe-content" type="button" data-bs-toggle="modal" data-bs-target="#<%= modalId%>">
                                         <div class="plan-table-week-recipe-content-image">
                                             <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">

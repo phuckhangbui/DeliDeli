@@ -21,18 +21,14 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class EditStartTimeRecipeServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    private static final String ERROR = "error.jsp";
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+
+        String url = ERROR;
+
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             int date_id = Integer.parseInt(request.getParameter("date_id"));
@@ -40,6 +36,10 @@ public class EditStartTimeRecipeServlet extends HttpServlet {
             int meal_id = Integer.parseInt(request.getParameter("meal_id"));
             String start_timeStr = request.getParameter("start_time");
             String distanceInDays = request.getParameter("distanceInDays");
+            String selectedDate = request.getParameter("selectedDate");
+            boolean isDaily = Boolean.parseBoolean(request.getParameter("isDaily"));
+
+            boolean isTemplate = false;
 
             SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
             java.util.Date parsedStart = timeFormat.parse(start_timeStr);
@@ -49,9 +49,21 @@ public class EditStartTimeRecipeServlet extends HttpServlet {
             boolean result = MealDAO.changeStartTimeOfRecipe(meal_id, date_id, start_time);
 
             if (result) {
-                response.sendRedirect("UserController?action=editPlan&id=" + plan_id + "&isSearch=false&distanceInDays=" + distanceInDays);
+                if (isDaily) {
+                    url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=false&distanceInDays=" + distanceInDays;
+                } else {
+                    url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=false&selectedDate=" + selectedDate;
+                }
+                isTemplate = Boolean.parseBoolean(request.getParameter("isTemplate"));
+                if (isTemplate) {
+                    url = "LoadEditDailyTemplateServlet?id=" + plan_id + "&isSearch=false";
+                }
+            }
+
+            if (url != null) {
+                response.sendRedirect(url);
             } else {
-                response.sendRedirect("error.jsp");
+                response.sendRedirect(ERROR);
             }
 
 //            System.out.println("Success");

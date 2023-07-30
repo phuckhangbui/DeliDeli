@@ -84,6 +84,23 @@
                         <p>View your eating schedule that you have planned out for yourself</p>
                     </div>
 
+                    <form action="UserController">
+                        <input name="id" value="<%= plan.getId()%>" hidden=""/>
+                        <button type="submit" name="action" value="loadEditPlanDetail">Edit Plan's Detail</button>
+
+                    </form>
+                    <% if (plan.isDaily()) {%>
+                    <form action="UserController">
+                        <input name="id" value="<%= plan.getId()%>" hidden="">
+                        <button type="submit" name="action" value="loadEditDailyTemplate">Edit Template</button>
+                    </form>
+
+                    <%} else {%>
+                    <form action="UserController">
+                        <input name="id" value="<%= plan.getId()%>" hidden="">
+                        <button type="submit" name="action" value="loadEditDailyTemplate" disabled="">Edit Template</button>
+                    </form>
+                    <%}%>
                     <div class="plan-info">
                         <div class="row">
 
@@ -172,6 +189,7 @@
                     <div class=" plan-table">
                         <%
                             for (DateDTO dateList : planDate) {
+                                String formattedDate = DateNameChanger.formatDateWithOrdinalIndicator(dateList.getDate(), dateFormat);
                                 ArrayList<MealDTO> breakfastMeals = MealDAO.getAllMealsTimeBased(plan.getId(), dateList.getId(), true, false, false);
                                 ArrayList<MealDTO> lunchMeals = MealDAO.getAllMealsTimeBased(plan.getId(), dateList.getId(), false, true, false);
                                 ArrayList<MealDTO> dinnerMeals = MealDAO.getAllMealsTimeBased(plan.getId(), dateList.getId(), false, false, true);
@@ -184,7 +202,7 @@
                                     dateList.getDate();
                                     String dayOfWeek = dayOfWeekFormat.format(dateList.getDate());
                                 %>
-                                <%= dayOfWeek%>
+                                <%= dayOfWeek%> (<%= formattedDate%>)
                             </div>
                             <div class="col-md-3 plan-table-week-column">
                                 <div class="plan-table-week-nutrition-header">Total Nutrition</div>
@@ -210,14 +228,15 @@
                                             for (MealDTO list : breakfastMeals) {
                                                 RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(list.getRecipe_id());
                                                 String modalId = "recipeNutritionModal" + list.getId(); // Generate unique modal ID for each recipe
-                                    %>
+%>
                                     <button class="plan-table-week-recipe-content" type="button" data-bs-toggle="modal" data-bs-target="#<%= modalId%>">
                                         <div class="plan-table-week-recipe-content-image">
                                             <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
                                         </div>
                                         <div class="plan-table-week-recipe-content-des">
                                             <p class="plan-table-week-recipe-content-des-title"><%= recipe.getTitle()%></p>
-                                            <% SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
+                                            <%
+                                                SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
                                                 String formattedTime = timeFormat.format(list.getStart_time());
                                             %>
                                             <p class="plan-table-week-recipe-content-des-time"><%= formattedTime%></p>
@@ -266,7 +285,7 @@
                                             for (MealDTO list : lunchMeals) {
                                                 RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(list.getRecipe_id());
                                                 String modalId = "recipeNutritionModal" + list.getId(); // Generate unique modal ID for each recipe
-                                    %>
+%>
                                     <button class="plan-table-week-recipe-content" type="button" data-bs-toggle="modal" data-bs-target="#<%= modalId%>">
                                         <div class="plan-table-week-recipe-content-image">
                                             <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">
@@ -322,7 +341,7 @@
                                             for (MealDTO list : dinnerMeals) {
                                                 RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(list.getRecipe_id());
                                                 String modalId = "recipeNutritionModal" + list.getId(); // Generate unique modal ID for each recipe
-%>
+                                    %>
                                     <button class="plan-table-week-recipe-content" type="button" data-bs-toggle="modal" data-bs-target="#<%= modalId%>">
                                         <div class="plan-table-week-recipe-content-image">
                                             <img src="ServletImageLoader?identifier=<%= RecipeDAO.getThumbnailByRecipeId(recipe.getId()).getThumbnailPath()%>" alt="">

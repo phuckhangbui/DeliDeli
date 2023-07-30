@@ -32,6 +32,7 @@ public class AddPlanMultiplesMealServlet extends HttpServlet {
     private static final String BREAKFAST_START = "08:00";
     private static final String LUNCH_START = "12:00";
     private static final String DINNER_START = "17:00";
+    private static final String ERROR = "error.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -40,22 +41,25 @@ public class AddPlanMultiplesMealServlet extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             //int date_id = Integer.parseInt(request.getParameter("date_id"));
             boolean result = false;
-            
+            String url = ERROR;
+
             String[] selectedDates = request.getParameterValues("date_id");
-            System.out.println("selectedDates - " + selectedDates);
             String[] timeIds = request.getParameterValues("timeId");
+            String distanceInDays = request.getParameter("distanceInDays");
+            String selectedDate = request.getParameter("selectedDate");
             int recipe_id = Integer.parseInt(request.getParameter("recipe_id"));
             int plan_id = Integer.parseInt(request.getParameter("plan_id"));
             int week_id = Integer.parseInt(request.getParameter("week_id"));
-            String distanceInDays = request.getParameter("distanceInDays");
+            boolean isDaily = Boolean.parseBoolean(request.getParameter("isDaily"));
+            boolean isTemplate = false;
 
             List<Integer> dateIdList = new ArrayList<>();
             List<Time> timeList = new ArrayList<>();
-            
+
             Set<String> uniqueTimeIdsSet = new HashSet<>(Arrays.asList(timeIds));
 
             String[] uniqueTimeIds = uniqueTimeIdsSet.toArray(new String[0]);
-            
+
             if (uniqueTimeIds != null) {
                 for (String timeStr : uniqueTimeIds) {
                     SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
@@ -64,16 +68,28 @@ public class AddPlanMultiplesMealServlet extends HttpServlet {
                     timeList.add(time);
                 }
             }
-            
+
             for (Time time : timeList) {
                 for (String dateId : selectedDates) {
                     result = MealDAO.addMealById(new Integer(dateId), recipe_id, time);
                     //System.out.println("Good");
                 }
             }
-            
-            response.sendRedirect("UserController?action=editPlan&id=" + plan_id + "&isSearch=false&distanceInDays=" + distanceInDays);
-            
+
+            if (result) {
+                if (isDaily) {
+                    url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=false&distanceInDays=" + distanceInDays;
+                } else {
+                    url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=false&selectedDate=" + selectedDate;
+                }
+                isTemplate = Boolean.parseBoolean(request.getParameter("isTemplate"));
+                if (isTemplate) {
+                    url = "LoadEditDailyTemplateServlet?id=" + plan_id + "&isSearch=false";
+                }
+            }
+
+            response.sendRedirect(url);
+
 //
 //            if (selectedDates != null) {
 //                for (String dateString : selectedDates) {
@@ -82,7 +98,6 @@ public class AddPlanMultiplesMealServlet extends HttpServlet {
 //                    dateIdList.add(date_id);
 //                }
 //            }
-
 //            out.println("Week " + week_id);
 //            out.println("Plan " + plan_id);
 //            out.println("Recipe " + recipe_id);
@@ -98,9 +113,7 @@ public class AddPlanMultiplesMealServlet extends HttpServlet {
 //                    out.println("Time: " + timeId);
 //                }
 //            }
-
-        }
-        catch (ParseException e) {
+        } catch (ParseException e) {
             e.printStackTrace();
         }
     }

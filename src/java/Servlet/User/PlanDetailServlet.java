@@ -8,10 +8,17 @@ import DAO.DateDAO;
 import DAO.DietDAO;
 import DTO.DietDTO;
 import DAO.PlanDAO;
+import DAO.WeekDAO;
 import DTO.PlanDTO;
 import DTO.DateDTO;
+import DTO.WeekDTO;
 import java.io.IOException;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
@@ -42,6 +49,9 @@ public class PlanDetailServlet extends HttpServlet {
 
         // Daily
         if (plan.isDaily()) {
+
+            WeekDTO week = WeekDAO.getWeekByPlanID(plan.getId());
+
             ArrayList<DateDTO> planDate = DateDAO.getAllDateByPlanID(plan.getId());
             ArrayList<DateDTO> displayDate = new ArrayList<>();
 
@@ -50,19 +60,13 @@ public class PlanDetailServlet extends HttpServlet {
             LocalDate startLocalDate = startDateSQL.toLocalDate();
             int distanceInDays = (int) calculateDistanceInDays(startLocalDate, currentDate);
 
-//        System.out.println("distanceInDays - " + distanceInDays);
             // distanceInDays here act as an param to detect whether the date changed at page by user.
             String distanceInDaysParam = request.getParameter("distanceInDays");
 
-//        System.out.println("distanceInDaysParam - " + distanceInDaysParam);
             if (distanceInDaysParam != null) {
                 distanceInDays = Integer.parseInt(distanceInDaysParam);
                 request.setAttribute("distanceInDays", distanceInDays);
 
-                // A little note for myself (how it traverse through date automatically)
-                // After calculate the distance date, the plan will change the date based on the distance in date value
-                // dateList is the every date inside that plan, it will traverse through every date til they find the 
-                // startLocalDate (plan startdate) == dateList and add it to the arrayList to display on JSP.
                 for (DateDTO date : planDate) {
                     LocalDate dateList = date.getDate().toLocalDate();
                     if (dateList.equals(startLocalDate.plusDays(distanceInDays))) {
@@ -99,19 +103,52 @@ public class PlanDetailServlet extends HttpServlet {
 
             // Weekly    
         } else {
+            String selectedDateStr = request.getParameter("selectedDate");
+            DateDTO selectedDate = null;
+            WeekDTO week = null;
+
+            if (selectedDateStr != null && !selectedDateStr.isEmpty()) {
+                java.util.Date utilDate = null;
+                try {
+                    // HTML input (if date selected)
+
+                    SimpleDateFormat sdfInput = new SimpleDateFormat("yyyy-MM-dd");
+                    utilDate = sdfInput.parse(selectedDateStr);
+
+                    SimpleDateFormat sdfOutput = new SimpleDateFormat("yyyy-MM-dd");
+                    selectedDateStr = sdfOutput.format(utilDate);
+                    request.setAttribute("selectedDate", selectedDateStr);
+
+                    week = WeekDAO.getWeekByDate(selectedDateStr, plan.getId());
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+            } else {
+                // Plan object input (if date not selected)
+
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                selectedDateStr = sdf.format(plan.getStart_at());
+                request.setAttribute("selectedDate", selectedDateStr);
+
+                week = WeekDAO.getWeekByDate(selectedDateStr, plan.getId());
+
+            }
+
             ArrayList<DateDTO> planDate = DateDAO.getAllDateByPlanID(plan.getId());
-            ArrayList<DateDTO> displayDate = new ArrayList<>();
+            ArrayList<DateDTO> displayDate = DateDAO.getAllDateByPlanIDAndWeekID(plan.getId(), week.getId());
 
-            LocalDate currentDate = LocalDate.now();
-            java.sql.Date startDateSQL = plan.getStart_at();
-            LocalDate startLocalDate = startDateSQL.toLocalDate();
-            int distanceInDays = (int) calculateDistanceInDays(startLocalDate, currentDate);
+            // Get 7 days in a week.
+            request.setAttribute("planDate", displayDate);
 
-            String distanceInDaysParam = request.getParameter("distanceInDays");
+            // Get all days in all weeks within the plan.
+            request.setAttribute("allPlanDate", planDate);
 
-            request.setAttribute("planDate", planDate);
-//            request.setAttribute("allPlanDate", planDate);
-
+//            for (int i = 0; i < planDate.size(); i++) {
+//                DateDTO date = planDate.get(i);
+//                System.out.println((i + 1) + ". " + date.toString());
+//            }
             DietDTO diet = DietDAO.getTypeById(plan.getDiet_id());
             request.setAttribute("diet", diet);
 
@@ -119,6 +156,7 @@ public class PlanDetailServlet extends HttpServlet {
             RequestDispatcher rq = request.getRequestDispatcher("userViewPlanWeekly.jsp");
             rq.forward(request, response);
         }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

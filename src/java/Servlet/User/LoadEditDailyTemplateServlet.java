@@ -95,7 +95,6 @@ public class LoadEditDailyTemplateServlet extends HttpServlet {
                     }
                 }
 
-//            System.out.println("Max meal error - " + error);
                 request.setAttribute("max_meal_error", error);
 
                 if (isSearch) {

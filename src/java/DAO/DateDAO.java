@@ -12,6 +12,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -118,7 +120,7 @@ public class DateDAO {
         }
         return result;
     }
-    
+
     public static ArrayList<DateDTO> getDailyTemplate(int plan_id) {
         Connection con = null;
         PreparedStatement stm = null;
@@ -681,8 +683,8 @@ public class DateDAO {
         ResultSet rs = null;
         DateDTO result = new DateDTO();
 
-        String sql = "SELECT * FROM [Date] d JOIN Week w ON d.week_id = w.id\n" +
-        "WHERE d.[plan_id] = ? AND w.is_template = 0 AND date = ? AND w.is_sync = 1";
+        String sql = "SELECT * FROM [Date] d JOIN Week w ON d.week_id = w.id\n"
+                + "WHERE d.[plan_id] = ? AND w.is_template = 0 AND date = ? AND w.is_sync = 1";
 
         try {
             con = DBUtils.getConnection();
