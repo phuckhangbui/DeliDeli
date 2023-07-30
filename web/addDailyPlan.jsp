@@ -113,6 +113,7 @@
                                         Next
                                     </button>
                                 </div>
+                            </div>
                         </form>    
 
                     </div>

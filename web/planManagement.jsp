@@ -98,58 +98,52 @@
                                         </p>
                                     </div>
                                 </a>
-                                <form class="weekly-plans-plan-content-delete">
-                                    <button type="button" data-bs-toggle="modal" data-bs-target="#deletePlanModal">
-                                        <img src="assets/close.svg" alt="">
+                                <div class="weekly-plans-plan-content-delete">
+                                    <button type="button" data-bs-toggle="modal" data-bs-target="#deletePlanModal<%= list.getId()%>">
+                                        <img src="assets/close-icon.svg" alt="">
                                     </button>
-                                </form>
+                                </div>
                                 <!-- Modal -->
-                                <div class="modal fade" id="deletePlanModal<%= list.getId()%>" tabindex="-1"                                     
+                                <div class="modal fade" id="deletePlanModal<%= list.getId()%>" tabindex="-1"
                                      aria-labelledby="deletePlanModalLabel" aria-hidden="true">
                                     <form action="UserController" method="POST" class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="removeAllRecipesModalLabel">Delete Plan</h1>
+                                            </div>
+                                            <div class="modal-body">
+                                                Are you sure you want to delete this plan ?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">No, I changed my mind</button>
 
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h1 class="modal-title fs-5" id="removeAllRecipesModalLabel">Delete Plan</h1>
-                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                            aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    ...
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary"
-                                                            data-bs-dismiss="modal">No, I changed my mind</button>
+                                                <input type="hidden" name="plan_id" value="<%= list.getId()%>" />
+                                                <input type="hidden" name="user_id" value="<%= user.getId()%>" />
 
-                                                    <input type="hidden" name="plan_id" value="<%= list.getId()%>" />
-                                                    <input type="hidden" name="user_id" value="<%= user.getId()%>" />
-
-                                                    <button type="submit" name="action" value="deletePlanConfirmed" class="remove-recipe-from-plan-button">Yes, delete it</button>
-                                                    <button type="button" class="btn btn-primary">Save changes</button>
-                                                </div>
+                                                <button type="submit" name="action" value="deletePlanConfirmed" class="remove-recipe-from-plan-button">Yes, delete it</button>
                                             </div>
                                         </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
-                        <%
-                                }
+                    <%
                             }
-                        %>   
+                        }
+                    %>   
 
-                    </div>
                 </div>
             </div>
         </div>
+    </div>
 
 
-        <!--         Footer       -->
-        <%@include file="footer.jsp" %>
+    <!--         Footer       -->
+    <%@include file="footer.jsp" %>
 
 
-        <!--      Bootstrap for JS         -->
-        <script src="bootstrap/js/bootstrap.min.js" ></script>
-    </body>
+    <!--      Bootstrap for JS         -->
+    <script src="bootstrap/js/bootstrap.min.js" ></script>
+</body>
 </html>

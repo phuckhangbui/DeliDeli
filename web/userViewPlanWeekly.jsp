@@ -154,7 +154,9 @@
                         String maxDate = allPlanDate.get(allPlanDate.size() - 1).getDate().toLocalDate().toString();
                     %>
 
-                    <input type="date" name="dateChanger" id="dateInput" min="<%= minDate%>" max="<%= maxDate%>" onchange="sendDateToServlet()">
+                    <div class="date-changer"> 
+                        <input type="date" name="dateChanger" id="dateInput" min="<%= minDate%>" max="<%= maxDate%>" onchange="sendDateToServlet()">
+                    </div>
 
                     <script>
                         function sendDateToServlet() {

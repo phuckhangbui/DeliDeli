@@ -129,7 +129,7 @@
                     <div class="plan-navbar">
                         <form action="UserController">
                             <input name="id" value="<%= plan.getId()%>" hidden="">
-                            <button type="submit" class="plan-navbar-remove" name="action" value="useWeeklyPlanTemplate" >
+                            <button type="submit" class="plan-navbar-remove" name="action" value="useDailyPlanTemplate" >
                                 Template
                             </button>
                         </form>

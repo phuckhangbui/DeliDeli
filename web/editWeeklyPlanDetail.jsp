@@ -46,22 +46,30 @@
                                 <li class="breadcrumb-item current-link" aria-current="page">Edit Info</li>
                             </ol>
                         </nav>
+                        <!--                        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                                                    <ol class="breadcrumb">
+                                                        <li class="breadcrumb-item"><a href="home.jsp">Home</a></li>
+                                                        <li class="breadcrumb-item"><a href="UserController?action=planManagement"> Plan</a></li> 
+                                                        <li class="breadcrumb-item"><a href="UserController?action=categoryLoadToPlan"> Add Plan</a></li> 
+                                                        <li class="breadcrumb-item current-link" aria-current="page">Daily Plan</li>
+                                                    </ol>
+                                                </nav>-->
+
+
 
 
                         <!-- plan-edit -->
                         <form action="UserController" method="post" class="plan-edit">
                             <div class="add-plan-header">
+
                                 <p>Info Section</p>
                                 <p>
                                     Add, edit or remove information about your plan
                                 </p>
                             </div>
                             <div class="row add-plan-date ">
-                                <div class="add-plan-info-header">
-                                    Plan Period <span class="add-plan-info-header-des">(Each plan will have a fixed period of 1 week)</span>
-                                </div>
-                                <div class="col-md-6 add-plan-info-date">
-                                    Starting Date: <span>*</span>
+                                <div class="col-md-4 add-plan-info-date">
+                                    Starting Date <span>*</span>
                                     <div>
                                         <input type="date" id="startingDate" name="start_date" value="<%= plan.getStart_at()%>" onchange="calculateNewDate()" min="<%= LocalDate.now()%>" disabled="">
                                     </div>
@@ -70,13 +78,11 @@
                                 <div class="col-md-4 add-plan-info-date">
                                     Plan's Length <span>*</span>
                                     <div>
-                                        <input type="number" id="length" name="planLength" onchange="calculateEndDate()" min='1' max='12' value="<%= planLength%>" required> 
+                                        <input type="text" id="length" name="planLength" onchange="calculateEndDate()" min="1" max="12"
+                                               oninput="this.value=this.value.slice(0,this.maxLength),this.value=this.value.replace(/[^0-9]/g,''), checkWeekRange(this)"
+                                               value="<%= planLength%>" maxlength="2" required>
+                                        <span class="add-plan-info-date-days">week(s)</span>
                                     </div>
-                                    <input type="text" id="length" name="planLength" onchange="calculateEndDate()" min="1" max="4"
-                                           oninput="this.value=this.value.slice(0,this.maxLength),this.value=this.value.replace(/[^0-9]/g,''), checkWeekRange(this)"
-                                           value="<%= planLength%>" maxlength="1" required>
-                                    <span class="add-plan-info-date-days">week(s)</span>
-
                                 </div>
                                 <div class="col-md-4 add-plan-info-date">
                                     End Date
@@ -87,11 +93,10 @@
                                     function checkWeekRange(input) {
                                         input.setCustomValidity("");
                                         const value = parseInt(input.value);
-                                        if (isNaN(value) || value < 1 || value > 4) {
-                                            input.setCustomValidity("Please enter a number between 1 and 4 weeks.");
+                                        if (isNaN(value) || value < 1 || value > 12) {
+                                            input.setCustomValidity("Please enter a number between 1 and 12 weeks.");
                                         }
                                     }
-
                                     function calculateEndDate() {
                                         var startDate = new Date(document.getElementById("startingDate").value);
                                         var planLength = parseInt(document.getElementById("length").value);

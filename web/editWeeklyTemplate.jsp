@@ -420,20 +420,51 @@
                     </div>
 
 
+                    <div class="use-template">
+                        <button type="button" class="" data-bs-toggle="modal" data-bs-target="#useTemplateModal">
+                            USE
+                        </button>
+                    </div>
 
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="useTemplateModal" tabindex="-1" aria-labelledby="useTemplateModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmation</h1>
+                                </div>
+                                <form action="UserController" class="use-template-confirm">
+                                    <div class="modal-body">
+                                        Are you sure you want to use this template, it will overwrite all of your current recipes in this plan to this template ?
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <input name="id" value="<%= plan.getId()%>" hidden="">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, I've changed my mind</button>
+                                        <button type="submit" class="use-template-confirm-button" name="action" value="useWeeklyPlanTemplate" >
+                                            Yes, use it
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
 
 
                 </div>
 
 
-                <form action="UserController">
-                    <div class="use-template">
-                        <input name="id" value="<%= plan.getId()%>" hidden="">
-                        <button type="submit" class="plan-navbar-remove" name="action" value="useWeeklyPlanTemplate" data-bs-toggle="modal" data-bs-target="#useTemplateModal">
-                            USE
-                        </button>
-                    </div>
-                </form>
+                <!--                <form action="UserController">
+                                    <div class="use-template">
+                                        <input name="id" value="<%= plan.getId()%>" hidden="">
+                                        <button type="submit" class="plan-navbar-remove" name="action" value="useWeeklyPlanTemplate" data-bs-toggle="modal" data-bs-target="#useTemplateModal">
+                                            USE
+                                        </button>
+                                    </div>
+                                </form>-->
+
+
 
 
 
@@ -526,13 +557,13 @@
                                     if (plan.isDaily()) {
                                 %>
                                 <button type="button" class="" data-bs-toggle="modal" data-bs-target="#addMultiplesMealToPlan<%= list.getId()%>">
-                                    Add daily
+                                    Add
                                 </button>  
                                 <%
                                 } else {
                                 %>
                                 <button type="button" class="" data-bs-toggle="modal" data-bs-target="#addWeeklyMealToPlan<%= list.getId()%>">
-                                    Add weekly
+                                    Add
                                 </button>
                                 <%
                                     }

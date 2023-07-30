@@ -33,9 +33,9 @@
                         <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="home.jsp">Home</a></li>
-                                <li class="breadcrumb-item"><a href="UserController?action=planManagement"> Plan</a></li> 
+                                <li class="breadcrumb-item"><a href="UserController?action=planManagement"> Plans List</a></li> 
                                 <li class="breadcrumb-item"><a href="UserController?action=categoryLoadToPlan"> Add Plan</a></li> 
-                                <li class="breadcrumb-item current-link" aria-current="page">Weekly Plan</li>
+                                <li class="breadcrumb-item current-link" aria-current="page">Plan's Length</li>
                             </ol>
                         </nav>
                         <form action="UserController" method="POST">
@@ -45,7 +45,6 @@
                                     Create one plan for a week, use every other week
                                 </p>
                             </div>
-
                             <div class="row">
                                 <div class="col-md-4 add-plan-info-date">
                                     Start Date <span>*</span>
@@ -53,24 +52,23 @@
                                         <input type="date" id="startDateInput" name="start_date" onchange="calculateEndDate()" required min="<%= LocalDate.now()%>">
                                     </div>
                                 </div>
-                            </div>
 
+                                <div class="col-md-4 add-plan-info-date">
+                                    Plan's Length <span>*</span>
+                                    <div>
+                                        <input type="text" id="length" name="planLength" onchange="calculateEndDate()" min="1" max="4"
+                                               oninput="this.value=this.value.slice(0,this.maxLength),this.value=this.value.replace(/[^0-9]/g,''), checkWeekRange(this)"
+                                               maxlength="1" required>
+                                        <span class="add-plan-info-date-days">week(s)</span>
+                                    </div>
+                                </div>
 
-                            <div class="col-md-4 add-plan-info-date">
-                                Plan's Length <span>*</span>
-                                <div>
-                                    <input type="text" id="length" name="planLength" onchange="calculateEndDate()" min="1" max="4"
-                                           oninput="this.value=this.value.slice(0,this.maxLength),this.value=this.value.replace(/[^0-9]/g,''), checkWeekRange(this)"
-                                           maxlength="1" required>
-                                    <span class="add-plan-info-date-days">week(s)</span>
+                                <div class="col-md-4 add-plan-info-date">
+                                    End Date
+                                    <div id="endDate"></div>
                                 </div>
                             </div>
 
-
-                            <div class="col-md-4 add-plan-info-date">
-                                End Date
-                                <div id="endDate"></div>
-                            </div>
 
                             <script>
                                 function checkWeekRange(input) {
@@ -80,7 +78,6 @@
                                         input.setCustomValidity("Please enter a number between 1 and 4 weeks.");
                                     }
                                 }
-
                                 function isMonday(date) {
                                     if (date.getDay() === 1) {
                                         return true; // Monday
@@ -97,6 +94,7 @@
                                         // Increment end date by the length in weeks
                                         var endDate = new Date(startDate);
                                         endDate.setDate(endDate.getDate() + (planLength * 7) - 1);
+
                                         var endDateOptions = {year: 'numeric', month: 'numeric', day: 'numeric'};
                                         var endDateFormatted = endDate.toLocaleDateString(undefined, endDateOptions);
 

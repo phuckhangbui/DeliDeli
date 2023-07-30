@@ -397,14 +397,11 @@
 
 
 
-                    <form action="UserController">
-                        <div class="use-template">
-                            <input name="id" value="<%= plan.getId()%>" hidden="">
-                            <button type="submit" class="plan-navbar-remove" name="action" value="useDailyPlanTemplate" data-bs-toggle="modal" data-bs-target="#useTemplateModal">
-                                USE
-                            </button>
-                        </div>
-                    </form>
+                    <div class="use-template">
+                        <button type="button" class="" data-bs-toggle="modal" data-bs-target="#useTemplateModal">
+                            USE
+                        </button>
+                    </div>
 
 
                     <!-- Modal -->
