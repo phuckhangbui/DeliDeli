@@ -58,16 +58,16 @@ public class PlanSearchServlet extends HttpServlet {
             request.setAttribute("searchRecipesList", displayList);
 
             if (isDaily) {
-                url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=false&distanceInDays=" + distanceInDays;
+                url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=true&distanceInDays=" + distanceInDays;
             } else {
-                url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=false&selectedDate=" + selectedDate;
+                url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=true&selectedDate=" + selectedDate;
             }
             isTemplate = Boolean.parseBoolean(request.getParameter("isTemplate"));
             if (isTemplate) {
                 if (isDaily) {
-                    url = "LoadEditDailyTemplateServlet?id=" + plan_id + "&isSearch=false";
+                    url = "LoadEditDailyTemplateServlet?id=" + plan_id + "&isSearch=true";
                 } else {
-                    url = "LoadEditWeeklyTemplateServlet?id=" + plan_id + "&isSearch=false";
+                    url = "LoadEditWeeklyTemplateServlet?id=" + plan_id + "&isSearch=true";
                 }
 
             }

@@ -84,7 +84,7 @@ public class UseWeeklyPlanTemplateServlet extends HttpServlet {
             
             
             //forward to the edit weekly template page again
-            request.getRequestDispatcher("#").forward(request, response);
+            request.getRequestDispatcher("LoadEditWeeklyTemplateServlet?id=" + planId + "&isSearch=true").forward(request, response);
 
         } catch (Exception ex) {
             response.sendRedirect("error.jsp");
