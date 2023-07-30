@@ -1,9 +1,10 @@
 <%-- 
-    Document   : editDailyTemplate
-    Created on : Jul 26, 2023, 4:43:21 PM
-    Author     : khang
+    Document   : editWeeklyTemplate
+    Created on : Jul 30, 2023, 4:04:49 PM
+    Author     : Daiisuke
 --%>
 
+<%@page import="DTO.WeekDTO"%>
 <%@page import="java.time.temporal.ChronoUnit"%>
 <%@page import="java.util.Calendar"%>
 <%@page import="DAO.DateDAO"%>
@@ -47,11 +48,11 @@
 
         <%
             PlanDTO plan = (PlanDTO) request.getAttribute("plan");
+            WeekDTO week = (WeekDTO) request.getAttribute("week");
             boolean SEARCH_PLAN_REAL = (boolean) request.getAttribute("SEARCH_PLAN_REAL");
-            DateDTO templateDate = (DateDTO) request.getAttribute("templateDate");
-            ArrayList<DateDTO> planDate = (ArrayList<DateDTO>) request.getAttribute("planDate");
+            ArrayList<DateDTO> templateDate = (ArrayList<DateDTO>) request.getAttribute("templateDate");
             boolean error = (boolean) request.getAttribute("max_meal_error");
-
+            ArrayList<DateDTO> weeklyDate = (ArrayList<DateDTO>) DateDAO.getAllDateByPlanIDAndWeekID(plan.getId(), week.getId());
         %>
 
         <!--         The navigation bar       -->
@@ -67,7 +68,7 @@
 <!--                            <li class="breadcrumb-item"><a href="UserController?action=editPlan&id=<%= plan.getId()%>&isSearch=false"> Plan - <%= plan.getName()%> </a></li>-->
                             <li class="breadcrumb-item"><a href="UserController?action=planManagement&userId=<%=user.getId()%>"> Plans List </a></li> 
                             <li class="breadcrumb-item" aria-current="page"><a href="UserController?action=getPlanDetailById&id=<%= plan.getId()%>"> <%= plan.getName()%> </a></li>
-                            <li class="breadcrumb-item current-link" aria-current="page">Edit Template</li>
+                            <li class="breadcrumb-item current-link" aria-current="page">Edit</li>
                         </ol>
                     </nav>
                     <div class="edit-plan-header">
@@ -100,7 +101,7 @@
 
                                         <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
                                         <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
-                                        <% for (DateDTO dateList : planDate) {%>
+                                        <% for (DateDTO dateList : templateDate) {%>
                                         <input type="hidden" class="dateIdInput" name="date_id" value="<%= dateList.getId()%>" />
                                         <% }%>
                                         <input type="hidden" name="distanceInDays" value="0" />
@@ -115,18 +116,21 @@
                     </div>
 
 
-
-
                     <div class=" plan-table">
                         <%
-                            ArrayList<MealDTO> breakfastMeals = MealDAO.getAllMealsTimeBased(plan.getId(), templateDate.getId(), true, false, false);
-                            ArrayList<MealDTO> lunchMeals = MealDAO.getAllMealsTimeBased(plan.getId(), templateDate.getId(), false, true, false);
-                            ArrayList<MealDTO> dinnerMeals = MealDAO.getAllMealsTimeBased(plan.getId(), templateDate.getId(), false, false, true);
-                            ArrayList<NutritionDTO> recipeNutrition = MealDAO.getSumNutritionValuesByDateId(templateDate.getId());
+                            for (DateDTO dateList : templateDate) {
+                                ArrayList<MealDTO> breakfastMeals = MealDAO.getAllMealsTimeBased(plan.getId(), dateList.getId(), true, false, false);
+                                ArrayList<MealDTO> lunchMeals = MealDAO.getAllMealsTimeBased(plan.getId(), dateList.getId(), false, true, false);
+                                ArrayList<MealDTO> dinnerMeals = MealDAO.getAllMealsTimeBased(plan.getId(), dateList.getId(), false, false, true);
+                                ArrayList<NutritionDTO> recipeNutrition = MealDAO.getSumNutritionValuesByDateId(dateList.getId());
                         %>
                         <div class="row plan-table-week">
                             <div class="col-md-12 plan-table-week-day">
-                                Daily Template
+                                <%
+                                    SimpleDateFormat dayOfWeekFormat = new SimpleDateFormat("EEEE");
+                                    String dayOfWeek = dayOfWeekFormat.format(dateList.getDate());
+                                %>
+                                <%= dayOfWeek%>
                             </div>
                             <div class="col-md-3 plan-table-week-column">
                                 <div class="plan-table-week-nutrition-header">Total Nutrition</div>
@@ -191,15 +195,21 @@
                                                 </div>
 
                                                 <div class="plan-table">
-
+                                                    <% for (DateDTO dateAList : templateDate) {%>
                                                     <input type="hidden" id="recipeIdInput<%= list.getId()%>" name="recipe_id" value="<%= list.getId()%>">
                                                     <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
+                                                    <input type="hidden" name="week_id" value="<%= dateList.getWeek_id()%>" />
                                                     <input type="hidden" name="plan_start" value="<%= plan.getStart_at()%>" />
-                                                    <input type="hidden" name="date_id" value="<%= templateDate.getId()%>" />
-                                                    <input type="hidden" name="date_id" value="<%= templateDate.getId()%>" />
+                                                    <input type="hidden" name="date_id" value="<%= dateList.getId()%>" />
                                                     <input type="hidden" name="distanceInDays" value="0" />
                                                     <input type="hidden" name="isTemplate" value="true" />
-
+                                                    <%if (plan.isDaily()) {%>
+                                                    <input type="hidden" name="isDaily" value="true" />
+                                                    <% } else {%>
+                                                    <input type="hidden" name="selectedDate" value="0" />
+                                                    <input type="hidden" name="isDaily" value="false" />
+                                                    <% }%>
+                                                    <% }%>
                                                 </div>
 
                                                 <input type="hidden" id="recipeIdInput<%= list.getId()%>" name="meal_id" value="<%= list.getId()%>">
@@ -272,15 +282,21 @@
                                                 </div>
 
                                                 <div class="plan-table">
-
+                                                    <% for (DateDTO dateAList : templateDate) {%>
                                                     <input type="hidden" id="recipeIdInput<%= list.getId()%>" name="recipe_id" value="<%= list.getId()%>">
                                                     <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
+                                                    <input type="hidden" name="week_id" value="<%= dateList.getWeek_id()%>" />
                                                     <input type="hidden" name="plan_start" value="<%= plan.getStart_at()%>" />
-                                                    <input type="hidden" name="date_id" value="<%= templateDate.getId()%>" />
+                                                    <input type="hidden" name="date_id" value="<%= dateList.getId()%>" />
                                                     <input type="hidden" name="distanceInDays" value="0" />
                                                     <input type="hidden" name="isTemplate" value="true" />
-
-
+                                                    <%if (plan.isDaily()) {%>
+                                                    <input type="hidden" name="isDaily" value="true" />
+                                                    <% } else {%>
+                                                    <input type="hidden" name="selectedDate" value="0" />
+                                                    <input type="hidden" name="isDaily" value="false" />
+                                                    <% }%>
+                                                    <% }%>
                                                 </div>
 
                                                 <input type="hidden" id="recipeIdInput<%= list.getId()%>" name="meal_id" value="<%= list.getId()%>">
@@ -353,15 +369,21 @@
                                                 </div>
 
                                                 <div class="plan-table">
-
+                                                    <% for (DateDTO dateAList : templateDate) {%>
                                                     <input type="hidden" id="recipeIdInput<%= list.getId()%>" name="recipe_id" value="<%= list.getId()%>">
                                                     <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
+                                                    <input type="hidden" name="week_id" value="<%= dateList.getWeek_id()%>" />
                                                     <input type="hidden" name="plan_start" value="<%= plan.getStart_at()%>" />
-                                                    <input type="hidden" name="date_id" value="<%= templateDate.getId()%>" />
+                                                    <input type="hidden" name="date_id" value="<%= dateList.getId()%>" />
                                                     <input type="hidden" name="distanceInDays" value="0" />
                                                     <input type="hidden" name="isTemplate" value="true" />
-
-
+                                                    <%if (plan.isDaily()) {%>
+                                                    <input type="hidden" name="isDaily" value="true" />
+                                                    <% } else {%>
+                                                    <input type="hidden" name="selectedDate" value="0" />
+                                                    <input type="hidden" name="isDaily" value="false" />
+                                                    <% }%>
+                                                    <% }%>
                                                 </div>
 
                                                 <input type="hidden" id="recipeIdInput<%= list.getId()%>" name="meal_id" value="<%= list.getId()%>">
@@ -385,53 +407,33 @@
                                             <img src="./assets/add-icon.svg" alt="">
                                         </div>
                                     </button>
-                                    <% }%>
+                                    <% } %>
                                 </div>
                             </div>
 
 
 
                         </div>
-
+                        <%
+                            }
+                        %>
                     </div>
 
 
 
-                    <form action="UserController">
-                        <div class="use-template">
-                            <input name="id" value="<%= plan.getId()%>" hidden="">
-                            <button type="submit" class="plan-navbar-remove" name="action" value="useDailyPlanTemplate" data-bs-toggle="modal" data-bs-target="#useTemplateModal">
-                                USE
-                            </button>
-                        </div>
-                    </form>
 
-
-                    <!-- Modal -->
-                    <div class="modal fade" id="useTemplateModal" tabindex="-1" aria-labelledby="useTemplateModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmation</h1>
-                                </div>
-                                <form action="UserController" class="use-template-confirm">
-                                    <div class="modal-body">
-                                        Are you sure you want to use this template, it will overwrite all of your current recipes in this plan to this template ?
-                                    </div>
-
-                                    <div class="modal-footer">
-                                        <input name="id" value="<%= plan.getId()%>" hidden="">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, I've changed my mind</button>
-                                        <button type="submit" class="use-template-confirm-button" name="action" value="useDailyPlanTemplate" >
-                                            Yes, use it
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
 
                 </div>
+
+
+                <form action="UserController">
+                    <div class="use-template">
+                        <input name="id" value="<%= plan.getId()%>" hidden="">
+                        <button type="submit" class="plan-navbar-remove" name="action" value="useWeeklyPlanTemplate" data-bs-toggle="modal" data-bs-target="#useTemplateModal">
+                            USE
+                        </button>
+                    </div>
+                </form>
 
 
 
@@ -449,8 +451,9 @@
                     </script>
                     <% }%>
                     <div class="add-recipe-to-plan">
-                        <div class="add-recipe-to-plan-section-header">
-                            Add Recipes Section
+                        <div class="edit-plan-header">
+                            <p>Add Section</p>
+                            <p>Add recipes based on the type of plan that you have chosen</p>
                         </div>
                         <div class="add-recipe-to-plan-search-bar">
                             <form action="UserController" method="post">
@@ -464,6 +467,12 @@
                                 <input type="hidden" name="dietId" value="<%= plan.getDiet_id()%>"/>
                                 <input type="hidden" name="distanceInDays" value="0" />
                                 <input type="hidden" name="isTemplate" value="true" />
+                                <%if (plan.isDaily()) {%>
+                                <input type="hidden" name="isDaily" value="true" />
+                                <% } else {%>
+                                <input type="hidden" name="selectedDate" value="0" />
+                                <input type="hidden" name="isDaily" value="false" />
+                                <% }%>
 
                                 <select name="searchBy" id="">
                                     <option value="Public" selected="selected">Public</option>
@@ -483,7 +492,7 @@
                             ArrayList<DisplayRecipeDTO> searchRecipesList = (ArrayList<DisplayRecipeDTO>) request.getAttribute("SEARCH_LIST");
                             if (searchRecipesList != null && !searchRecipesList.isEmpty()) {
                                 for (DisplayRecipeDTO list : searchRecipesList) {
-                                    recipeNutrition = RecipeDAO.getNutritionValuesByRecipeID(list.getId());
+                                    ArrayList<NutritionDTO> recipeNutrition = RecipeDAO.getNutritionValuesByRecipeID(list.getId());
                         %>
                         <div href="" class=" col-md-3 add-recipe-to-plan-content-recipe">
                             <a href="MainController?action=getRecipeDetailById&id=<%= list.getId()%>" target="_blank">
@@ -514,31 +523,65 @@
                                 </button>
                                 -->
                                 <%
-                                    if (!error) {
+                                    if (plan.isDaily()) {
                                 %>
                                 <button type="button" class="" data-bs-toggle="modal" data-bs-target="#addMultiplesMealToPlan<%= list.getId()%>">
-                                    Add
+                                    Add daily
                                 </button>  
                                 <%
                                 } else {
                                 %>
-                                <p>Please remove some recipe (max: 10)</p>
+                                <button type="button" class="" data-bs-toggle="modal" data-bs-target="#addWeeklyMealToPlan<%= list.getId()%>">
+                                    Add weekly
+                                </button>
                                 <%
                                     }
                                 %>
+
                             </div>
                         </div>
 
-                        <!-- Daily Meal-->
-                        <div class="modal fade" id="addMultiplesMealToPlan<%= list.getId()%>" tabindex="-1"
+                        <!-- Weekly Meal-->
+                        <div class="modal fade" id="addWeeklyMealToPlan<%= list.getId()%>" tabindex="-1"
                              aria-labelledby="addRecipeToPlanModalLabel<%= list.getId()%>" aria-hidden="true">
                             <form action="UserController" method="post" class="modal-dialog add-recipe-to-plan-modal modal-dialog-centered">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel<%= list.getId()%>">Adding Meal To Template</h1>
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel<%= list.getId()%>">Adding Weekly Meal To Plan</h1>
                                     </div>
                                     <div class="modal-body">
-                                        <div class="row choose-week-day flex-column">
+                                        <div>What day do you want to cook this recipe?</div>
+                                        <div class="row choose-week-day">
+                                            <% for (DateDTO dateList : weeklyDate) {
+                                                    SimpleDateFormat dayOfWeekFormat = new SimpleDateFormat("EEEE");
+                                                    String dayOfWeek = dayOfWeekFormat.format(dateList.getDate());
+
+                                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                                                    String formattedDate = dateFormat.format(dateList.getDate());
+
+                                                    // Get the end date of the plan
+                                                    Date endDate = plan.getEnd_at();
+                                                    Calendar calendar = Calendar.getInstance();
+                                                    calendar.setTime(dateList.getDate());
+
+                                                    // Loop through the days between the selected day and the end date
+                                                    //while (calendar.getTime().before(endDate) || calendar.getTime().equals(endDate)) {
+%>
+                                            <div class="col-md-6">
+                                                <div class="d-flex">
+                                                    <input type="checkbox" id="date_id<%= dateList.getId()%>" name="date_id" value="<%= dateList.getId()%>">
+                                                    <label for="dateOfWeek <%= dateList.getId()%>"> <%= dayOfWeek%> </label>
+                                                </div>
+                                            </div>
+
+                                            <%
+
+                                                    // Increment the calendar by 1 day
+                                                    //calendar.add(Calendar.DAY_OF_MONTH, 1);
+                                                    //dayOfWeek = dayOfWeekFormat.format(calendar.getTime());
+                                                    //formattedDate = dateFormat.format(calendar.getTime());
+                                                    //}
+                                                }%>
                                         </div>
                                         <div class="row add-recipe-info-ingredient">
                                             <div class="draggable-container-time col-md-8 add-recipe-info-ingredient-content">
@@ -556,10 +599,313 @@
                                                 </button>
                                             </div>
                                         </div>
+                                        <br><br>
+
                                     </div>
 
                                     <div class="plan-table">
-                                        <% for (DateDTO dateList : planDate) {%>
+                                        <% for (DateDTO dateList : templateDate) {%>
+                                        <input type="hidden" id="recipeIdInput<%= list.getId()%>" name="recipe_id" value="<%= list.getId()%>">
+                                        <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
+                                        <!-- week id hard code here -->
+                                        <input type="hidden" name="week_id" value="<%= week.getId()%>" />
+                                        <input type="hidden" name="distanceInDays" value="0" />
+                                        <input type="hidden" name="isTemplate" value="true" />
+                                        <% if (plan.isDaily()) {%>
+                                        <input type="hidden" name="isDaily" value="true" />
+                                        <% }%>
+                                        <input type="hidden" name="selectedDate" value="0" />
+                                        <input type="hidden" name="isDaily" value="false" />
+                                        <% }%>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" name="action" value="addPlanMultiplesMeal" class="add-recipe-to-plan-modal-button"
+                                                data-recipeid="<%= list.getId()%>" onclick="setRecipeId(this, '<%= list.getId()%>');" disabled="" id="btnAddRecipe">Add</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function () {
+                                const modal = document.getElementById("addWeeklyMealToPlan<%= list.getId()%>");
+
+                                let draggablesTime = []; // Array to store draggable time elements
+                                let dragTime = false; // Flag to track drag mode
+
+                                // Function to toggle drag mode
+                                function toggleDragModeTime(enableDragMode) {
+                                    dragTime = enableDragMode;
+                                    draggablesTime.forEach((draggable) => {
+                                        draggable.draggable = dragTime;
+                                        draggable.classList.toggle('drag-mode-disabled', !dragTime);
+                                        draggable.style.cursor = dragTime ? 'grab' : 'default';
+                                    });
+                                }
+
+                                // Function to create options for select element
+                                function createOptions(selectElement, selectedOptions, selectedValue) {
+                                    // Clear existing options by removing all children
+                                    while (selectElement.firstChild) {
+                                        selectElement.removeChild(selectElement.firstChild);
+                                    }
+
+                                    const timeOptions = [];
+                                    for (let hour = 0; hour < 24; hour++) {
+                                        const time = hour.toString().padStart(2, '0') + ':00'; // Format the time as HH:00
+                                        if (!selectedOptions.includes(time)) {
+                                            timeOptions.push(time);
+                                        }
+                                    }
+
+                                    // Always include the selected time even if it's deleted from other elements
+                                    if (selectedValue && !selectedOptions.includes(selectedValue)) {
+                                        timeOptions.push(selectedValue);
+                                    }
+
+                                    for (let i = 0; i < timeOptions.length; i++) {
+                                        const option = document.createElement('option');
+                                        option.value = timeOptions[i];
+                                        option.text = timeOptions[i];
+                                        selectElement.appendChild(option);
+                                    }
+
+                                    selectElement.setAttribute('required', true); // Add the "required" attribute
+                                }
+
+                                // Function to check if any time is selected
+                                function isAnyTimeOptionSelected() {
+                                    const selectElements = modal.querySelectorAll('.timeList');
+                                    const hasSelectedTimeOptions = Array.from(selectElements).some(select => select.value !== '');
+                                    return hasSelectedTimeOptions || draggablesTime.length > 0;
+                                }
+
+                                // Function to update the "Add" button state
+                                function updateAddButtonState() {
+                                    const btnAddTime = modal.querySelector('#btnAddRecipe');
+                                    btnAddTime.disabled = !isAnyTimeOptionSelected() || draggablesTime.length === 0;
+                                }
+
+
+                                // Add event listener to the toggle button
+                                modal.querySelector("#btnToggleTime").addEventListener('click', () => {
+                                    toggleDragModeTime(!dragTime); // Toggle the drag mode
+                                });
+
+                                // Add event listener to the add button
+                                modal.querySelector("#btnAddTime").addEventListener('click', () => {
+                                    if (!dragTime && draggablesTime.length < 6) { // Check the maximum limit
+                                        const draggableContainer = modal.querySelector('.draggable-container-time');
+                                        const selectedOptions = Array.from(draggableContainer.querySelectorAll('.timeList')).map(select => select.value);
+                                        const newDraggable = document.createElement('p');
+                                        newDraggable.classList.add('draggable-time');
+                                        newDraggable.classList.add('draggable');
+                                        newDraggable.draggable = dragTime;
+
+                                        const newSelect = document.createElement('select');
+                                        newSelect.classList.add('timeList');
+                                        newSelect.name = 'timeId';
+                                        // Pass the selected value of the current time element
+                                        const selectedValue = selectedOptions.length === 0 ? '' : selectedOptions[selectedOptions.length - 1];
+                                        createOptions(newSelect, selectedOptions, selectedValue);
+
+                                        const deleteButton = document.createElement('button');
+                                        deleteButton.type = 'button';
+                                        deleteButton.classList.add('btnDeleteTime');
+
+                                        const deleteImage = document.createElement('img');
+                                        deleteImage.src = 'assets/close-icon.svg';
+                                        deleteImage.alt = 'Delete';
+
+                                        deleteButton.appendChild(deleteImage);
+                                        deleteButton.addEventListener('click', () => {
+                                            newDraggable.remove();
+                                            draggablesTime = draggableContainer.querySelectorAll('.draggable-time'); // Update the draggable elements
+                                            if (draggablesTime.length === 1) {
+                                                disableDeleteButtons();
+                                            }
+                                        });
+
+                                        newDraggable.appendChild(newSelect);
+                                        newDraggable.appendChild(deleteButton);
+
+                                        draggableContainer.appendChild(newDraggable);
+                                        draggablesTime = draggableContainer.querySelectorAll('.draggable-time'); // Update the draggable elements
+
+                                        enableDeleteButtons();
+                                        updateAddButtonState();
+                                    }
+                                });
+
+
+                                // Function to get the closest element during drag and drop
+                                function getDragAfterElement(container, y) {
+                                    const draggableElements = [...container.querySelectorAll('.draggable:not(.dragging)')];
+                                    return draggableElements.reduce((closest, child) => {
+                                        const box = child.getBoundingClientRect();
+                                        const offset = y - box.top - box.height / 2;
+                                        if (offset < 0 && offset > closest.offset) {
+                                            return {offset: offset, element: child};
+                                        } else {
+                                            return closest;
+                                        }
+                                    }, {offset: Number.NEGATIVE_INFINITY}).element;
+                                }
+
+                                // Function to enable delete buttons
+                                function enableDeleteButtons() {
+                                    modal.querySelectorAll('.btnDeleteTime').forEach((button) => {
+                                        button.addEventListener('click', () => {
+                                            button.parentNode.remove();
+                                            draggablesTime = draggableContainer.querySelectorAll('.draggable-time'); // Update the draggable elements
+                                            if (draggablesTime.length === 1) {
+                                                disableDeleteButtons();
+                                            }
+                                        });
+                                    });
+                                }
+
+                                // Function to disable delete buttons
+                                function disableDeleteButtons() {
+                                    modal.querySelectorAll('.btnDeleteTime').forEach((button) => {
+                                        button.disabled = true;
+                                    });
+                                }
+
+                                modal.querySelectorAll('.timeList').forEach((selectElement) => {
+                                    selectElement.addEventListener('change', () => {
+                                        updateAddButtonState();
+                                    });
+                                });
+
+                                // Add event listener to the modal's shown event
+                                modal.addEventListener('shown.bs.modal', function () {
+                                    const draggableContainer = modal.querySelector('.draggable-container-time');
+                                    const btnToggleTime = modal.querySelector('#btnToggleTime');
+                                    const btnAddTime = modal.querySelector('#btnAddTime');
+                                    const btnDeleteTime = modal.querySelectorAll('.btnDeleteTime');
+
+                                    draggablesTime = draggableContainer.querySelectorAll('.draggable-time');
+
+                                    toggleDragModeTime(dragTime);
+
+                                    btnToggleTime.addEventListener('click', () => {
+                                        toggleDragModeTime(!dragTime);
+                                    });
+
+                                    btnAddTime.addEventListener('click', () => {
+                                        // Rest of the code...
+                                    });
+
+                                    enableDeleteButtons();
+
+                                    draggableContainer.addEventListener('dragover', (e) => {
+                                        e.preventDefault();
+                                        const afterElement = getDragAfterElement(draggableContainer, e.clientY);
+                                        const draggable = document.querySelector('.dragging');
+                                        if (afterElement == null) {
+                                            draggableContainer.appendChild(draggable);
+                                        } else {
+                                            draggableContainer.insertBefore(draggable, afterElement);
+                                        }
+                                    });
+
+                                    updateAddButtonState();
+                                });
+
+                                // Function to clear all select options in the modal
+                                // Function to clear all select options in the modal
+                                function clearSelectOptions() {
+                                    const selectElements = modal.querySelectorAll('.timeList');
+                                    selectElements.forEach((select) => {
+                                        const selectedValue = select.value;
+                                        const selectedOptions = Array.from(select.children).map(option => option.value);
+                                        createOptions(select, selectedOptions, selectedValue);
+                                    });
+                                }
+
+
+                                // Add event listener to the "Close" button
+                                modal.querySelector("button[data-bs-dismiss='modal']").addEventListener('click', () => {
+                                    clearSelectOptions();
+                                });
+
+                                // Add event listener to the modal's hidden event
+                                modal.addEventListener('hidden.bs.modal', () => {
+                                    clearSelectOptions();
+                                });
+
+                            });
+                        </script>
+
+
+
+                        <!-- Daily Meal-->
+                        <div class="modal fade" id="addMultiplesMealToPlan<%= list.getId()%>" tabindex="-1"
+                             aria-labelledby="addRecipeToPlanModalLabel<%= list.getId()%>" aria-hidden="true">
+                            <form action="UserController" method="post" class="modal-dialog add-recipe-to-plan-modal modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel<%= list.getId()%>">Adding Meal To Plan</h1>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row choose-week-day flex-column">
+                                            <% for (DateDTO dateList : templateDate) {
+                                                    SimpleDateFormat dayOfWeekFormat = new SimpleDateFormat("EEEE");
+                                                    String dayOfWeek = dayOfWeekFormat.format(dateList.getDate());
+
+                                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                                                    String formattedDate = dateFormat.format(dateList.getDate());
+
+                                                    // Get the end date of the plan
+                                                    Date endDate = plan.getEnd_at();
+                                                    Calendar calendar = Calendar.getInstance();
+                                                    calendar.setTime(dateList.getDate());
+
+                                                    // Loop through the days between the selected day and the end date
+                                                    //while (calendar.getTime().before(endDate) || calendar.getTime().equals(endDate)) {
+                                                    // Generate the checkboxes
+%>
+                                            <!--                                            <div class="col-md-4">
+                                                                                            <div class="d-flex">
+                                                                                                <input type="checkbox" id="date_id<%= dateList.getId()%>" name="date_id" value="<%= formattedDate%>">
+                                                                                                <label for="dateOfWeek<%= dateList.getId()%>"> <%= dayOfWeek%> (<%= formattedDate%>) </label>
+                                                                                            </div>
+                                                                                        </div>
+                                            -->
+                                            <%
+
+                                                    // Increment the calendar by 1 day
+                                                    //calendar.add(Calendar.DAY_OF_MONTH, 1);
+                                                    //dayOfWeek = dayOfWeekFormat.format(calendar.getTime());
+                                                    //formattedDate = dateFormat.format(calendar.getTime());
+                                                    //}
+                                                }%>
+                                        </div>
+                                        <div class="row add-recipe-info-ingredient">
+                                            <div class="draggable-container-time col-md-8 add-recipe-info-ingredient-content">
+                                                <div class="add-recipe-info-header">Time <span>*</span></div>
+                                                <div class="draggable-time-container">
+                                                    <!-- Existing draggable time elements -->
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 add-recipe-info-ingredient-button">
+                                                <button type="button" id="btnToggleTime" style="display: none">
+                                                    <img src="assets/drag-icon.svg" alt="">
+                                                </button>
+                                                <button type="button" id="btnAddTime">
+                                                    Add Time
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <br><br>
+
+                                    </div>
+
+                                    <div class="plan-table">
+                                        <% for (DateDTO dateList : templateDate) {%>
                                         <input type="hidden" id="recipeIdInput<%= list.getId()%>" name="recipe_id" value="<%= list.getId()%>">
                                         <input type="hidden" name="plan_id" value="<%= plan.getId()%>" />
                                         <input type="hidden" name="week_id" value="<%= dateList.getWeek_id()%>" />
@@ -567,6 +913,11 @@
                                         <input type="hidden" name="date_id" value="<%= dateList.getId()%>" />
                                         <input type="hidden" name="distanceInDays" value="0" />
                                         <input type="hidden" name="isTemplate" value="true" />
+                                        <% if (plan.isDaily()) {%>
+                                        <input type="hidden" name="isDaily" value="true" />
+                                        <% }%>
+                                        <input type="hidden" name="isDaily" value="false" />
+                                        <input type="hidden" name="selectedDate" value="0" />
                                         <% }%>
                                     </div>
 

@@ -40,6 +40,8 @@ public class PlanSearchServlet extends HttpServlet {
         int dietId = Integer.parseInt(request.getParameter("dietId"));
         int user_id = Integer.parseInt(request.getParameter("user_id"));
         int distanceInDays = Integer.parseInt(request.getParameter("distanceInDays"));
+        boolean isDaily = Boolean.parseBoolean(request.getParameter("isDaily"));
+        String selectedDate = request.getParameter("selectedDate");
 
         if (isPlan) {
             ArrayList<RecipeDTO> list = NavigationBarUtils.searchRecipeForPlan(txtsearch, searchBy, user_id, dietId);
@@ -54,13 +56,20 @@ public class PlanSearchServlet extends HttpServlet {
                 displayList.add(d);
             }
             request.setAttribute("searchRecipesList", displayList);
-            
-            if (!list.isEmpty()) {
+
+            if (isDaily) {
                 url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=false&distanceInDays=" + distanceInDays;
-                isTemplate = Boolean.parseBoolean(request.getParameter("isTemplate"));
-                if (isTemplate) {
+            } else {
+                url = "UserController?action=editPlan&id=" + plan_id + "&isSearch=false&selectedDate=" + selectedDate;
+            }
+            isTemplate = Boolean.parseBoolean(request.getParameter("isTemplate"));
+            if (isTemplate) {
+                if (isDaily) {
                     url = "LoadEditDailyTemplateServlet?id=" + plan_id + "&isSearch=false";
+                } else {
+                    url = "LoadEditWeeklyTemplateServlet?id=" + plan_id + "&isSearch=false";
                 }
+
             }
             request.getRequestDispatcher(url).forward(request, response);
         }

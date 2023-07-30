@@ -161,6 +161,53 @@ public class WeekDAO {
         return result;
     }
 
+    public static WeekDTO getWeekTemplateByPlanID(int plan_id) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        WeekDTO result = null;
+
+        String sql = "SELECT * FROM [Week]\n"
+                + "WHERE plan_id = ? AND is_template = 1";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, plan_id);
+                rs = stm.executeQuery();
+                while (rs.next()) {
+
+                    int id = rs.getInt("id");
+                    Date start_at = rs.getDate("start_at");
+                    plan_id = rs.getInt("plan_id");
+                    boolean is_sync = rs.getBoolean("is_sync");
+                    boolean is_template = rs.getBoolean("is_template");
+
+                    result = new WeekDTO(id, start_at, plan_id, is_sync, is_template);
+                }
+
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error - getWeekIDByPlanId: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return result;
+    }
+
     public static boolean deleteWeekOnId(int weekId) {
         Connection con = null;
         PreparedStatement stm = null;

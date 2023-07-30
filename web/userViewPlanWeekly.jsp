@@ -4,6 +4,7 @@
     Author     : Walking Bag
 --%>
 
+<%@page import="DTO.WeekDTO"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.time.temporal.ChronoUnit"%>
 <%@page import="DTO.DietDTO"%>
@@ -44,6 +45,7 @@
         <%
             PlanDTO plan = (PlanDTO) request.getAttribute("plan");
             String selectedDate = (String) request.getAttribute("selectedDate");
+            WeekDTO week = (WeekDTO) request.getAttribute("week");
             LocalDate currentDate = LocalDate.now();
             java.sql.Date startDateSQL = plan.getStart_at();
             LocalDate startLocalDate = startDateSQL.toLocalDate();
@@ -130,7 +132,8 @@
                             </form>
                             <form action="UserController">
                                 <input name="id" value="<%= plan.getId()%>" hidden="">
-                                <button type="submit" name="action" value="loadEditDailyTemplate" class="plan-navbar-remove">Edit Template</button>
+                                <input name="week_id" value="<%= week.getId()%>" hidden="">
+                                <button type="submit" name="action" value="loadEditWeeklyTemplate" class="plan-navbar-remove">Edit Template</button>
                             </form>
                         </div>
                         <!--                        <button type="button" class="plan-navbar-remove" data-bs-toggle="modal"

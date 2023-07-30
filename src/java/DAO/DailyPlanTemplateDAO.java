@@ -108,6 +108,47 @@ public class DailyPlanTemplateDAO {
         return firstValue; // Return the first value from the "id" column, or -1 if it couldn't be retrieved or an error occurred
 
     }
+    
+    public static int getWeeklyTemplateIdByPlanId(int planId) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        int firstValue = -1; // Variable to store the first value
+
+        String sql = "SELECT id FROM date WHERE is_template = 1 AND plan_id = ?";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, planId); // Set the plan_id value
+                rs = stm.executeQuery();
+
+                if (rs.next()) {
+                    firstValue = rs.getInt("id"); // Get the first value from the "id" column
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error - retrieveFirstValue: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+
+        return firstValue; // Return the first value from the "id" column, or -1 if it couldn't be retrieved or an error occurred
+
+    }
 
     public static DateDTO getDailyTemplateByPlanId(int planId) {
         Connection con = null;

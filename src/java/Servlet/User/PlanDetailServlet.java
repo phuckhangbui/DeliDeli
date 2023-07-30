@@ -136,6 +136,12 @@ public class PlanDetailServlet extends HttpServlet {
 
             }
 
+            if (week != null) {
+                request.setAttribute("week", week);
+            } else {
+                request.setAttribute("week", new WeekDTO());
+            }
+
             ArrayList<DateDTO> planDate = DateDAO.getAllDateByPlanID(plan.getId());
             ArrayList<DateDTO> displayDate = DateDAO.getAllDateByPlanIDAndWeekID(plan.getId(), week.getId());
 

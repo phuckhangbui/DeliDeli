@@ -6,12 +6,14 @@ import DAO.DietDAO;
 import DAO.MealDAO;
 import DAO.PlanDAO;
 import DAO.RecipeDAO;
+import DAO.WeekDAO;
 import DTO.DateDTO;
 import DTO.DietDTO;
 import DTO.DisplayRecipeDTO;
 import DTO.PlanDTO;
 import DTO.RecipeDTO;
 import DTO.UserDTO;
+import DTO.WeekDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
@@ -39,7 +41,7 @@ public class LoadEditWeeklyTemplateServlet extends HttpServlet {
             boolean foundMatchingDate = false;
             boolean error = false;
 
-            //Daily
+            //Weekly
             if (id != null && !id.isEmpty()) {
                 PlanDTO plan = PlanDAO.getUserPlanById(Integer.parseInt(id));
                 request.setAttribute("plan", plan);
@@ -47,39 +49,21 @@ public class LoadEditWeeklyTemplateServlet extends HttpServlet {
                 DietDTO diet = DietDAO.getTypeById(plan.getDiet_id());
                 request.setAttribute("diet", diet);
 
-                ArrayList<DateDTO> planDate = DateDAO.getDailyTemplate(plan.getId());
-                ArrayList<DateDTO> displayDate = new ArrayList<>();
+                WeekDTO week = WeekDAO.getWeekTemplateByPlanID(plan.getId());
+                request.setAttribute("week", week);
 
-                LocalDate currentDate = LocalDate.now();
-                java.sql.Date startDateSQL = plan.getStart_at();
-                LocalDate startLocalDate = startDateSQL.toLocalDate();
+                int templateId = DailyPlanTemplateDAO.getWeeklyTemplateIdByPlanId(plan.getId());
+                ArrayList<DateDTO> templateDate = DateDAO.getWeeklyTemplate(plan.getId());
 
-                for (DateDTO date : planDate) {
-                    displayDate.add(date);
-                    break;
-                }
-
-                request.setAttribute("planDate", displayDate);
-
-                int templateId = DailyPlanTemplateDAO.getDailyTemplateIdByPlanId(plan.getId());
-                DateDTO templateDate = DailyPlanTemplateDAO.getDailyTemplateByPlanId(plan.getId());
                 request.setAttribute("templateDate", templateDate);
                 request.setAttribute("templateId", templateId);
-
-                // Meal count based on time.
-                for (DateDTO date : displayDate) {
-                    int meal_count = MealDAO.countRecipeBasedOnTime(date.getId());
-                    if (meal_count > 10) {
-                        error = true;
-                    }
-                }
 
                 request.setAttribute("max_meal_error", error);
 
                 if (isSearch) {
                     request.setAttribute("SEARCH_LIST", displayList);
                     request.setAttribute("SEARCH_PLAN_REAL", true);
-                    RequestDispatcher rq = request.getRequestDispatcher("editDailyTemplate.jsp");
+                    RequestDispatcher rq = request.getRequestDispatcher("editWeeklyTemplate.jsp");
                     rq.forward(request, response);
                     return;
                 } else {
@@ -96,7 +80,7 @@ public class LoadEditWeeklyTemplateServlet extends HttpServlet {
                     }
                     request.setAttribute("SEARCH_LIST", displayList);
                     request.setAttribute("SEARCH_PLAN_REAL", false);
-                    RequestDispatcher rq = request.getRequestDispatcher("editDailyTemplate.jsp");
+                    RequestDispatcher rq = request.getRequestDispatcher("editWeeklyTemplate.jsp");
                     rq.forward(request, response);
                     return;
                 }

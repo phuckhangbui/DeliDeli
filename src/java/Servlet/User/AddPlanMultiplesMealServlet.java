@@ -84,7 +84,11 @@ public class AddPlanMultiplesMealServlet extends HttpServlet {
                 }
                 isTemplate = Boolean.parseBoolean(request.getParameter("isTemplate"));
                 if (isTemplate) {
-                    url = "LoadEditDailyTemplateServlet?id=" + plan_id + "&isSearch=false";
+                    if (isDaily) {
+                        url = "LoadEditDailyTemplateServlet?id=" + plan_id + "&isSearch=false";
+                    } else {
+                        url = "LoadEditWeeklyTemplateServlet?id=" + plan_id + "&isSearch=false";
+                    }
                 }
             }
 
