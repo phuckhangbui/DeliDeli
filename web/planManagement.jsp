@@ -80,7 +80,7 @@
                                  ">
                                 <a href="UserController?action=getPlanDetailById&id=<%= list.getId()%>" class="weekly-plans-plan-content ">
                                     <div class="weekly-plans-plan-content-thumbnail">
-                                        <img src="./pictures/plan1.jpg" alt="">
+                                        <img src="./pictures/plan2.jpg" alt="">
                                     </div>
                                     <div class="weekly-plans-plan-content-des">
                                         <p class="active-plan-content"><%= list.getName()%></p>

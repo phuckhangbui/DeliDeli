@@ -313,10 +313,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
 
                         <div class="row add-recipe-info-number">
                             <div class="add-recipe-info-header">Nutrition <span class="add-recipe-info-header-des">(Per serving)</span> <span>*</span></div>
-                            <div>
+<!--                            <div>
                                 For references:
                                 <button>Nutrition Table</button>
-                            </div>
+                            </div>-->
 
 
                             <div class="col-md-3 add-recipe-info-number-content">

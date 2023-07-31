@@ -255,11 +255,11 @@
 <!--                                                    <a href="AdminController?action=deleteSuggestion&suggestion=<%= key%>" class="add-to-suggestion">
                                                         <img src="assets/delete-icon.svg" alt="alt" />
                                                     </a>-->
-                                                    <span class="add-to-suggestion">
+<!--                                                    <span class="add-to-suggestion">
                                                         <button type="button"  data-bs-toggle="modal" data-bs-target="#exampleModal">
                                                             <img src="assets/delete-icon.svg" alt="alt" />
                                                         </button>
-                                                    </span>
+                                                    </span>-->
 
 
                                                     <!-- Modal -->
