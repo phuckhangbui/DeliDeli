@@ -24,6 +24,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.sql.Date;
 import java.sql.Time;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -139,6 +140,77 @@ public class LoadHeaderFilter implements Filter {
         boolean login = false;
 
         if (user != null) {
+            // Plan Notification & Auto Activator
+            LocalDate currentDate = LocalDate.now();
+            Date currentDateNow = Date.valueOf(currentDate);
+            // Only 1 plan to be activated.
+            ArrayList<MealDTO> readyToNotifyRecipe = new ArrayList<>();
+            boolean isPlanStatus = false;
+            boolean updateStatus = false;
+            // Get activated plan
+            PlanDTO activePlan = PlanDAO.getCurrentActivePlan(user.getId());
+
+            // Plan Notification
+            if (activePlan != null) {
+
+                if (activePlan.isStatus()) {
+                    LocalTime currentTimeUtil = LocalTime.now();
+                    String currentTime = currentTimeUtil.format(DateTimeFormatter.ofPattern("HH:mm"));
+
+                    readyToNotifyRecipe = MealDAO.getActiveRecipePlanByTime(currentDateNow, activePlan.getId(), currentTime);
+
+                    System.out.println("readyToNotifyRecipe - " + readyToNotifyRecipe.toString());
+
+                    if (!readyToNotifyRecipe.isEmpty()) {
+                        for (MealDTO meal : readyToNotifyRecipe) {
+                            System.out.println("Selected date - " + meal.getDate_id());
+                            updateStatus = MealDAO.updateMealNotificationStatusByMealID(meal.getId());
+                            RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(meal.getRecipe_id());
+
+                            if (updateStatus && recipe != null) {
+                                String title = "Your meal at " + meal.getStart_time() + " is ready";
+                                String desc = "You've planned your schedule ahead, what you'll be eating now: " + recipe.getTitle();
+                                java.sql.Time startTime = meal.getStart_time();
+
+
+                                java.sql.Timestamp currentDateTime = new java.sql.Timestamp(System.currentTimeMillis());
+                                java.sql.Timestamp recipeStartTime = java.sql.Timestamp.valueOf(currentDate + " " + startTime);
+                                long timeDifferenceMillis = recipeStartTime.getTime() - currentDateTime.getTime();
+                                java.sql.Timestamp sendDate = new java.sql.Timestamp(System.currentTimeMillis() + timeDifferenceMillis);
+
+                                int user_id = user.getId();
+                                int notificationType = 3;
+                                int recipe_id = meal.getRecipe_id();
+
+                                System.out.println("Recipe ID - " + recipe_id);
+
+                                NotificationDTO notification = new NotificationDTO(0, title, desc, sendDate, false, user_id, notificationType, recipe_id, 0, "");
+
+                                NotificationDAO.addNotification(notification);
+
+                                System.out.println("Notification sent - " + notification.toString());
+                            } else {
+                                System.out.println("Error at sending notification");
+                            }
+                        }
+                    } else {
+                        System.out.println("No recipe to notify");
+                    }
+
+                } else {
+                    System.out.println("No plan is active");
+                }
+                // End the plan if current date is after plan end_date.
+                if (currentDateNow.after(activePlan.getEnd_at())) {
+                    isPlanStatus = PlanDAO.updateStatusByPlanID(activePlan.getId(), false);
+                } else {
+                    System.out.println("No plan to deactivate.");
+                }
+
+            } else {
+                System.out.println("");
+            }
+
             ArrayList<NotificationDTO> list = NotificationDAO.getNotificationList(user.getId());
             ArrayList<DisplayNotificationDTO> displayList = new ArrayList<>();
 
@@ -154,72 +226,6 @@ public class LoadHeaderFilter implements Filter {
             request.setAttribute("count", count);
             request.setAttribute("displayList", displayList);
 
-            // Plan Notification & Auto Activator
-            LocalDate currentDate = LocalDate.now();
-            Date currentDateNow = Date.valueOf(currentDate);
-            // Only 1 plan to be activated.
-            ArrayList<MealDTO> readyToNotifyRecipe = new ArrayList<>();
-            boolean isPlanStatus = false;
-            boolean updateStatus = false;
-            // Get activated plan
-            PlanDTO activePlan = PlanDAO.getCurrentActivePlan(user.getId());
-
-            // Plan Notification
-            if(activePlan != null){
-             
-            if (activePlan.isStatus()) {
-                LocalTime currentTimeUtil = LocalTime.now();
-                String currentTime = currentTimeUtil.format(DateTimeFormatter.ofPattern("HH:mm"));
-
-                readyToNotifyRecipe = MealDAO.getActiveRecipePlanByTime(currentDateNow, activePlan.getId(), currentTime);
-
-//                System.out.println("readyToNotifyRecipe - " + readyToNotifyRecipe.toString());
-
-                if (!readyToNotifyRecipe.isEmpty()) {
-                    for (MealDTO meal : readyToNotifyRecipe) {
-//                        System.out.println("Selected date - " + meal.getDate_id());
-                        updateStatus = MealDAO.updateMealNotificationStatusByMealID(meal.getId());
-                        RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(meal.getRecipe_id());
-
-                        if (updateStatus && recipe != null) {
-                            String title = "Your meal at " + meal.getStart_time() + " is ready";
-                            String desc = "You've planned your schedule ahead, what you'll be eating now: " + recipe.getTitle();
-                            java.sql.Timestamp sendDate = new java.sql.Timestamp(System.currentTimeMillis());
-
-                            int user_id = user.getId();
-                            int notificationType = 3;
-                            int recipe_id = meal.getRecipe_id();
-                            
-//                            System.out.println("Recipe ID - " + recipe_id);
-
-                            NotificationDTO notification = new NotificationDTO(0, title, desc, sendDate, false, user_id, notificationType, recipe_id, 0, "");
-
-                            NotificationDAO.addNotification(notification);
-
-                            System.out.println("Notification sent - " + notification.toString());
-                        } else {
-                            System.out.println("Error at sending notification");
-                        }
-                    }
-                } else {
-                    System.out.println("No recipe to notify");
-                }
-            
-            } else {
-                System.out.println("No plan is active");
-            }
-            // End the plan if current date is after plan end_date.
-            if (currentDateNow.after(activePlan.getEnd_at())) {
-                isPlanStatus = PlanDAO.updateStatusByPlanID(activePlan.getId(), false);
-            } else {
-                System.out.println("No plan to deactivate.");
-            }
-            
-            }else{
-                System.out.println("");
-            }
-
-            
         }
 
         Throwable problem = null;

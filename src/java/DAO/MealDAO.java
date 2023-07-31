@@ -448,7 +448,7 @@ public class MealDAO {
         String sql = "SELECT m.id, m.start_time, m.date_id, m.recipe_id\n"
                 + "FROM [Meal] m\n"
                 + "JOIN [Date] d ON d.id = m.date_id\n"
-                + "WHERE d.[date] = ? AND d.plan_id = ? AND m.start_time = ? AND m.isNotified = 0";
+                + "WHERE d.[date] = ? AND d.plan_id = ? AND m.start_time <= ? AND m.isNotified = 0";
 
         try {
             con = DBUtils.getConnection();
@@ -456,7 +456,7 @@ public class MealDAO {
                 stm = con.prepareStatement(sql);
                 stm.setDate(1, new java.sql.Date(currentDate.getTime()));
                 stm.setInt(2, plan_id);
-                stm.setString(3, currentTime); // Use setString to handle time in "HH:mm:ss" format
+                stm.setString(3, currentTime);
                 rs = stm.executeQuery();
                 while (rs.next()) {
 
