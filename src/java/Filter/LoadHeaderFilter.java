@@ -165,6 +165,8 @@ public class LoadHeaderFilter implements Filter {
             PlanDTO activePlan = PlanDAO.getCurrentActivePlan(user.getId());
 
             // Plan Notification
+            if(activePlan != null){
+             
             if (activePlan.isStatus()) {
                 LocalTime currentTimeUtil = LocalTime.now();
                 String currentTime = currentTimeUtil.format(DateTimeFormatter.ofPattern("HH:mm"));
@@ -202,16 +204,22 @@ public class LoadHeaderFilter implements Filter {
                 } else {
                     System.out.println("No recipe to notify");
                 }
+            
             } else {
                 System.out.println("No plan is active");
             }
-
             // End the plan if current date is after plan end_date.
             if (currentDateNow.after(activePlan.getEnd_at())) {
                 isPlanStatus = PlanDAO.updateStatusByPlanID(activePlan.getId(), false);
             } else {
                 System.out.println("No plan to deactivate.");
             }
+            
+            }else{
+                System.out.println("");
+            }
+
+            
         }
 
         Throwable problem = null;
