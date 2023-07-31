@@ -173,11 +173,11 @@ public class LoadHeaderFilter implements Filter {
 
                 readyToNotifyRecipe = MealDAO.getActiveRecipePlanByTime(currentDateNow, activePlan.getId(), currentTime);
 
-                System.out.println("readyToNotifyRecipe - " + readyToNotifyRecipe.toString());
+//                System.out.println("readyToNotifyRecipe - " + readyToNotifyRecipe.toString());
 
                 if (!readyToNotifyRecipe.isEmpty()) {
                     for (MealDTO meal : readyToNotifyRecipe) {
-                        System.out.println("Selected date - " + meal.getDate_id());
+//                        System.out.println("Selected date - " + meal.getDate_id());
                         updateStatus = MealDAO.updateMealNotificationStatusByMealID(meal.getId());
                         RecipeDTO recipe = RecipeDAO.getRecipeByRecipeId(meal.getRecipe_id());
 
@@ -190,7 +190,7 @@ public class LoadHeaderFilter implements Filter {
                             int notificationType = 3;
                             int recipe_id = meal.getRecipe_id();
                             
-                            System.out.println("Recipe ID - " + recipe_id);
+//                            System.out.println("Recipe ID - " + recipe_id);
 
                             NotificationDTO notification = new NotificationDTO(0, title, desc, sendDate, false, user_id, notificationType, recipe_id, 0, "");
 

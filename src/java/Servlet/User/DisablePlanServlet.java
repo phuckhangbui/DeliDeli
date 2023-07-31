@@ -6,12 +6,14 @@ package Servlet.User;
 
 import DAO.PlanDAO;
 import DTO.PlanDTO;
+import DTO.UserDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -22,15 +24,24 @@ public class DisablePlanServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        HttpSession session = request.getSession();
+        UserDTO user = (UserDTO) session.getAttribute("user");
 
         int plan_id = Integer.parseInt(request.getParameter("plan_id"));
 
         PlanDTO plan = PlanDAO.getPlanById(plan_id);
-        
-        boolean newStatus = !plan.isStatus();
-        plan.setStatus(newStatus);
-        
-        PlanDAO.updateStatusByPlanID(plan_id, newStatus);
+        PlanDTO activePlan = PlanDAO.getCurrentActivePlan(user.getId());
+
+        boolean currentPlanStatus = !plan.isStatus();
+        plan.setStatus(currentPlanStatus);
+        PlanDAO.updateStatusByPlanID(plan_id, currentPlanStatus);
+
+        if (activePlan != null) {
+            boolean activePlanStatus = !activePlan.isStatus();
+            activePlan.setStatus(activePlanStatus);
+            PlanDAO.updateStatusByPlanID(activePlan.getId(), activePlanStatus);
+        }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -42,7 +53,6 @@ public class DisablePlanServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
     //Look behind, if you've read this.
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
