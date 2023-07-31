@@ -282,4 +282,90 @@ public class WeekDAO {
         }
         return false;
     }
+
+    public static int getWeekIdByDateId(int date_id) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        int weekId = 0;
+
+        String sql = "SELECT week_id\n"
+                + "FROM Date\n"
+                + "WHERE id =  ?";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, date_id);
+
+                rs = stm.executeQuery();
+                
+                if(rs!= null){
+                    rs.next();
+                    weekId = rs.getInt("week_id");
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error - deleteDateByPlanId: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return weekId;
+    }
+    
+     public static boolean updateSyncStatus(int date_id, boolean status) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        int effectRows = 0;
+
+        String sql = "UPDATE [Week]\n"
+                + "SET is_sync = ?\n"
+                + "WHERE id = ? ";
+
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+
+                stm = con.prepareStatement(sql);
+                stm.setBoolean(1, status);
+                stm.setInt(2, date_id);
+                effectRows = stm.executeUpdate();
+
+                if (effectRows > 0) {
+                    return true;
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Query error - updateSyncStatus: " + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stm != null) {
+                    stm.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error closing database resources: " + ex.getMessage());
+            }
+        }
+        return false;
+    }
 }

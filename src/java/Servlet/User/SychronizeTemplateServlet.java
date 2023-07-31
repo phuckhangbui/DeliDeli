@@ -6,6 +6,7 @@ package Servlet.User;
 
 import DAO.DateDAO;
 import DAO.PlanDAO;
+import DAO.WeekDAO;
 import DTO.PlanDTO;
 import DTO.UserDTO;
 import java.io.IOException;
@@ -35,13 +36,29 @@ public class SychronizeTemplateServlet extends HttpServlet {
             dateIds[i] = Integer.parseInt(dateIdsArray[i]);
         }
 
-        for (int date_id : dateIds) {
-            if (checkbox_state.equalsIgnoreCase("checked")) {
-                DateDAO.updateSyncStatus(date_id, true);
-            } else {
-                DateDAO.updateSyncStatus(date_id, false);
+        PlanDTO plan = PlanDAO.getPlanById(plan_id);
+        if (plan != null) {
+
+            if (plan.isDaily()) {
+
+                for (int date_id : dateIds) {
+                    if (checkbox_state.equalsIgnoreCase("checked")) {
+                        DateDAO.updateSyncStatus(date_id, true);
+                    } else {
+                        DateDAO.updateSyncStatus(date_id, false);
+                    }
+                }
+            }else{
+                int weekId = WeekDAO.getWeekIdByDateId(dateIds[1]);
+                if (checkbox_state.equalsIgnoreCase("checked")) {
+                        WeekDAO.updateSyncStatus(weekId, true);
+                    } else {
+                        WeekDAO.updateSyncStatus(weekId, false);
+                    }
             }
+
         }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
